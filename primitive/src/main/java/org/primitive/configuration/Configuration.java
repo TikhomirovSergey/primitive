@@ -409,8 +409,8 @@ public class Configuration
 		STRING, BOOL, LONG, FLOAT
 	}
 	
-	private final static String commonFileName = "settings_primitive.xml"; //settings file should be put in project directory
-	public final static Configuration byDefault = get(getPathToDefault());
+	private final static String commonFileName = "settings.xml"; //settings file should be put in project directory
+	public final static Configuration byDefault = get(getPathToDefault("."));
 	
 	private static final String singleSetting = "setting";
 	private static final String settingsGroup = "group";
@@ -467,26 +467,42 @@ public class Configuration
 	//setting for test status
 	private TestStatus testStatus;
 	
-	private static String getPathToDefault()
+	private static String getPathToDefault(String startPath)
 	{
-		File list[];
-		File defaultConfig = new File("./src/");
-		list = defaultConfig.listFiles(new FilenameFilter() {
+		//attempt to find configuration in the specified directory
+		File defaultConfig = new File(startPath);
+		File list[] = defaultConfig.listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
 				return name.endsWith(commonFileName);
 			}
 			
 		});
-		if (list.length == 0)
-		{
-			return "nothing";
-		}
-		else 
+		
+		if (list.length>0)
 		{
 			return list[0].getPath();
 		}
+		
+		if (list.length == 0)
+		{
+			File inner[] = defaultConfig.listFiles();
+			String result = "nothing";
+			for (int i=0; i<inner.length; i++)
+			{
+				if (inner[i].isDirectory())
+				{
+					result = getPathToDefault(inner[i].getPath());
+				}
+				if (result!="nothing")
+				{
+					return result;
+				}
+			}
+		}
+		return "nothing";
 	}
+	
 	
 	public static Configuration get(String filePath)
 	{
