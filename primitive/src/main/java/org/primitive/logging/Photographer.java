@@ -19,6 +19,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.Locatable;
+import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.primitive.configuration.Configuration;
 
@@ -62,15 +63,16 @@ public final class Photographer
 	
 	private static BufferedImage getImageFromDriver(WebDriver driver) throws IOException
 	{
-		byte[] bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-		BufferedImage buffer = getBufferedImage(bytes); 
-		return(buffer);
-	}
-	
-	private static BufferedImage getImageFromAugmenter(WebDriver driver) throws IOException
-	{
-		WebDriver augmentedDriver = new Augmenter().augment(driver);
-		byte[] bytes = ((TakesScreenshot) augmentedDriver).getScreenshotAs(OutputType.BYTES);
+		byte[] bytes = null;
+		try
+	    {
+	    	bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+	    }
+	    catch (ClassCastException e)
+	    {
+	    	WebDriver augmentedDriver = new Augmenter().augment(((WrapsDriver) driver).getWrappedDriver());
+	    	bytes = ((TakesScreenshot) augmentedDriver).getScreenshotAs(OutputType.BYTES);	
+	    }
 		BufferedImage buffer = getBufferedImage(bytes); 
 		return(buffer);
 	}
@@ -82,9 +84,9 @@ public final class Photographer
 		{
 			return(getImageFromDriver(driver));
 		}
-		catch (ClassCastException|UnsupportedOperationException e)
+		catch (UnsupportedOperationException e)
 		{
-			return getImageFromAugmenter(driver);
+			throw e;
 		}
 		catch (NoSuchWindowException e1)
 		{
@@ -183,7 +185,7 @@ public final class Photographer
 		}
 		catch (ClassCastException|UnsupportedOperationException e)
 		{
-			Log.debug("Operation is not supported! Take a screenshot.", e);
+			Log.debug("Operation is not supported! Take a screenshot. " + e.getMessage(), e);
 			Log.log(LogLevel, Comment);
 		}		
 	}
@@ -207,7 +209,7 @@ public final class Photographer
 		}
 		catch (ClassCastException|UnsupportedOperationException e)
 		{
-			Log.debug("Operation is not supported! Take a screenshot.", e);
+			Log.debug("Operation is not supported! Take a screenshot." + e.getMessage(), e);
 			Log.log(LogLevel, Comment);
 		}
 	}

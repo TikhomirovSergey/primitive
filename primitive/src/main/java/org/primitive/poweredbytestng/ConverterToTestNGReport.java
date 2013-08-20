@@ -24,7 +24,6 @@ public class ConverterToTestNGReport implements ILogConverter{
 
 	private final String debugColor = "Snow";
 	private final String errorColor = "Red";
-	private final int firstStackElements = 5;
 	private final String htmlItemPattern = 
 	"<li><table align='center' width='100%'>"+
 		      "<tr  bgcolor=" + "#Color" + " valign=top align=left>"+
@@ -104,18 +103,8 @@ public class ConverterToTestNGReport implements ILogConverter{
 		{
 			StackTraceElement stack[] = rec.getThrown().getStackTrace();
 			int stackLength = stack.length;
-			int border = 0;
 			
-			if (stackLength<firstStackElements)
-			{
-				border = stackLength;
-			}
-			else
-			{
-				border = firstStackElements;
-			}
-			
-			for (int i=0; i<=border-1; i++)
+			for (int i=0; i< stackLength; i++)
 			{
 				stackBuilder.append(stack[i].toString() + "\n");
 			}
