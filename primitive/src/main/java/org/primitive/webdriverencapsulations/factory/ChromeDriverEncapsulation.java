@@ -10,34 +10,34 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
 
-public class ChromeDriverIncapsulation extends WebDriverEncapsulation 
+public class ChromeDriverEncapsulation extends WebDriverEncapsulation 
 {	
 	private final String defaultDriver = "chromedriver.exe";  
 	private final static String property = "webdriver.chrome.driver"; 
 	private static final Class<? extends WebDriver> chromeDriver = ChromeDriver.class; 
 	
-	public ChromeDriverIncapsulation(String openingURL)
+	public ChromeDriverEncapsulation(String openingURL)
 	{
 		super(Configuration.byDefault);
 		prepare();
 		constructBodyInGeneral(openingURL, chromeDriver);
 	}
 	
-	public ChromeDriverIncapsulation(Configuration configuration, String openingURL)
+	public ChromeDriverEncapsulation(Configuration configuration, String openingURL)
 	{
 		super(configuration);
 		prepare();
 		constructBodyInGeneral(openingURL, chromeDriver);
 	}	
 	
-	public ChromeDriverIncapsulation(String openingURL, Capabilities capabilities)
+	public ChromeDriverEncapsulation(String openingURL, Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
 		prepare();
 		constructBodyInGeneral(openingURL, chromeDriver, capabilities);
 	}
 	
-	public ChromeDriverIncapsulation(Configuration configuration, String openingURL, Capabilities capabilities)
+	public ChromeDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities)
 	{
 		super(configuration);
 		prepare();
@@ -68,38 +68,38 @@ public class ChromeDriverIncapsulation extends WebDriverEncapsulation
 		createWebDriver(openingURL, chromeDriver, new Class<?> [] {ChromeDriverService.class, ChromeOptions.class}, new Object[] {service, options});
 	}	
 	
-	public ChromeDriverIncapsulation(String URL, ChromeDriverService service)
+	public ChromeDriverEncapsulation(String URL, ChromeDriverService service)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, service);
 	}
 	
-	public ChromeDriverIncapsulation(Configuration configuration, String URL, ChromeDriverService service)
+	public ChromeDriverEncapsulation(Configuration configuration, String URL, ChromeDriverService service)
 	{
 		super(configuration);
 		constructBody(URL, service);
 	}	
 	
-	public ChromeDriverIncapsulation(String URL, ChromeDriverService service, Capabilities capabilities)
+	public ChromeDriverEncapsulation(String URL, ChromeDriverService service, Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, service, capabilities);
 	}
 	
-	public ChromeDriverIncapsulation(Configuration configuration, String URL, ChromeDriverService service, Capabilities capabilities)
+	public ChromeDriverEncapsulation(Configuration configuration, String URL, ChromeDriverService service, Capabilities capabilities)
 	{
 		super(configuration);
 		constructBody(URL, service, capabilities);
 	}
 	
-	public ChromeDriverIncapsulation(String URL, ChromeOptions options)
+	public ChromeDriverEncapsulation(String URL, ChromeOptions options)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, options);
 	}
 	
 	
-	public ChromeDriverIncapsulation(String URL, ChromeDriverService service, ChromeOptions options)
+	public ChromeDriverEncapsulation(String URL, ChromeDriverService service, ChromeOptions options)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, service, options);

@@ -15,7 +15,7 @@ import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
-public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
+public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	
 	//remote server that is started on localhost
 	private static SeleniumServer server;
@@ -28,7 +28,7 @@ public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
 	private String defaultChromeDriver = "chromedriver.exe"; 
 
 	
-	public RemoteWebDriverIncapsulation(String openingURL,
+	public RemoteWebDriverEncapsulation(String openingURL,
 			Capabilities capabilities) {
 		super(Configuration.byDefault);
 		prepare(); //starts server locally
@@ -36,7 +36,7 @@ public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
 		constructBodyInGeneral(openingURL, remoteDriver, capabilities);
 	}
 	
-	public RemoteWebDriverIncapsulation(Configuration configuration, String openingURL,
+	public RemoteWebDriverEncapsulation(Configuration configuration, String openingURL,
 			Capabilities capabilities) {
 		super(configuration);
 		prepare(); //starts server locally
@@ -75,21 +75,21 @@ public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
 				new Object[] {remoteAddress, desiredCapabilities, requiredCapabilities});
 	}	
 	
-	public RemoteWebDriverIncapsulation(String URL,
+	public RemoteWebDriverEncapsulation(String URL,
 			Capabilities capabilities, URL remoteAddress) 
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, capabilities, remoteAddress);
 	}
 	
-	public RemoteWebDriverIncapsulation(Configuration configuration, String URL,
+	public RemoteWebDriverEncapsulation(Configuration configuration, String URL,
 			Capabilities capabilities, URL remoteAddress) 
 	{
 		super(configuration);
 		constructBody(URL, capabilities, remoteAddress);
 	}
 	
-	public RemoteWebDriverIncapsulation(String URL,
+	public RemoteWebDriverEncapsulation(String URL,
 			Capabilities capabilities, CommandExecutor executor) 
 	{
 		super(Configuration.byDefault);
@@ -97,7 +97,7 @@ public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
 		
 	}	
 	
-	public RemoteWebDriverIncapsulation(Configuration configuration, String URL,
+	public RemoteWebDriverEncapsulation(Configuration configuration, String URL,
 			Capabilities capabilities, CommandExecutor executor) 
 	{
 		super(configuration);
@@ -105,7 +105,7 @@ public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
 		
 	}
 	
-	public RemoteWebDriverIncapsulation(String URL,
+	public RemoteWebDriverEncapsulation(String URL,
 			Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  CommandExecutor executor) 
 	{
@@ -113,7 +113,7 @@ public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
 		constructBody(URL, desiredCapabilities, requiredCapabilities, executor);
 	}
 	
-	public RemoteWebDriverIncapsulation(Configuration configuration, String URL,
+	public RemoteWebDriverEncapsulation(Configuration configuration, String URL,
 			Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  CommandExecutor executor) 
 	{
@@ -121,7 +121,7 @@ public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
 		constructBody(URL, desiredCapabilities, requiredCapabilities, executor);
 	}
 	
-	public RemoteWebDriverIncapsulation(String URL,
+	public RemoteWebDriverEncapsulation(String URL,
 			Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  URL remoteAddress) 
 	{
@@ -129,7 +129,7 @@ public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
 		constructBody(URL, desiredCapabilities, requiredCapabilities, remoteAddress);		
 	}
 	
-	public RemoteWebDriverIncapsulation(Configuration configuration, String URL,
+	public RemoteWebDriverEncapsulation(Configuration configuration, String URL,
 			Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  URL remoteAddress) 
 	{

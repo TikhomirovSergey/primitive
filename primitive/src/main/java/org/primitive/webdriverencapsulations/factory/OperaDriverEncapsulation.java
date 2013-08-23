@@ -12,25 +12,25 @@ import com.opera.core.systems.OperaSettings;
 
 
 
-public class OperaDriverIncapsulation extends WebDriverEncapsulation {
+public class OperaDriverEncapsulation extends WebDriverEncapsulation {
 	private static final Class<? extends WebDriver> operaDriver = OperaDriver.class;
 
-	public OperaDriverIncapsulation(String openingURL) {
+	public OperaDriverEncapsulation(String openingURL) {
 		super(Configuration.byDefault);
 		constructBodyInGeneral(openingURL, operaDriver);
 	}
 	
-	public OperaDriverIncapsulation(Configuration configuration, String openingURL) {
+	public OperaDriverEncapsulation(Configuration configuration, String openingURL) {
 		super(configuration);
 		constructBodyInGeneral(openingURL, operaDriver);
 	}
 	
-	public OperaDriverIncapsulation(String openingURL, Capabilities capabilities) {
+	public OperaDriverEncapsulation(String openingURL, Capabilities capabilities) {
 		super(Configuration.byDefault);
 		constructBodyInGeneral(openingURL, operaDriver);
 	}
 	
-	public OperaDriverIncapsulation(Configuration configuration, String openingURL, Capabilities capabilities) {
+	public OperaDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities) {
 		super(configuration);
 		constructBodyInGeneral(openingURL, operaDriver, capabilities);
 	}	
@@ -45,27 +45,27 @@ public class OperaDriverIncapsulation extends WebDriverEncapsulation {
 		createWebDriver(openingURL, operaDriver, new Class[] {OperaSettings.class}, new Object[] {settings});
 	}	
 	
-	public OperaDriverIncapsulation(String URL, OperaProfile profile)
+	public OperaDriverEncapsulation(String URL, OperaProfile profile)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, profile);
 
 	}
 	
-	public OperaDriverIncapsulation(Configuration configuration, String URL, OperaProfile profile)
+	public OperaDriverEncapsulation(Configuration configuration, String URL, OperaProfile profile)
 	{
 		super(configuration);
 		constructBody(URL, profile);
 
 	}	
 	
-	public OperaDriverIncapsulation(String URL, OperaSettings settings)
+	public OperaDriverEncapsulation(String URL, OperaSettings settings)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, settings);
 	}	
 	
-	public OperaDriverIncapsulation(Configuration configuration, String URL, OperaSettings settings)
+	public OperaDriverEncapsulation(Configuration configuration, String URL, OperaSettings settings)
 	{
 		super(configuration);
 		constructBody(URL, settings);

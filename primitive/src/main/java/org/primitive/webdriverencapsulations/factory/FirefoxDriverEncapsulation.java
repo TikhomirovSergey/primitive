@@ -11,28 +11,28 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
 
-public class FirefoxDriverIncapsulation extends WebDriverEncapsulation{
+public class FirefoxDriverEncapsulation extends WebDriverEncapsulation{
 	private static final Class<? extends WebDriver> fireFoxDriver = FirefoxDriver.class;
 	
-	public FirefoxDriverIncapsulation(String openingURL)
+	public FirefoxDriverEncapsulation(String openingURL)
 	{
 		super(Configuration.byDefault);
 		constructBodyInGeneral(openingURL, fireFoxDriver);
 	}
 	
-	public FirefoxDriverIncapsulation(Configuration configuration, String openingURL)
+	public FirefoxDriverEncapsulation(Configuration configuration, String openingURL)
 	{
 		super(configuration);
 		constructBodyInGeneral(openingURL, fireFoxDriver);
 	}	
 	
-	public FirefoxDriverIncapsulation(String openingURL, Capabilities capabilities)
+	public FirefoxDriverEncapsulation(String openingURL, Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
 		constructBodyInGeneral(openingURL, fireFoxDriver, capabilities);
 	}
 	
-	public FirefoxDriverIncapsulation(Configuration configuration, String openingURL, Capabilities capabilities)
+	public FirefoxDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities)
 	{
 		super(configuration);
 		constructBodyInGeneral(openingURL, fireFoxDriver, capabilities);
@@ -63,61 +63,61 @@ public class FirefoxDriverIncapsulation extends WebDriverEncapsulation{
 		createWebDriver(openingURL, fireFoxDriver, new Class<?>[] {FirefoxBinary.class, FirefoxProfile.class, Capabilities.class, Capabilities.class}, new Object[] {binary, profile, desiredCapabilities, requiredCapabilities});	
 	}
 	
-	public FirefoxDriverIncapsulation(String URL, FirefoxProfile profile)
+	public FirefoxDriverEncapsulation(String URL, FirefoxProfile profile)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, profile);
 	}
 	
-	public FirefoxDriverIncapsulation(Configuration configuration, String URL, FirefoxProfile profile)
+	public FirefoxDriverEncapsulation(Configuration configuration, String URL, FirefoxProfile profile)
 	{
 		super(configuration);
 		constructBody(URL, profile);
 	}	
 	
-	public FirefoxDriverIncapsulation(String URL, Capabilities desiredCapabilities, Capabilities requiredCapabilities)
+	public FirefoxDriverEncapsulation(String URL, Capabilities desiredCapabilities, Capabilities requiredCapabilities)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, desiredCapabilities, requiredCapabilities);
 	}
 	
-	public FirefoxDriverIncapsulation(Configuration configuration, String URL, Capabilities desiredCapabilities, Capabilities requiredCapabilities)
+	public FirefoxDriverEncapsulation(Configuration configuration, String URL, Capabilities desiredCapabilities, Capabilities requiredCapabilities)
 	{
 		super(configuration);
 		constructBody(URL, desiredCapabilities, requiredCapabilities);
 	}	
 		
-	public FirefoxDriverIncapsulation(String URL, FirefoxBinary binary, FirefoxProfile profile)
+	public FirefoxDriverEncapsulation(String URL, FirefoxBinary binary, FirefoxProfile profile)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, binary, profile);
 	}
 	
-	public FirefoxDriverIncapsulation(Configuration configuration, String URL, FirefoxBinary binary, FirefoxProfile profile)
+	public FirefoxDriverEncapsulation(Configuration configuration, String URL, FirefoxBinary binary, FirefoxProfile profile)
 	{
 		super(configuration);
 		constructBody(URL, binary, profile);
 	}
 	
-	public FirefoxDriverIncapsulation(String URL, FirefoxBinary binary, FirefoxProfile profile, Capabilities capabilities)
+	public FirefoxDriverEncapsulation(String URL, FirefoxBinary binary, FirefoxProfile profile, Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, binary, profile, capabilities);
 	}
 	
-	public FirefoxDriverIncapsulation(Configuration configuration, String URL, FirefoxBinary binary, FirefoxProfile profile, Capabilities capabilities)
+	public FirefoxDriverEncapsulation(Configuration configuration, String URL, FirefoxBinary binary, FirefoxProfile profile, Capabilities capabilities)
 	{
 		super(configuration);
 		constructBody(URL, binary, profile, capabilities);
 	}
 	
-	public FirefoxDriverIncapsulation(String URL, FirefoxBinary binary, FirefoxProfile profile, Capabilities desiredCapabilities, Capabilities requiredCapabilities)
+	public FirefoxDriverEncapsulation(String URL, FirefoxBinary binary, FirefoxProfile profile, Capabilities desiredCapabilities, Capabilities requiredCapabilities)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, binary, profile, desiredCapabilities, requiredCapabilities);
 	}
 	
-	public FirefoxDriverIncapsulation(Configuration configuration, String URL, FirefoxBinary binary, FirefoxProfile profile, Capabilities desiredCapabilities, Capabilities requiredCapabilities)
+	public FirefoxDriverEncapsulation(Configuration configuration, String URL, FirefoxBinary binary, FirefoxProfile profile, Capabilities desiredCapabilities, Capabilities requiredCapabilities)
 	{
 		super(configuration);
 		constructBody(URL, binary, profile, desiredCapabilities, requiredCapabilities);

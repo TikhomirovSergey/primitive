@@ -11,26 +11,26 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
 
-public class SafariDriverIncapsulation extends WebDriverEncapsulation 
+public class SafariDriverEncapsulation extends WebDriverEncapsulation 
 {
 	private static final Class<? extends WebDriver> safariDriver = SafariDriver.class;
 	
-	public SafariDriverIncapsulation(String openingURL) {
+	public SafariDriverEncapsulation(String openingURL) {
 		super(Configuration.byDefault);
 		constructBodyInGeneral(openingURL, safariDriver);
 	}
 	
-	public SafariDriverIncapsulation(Configuration configuration, String openingURL) {
+	public SafariDriverEncapsulation(Configuration configuration, String openingURL) {
 		super(configuration);
 		constructBodyInGeneral(openingURL, safariDriver);
 	}
 
-	public SafariDriverIncapsulation(String openingURL, Capabilities capabilities) {
+	public SafariDriverEncapsulation(String openingURL, Capabilities capabilities) {
 		super(Configuration.byDefault);
 		constructBodyInGeneral(openingURL, safariDriver, capabilities);
 	}
 	
-	public SafariDriverIncapsulation(Configuration configuration, String openingURL, Capabilities capabilities) {
+	public SafariDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities) {
 		super(configuration);
 		constructBodyInGeneral(openingURL, safariDriver, capabilities);
 	}	

@@ -9,34 +9,34 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
 
-public class InternetExplorerDriverIncapsulation extends WebDriverEncapsulation 
+public class InternetExplorerDriverEncapsulation extends WebDriverEncapsulation 
 {
 	private String defaultDriver = "IEDriverServer.exe";  	
 	private static String property = "webdriver.ie.driver";
 	private static final Class<? extends WebDriver> internetExplorerDriver = InternetExplorerDriver.class;
 	
-	public InternetExplorerDriverIncapsulation(String openingURL) 
+	public InternetExplorerDriverEncapsulation(String openingURL) 
 	{
 		super(Configuration.byDefault);
 		prepare();
 		constructBodyInGeneral(openingURL,internetExplorerDriver);
 	}
 	
-	public InternetExplorerDriverIncapsulation(Configuration configuration, String openingURL) 
+	public InternetExplorerDriverEncapsulation(Configuration configuration, String openingURL) 
 	{
 		super(Configuration.byDefault);
 		prepare();
 		constructBodyInGeneral(openingURL, internetExplorerDriver);
 	}	
 	
-	public InternetExplorerDriverIncapsulation(String openingURL, Capabilities capabilities) 
+	public InternetExplorerDriverEncapsulation(String openingURL, Capabilities capabilities) 
 	{
 		super(Configuration.byDefault);
 		prepare();
 		constructBodyInGeneral(openingURL, internetExplorerDriver, capabilities);
 	}
 	
-	public InternetExplorerDriverIncapsulation(Configuration configuration, String openingURL, Capabilities capabilities) 
+	public InternetExplorerDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities) 
 	{
 		super(configuration);
 		prepare();
@@ -61,37 +61,37 @@ public class InternetExplorerDriverIncapsulation extends WebDriverEncapsulation
 		createWebDriver(openingURL, internetExplorerDriver, new Class[] {Integer.class}, new Object[] {port});
 	}	
 	
-	public InternetExplorerDriverIncapsulation(String URL, InternetExplorerDriverService service)
+	public InternetExplorerDriverEncapsulation(String URL, InternetExplorerDriverService service)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, service);
 	}
 	
-	public InternetExplorerDriverIncapsulation(Configuration configuration, String URL, InternetExplorerDriverService service)
+	public InternetExplorerDriverEncapsulation(Configuration configuration, String URL, InternetExplorerDriverService service)
 	{
 		super(configuration);
 		constructBody(URL, service);
 	}
 	
-	public InternetExplorerDriverIncapsulation(String URL, InternetExplorerDriverService service, Capabilities capabilities)
+	public InternetExplorerDriverEncapsulation(String URL, InternetExplorerDriverService service, Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, service, capabilities);
 	}
 	
-	public InternetExplorerDriverIncapsulation(Configuration configuration, String URL, InternetExplorerDriverService service, Capabilities capabilities)
+	public InternetExplorerDriverEncapsulation(Configuration configuration, String URL, InternetExplorerDriverService service, Capabilities capabilities)
 	{
 		super(configuration);
 		constructBody(URL, service, capabilities);
 	}	
 	
-	public InternetExplorerDriverIncapsulation(String URL, int port)
+	public InternetExplorerDriverEncapsulation(String URL, int port)
 	{
 		super(Configuration.byDefault);
 		constructBody(URL, port);
 	}
 	
-	public InternetExplorerDriverIncapsulation(Configuration configuration, String URL, int port)
+	public InternetExplorerDriverEncapsulation(Configuration configuration, String URL, int port)
 	{
 		super(configuration);
 		constructBody(URL, port);

@@ -14,13 +14,13 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.logging.Log;
-import org.primitive.webdriverencapsulations.factory.ChromeDriverIncapsulation;
-import org.primitive.webdriverencapsulations.factory.FirefoxDriverIncapsulation;
-import org.primitive.webdriverencapsulations.factory.HtmlUnitDriverIncapsulation;
-import org.primitive.webdriverencapsulations.factory.InternetExplorerDriverIncapsulation;
-import org.primitive.webdriverencapsulations.factory.OperaDriverIncapsulation;
-import org.primitive.webdriverencapsulations.factory.RemoteWebDriverIncapsulation;
-import org.primitive.webdriverencapsulations.factory.SafariDriverIncapsulation;
+import org.primitive.webdriverencapsulations.factory.ChromeDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.FirefoxDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.HtmlUnitDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.InternetExplorerDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.OperaDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.RemoteWebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.SafariDriverEncapsulation;
 
 
 public class WebDriverEncapsulationFactory 
@@ -48,37 +48,37 @@ public class WebDriverEncapsulationFactory
 		Class<? extends WebDriverEncapsulation> suitableClass = null;
 		if (webDriverMark == ESupportedDrivers.REMOTE)
 		{
-			suitableClass = RemoteWebDriverIncapsulation.class;
+			suitableClass = RemoteWebDriverEncapsulation.class;
 		}				
 		
 		if (webDriverMark == ESupportedDrivers.FIREFOX)
 		{
-			suitableClass = FirefoxDriverIncapsulation.class;
+			suitableClass = FirefoxDriverEncapsulation.class;
 		}
 		
 		if (webDriverMark == ESupportedDrivers.CHROME)
 		{
-			suitableClass = ChromeDriverIncapsulation.class;
+			suitableClass = ChromeDriverEncapsulation.class;
 		}	
 		
 		if (webDriverMark == ESupportedDrivers.INTERNETEXPLORER)
 		{
-			suitableClass = InternetExplorerDriverIncapsulation.class;
+			suitableClass = InternetExplorerDriverEncapsulation.class;
 		}
 		
 		if (webDriverMark == ESupportedDrivers.OPERA)
 		{
-			suitableClass = OperaDriverIncapsulation.class;
+			suitableClass = OperaDriverEncapsulation.class;
 		}
 		
 		if (webDriverMark == ESupportedDrivers.SAFARI)
 		{
-			suitableClass = SafariDriverIncapsulation.class;
+			suitableClass = SafariDriverEncapsulation.class;
 		}
 		
 		if (webDriverMark == ESupportedDrivers.HTMLUNIT)
 		{
-			suitableClass = HtmlUnitDriverIncapsulation.class;
+			suitableClass = HtmlUnitDriverEncapsulation.class;
 		}
 		
 		return suitableClass;					

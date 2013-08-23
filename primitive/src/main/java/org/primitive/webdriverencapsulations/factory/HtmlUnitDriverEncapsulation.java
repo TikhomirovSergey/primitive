@@ -14,26 +14,26 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
  * @author s.tihomirov
  *
  */
-public class HtmlUnitDriverIncapsulation extends WebDriverEncapsulation {
+public class HtmlUnitDriverEncapsulation extends WebDriverEncapsulation {
 	private static final Class<? extends WebDriver> htnlUnitDriver = HtmlUnitDriver.class;
 	
-	public HtmlUnitDriverIncapsulation(String openingURL) {
+	public HtmlUnitDriverEncapsulation(String openingURL) {
 		super(Configuration.byDefault);
 		constructBodyInGeneral(openingURL, htnlUnitDriver);
 	}
 	
-	public HtmlUnitDriverIncapsulation(Configuration configuration, String openingURL) {
+	public HtmlUnitDriverEncapsulation(Configuration configuration, String openingURL) {
 		super(configuration);
 		constructBodyInGeneral(openingURL,htnlUnitDriver);
 	}
 
-	public HtmlUnitDriverIncapsulation(String openingURL,
+	public HtmlUnitDriverEncapsulation(String openingURL,
 			Capabilities capabilities) {
 		super(Configuration.byDefault);
 		constructBodyInGeneral(openingURL, htnlUnitDriver, capabilities);
 	}
 	
-	public HtmlUnitDriverIncapsulation(Configuration configuration, String openingURL,
+	public HtmlUnitDriverEncapsulation(Configuration configuration, String openingURL,
 			Capabilities capabilities) {
 		super(configuration);
 		constructBodyInGeneral(openingURL, htnlUnitDriver, capabilities);
@@ -51,25 +51,25 @@ public class HtmlUnitDriverIncapsulation extends WebDriverEncapsulation {
 		createWebDriver(openingURL, htnlUnitDriver, new Class<?>[] {BrowserVersion.class}, new Object[] {version});
 	}	
 	
-	public HtmlUnitDriverIncapsulation(String URL,
+	public HtmlUnitDriverEncapsulation(String URL,
 			boolean enableJavascript) {
 		super(Configuration.byDefault);
 		constructBody(URL, enableJavascript);
 	}
 	
-	public HtmlUnitDriverIncapsulation(Configuration configuration, String URL,
+	public HtmlUnitDriverEncapsulation(Configuration configuration, String URL,
 			boolean enableJavascript) {
 		super(configuration);
 		constructBody(URL, enableJavascript);
 	}	
 	
-	public HtmlUnitDriverIncapsulation(String URL,
+	public HtmlUnitDriverEncapsulation(String URL,
 			BrowserVersion version) {
 		super(Configuration.byDefault);
 		constructBody(URL, version);
 	}	
 	
-	public HtmlUnitDriverIncapsulation(Configuration configuration, String URL,
+	public HtmlUnitDriverEncapsulation(Configuration configuration, String URL,
 			BrowserVersion version) {
 		super(configuration);
 		constructBody(URL, version);
