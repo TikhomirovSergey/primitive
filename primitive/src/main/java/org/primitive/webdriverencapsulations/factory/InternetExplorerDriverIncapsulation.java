@@ -1,15 +1,15 @@
-package org.primitive.webdriverincapsulations.factory;
+package org.primitive.webdriverencapsulations.factory;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.primitive.configuration.Configuration;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
 
-public class InternetExplorerDriverIncapsulation extends WebDriverIncapsulation 
+public class InternetExplorerDriverIncapsulation extends WebDriverEncapsulation 
 {
 	private String defaultDriver = "IEDriverServer.exe";  	
 	private static String property = "webdriver.ie.driver";

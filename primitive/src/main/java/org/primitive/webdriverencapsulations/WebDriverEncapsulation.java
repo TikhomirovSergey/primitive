@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations;
+package org.primitive.webdriverencapsulations;
 
 import static org.junit.Assert.fail;
 
@@ -57,10 +57,10 @@ import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
-import org.primitive.webdriverincapsulations.firing.ExtendedEventFiringWebDriver;
+import org.primitive.webdriverencapsulations.firing.ExtendedEventFiringWebDriver;
 
 
-public abstract class WebDriverIncapsulation implements IDestroyable, IConfigurable, WrapsDriver, HasCapabilities
+public abstract class WebDriverEncapsulation implements IDestroyable, IConfigurable, WrapsDriver, HasCapabilities
 {
 	//It provides fast access to keyboard and mouse by page objects
 	public final class Interaction extends InnerDestroyable implements HasInputDevices {
@@ -1031,7 +1031,7 @@ public abstract class WebDriverIncapsulation implements IDestroyable, IConfigura
 	  private ExtendedEventFiringWebDriver firingDriver;
 	  protected Configuration configuration;
 	  
-	  protected final static List<WebDriverIncapsulation> driverList = Collections.synchronizedList(new ArrayList<WebDriverIncapsulation>());
+	  protected final static List<WebDriverEncapsulation> driverList = Collections.synchronizedList(new ArrayList<WebDriverEncapsulation>());
 	  
 	  private final WebDriverInnerListener webInnerListener = new WebDriverInnerListener();
 	  
@@ -1062,7 +1062,7 @@ public abstract class WebDriverIncapsulation implements IDestroyable, IConfigura
 	  	  createWebDriver(openingURL, driverClass, new Class<?>[] {Capabilities.class}, new Object[] {capabilities});
 	  }
 	  
-	  protected WebDriverIncapsulation(Configuration configuration)
+	  protected WebDriverEncapsulation(Configuration configuration)
 	  {
 		  this.configuration = configuration; 
 	  }

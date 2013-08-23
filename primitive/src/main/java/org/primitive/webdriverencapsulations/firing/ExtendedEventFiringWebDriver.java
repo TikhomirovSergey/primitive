@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.primitive.webdriverincapsulations.firing;
+package org.primitive.webdriverencapsulations.firing;
 
 
 import java.lang.reflect.InvocationHandler;

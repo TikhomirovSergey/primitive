@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations;
+package org.primitive.webdriverencapsulations;
 
 
 import java.util.ArrayList;

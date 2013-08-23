@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations.factory;
+package org.primitive.webdriverencapsulations.factory;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -7,11 +7,11 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.primitive.configuration.Configuration;
 import org.primitive.logging.Log;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
 
-public class FirefoxDriverIncapsulation extends WebDriverIncapsulation{
+public class FirefoxDriverIncapsulation extends WebDriverEncapsulation{
 	private static final Class<? extends WebDriver> fireFoxDriver = FirefoxDriver.class;
 	
 	public FirefoxDriverIncapsulation(String openingURL)

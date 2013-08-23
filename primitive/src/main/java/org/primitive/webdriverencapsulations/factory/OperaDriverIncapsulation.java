@@ -1,10 +1,10 @@
-package org.primitive.webdriverincapsulations.factory;
+package org.primitive.webdriverencapsulations.factory;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.primitive.configuration.Configuration;
 import org.primitive.logging.Log;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 import com.opera.core.systems.OperaDriver;
 import com.opera.core.systems.OperaProfile;
@@ -12,7 +12,7 @@ import com.opera.core.systems.OperaSettings;
 
 
 
-public class OperaDriverIncapsulation extends WebDriverIncapsulation {
+public class OperaDriverIncapsulation extends WebDriverEncapsulation {
 	private static final Class<? extends WebDriver> operaDriver = OperaDriver.class;
 
 	public OperaDriverIncapsulation(String openingURL) {

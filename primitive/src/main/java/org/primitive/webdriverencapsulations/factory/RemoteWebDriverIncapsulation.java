@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations.factory;
+package org.primitive.webdriverencapsulations.factory;
 
 import java.net.URL;
 
@@ -12,10 +12,10 @@ import org.openqa.selenium.server.RemoteControlConfiguration;
 import org.openqa.selenium.server.SeleniumServer;
 import org.primitive.configuration.Configuration;
 import org.primitive.logging.Log;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
-public class RemoteWebDriverIncapsulation extends WebDriverIncapsulation {
+public class RemoteWebDriverIncapsulation extends WebDriverEncapsulation {
 	
 	//remote server that is started on localhost
 	private static SeleniumServer server;

@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations.ui;
+package org.primitive.webdriverencapsulations.ui;
 
 import java.util.Calendar;
 

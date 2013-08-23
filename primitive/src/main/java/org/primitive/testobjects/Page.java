@@ -23,9 +23,9 @@ import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.exceptions.UnclosedBrowserWindowException;
 import org.primitive.logging.Log;
 import org.primitive.testobjects.testobject.TestObject;
-import org.primitive.webdriverincapsulations.SingleWindow;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation.Interaction;
+import org.primitive.webdriverencapsulations.SingleWindow;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Interaction;
 
 /**
  * @author s.tihomirov
@@ -43,9 +43,9 @@ public class Page extends TestObject {
 	
 	}
 
-	protected WebDriverIncapsulation.PageFactoryWorker pageFactoryWorker;	
+	protected WebDriverEncapsulation.PageFactoryWorker pageFactoryWorker;	
 	protected Page parent; //parent test object	
-	protected WebDriverIncapsulation.FrameSupport frameSupport;	
+	protected WebDriverEncapsulation.FrameSupport frameSupport;	
 	//Integer specification of a frame that object is placed on.
 	private Integer frameToSwitchOnInt = null;
 	//String specification of a frame that object is placed on.
@@ -53,7 +53,7 @@ public class Page extends TestObject {
 	//WebElement specification of a frame that object is placed on
 	private Object frameToSwitchOnElem = null;
 	
-	protected WebDriverIncapsulation.PictureMaker photographer;
+	protected WebDriverEncapsulation.PictureMaker photographer;
 	protected static final HashMap<SingleWindow, HashSet<Page>> pages = new HashMap<SingleWindow, HashSet<Page>>();
     //page object is created by specified entity
 	protected Entity originalEntity;
@@ -98,10 +98,10 @@ public class Page extends TestObject {
 	//default constructor body
 	private void pageConstroctorBody()
 	{
-		pageFactoryWorker = driverIncapsulation.getPageFactoryWorker();
-		frameSupport      = driverIncapsulation.getFrameSupport();
-		photographer   = driverIncapsulation.getPhotograther();
-		interaction    = driverIncapsulation.getInteraction();
+		pageFactoryWorker = driverEncapsulation.getPageFactoryWorker();
+		frameSupport      = driverEncapsulation.getFrameSupport();
+		photographer   = driverEncapsulation.getPhotograther();
+		interaction    = driverEncapsulation.getInteraction();
 		addItselfToMap(nativeWindow);
 	}
 	

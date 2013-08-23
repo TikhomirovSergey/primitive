@@ -15,8 +15,8 @@ import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.interfaces.ITestObjectExceptionHandler;
-import org.primitive.webdriverincapsulations.SingleWindow;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation;
+import org.primitive.webdriverencapsulations.SingleWindow;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 public abstract class TestObject implements IDestroyable
 {	
@@ -61,10 +61,10 @@ public abstract class TestObject implements IDestroyable
 	}
 
 	protected SingleWindow nativeWindow; //browser window that object placed on
-	protected WebDriverIncapsulation driverIncapsulation; //wrapped web driver for situations when it needs to be used
+	protected WebDriverEncapsulation driverEncapsulation; //wrapped web driver for situations when it needs to be used
 	
-	protected WebDriverIncapsulation.Awaiting awaiting;
-	protected WebDriverIncapsulation.ScriptExecutor scriptExecutor;
+	protected WebDriverEncapsulation.Awaiting awaiting;
+	protected WebDriverEncapsulation.ScriptExecutor scriptExecutor;
 	protected final HashSet<ITestObjectExceptionHandler> checkedInExceptionHandlers = 
 			new HashSet<ITestObjectExceptionHandler>();	
 	
@@ -93,9 +93,9 @@ public abstract class TestObject implements IDestroyable
     	try
     	{
 			nativeWindow = browserWindow;
-			driverIncapsulation = nativeWindow.getDriverIncapsulation();
-			awaiting           = driverIncapsulation.getAwaiting();
-	    	scriptExecutor = driverIncapsulation.getScriptExecutor();
+			driverEncapsulation = nativeWindow.getDriverEncapsulation();
+			awaiting           = driverEncapsulation.getAwaiting();
+	    	scriptExecutor = driverEncapsulation.getScriptExecutor();
     	}
     	catch (Exception e)
     	{

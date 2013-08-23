@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations.factory;
+package org.primitive.webdriverencapsulations.factory;
 
 import org.junit.Assume;
 import org.openqa.selenium.safari.SafariDriver;
@@ -7,11 +7,11 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.primitive.configuration.Configuration;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
 
-public class SafariDriverIncapsulation extends WebDriverIncapsulation 
+public class SafariDriverIncapsulation extends WebDriverEncapsulation 
 {
 	private static final Class<? extends WebDriver> safariDriver = SafariDriver.class;
 	

@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations.factory;
+package org.primitive.webdriverencapsulations.factory;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -6,11 +6,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.primitive.configuration.Configuration;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
 
-public class ChromeDriverIncapsulation extends WebDriverIncapsulation 
+public class ChromeDriverIncapsulation extends WebDriverEncapsulation 
 {	
 	private final String defaultDriver = "chromedriver.exe";  
 	private final static String property = "webdriver.chrome.driver"; 

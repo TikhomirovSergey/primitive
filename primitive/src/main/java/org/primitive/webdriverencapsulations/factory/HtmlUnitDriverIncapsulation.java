@@ -1,11 +1,11 @@
-package org.primitive.webdriverincapsulations.factory;
+package org.primitive.webdriverencapsulations.factory;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.primitive.configuration.Configuration;
 import org.primitive.logging.Log;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 
@@ -14,7 +14,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
  * @author s.tihomirov
  *
  */
-public class HtmlUnitDriverIncapsulation extends WebDriverIncapsulation {
+public class HtmlUnitDriverIncapsulation extends WebDriverEncapsulation {
 	private static final Class<? extends WebDriver> htnlUnitDriver = HtmlUnitDriver.class;
 	
 	public HtmlUnitDriverIncapsulation(String openingURL) {

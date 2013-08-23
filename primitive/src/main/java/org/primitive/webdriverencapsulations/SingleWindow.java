@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations;
+package org.primitive.webdriverencapsulations;
 
 
 import java.net.URL;
@@ -25,8 +25,8 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
 	private WindowSwitcher nativeSwitcher;
 	private String objectWindow;
 	protected final static List<SingleWindow> openedWindows = Collections.synchronizedList(new ArrayList<SingleWindow>());
-	private WebDriverIncapsulation driverIncapsulation;
-	private WebDriverIncapsulation.WindowTool windowTool;
+	private WebDriverEncapsulation driverEncapsulation;
+	private WebDriverEncapsulation.WindowTool windowTool;
 	
     public static SingleWindow checkForInit(String handle, WindowSwitcher switcher)
     {   	
@@ -53,9 +53,9 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     private SingleWindow(WindowSwitcher Switcher, String handle)
     {
 		this.nativeSwitcher 		=  Switcher;
-		this.driverIncapsulation 	=  Switcher.driverIncapsulation;
+		this.driverEncapsulation 	=  Switcher.driverEncapsulation;
 		this.objectWindow			=  handle;
-		this.windowTool              = driverIncapsulation.getWinwowTool();
+		this.windowTool              = driverEncapsulation.getWinwowTool();
 		openedWindows.add(this);
 		takeAPictureOfAnInfo("New object has been made of browser window");
     }
@@ -225,9 +225,9 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     	return nativeSwitcher.getTitleByHandle(objectWindow);
     }
     
-    public WebDriverIncapsulation getDriverIncapsulation()
+    public WebDriverEncapsulation getDriverEncapsulation()
     {
-    	return(driverIncapsulation);
+    	return(driverEncapsulation);
     }
     
     public synchronized void to(String link)

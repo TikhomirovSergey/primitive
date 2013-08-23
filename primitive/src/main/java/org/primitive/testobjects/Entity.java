@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.logging.Log;
 import org.primitive.testobjects.testobject.TestObject;
-import org.primitive.webdriverincapsulations.SingleWindow;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation.BrowserLogs;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation.Cookies;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation.Ime;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation.TimeOut;
-import org.primitive.webdriverincapsulations.WindowSwitcher;
+import org.primitive.webdriverencapsulations.SingleWindow;
+import org.primitive.webdriverencapsulations.WindowSwitcher;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation.BrowserLogs;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Cookies;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Ime;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation.TimeOut;
 
 //Using it you can model your web application as a complex aggregated object 
 //it should only generate new objects in general
@@ -27,10 +27,10 @@ public class Entity extends TestObject{
 	protected Entity(SingleWindow browserWindow) throws ConcstructTestObjectException
 	{
 		super(browserWindow);
-		cookies  = driverIncapsulation.getCookies();
-		ime      = driverIncapsulation.getIme();
-		logs     = driverIncapsulation.getLogs();
-		timeOuts = driverIncapsulation.getTimeOut();
+		cookies  = driverEncapsulation.getCookies();
+		ime      = driverEncapsulation.getIme();
+		logs     = driverEncapsulation.getLogs();
+		timeOuts = driverEncapsulation.getTimeOut();
 		nativeSwitcher = browserWindow.getSwitcher();
 	}
 	
@@ -446,7 +446,7 @@ public class Entity extends TestObject{
 		//attempt to destroy page objects
 		for (SingleWindow window: openedWindows)
 		{	//if some windows were created by this driver instance
-			if ((window.getDriverIncapsulation()==driverIncapsulation))
+			if ((window.getDriverEncapsulation()==driverEncapsulation))
 			{
 				Page.destroyPagesByWindow(window);
 				
@@ -473,7 +473,7 @@ public class Entity extends TestObject{
 		destroy();
 		SingleWindow.remove(nativeWindow);
 		nativeSwitcher.destroy();
-		driverIncapsulation.destroy();
+		driverEncapsulation.destroy();
 	}
 }
 

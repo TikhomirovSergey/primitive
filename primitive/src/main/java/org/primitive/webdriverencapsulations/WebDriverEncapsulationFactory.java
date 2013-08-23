@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations;
+package org.primitive.webdriverencapsulations;
 
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -14,16 +14,16 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.logging.Log;
-import org.primitive.webdriverincapsulations.factory.ChromeDriverIncapsulation;
-import org.primitive.webdriverincapsulations.factory.FirefoxDriverIncapsulation;
-import org.primitive.webdriverincapsulations.factory.HtmlUnitDriverIncapsulation;
-import org.primitive.webdriverincapsulations.factory.InternetExplorerDriverIncapsulation;
-import org.primitive.webdriverincapsulations.factory.OperaDriverIncapsulation;
-import org.primitive.webdriverincapsulations.factory.RemoteWebDriverIncapsulation;
-import org.primitive.webdriverincapsulations.factory.SafariDriverIncapsulation;
+import org.primitive.webdriverencapsulations.factory.ChromeDriverIncapsulation;
+import org.primitive.webdriverencapsulations.factory.FirefoxDriverIncapsulation;
+import org.primitive.webdriverencapsulations.factory.HtmlUnitDriverIncapsulation;
+import org.primitive.webdriverencapsulations.factory.InternetExplorerDriverIncapsulation;
+import org.primitive.webdriverencapsulations.factory.OperaDriverIncapsulation;
+import org.primitive.webdriverencapsulations.factory.RemoteWebDriverIncapsulation;
+import org.primitive.webdriverencapsulations.factory.SafariDriverIncapsulation;
 
 
-public class WebDriverIncapsulationFactory 
+public class WebDriverEncapsulationFactory 
 {
 	/**
 	 * @author s.tihomirov
@@ -43,9 +43,9 @@ public class WebDriverIncapsulationFactory
 	private static final ESupportedDrivers defaultSupportedDriver 	= ESupportedDrivers.FIREFOX; 
 	private static final Capabilities 	 defaultRemoteCapabilities  = DesiredCapabilities.firefox();
 		
-	private static Class<? extends WebDriverIncapsulation> getSuitableWebDriverClass(ESupportedDrivers webDriverMark)
+	private static Class<? extends WebDriverEncapsulation> getSuitableWebDriverClass(ESupportedDrivers webDriverMark)
 	{
-		Class<? extends WebDriverIncapsulation> suitableClass = null;
+		Class<? extends WebDriverEncapsulation> suitableClass = null;
 		if (webDriverMark == ESupportedDrivers.REMOTE)
 		{
 			suitableClass = RemoteWebDriverIncapsulation.class;
@@ -86,7 +86,7 @@ public class WebDriverIncapsulationFactory
 	
 	//the real factory method is there
 	@SuppressWarnings("unchecked")
-	private static <T extends WebDriverIncapsulation> T initInstance(Class<? extends WebDriverIncapsulation> instanseClass,
+	private static <T extends WebDriverEncapsulation> T initInstance(Class<? extends WebDriverEncapsulation> instanseClass,
 																Class<?>[] classParams, Object[] values)
 	{
 		IncapsulationInterceptor interceptor = new IncapsulationInterceptor();
@@ -97,9 +97,9 @@ public class WebDriverIncapsulationFactory
 	}
 	
 	//It is the invocation of factory method with manually specified web driver and opening URL
-	public static WebDriverIncapsulation initNewInstance(ESupportedDrivers webDriverMark, String url)
+	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, String url)
 	{
-		Class<? extends WebDriverIncapsulation> newInstanceClass = getSuitableWebDriverClass(webDriverMark);
+		Class<? extends WebDriverEncapsulation> newInstanceClass = getSuitableWebDriverClass(webDriverMark);
 		if (webDriverMark != ESupportedDrivers.REMOTE) //if there is web driver that can be started without any capabities
 		{
 			return initInstance(newInstanceClass, new Class[] {String.class} , new Object[] {url});
@@ -111,18 +111,18 @@ public class WebDriverIncapsulationFactory
 	}
 	
 	//It is the invocation of factory method with manually specified web driver, capabilities and opening URL
-	public static WebDriverIncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, String url)
+	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, String url)
 	{
-		Class<? extends WebDriverIncapsulation> newInstanceClass = getSuitableWebDriverClass(webDriverMark);
+		Class<? extends WebDriverEncapsulation> newInstanceClass = getSuitableWebDriverClass(webDriverMark);
 		return initInstance(newInstanceClass, new Class[] {String.class, Capabilities.class} , new Object[] {url,capabilities});
 	}
 	
 	//It is the invocation of factory method with manually specified web driver, capabilities, remote address and opening URL
 	//It is necessary to know - remote address will be used when RempteWebDriver is created.
 	//For any other web driver it will be ignored.
-	public static WebDriverIncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, String url, URL remoteAdress)
+	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, String url, URL remoteAdress)
 	{
-		Class<? extends WebDriverIncapsulation> newInstanceClass = getSuitableWebDriverClass(webDriverMark);
+		Class<? extends WebDriverEncapsulation> newInstanceClass = getSuitableWebDriverClass(webDriverMark);
 		if (webDriverMark == ESupportedDrivers.REMOTE)
 		{	
 			return initInstance(newInstanceClass, new Class[] {String.class, Capabilities.class, URL.class} , new Object[] {url,capabilities,remoteAdress});
@@ -165,7 +165,7 @@ public class WebDriverIncapsulationFactory
 	}
 	
 	//It is the invocation of factory method with parameters that are specified in configuration
-	public static WebDriverIncapsulation initNewInstance(Configuration configuration, String url)
+	public static WebDriverEncapsulation initNewInstance(Configuration configuration, String url)
 	{		
 		ESupportedDrivers mark = getSupportedDriverFromConfig(configuration);
 		
@@ -211,7 +211,7 @@ public class WebDriverIncapsulationFactory
 	}
 	
 	//It is the invocation of factory method with parameters that are specified in default configuration
-	public static WebDriverIncapsulation initNewInstance(String url)
+	public static WebDriverEncapsulation initNewInstance(String url)
 	{
 		return initNewInstance(Configuration.byDefault,url);
 	}

@@ -1,4 +1,4 @@
-package org.primitive.webdriverincapsulations;
+package org.primitive.webdriverencapsulations;
 
 
 import java.net.URL;
@@ -20,8 +20,8 @@ import org.primitive.exceptions.UnclosedBrowserWindowException;
 import org.primitive.exceptions.UnswitchableBrowserWindowException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation.Awaiting;
-import org.primitive.webdriverincapsulations.WebDriverIncapsulation.WindowTimeOuts;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Awaiting;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation.WindowTimeOuts;
 
 
 public final class WindowSwitcher implements IDestroyable
@@ -55,7 +55,7 @@ public final class WindowSwitcher implements IDestroyable
 		//fluent waiting of the result. See above
 		protected ExpectedCondition<Boolean> isSwitchedOn(final String handle)
 		{	
-			WebDriver driver = switcher.driverIncapsulation.getWrappedDriver();
+			WebDriver driver = switcher.driverEncapsulation.getWrappedDriver();
 			driver.switchTo().window(handle);
 			return new ExpectedCondition<Boolean>()
 			{
@@ -270,8 +270,8 @@ public final class WindowSwitcher implements IDestroyable
 	}
 
 	private String currentHandle; 
-	protected WebDriverIncapsulation driverIncapsulation;
-	private WebDriverIncapsulation.PictureMaker photographer;
+	protected WebDriverEncapsulation driverEncapsulation;
+	private WebDriverEncapsulation.PictureMaker photographer;
 	private final static List<WindowSwitcher> swithcerList = Collections.synchronizedList(new ArrayList<WindowSwitcher>());
 	private WindowTimeOuts windowManager;
 	private Awaiting awaiting;
@@ -307,11 +307,11 @@ public final class WindowSwitcher implements IDestroyable
 	}
 	
 	//returns WindowSwither instance that exists or creates a new instance 
-	public static WindowSwitcher get(WebDriverIncapsulation driver)
+	public static WindowSwitcher get(WebDriverEncapsulation driver)
 	{
 		for (WindowSwitcher switcher: swithcerList)
 		{
-			if (switcher.driverIncapsulation == driver)
+			if (switcher.driverEncapsulation == driver)
 			{
 				return switcher;
 			}
@@ -320,12 +320,12 @@ public final class WindowSwitcher implements IDestroyable
 		return new WindowSwitcher(driver);
 	}
 	
-	private WindowSwitcher(WebDriverIncapsulation InitialDriverPerformance)
+	private WindowSwitcher(WebDriverEncapsulation InitialDriverPerformance)
 	{
-		driverIncapsulation = InitialDriverPerformance;
-		windowManager = driverIncapsulation.getWindowTimeOuts();
-		photographer    = driverIncapsulation.getPhotograther();
-		awaiting        = driverIncapsulation.getAwaiting();
+		driverEncapsulation = InitialDriverPerformance;
+		windowManager = driverEncapsulation.getWindowTimeOuts();
+		photographer    = driverEncapsulation.getPhotograther();
+		awaiting        = driverEncapsulation.getAwaiting();
 		fluent          = new Fluent(this);
 		swithcerList.add(this);
 	}
@@ -452,13 +452,13 @@ public final class WindowSwitcher implements IDestroyable
 	public synchronized String getWindowURLbyHandle(String handle) throws NoSuchWindowException
 	{
 		changeActiveWindow(handle);
-		return(driverIncapsulation.getWrappedDriver().getCurrentUrl());
+		return(driverEncapsulation.getWrappedDriver().getCurrentUrl());
 	}
 	
 	public synchronized String getTitleByHandle(String handle)  throws NoSuchWindowException
 	{
 		changeActiveWindow(handle);
-		return (driverIncapsulation.getWrappedDriver().getTitle());
+		return (driverEncapsulation.getWrappedDriver().getTitle());
 	}
 	
 	public void destroy()
@@ -506,7 +506,7 @@ public final class WindowSwitcher implements IDestroyable
 		long timeOut = windowManager.getTimeOut(timeOuts.getWindowClosingTimeOutSec(),windowManager.defaultTime);
 		try
 		{
-			WebDriver driver = driverIncapsulation.getWrappedDriver();	
+			WebDriver driver = driverEncapsulation.getWrappedDriver();	
 			driver.switchTo().window(handle).close();
 			awaiting.awaitCondition(timeOut, fluent.isClosed(handle));
 			currentHandle = null;
@@ -524,7 +524,7 @@ public final class WindowSwitcher implements IDestroyable
 	{
 		try
 		{	
-			return(driverIncapsulation.getWrappedDriver().getWindowHandles());		
+			return(driverEncapsulation.getWrappedDriver().getWindowHandles());		
 		}
 		catch (Exception e)
 		{
@@ -558,6 +558,6 @@ public final class WindowSwitcher implements IDestroyable
 	
 	public synchronized Alert getAlert(long secsToWait) throws NoAlertPresentException
 	{
-		return(driverIncapsulation.getAlert(secsToWait));
+		return(driverEncapsulation.getAlert(secsToWait));
 	}
 }
