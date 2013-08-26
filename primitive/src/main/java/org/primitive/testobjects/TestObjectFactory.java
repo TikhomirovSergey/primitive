@@ -56,7 +56,7 @@ public final class TestObjectFactory extends TestObject {
 		public synchronized Object intercept(Object page, Method method, Object[] args,
 				MethodProxy methodProxy) throws Throwable {
 			if (method.isAnnotationPresent(Page.PageMethod.class))
-			{	//if there are actions with a page
+			{	//if there is no actions with page
 				((Page) page).switchToMe();
 			}
 			try
