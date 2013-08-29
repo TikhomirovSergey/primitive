@@ -606,7 +606,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 
 		@Override
 		public void afterScript(String arg0, WebDriver arg1) {
-			Log.message("Javascript  " + arg0 + " has been executed successfully!");
+			Log.debug("Javascript  " + arg0 + " has been executed successfully!");
 		}
 		
 		@Override
@@ -654,7 +654,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		@Override
 		public void beforeScript(String arg0, WebDriver arg1) 
 		{
-			Log.message("Javascript execution has been started " + arg0);
+			Log.debug("Javascript execution has been started " + arg0);
 		}
 
 		@Override

@@ -1,7 +1,6 @@
 package org.primitive.logging;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -10,18 +9,16 @@ import java.util.Calendar;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
-
-import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.Locatable;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.primitive.configuration.Configuration;
+
 
 
 public final class Photographer 
@@ -113,14 +110,14 @@ public final class Photographer
 		}
 	}
 	
-	//highlights web elements on screenshots
-	private static void drawOutLines(BufferedImage buffer, Dimension size, Point p, Color highlight)
+	private static void changeStyle(JavascriptExecutor jScriptExecutor, WebElement element, String style)
 	{
-		highlight.darker();
-		Graphics bufferedGraphics = buffer.getGraphics();
-		bufferedGraphics.setColor(highlight); 
-		bufferedGraphics.drawRoundRect(p.getX(), p.getY(), size.getWidth(), size.getHeight(), 10, 10);
-		bufferedGraphics.dispose();
+		jScriptExecutor.executeScript("arguments[0].setAttribute('style', '" + style + "');",  element);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			Log.warning(e.getMessage(),e);
+		}
 	}
 	
 	//takes pictures, highlights elements on page and makes buffered images
@@ -128,9 +125,11 @@ public final class Photographer
 	{
 		try
 		{
-			Point location = ((Locatable) webElement).getCoordinates().inViewPort();
+			JavascriptExecutor js = ((JavascriptExecutor) driver);
+			String originalStyle  = webElement.getAttribute("style");
+			changeStyle(js, webElement, "border: 2px solid rgb("+ Integer.toString(highlight.getRed()) +  ","+Integer.toString(highlight.getGreen())+","+Integer.toString(highlight.getBlue())+");");
 			BufferedImage buffer = takeAPicture(driver);
-			drawOutLines(buffer, webElement.getSize(), location, highlight);
+			changeStyle(js, webElement, originalStyle);
 			return(buffer);
 		}
 		catch (IOException e)
