@@ -8,10 +8,8 @@ import java.util.Date;
 import java.util.logging.Level;
 
 import org.primitive.logging.ILogConverter;
-import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
 import org.primitive.logging.Log.LogRecWithAttach;
-import org.testng.ITestResult;
 import org.testng.Reporter;
 
 
@@ -37,61 +35,6 @@ public class ConverterToTestNGReport implements ILogConverter{
 	private final String textPatternForPicture = "<p><img src=\"file:///FilePath\" alt=\"Comment\"></p>";
 	//for posting files as links
 	private final String textPatternForAnyFile = "<a href= \"FilePath\" type=\"file\">Comment> </a>";
-	//Can we post this to report? It depends on logger level
-	private boolean iCanPostThisToReport(Level level, Level borderLevel)
-	{
-		if (borderLevel == Level.ALL)
-		{
-			return true;
-		}
-		
-		else if ((borderLevel == Level.FINE)|(borderLevel == Level.FINER)|(borderLevel == Level.FINEST))
-		{
-			if ((level == Level.FINE)|(level == Level.FINER)|(level == Level.FINEST)|(level == Level.CONFIG))
-			{
-				return true;
-			}
-			else
-			{
-				return true;
-			}
-		}		
-		else if (borderLevel == Level.INFO)
-		{
-			if ((level==Level.INFO)|(level==Level.WARNING)|(level==Level.SEVERE))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		} 	
-		else if (borderLevel == Level.WARNING)
-		{
-			if ((level==Level.WARNING)|(level==Level.SEVERE))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}	
-		else if (borderLevel == Level.SEVERE)
-		{
-			if (level==Level.SEVERE)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		return false;
-	}
-
 	private String formatWithStackTrace(String original, LogRecWithAttach rec)
 	{
 		String formatted = null;
@@ -171,22 +114,17 @@ public class ConverterToTestNGReport implements ILogConverter{
 		return turnedString;
 	}
 
-	private ITestResult setToReport(String htmlInjection)
+	private void setToReport(String htmlInjection)
 	{
 		Reporter.setEscapeHtml(false);
 		Reporter.log(htmlInjection);
-		return Reporter.getCurrentTestResult();
 	}
 	
 	@Override
 	public void convert(LogRecWithAttach record) 
 	{
-		Level level = Log.getLevel();
-		if (iCanPostThisToReport(record.getLevel(), level))
-		{				
-			ITestResult res = setToReport(returnHtmlString(record));;
-			ResultStore store = ResultStore.get(res);
-			store.addLogRecord(record);
-		}			
+		setToReport(returnHtmlString(record));;
+		ResultStore store = ResultStore.get(TestResultThreadLocal.get());
+		store.addLogRecord(record);
 	}	
 }

@@ -52,6 +52,9 @@ public class ReportBuildingTestListener implements IConfigurable, ITestListener 
 	@Override
 	public void onTestStart(ITestResult arg0) 
 	{
+		//it initiates the new result container
+		ResultStore.get(arg0);
+		TestResultThreadLocal.set(arg0);
 		resetAccordingTo(Configuration.byDefault);
 	}
 

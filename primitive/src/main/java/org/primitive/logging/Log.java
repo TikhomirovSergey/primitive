@@ -46,9 +46,8 @@ public class Log {
 	private final static int levelUp = 2;
 	private final static Level info  = Level.INFO; //for situations when we have not any customized setting for log level
 	
-	private static Level commonLevel = resetLogLevel();			
-			 
 	private static Logger log = Logger.getAnonymousLogger();
+	private static Level commonLevel = resetLogLevel();			
 	private static long sequence = 0;
 	
 	private static final List<ILogConverter> converters = Collections.synchronizedList(new LinkedList<ILogConverter>()); 
@@ -78,6 +77,7 @@ public class Log {
 		{
 			commonLevel = level;
 		}
+		log.setLevel(commonLevel);
 		return commonLevel;
 	}
 	
@@ -100,9 +100,11 @@ public class Log {
 	
 	private static void applyLogRec(LogRecWithAttach rec)
 	{
-		log.setLevel(commonLevel);
-		log.log(rec);
-		converting.convert(rec);
+		if (commonLevel.intValue()<=rec.getLevel().intValue())
+		{	
+			log.log(rec);
+			converting.convert(rec);
+		}	
 	}
 	
 	private static void applyLogRec(LogRecWithAttach rec, File attached)
