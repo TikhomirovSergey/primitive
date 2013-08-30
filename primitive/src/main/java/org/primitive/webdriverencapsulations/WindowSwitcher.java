@@ -273,7 +273,7 @@ public final class WindowSwitcher implements IDestroyable
 	protected WebDriverEncapsulation driverEncapsulation;
 	private WebDriverEncapsulation.PictureMaker photographer;
 	private final static List<WindowSwitcher> swithcerList = Collections.synchronizedList(new ArrayList<WindowSwitcher>());
-	private WindowTimeOuts windowManager;
+	private WindowTimeOuts windowTimeOuts;
 	private Awaiting awaiting;
 	private Fluent fluent;
 		
@@ -289,8 +289,8 @@ public final class WindowSwitcher implements IDestroyable
 			}
 		}	
 		
-		BrowserWindowsTimeOuts timeOuts = windowManager.getTimeOuts();
-		long timeOut = windowManager.getTimeOut(timeOuts.getBrowserWindowSwitchOnSec(),windowManager.defaultTime);
+		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getBrowserWindowSwitchOnSec(),windowTimeOuts.defaultTime);
 		try
 		{
 			awaiting.awaitCondition(timeOut, 100, fluent.isSwitchedOn(handle));
@@ -323,7 +323,7 @@ public final class WindowSwitcher implements IDestroyable
 	private WindowSwitcher(WebDriverEncapsulation InitialDriverPerformance)
 	{
 		driverEncapsulation = InitialDriverPerformance;
-		windowManager = driverEncapsulation.getWindowTimeOuts();
+		windowTimeOuts   = driverEncapsulation.getWindowTimeOuts();
 		photographer    = driverEncapsulation.getPhotograther();
 		awaiting        = driverEncapsulation.getAwaiting();
 		fluent          = new Fluent(this);
@@ -334,8 +334,8 @@ public final class WindowSwitcher implements IDestroyable
 	{
 		try
 		{
-			BrowserWindowsTimeOuts timeOuts = windowManager.getTimeOuts();
-			long timeOut = windowManager.getTimeOut(timeOuts.getWindowCountTimeOutSec(),windowManager.defaultTime);
+			BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+			long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowCountTimeOutSec(),windowTimeOuts.defaultTime);
 			return awaiting.awaitCondition(timeOut, 100, fluent.suchBrowserhWindowWithIndexIsPresent(windowIndex));
 		}
 		catch (TimeoutException e)
@@ -366,8 +366,8 @@ public final class WindowSwitcher implements IDestroyable
 	//returns handle of a new browser window that we have been waiting for time that specified in configuration 
 	public String switchToNewBrowserWindow() throws NoSuchWindowException
 	{	
-		BrowserWindowsTimeOuts timeOuts = windowManager.getTimeOuts();
-		long timeOut = windowManager.getTimeOut(timeOuts.getNewBrowserWindowTimeOutSec(),windowManager.defaultTimeForNewWindow);
+		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getNewBrowserWindowTimeOutSec(),windowTimeOuts.defaultTimeForNewWindow);
 		return switchToNewBrowserWindow(timeOut);
 	}	
 	
@@ -397,8 +397,8 @@ public final class WindowSwitcher implements IDestroyable
 	//title, title*, *title, *title*
 	public String switchToNewBrowserWindow(String title) throws NoSuchWindowException
 	{	
-		BrowserWindowsTimeOuts timeOuts = windowManager.getTimeOuts();
-		long timeOut = windowManager.getTimeOut(timeOuts.getNewBrowserWindowTimeOutSec(),windowManager.defaultTimeForNewWindow);
+		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getNewBrowserWindowTimeOutSec(),windowTimeOuts.defaultTimeForNewWindow);
 		return switchToNewBrowserWindow(timeOut, title);
 	}
 	
@@ -427,8 +427,8 @@ public final class WindowSwitcher implements IDestroyable
 	//new browser window should has page that loads by specified URL
 	public String switchToNewBrowserWindow(URL url) throws NoSuchWindowException
 	{	
-		BrowserWindowsTimeOuts timeOuts = windowManager.getTimeOuts();
-		long timeOut = windowManager.getTimeOut(timeOuts.getNewBrowserWindowTimeOutSec(),windowManager.defaultTimeForNewWindow);
+		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getNewBrowserWindowTimeOutSec(),windowTimeOuts.defaultTimeForNewWindow);
 		return switchToNewBrowserWindow(timeOut, url);
 	}
 	
@@ -502,8 +502,8 @@ public final class WindowSwitcher implements IDestroyable
 			throw new UnhandledAlertException("Unable to switch to the window. The possible reason is unhandled alert.");
 		}
 		
-		BrowserWindowsTimeOuts timeOuts = windowManager.getTimeOuts();
-		long timeOut = windowManager.getTimeOut(timeOuts.getWindowClosingTimeOutSec(),windowManager.defaultTime);
+		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowClosingTimeOutSec(),windowTimeOuts.defaultTime);
 		try
 		{
 			WebDriver driver = driverEncapsulation.getWrappedDriver();	

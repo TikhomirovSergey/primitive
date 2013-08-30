@@ -1037,7 +1037,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  
 	  private final Awaiting awaiting = new Awaiting();	  
 	  private final PictureMaker photoMaker = new PictureMaker();	 
-	  private final WindowTimeOuts windowManager = new WindowTimeOuts();	 
+	  private final WindowTimeOuts windowTimeOuts = new WindowTimeOuts();	 
 	  private final PageFactoryWorker pageFactoryWorker = new PageFactoryWorker();	  
 	  private final WindowTool windowTool = new WindowTool();	  
 	  private final ScriptExecutor scriptExecutor = new ScriptExecutor();	  
@@ -1171,7 +1171,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  
 	  protected WindowTimeOuts getWindowTimeOuts()
 	  {
-		  return(windowManager);
+		  return(windowTimeOuts);
 	  }	  
 	  
 	  public Awaiting getAwaiting()
@@ -1278,7 +1278,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  {		  
 		  finalizeInner(awaiting);	
 		  finalizeInner(photoMaker);
-		  finalizeInner(windowManager);	
+		  finalizeInner(windowTimeOuts);	
 		  finalizeInner(pageFactoryWorker);	
 		  finalizeInner(windowTool);		
 		  finalizeInner(webInnerListener);
@@ -1334,7 +1334,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  configuration = config;
 		  timeout.resetAccordingTo(configuration);
 		  elementVisibility.resetAccordingTo(configuration);
-		  windowManager.resetAccordingTo(configuration);
+		  windowTimeOuts.resetAccordingTo(configuration);
 	  }
 	  
 	  //it goes to another URL
