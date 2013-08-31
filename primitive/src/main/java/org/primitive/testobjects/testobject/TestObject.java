@@ -35,23 +35,7 @@ public abstract class TestObject implements IDestroyable
 		//handles exceptions that has been caught
 		protected Object handleException(TestObject testObject, Method originalMethod, MethodProxy methodProxy, Object[] args, Throwable t) throws BehaviorException, Throwable
 		{
-			//if there is no handlers that checked in 
-			if (testObject.checkedInExceptionHandlers.size() == 0)
-			{
-				throw t; //we throw this exception
-			}
-			try
-			{   //if there is some handlers we try to return any result
-				return testObject.exceptionHandler.handleException(testObject, originalMethod, methodProxy, args, t);
-			}
-			catch (BehaviorException e1)
-			{
-				throw e1;
-			}
-			catch (Exception e2) 
-			{
-				throw e2;
-			}
+			return testObject.exceptionHandler.handleException(testObject, originalMethod, methodProxy, args, t);
 		}
 		
 		@Override
@@ -65,8 +49,8 @@ public abstract class TestObject implements IDestroyable
 	
 	protected WebDriverEncapsulation.Awaiting awaiting;
 	protected WebDriverEncapsulation.ScriptExecutor scriptExecutor;
-	protected final HashSet<ITestObjectExceptionHandler> checkedInExceptionHandlers = 
-			new HashSet<ITestObjectExceptionHandler>();	
+	protected final HashSet<TestObjectExceptionHandler> checkedInExceptionHandlers = 
+			new HashSet<TestObjectExceptionHandler>();	
 	
 	//this will be invoked when some exception is caught out 
     private ITestObjectExceptionHandler exceptionHandler = (ITestObjectExceptionHandler) Proxy.newProxyInstance(
@@ -77,13 +61,24 @@ public abstract class TestObject implements IDestroyable
         		
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable 
                 {
-                	
-                    for (ITestObjectExceptionHandler handler : checkedInExceptionHandlers) 
+                	//it needs to know exception
+                	Throwable t = (Throwable) args[4];
+                    for (TestObjectExceptionHandler handler : checkedInExceptionHandlers) 
                     {
-                    	method.invoke(handler, args);
+                    	//it looks for the suitable handler
+                    	if (handler.throwableList.contains(t.getClass()))
+                    	{
+                    		try
+                    		{
+                    			return method.invoke(handler, args);
+                    		}
+                    		catch (Exception e) {
+                    			continue; //it wasn't the suitable handler
+    						}
+                    	}
                     }
-                    
-                    return null;
+                	//if there are no suitable handlers
+                	throw t;                    
                 }
             }
         );
@@ -127,12 +122,12 @@ public abstract class TestObject implements IDestroyable
     public abstract void destroy();
 	
 	
-	public void checkInExceptionHandler(ITestObjectExceptionHandler exceptionHandler)
+	public void checkInExceptionHandler(TestObjectExceptionHandler exceptionHandler)
 	{
 		checkedInExceptionHandlers.add(exceptionHandler);
 	}
 	
-	public void checkOutExceptionHandler(ITestObjectExceptionHandler exceptionHandler)
+	public void checkOutExceptionHandler(TestObjectExceptionHandler exceptionHandler)
 	{
 		checkedInExceptionHandlers.remove(exceptionHandler);
 	}
