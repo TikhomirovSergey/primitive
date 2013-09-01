@@ -25,6 +25,11 @@
             <artifactId>selenium-server</artifactId>
             <version>${selenium.version}</version>
         </dependency>
+		<dependency>
+            <groupId>com.opera</groupId>
+            <artifactId>operadriver</artifactId>
+            <version>1.5</version>
+        </dependency>        
   </dependencies> 
   
   <developers>
