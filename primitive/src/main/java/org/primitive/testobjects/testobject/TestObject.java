@@ -10,7 +10,6 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.primitive.exceptions.BehaviorException;
 import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
@@ -33,7 +32,7 @@ public abstract class TestObject implements IDestroyable
 		
 		//methods that should support its working:
 		//handles exceptions that has been caught
-		protected Object handleException(TestObject testObject, Method originalMethod, MethodProxy methodProxy, Object[] args, Throwable t) throws BehaviorException, Throwable
+		protected Object handleException(TestObject testObject, Method originalMethod, MethodProxy methodProxy, Object[] args, Throwable t) throws Throwable
 		{
 			return testObject.exceptionHandler.handleException(testObject, originalMethod, methodProxy, args, t);
 		}

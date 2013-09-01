@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.cglib.proxy.MethodProxy;
-import org.primitive.exceptions.BehaviorException;
 import org.primitive.interfaces.ITestObjectExceptionHandler;
 
 /**
@@ -25,6 +24,6 @@ public abstract class TestObjectExceptionHandler implements ITestObjectException
 	}
 	
 	@Override
-	public abstract Object handleException(Object object, Method originalMethod, MethodProxy methodProxy, Object[] args, Throwable t) throws BehaviorException, Throwable;
+	public abstract Object handleException(Object object, Method originalMethod, MethodProxy methodProxy, Object[] args, Throwable t) throws Throwable;
 
 }
