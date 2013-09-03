@@ -269,7 +269,6 @@ public final class WindowSwitcher implements IDestroyable
 
 	}
 
-	private String currentHandle; 
 	protected WebDriverEncapsulation driverEncapsulation;
 	private WebDriverEncapsulation.PictureMaker photographer;
 	private final static List<WindowSwitcher> swithcerList = Collections.synchronizedList(new ArrayList<WindowSwitcher>());
@@ -280,13 +279,10 @@ public final class WindowSwitcher implements IDestroyable
 	private void changeActiveWindow(String handle) throws NoSuchWindowException, UnswitchableBrowserWindowException, UnhandledAlertException
 	{
 		Log.debug("Attempt to switch browser window on by handle "+handle);
-		if (!handle.equals(currentHandle))
+		Set<String> handles = getWindowHandles();
+		if (!handles.contains(handle))
 		{
-			Set<String> handles = getWindowHandles();
-			if (!handles.contains(handle))
-			{
-				throw new NoSuchWindowException("There is no browser window with handle " + handle + "!");
-			}
+			throw new NoSuchWindowException("There is no browser window with handle " + handle + "!");
 		}	
 		
 		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
@@ -294,7 +290,6 @@ public final class WindowSwitcher implements IDestroyable
 		try
 		{
 			awaiting.awaitCondition(timeOut, 100, fluent.isSwitchedOn(handle));
-			currentHandle = handle;
 		}
 		catch (UnswitchableBrowserWindowException|UnhandledAlertException e)
 		{
@@ -509,7 +504,6 @@ public final class WindowSwitcher implements IDestroyable
 			WebDriver driver = driverEncapsulation.getWrappedDriver();	
 			driver.switchTo().window(handle).close();
 			awaiting.awaitCondition(timeOut, fluent.isClosed(handle));
-			currentHandle = null;
 		}
 		catch (UnhandledAlertException e)
 		{
