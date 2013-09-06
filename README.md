@@ -8,4 +8,6 @@ The general idea was to provide ability for automated test execution which would
 
 Now it is rather rough and has some issues but still works. Also, I am sorry for my English in comments to source code. My excuse is that I had not enough time for good translation from Russian. But all these problems will be fixed while I am working on projects with the following tools: Html Elements (by Yandex) and thucydides.
 
-You can check out sources already please. If you have any idea or critique – please share (my e-mail is tichomirovsergey@gmail.com). 
+You can check out sources. 
+
+I made it just for fun.
