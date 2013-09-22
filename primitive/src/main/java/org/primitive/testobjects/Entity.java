@@ -9,7 +9,6 @@ import org.primitive.logging.Log;
 import org.primitive.testobjects.testobject.TestObject;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation.BrowserLogs;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Cookies;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Ime;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation.TimeOut;
@@ -20,7 +19,6 @@ public class Entity extends TestObject{
 	
 	protected Cookies cookies;
 	protected Ime ime;
-	protected BrowserLogs logs;
 	protected TimeOut timeOuts;
 	protected WindowSwitcher nativeSwitcher;
 	
@@ -29,7 +27,6 @@ public class Entity extends TestObject{
 		super(browserWindow);
 		cookies  = driverEncapsulation.getCookies();
 		ime      = driverEncapsulation.getIme();
-		logs     = driverEncapsulation.getLogs();
 		timeOuts = driverEncapsulation.getTimeOut();
 		nativeSwitcher = browserWindow.getSwitcher();
 	}

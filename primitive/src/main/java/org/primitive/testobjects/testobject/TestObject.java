@@ -16,6 +16,7 @@ import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.interfaces.ITestObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation.BrowserLogs;
 
 public abstract class TestObject implements IDestroyable
 {	
@@ -81,6 +82,7 @@ public abstract class TestObject implements IDestroyable
                 }
             }
         );
+	protected BrowserLogs logs;
 	
 	protected TestObject(SingleWindow browserWindow) throws ConcstructTestObjectException
     {
@@ -90,6 +92,7 @@ public abstract class TestObject implements IDestroyable
 			driverEncapsulation = nativeWindow.getDriverEncapsulation();
 			awaiting           = driverEncapsulation.getAwaiting();
 	    	scriptExecutor = driverEncapsulation.getScriptExecutor();
+	    	logs     = driverEncapsulation.getLogs();
     	}
     	catch (Exception e)
     	{
