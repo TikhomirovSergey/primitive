@@ -49,6 +49,7 @@ public abstract class TestObject implements IDestroyable
 	
 	protected WebDriverEncapsulation.Awaiting awaiting;
 	protected WebDriverEncapsulation.ScriptExecutor scriptExecutor;
+	protected BrowserLogs logs;
 	protected final HashSet<TestObjectExceptionHandler> checkedInExceptionHandlers = 
 			new HashSet<TestObjectExceptionHandler>();	
 	
@@ -82,7 +83,6 @@ public abstract class TestObject implements IDestroyable
                 }
             }
         );
-	protected BrowserLogs logs;
 	
 	protected TestObject(SingleWindow browserWindow) throws ConcstructTestObjectException
     {
