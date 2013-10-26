@@ -1,9 +1,6 @@
 package org.primitive.testobjects;
 
-import java.lang.reflect.Method;
 import java.net.URL;
-
-import net.sf.cglib.proxy.MethodProxy;
 
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.Configuration;
@@ -17,59 +14,6 @@ import org.primitive.webdriverencapsulations.WindowSwitcher;
 
 //This class should be used for creation of a single page and application model instances
 public final class TestObjectFactory extends TestObject {
-
-	/**
-	 * @author s.tihomirov
-	 * Simple interceptor for any entity
-	 */
-	
-	protected static final class EntityInterceptor extends Interceptor {
-		
-		public EntityInterceptor()
-		{
-			super();
-		}
-		
-		@Override
-		public Object intercept(Object entity, Method method, Object[] args,
-				MethodProxy methodProxy) throws Throwable {
-			try
-			{
-				return methodProxy.invokeSuper(entity, args);
-			}
-			catch (Exception e)
-			{
-				return handleException((Entity) entity, method, methodProxy, args, e);
-			}
-		}
-	
-	}
-
-	protected static final class PageInterceptor extends Interceptor {
-	
-		public PageInterceptor()
-		{
-			super();
-		}
-		
-		@Override
-		public synchronized Object intercept(Object page, Method method, Object[] args,
-				MethodProxy methodProxy) throws Throwable {
-			if (method.isAnnotationPresent(Page.PageMethod.class))
-			{	//if there are actions with a page
-				((Page) page).switchToMe();
-			}
-			try
-			{
-				return methodProxy.invokeSuper(page, args);
-			}
-			catch (Exception e)
-			{
-				return handleException((Page) page, method, methodProxy, args, e);
-			}
-		}
-	
-	}
 
 	private TestObjectFactory(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {
@@ -403,7 +347,6 @@ public final class TestObjectFactory extends TestObject {
 		catch (Exception e) {
 			throw new ConcstructTestObjectException(e.getMessage(), e);
 		}	
-	}
-	
+	}	
 	
 }

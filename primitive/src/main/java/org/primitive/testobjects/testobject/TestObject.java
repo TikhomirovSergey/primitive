@@ -24,7 +24,7 @@ public abstract class TestObject implements IDestroyable
 	 * @author s.tihomirov
 	 *	It should intercept invocation of TestObject and its inheritors methods
 	 */
-	protected abstract static class Interceptor implements MethodInterceptor {
+	public abstract static class Interceptor implements MethodInterceptor {
 
 		public Interceptor()
 		{
