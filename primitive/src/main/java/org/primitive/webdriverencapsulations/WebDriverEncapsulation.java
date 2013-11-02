@@ -13,18 +13,13 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.HasCapabilities;
-import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 
 import org.openqa.selenium.WebDriver;
@@ -386,90 +381,6 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	 * @author s.tihomirov
 	 *
 	 */
-	private final class ElementVisibility extends InnerDestroyable implements IConfigurable {
-
-		private final long defaultTimeOut = 20; //We will wait visibility of a web element for 20 seconds
-		//if there is no settings		
-		private long timeOut;
-				
-		public synchronized void resetAccordingTo(Configuration config)
-		{
-			Long time = config.getWebElementVisibility().getVisibilityTimeOutSec();
-			if (time==null)
-			{
-				timeOut = defaultTimeOut;
-			}
-			else
-			{
-				timeOut = time;
-			}
-		}
-		
-		private void changeTimeOut(long newTimeOut)
-		{
-			timeOut = newTimeOut;
-		}
-		
-		@Override								
-		protected void destroy() 
-		{
-			finalizeThis();
-		}
-		
-		//Here the algorithm of visibility waiting
-		private ExpectedCondition<Boolean> getVisibilityOf(final WebElement elementToBeVisible)
-		{	
-			return new ExpectedCondition<Boolean>()
-			{
-				public Boolean apply(final WebDriver from)
-				{
-					try
-					{   //the element should be displayed on the page
-						Boolean result = null;
-						if (elementToBeVisible.isDisplayed())
-						{
-							result = true;
-						} //if it is transparent
-						else
-						{
-							String opacity = elementToBeVisible.getCssValue("opacity");
-							if (String.valueOf("0").equals(opacity))
-							{
-								result = true;
-							}
-						}
-						return result;
-					}
-					catch (StaleElementReferenceException e)
-					{
-						return null;
-					}
-					
-				}
-			};
-		}
-		
-		private void throwIllegalVisibility(WebElement element)
-		{
-			try
-			{
-				awaiting.awaitCondition(timeOut, 
-						getVisibilityOf(element));
-			}
-			catch (TimeoutException e)
-			{
-				Log.warning("Element is not visible!");
-			  	Photographer.takeAPictureOfAWarning(firingDriver, "Page with the invisible element!");
-			  	throw new ElementNotVisibleException("Element is not visible!");
-			}
-		}
-
-	}
-
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
 	public final class FrameSupport extends InnerDestroyable {
 
 		@Override
@@ -562,251 +473,6 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 				e.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 * @author s.tihomirov
-	 //common implementation of the IExtendedWebDriverEventListener 
-	 */
-	private final class WebDriverInnerListener extends InnerDestroyable implements IExtendedWebDriverEventListener {
-		@Override
-		public void afterChangeValueOf(WebElement arg0, WebDriver arg1) {
-			Photographer.takeAPictureOfAnInfo(arg1, arg0, "Element with value that is changed.");
-		}
-
-		@Override
-		public void afterClickOn(WebElement arg0, WebDriver arg1) 
-		{
-			Log.message("Click on element has been successfully performed!");
-		}
-
-		@Override
-		public void afterFindBy(By arg0, WebElement arg1, WebDriver arg2) {
-			Log.debug("Searching for web element has been finished. Locator is " + arg0.toString());
-		}
-
-		@Override
-		public void afterNavigateBack(WebDriver arg0) {
-			Log.message("Current URL is  " + arg0.getCurrentUrl());
-			Photographer.takeAPictureOfAnInfo(arg0,"After navigation to previous url");
-		}
-
-		@Override
-		public void afterNavigateForward(WebDriver arg0) 
-		{
-			Log.message("Current URL is  " + arg0.getCurrentUrl());
-			Photographer.takeAPictureOfAnInfo(arg0,"After navigation to next url");
-		}
-		
-		@Override
-		public void afterNavigateTo(String arg0, WebDriver arg1) {
-			Log.message("Current URL is " + arg1.getCurrentUrl());
-			Photographer.takeAPictureOfAnInfo(arg1,"After navigate to url " + arg0);
-		}
-
-		@Override
-		public void afterScript(String arg0, WebDriver arg1) {
-			Log.debug("Javascript  " + arg0 + " has been executed successfully!");
-		}
-		
-		@Override
-		public void beforeChangeValueOf(WebElement arg0, WebDriver arg1) {
-			elementVisibility.throwIllegalVisibility(arg0);
-			if (!arg0.isEnabled())
-			{
-				Log.warning("Webelement is disabled!");
-				Photographer.takeAPictureOfAWarning(arg1, arg0, "Webelemet that is disabled");
-				throw new InvalidElementStateException("Attempt to change value of disabled page element!");
-			}
-			Photographer.takeAPictureOfAnInfo(arg1, arg0, "Element with value that will be changed");
-		}
-
-
-		@Override
-		public void beforeClickOn(WebElement arg0, WebDriver arg1)
-		{
-			elementVisibility.throwIllegalVisibility(arg0);
-			Photographer.takeAPictureOfAnInfo(arg1, arg0, "Click will be performed on this element");
-		}
-
-		@Override
-		public void beforeFindBy(By arg0, WebElement arg1, WebDriver arg2) {
-			Log.debug("Searching for element by locator " + arg0.toString() + " has been started");
-		}
-
-		@Override
-		public void beforeNavigateBack(WebDriver arg0) 
-		{
-			Log.message("Attempt to navigate to previous url. Current url is " + arg0.getCurrentUrl());
-		}
-
-		@Override
-		public void beforeNavigateForward(WebDriver arg0) 
-		{
-			Log.message("Attempt to navigate to next url. Current url is " + arg0.getCurrentUrl());
-		}
-
-		@Override
-		public void beforeNavigateTo(String arg0, WebDriver arg1) {
-			Log.message("Attempt to navigate to another url. Current url is " + arg1.getCurrentUrl() + "; required url is " + arg0);
-		}
-
-		@Override
-		public void beforeScript(String arg0, WebDriver arg1) 
-		{
-			Log.debug("Javascript execution has been started " + arg0);
-		}
-
-		@Override
-		public void onException(Throwable arg0, WebDriver arg1)
-		{
-			Log.debug("An exception has been caught out.", arg0);
-		}
-		
-		protected void destroy()
-		{
-			finalizeThis();
-		}
-
-		@Override
-		public void beforeClose(WebDriver driver) 
-		{
-			Log.message("Attempt to close browser window...");
-		}
-
-		@Override
-		public void afterClose(WebDriver driver) 
-		{
-			Log.message("Not any problem has occurred when browser window was closed...");			
-		}
-
-		@Override
-		public void beforeSubmit(WebDriver driver, WebElement element) {
-			elementVisibility.throwIllegalVisibility(element);
-			Photographer.takeAPictureOfAnInfo(driver, element, "Element that will perform submit");			
-		}
-
-		@Override
-		public void afterSubmit(WebDriver driver, WebElement element) {
-			Photographer.takeAPictureOfAnInfo(driver, "After submit");
-			Log.message("Submit has been performed successfully");	
-		}
-
-		@Override
-		public void beforeDismiss(WebDriver driver, Alert alert) 
-		{
-			Log.message("Attempt to dismiss the alert...");
-			
-		}
-
-		@Override
-		public void afterDismiss(WebDriver driver, Alert alert) 
-		{
-			Log.message("Alert has been dismissed");
-		}
-
-		@Override
-		public void beforeAccept(WebDriver driver, Alert alert) 
-		{
-			Log.message("Attempt to accept alert...");			
-		}
-
-		@Override
-		public void afterAccept(WebDriver driver, org.openqa.selenium.Alert alert) 
-		{
-			Log.message("Alert has been accepted");		
-		}
-
-		@Override
-		public void beforeSendKeys(WebDriver driver, Alert alert, String keys) 
-		{
-			Log.message("Attemt to send string " + keys + " to alert...");		
-		}
-
-		@Override
-		public void afterSendKeys(WebDriver driver, Alert alert, String keys) 
-		{
-			Log.message("String " + keys + " has been sent to alert");			
-		}
-
-		@Override
-		public void beforeSetSize(WebDriver driver, Window window, 	Dimension size) 
-		{
-			Log.message("Attempt to change window size. New height is " + Integer.toString(size.getHeight()) + 
-						" new width is " + Integer.toString(size.getWidth()));
-		}
-
-		@Override
-		public void afterSetSize(WebDriver driver, Window window, 	Dimension size) 
-		{
-			Log.message("Window size has been changed!");			
-		}
-		
-		@Override
-		public void beforeSetPosition(WebDriver driver, Window window, 	Point position) 
-		{
-			Log.message("Attempt to change window position. X " + Integer.toString(position.getX()) + 
-						" Y " + Integer.toString(position.getY()));			
-		}
-
-		@Override
-		public void afterSetPosition(WebDriver driver, Window window, Point position) 
-		{
-			Log.message("Window position has been changed!.");
-		}
-		
-		@Override
-		public void beforeMaximize(WebDriver driver, Window window) 
-		{
-			Log.message("Attempt to maximize browser window");
-			
-		}
-
-		@Override
-		public void afterMaximize(WebDriver driver, Window window) 
-		{
-			Log.message("Browser window has been maximized");		
-		}
-
-		@Override
-		public void beforeRefresh(WebDriver driver, Navigation navigate) {
-			Log.message("Attempt to refresh current browser window");
-			
-		}
-
-		@Override
-		public void afterRefresh(WebDriver driver, Navigation navigate) {
-			Photographer.takeAPictureOfAnInfo(driver, "After window refresh");
-			Log.message("Current browser window has been refreshed");		
-		}
-
-		@Override
-		public void beforeSetTimeOut(WebDriver driver, Timeouts timeouts,
-				long timeOut, TimeUnit timeUnit) {
-			Log.debug("Attempt to set time out. Value is " + Long.toString(timeOut) + " time unit is " + timeUnit.toString());
-			
-		}
-
-		@Override
-		public void afterSetTimeOut(WebDriver driver, Timeouts timeouts,
-				long timeOut, TimeUnit timeUnit) {
-			Log.message("Time out has been set. Value is " + Long.toString(timeOut) + " time unit is " + timeUnit.toString());		
-		}
-
-		@Override
-		public <X> X beforeTakingScringShot(WebDriver driver,
-				OutputType<X> target) {
-			Log.debug("Attempt to take a picture...");
-			return null;
-		}
-
-		@Override
-		public <X> X afterTakingScringShot(WebDriver driver,
-				OutputType<X> target) {
-			Log.debug("Picture has been taken ...");
-			return null;
-		}			
-
 	}
 
 	public final class WindowTool extends InnerDestroyable implements Navigation, Window{
@@ -1033,8 +699,6 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  
 	  protected final static List<WebDriverEncapsulation> driverList = Collections.synchronizedList(new ArrayList<WebDriverEncapsulation>());
 	  
-	  private final WebDriverInnerListener webInnerListener = new WebDriverInnerListener();
-	  
 	  private final Awaiting awaiting = new Awaiting();	  
 	  private final PictureMaker photoMaker = new PictureMaker();	 
 	  private final WindowTimeOuts windowTimeOuts = new WindowTimeOuts();	 
@@ -1042,7 +706,8 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  private final WindowTool windowTool = new WindowTool();	  
 	  private final ScriptExecutor scriptExecutor = new ScriptExecutor();	  
 	  private final FrameSupport frameSupport = new FrameSupport();	  
-	  private final ElementVisibility elementVisibility = new ElementVisibility();	  
+	  private ElementVisibility elementVisibility;	  
+	  private WebdriverInnerListener webInnerListener = new WebdriverInnerListener();
 	  private final Cookies cookies = new Cookies();	  
 	  private final TimeOut timeout = new TimeOut();	  
 	  private final BrowserLogs logs = new BrowserLogs();	  
@@ -1143,7 +808,6 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  public void destroy()
 	  {
 		  firingDriver.unregister(webInnerListener);		  
-		  destroyEnclosedObjects();
 		  try
 		  {
 			  firingDriver.quit();
@@ -1156,6 +820,9 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  }
 		  try 
 		  {
+			destroyEnclosedObjects();  
+			elementVisibility = null;
+			webInnerListener  = null;
 			this.finalize();
 		  } 
 		  catch (Throwable e) 
@@ -1215,12 +882,8 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 			  throw e;
 		  }
 		  
-	  }
-	  
-	  public void changeElementVisibilityTimeOut(long newTimeOut)
-	  {
-		  elementVisibility.changeTimeOut(newTimeOut);
-	  }
+	  }  
+
 	  
 	  public void resetElementVisibilityTimeOut()
 	  {
@@ -1259,7 +922,12 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  
 	  protected void actoinsAfterWebDriverCreation(WebDriver createdDriver, String URL)
 	  {
-		  firingDriver = ExtendedEventFiringWebDriver.newInstance(createdDriver);
+		  		  
+		  firingDriver = ExtendedEventFiringWebDriver.newInstance(createdDriver);		  
+		  
+		  elementVisibility = new ElementVisibility(awaiting, firingDriver);
+		  webInnerListener.setElementVisibilityChecker(elementVisibility);		  
+		  
 		  firingDriver.register(webInnerListener);
 		  firingDriver.get(URL);
 		  driverList.add(this);
@@ -1281,10 +949,8 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  finalizeInner(windowTimeOuts);	
 		  finalizeInner(pageFactoryWorker);	
 		  finalizeInner(windowTool);		
-		  finalizeInner(webInnerListener);
 		  finalizeInner(scriptExecutor);
 		  finalizeInner(frameSupport);
-		  finalizeInner(elementVisibility);
 		  finalizeInner(cookies);
 		  finalizeInner(ime);
 		  finalizeInner(logs);
