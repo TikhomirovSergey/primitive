@@ -11,6 +11,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.factory.AndroidDriverEncapsulation;
 import org.primitive.webdriverencapsulations.factory.ChromeDriverEncapsulation;
 import org.primitive.webdriverencapsulations.factory.FirefoxDriverEncapsulation;
 import org.primitive.webdriverencapsulations.factory.HtmlUnitDriverEncapsulation;
@@ -62,6 +63,11 @@ public class WebDriverEncapsulationFactory
 		if (webDriverMark == ESupportedDrivers.HTMLUNIT)
 		{
 			suitableClass = HtmlUnitDriverEncapsulation.class;
+		}
+		
+		if (webDriverMark == ESupportedDrivers.ANDROID)
+		{
+			suitableClass = AndroidDriverEncapsulation.class;
 		}
 		
 		return suitableClass;					

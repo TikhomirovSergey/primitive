@@ -2,6 +2,7 @@ package org.primitive.webdriverencapsulations.factory;
 
 import java.net.URL;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -24,16 +25,18 @@ public class AndroidDriverEncapsulation extends WebDriverEncapsulation {
 		constructBodyInGeneral(openingURL, androidDriver);
 	}
 	
-	public AndroidDriverEncapsulation(Configuration configuration, String openingURL, DesiredCapabilities capabilities)
+	public AndroidDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities)
 	{
 		super(configuration);
-		constructBodyInGeneral(openingURL, androidDriver, capabilities);
+		DesiredCapabilities desiredCapabilities = (DesiredCapabilities) capabilities;
+		constructBodyInGeneral(openingURL, androidDriver, desiredCapabilities);
 	}
 	
-	public AndroidDriverEncapsulation(String openingURL, DesiredCapabilities capabilities)
+	public AndroidDriverEncapsulation(String openingURL, Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
-		constructBodyInGeneral(openingURL, androidDriver, capabilities);
+		DesiredCapabilities desiredCapabilities = (DesiredCapabilities) capabilities;
+		constructBodyInGeneral(openingURL, androidDriver, desiredCapabilities);
 	}
 	
 	private void constructBody(String openingURL, String remoteAddress)
