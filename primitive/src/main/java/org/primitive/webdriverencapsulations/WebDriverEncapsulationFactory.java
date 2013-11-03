@@ -11,14 +11,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.logging.Log;
-import org.primitive.webdriverencapsulations.factory.AndroidDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.ChromeDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.FirefoxDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.HtmlUnitDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.InternetExplorerDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.OperaDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.RemoteWebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.SafariDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.products.EFactoryProducts;
 
 
 public class WebDriverEncapsulationFactory 
@@ -27,51 +20,6 @@ public class WebDriverEncapsulationFactory
 	private static final ESupportedDrivers defaultSupportedDriver 	= ESupportedDrivers.FIREFOX; 
 	private static final Capabilities 	 defaultRemoteCapabilities  = DesiredCapabilities.firefox();
 		
-	private static Class<? extends WebDriverEncapsulation> getSuitableWebDriverClass(ESupportedDrivers webDriverMark)
-	{
-		Class<? extends WebDriverEncapsulation> suitableClass = null;
-		if (webDriverMark == ESupportedDrivers.REMOTE)
-		{
-			suitableClass = RemoteWebDriverEncapsulation.class;
-		}				
-		
-		if (webDriverMark == ESupportedDrivers.FIREFOX)
-		{
-			suitableClass = FirefoxDriverEncapsulation.class;
-		}
-		
-		if (webDriverMark == ESupportedDrivers.CHROME)
-		{
-			suitableClass = ChromeDriverEncapsulation.class;
-		}	
-		
-		if (webDriverMark == ESupportedDrivers.INTERNETEXPLORER)
-		{
-			suitableClass = InternetExplorerDriverEncapsulation.class;
-		}
-		
-		if (webDriverMark == ESupportedDrivers.OPERA)
-		{
-			suitableClass = OperaDriverEncapsulation.class;
-		}
-		
-		if (webDriverMark == ESupportedDrivers.SAFARI)
-		{
-			suitableClass = SafariDriverEncapsulation.class;
-		}
-		
-		if (webDriverMark == ESupportedDrivers.HTMLUNIT)
-		{
-			suitableClass = HtmlUnitDriverEncapsulation.class;
-		}
-		
-		if (webDriverMark == ESupportedDrivers.ANDROID)
-		{
-			suitableClass = AndroidDriverEncapsulation.class;
-		}
-		
-		return suitableClass;					
-	}
 	
 	//the real factory method is there
 	@SuppressWarnings("unchecked")
@@ -96,7 +44,7 @@ public class WebDriverEncapsulationFactory
 	//It is the invocation of factory method with manually specified web driver and opening URL
 	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, String url) throws Exception
 	{
-		Class<? extends WebDriverEncapsulation> newInstanceClass = getSuitableWebDriverClass(webDriverMark);
+		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.getProduct(webDriverMark);
 		if (webDriverMark != ESupportedDrivers.REMOTE) //if there is web driver that can be started without any capabities
 		{
 			return initInstance(newInstanceClass, new Class[] {String.class} , new Object[] {url});
@@ -110,7 +58,7 @@ public class WebDriverEncapsulationFactory
 	//It is the invocation of factory method with manually specified web driver, capabilities and opening URL
 	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, String url) throws Exception
 	{
-		Class<? extends WebDriverEncapsulation> newInstanceClass = getSuitableWebDriverClass(webDriverMark);
+		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.getProduct(webDriverMark);
 		return initInstance(newInstanceClass, new Class[] {String.class, Capabilities.class} , new Object[] {url,capabilities});
 	}
 	
@@ -119,7 +67,7 @@ public class WebDriverEncapsulationFactory
 	//For any other web driver it will be ignored.
 	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, String url, URL remoteAdress) throws Exception
 	{
-		Class<? extends WebDriverEncapsulation> newInstanceClass = getSuitableWebDriverClass(webDriverMark);
+		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.getProduct(webDriverMark);
 		if (webDriverMark == ESupportedDrivers.REMOTE)
 		{	
 			return initInstance(newInstanceClass, new Class[] {String.class, Capabilities.class, URL.class} , new Object[] {url,capabilities,remoteAdress});
@@ -204,7 +152,7 @@ public class WebDriverEncapsulationFactory
 				Log.message("Remote address " + remoteAdress.toString() + " has been ignored");
 			}
 		}		
-		return initInstance(getSuitableWebDriverClass(mark), convertToClassArray(classes) , values.toArray());	
+		return initInstance(EFactoryProducts.getProduct(mark), convertToClassArray(classes) , values.toArray());	
 	}
 	
 	//It is the invocation of factory method with parameters that are specified in default configuration
