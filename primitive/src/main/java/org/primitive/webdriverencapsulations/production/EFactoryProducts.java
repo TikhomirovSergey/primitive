@@ -1,4 +1,4 @@
-package org.primitive.webdriverencapsulations.factory.products;
+package org.primitive.webdriverencapsulations.production;
 
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
@@ -8,6 +8,7 @@ import org.primitive.webdriverencapsulations.factory.FirefoxDriverEncapsulation;
 import org.primitive.webdriverencapsulations.factory.HtmlUnitDriverEncapsulation;
 import org.primitive.webdriverencapsulations.factory.InternetExplorerDriverEncapsulation;
 import org.primitive.webdriverencapsulations.factory.OperaDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.PhantomJSDriverEncapsulation;
 import org.primitive.webdriverencapsulations.factory.RemoteWebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.factory.SafariDriverEncapsulation;
 
@@ -19,7 +20,8 @@ public enum EFactoryProducts {
 	OPERA(ESupportedDrivers.OPERA, OperaDriverEncapsulation.class),
 	REMOTE(ESupportedDrivers.REMOTE, RemoteWebDriverEncapsulation.class),
 	HTMLUNIT(ESupportedDrivers.HTMLUNIT, HtmlUnitDriverEncapsulation.class),
-	ANDROID(ESupportedDrivers.ANDROID, AndroidDriverEncapsulation.class);
+	ANDROID(ESupportedDrivers.ANDROID, AndroidDriverEncapsulation.class),
+	PHANTOMJS(ESupportedDrivers.PHANTOMJS, PhantomJSDriverEncapsulation.class);
 	
 	
 	private ESupportedDrivers supportedDrivers;

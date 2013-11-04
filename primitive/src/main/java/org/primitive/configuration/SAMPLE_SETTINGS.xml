@@ -152,6 +152,19 @@
 	  
 </group>
 
+<group name="PhantomJSDriver">
+
+	<setting name="folder">
+		<type>STRING</type>
+		<value></value>
+	</setting>
+		  
+	<setting name="file">
+		<type>STRING</type>
+		<value>phantomjs.exe</value>
+	</setting>		  
+</group>
+
 <group name="unhandledWindowsChecking">
 		
 	<setting name="timeUnit">

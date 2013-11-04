@@ -1,7 +1,7 @@
 package org.primitive.configuration;
 
 public enum ESupportedDrivers {
-	FIREFOX, CHROME, INTERNETEXPLORER, SAFARI, REMOTE, OPERA, HTMLUNIT, ANDROID;
+	FIREFOX, CHROME, INTERNETEXPLORER, SAFARI, REMOTE, OPERA, HTMLUNIT, ANDROID,PHANTOMJS;
 	
 	public synchronized static ESupportedDrivers parse(String original)
 	{

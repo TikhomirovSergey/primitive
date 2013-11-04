@@ -5,6 +5,7 @@ import java.net.URL;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CommandExecutor;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -22,10 +23,13 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	
 	private static String ieProperty = "webdriver.ie.driver"; 
 	private static String chromeProperty = "webdriver.chrome.driver";
+	private static String phantomJSProperty = PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY;
+	
 	private static Class<? extends WebDriver> remoteDriver = RemoteWebDriver.class;
 	
 	private String defaultIEDriver 	  = "IEDriverServer.exe"; 
 	private String defaultChromeDriver = "chromedriver.exe"; 
+	private String defaultPhantomJSBinary = "phantomjs.exe";
 
 	
 	public RemoteWebDriverEncapsulation(String openingURL,
@@ -150,7 +154,11 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 		if (brofserName.equals(DesiredCapabilities.internetExplorer().getBrowserName()))
 		{
 			setSystemPropertyLocally(ieProperty, configuration.getIEDriverSettings(), defaultIEDriver);
-		}			
+		}
+		if (brofserName.equals(DesiredCapabilities.phantomjs().getBrowserName()))
+		{
+			setSystemPropertyLocally(phantomJSProperty, configuration.getPhantomJSDriverSettings(), defaultPhantomJSBinary);
+		}
 	}
 
 	private static void startServerLocally()

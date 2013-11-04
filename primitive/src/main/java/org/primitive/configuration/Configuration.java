@@ -35,11 +35,40 @@ import org.xml.sax.SAXException;
 //for customizing project
 public class Configuration
 {
+	public class PhantomJSDriver implements FileSystemProperty, GroupedSetting {
+		//getters for phantomjs.exe
+		private static final String phantomJSDriverGroup = "PhantomJSDriver"; 
+				
+		private PhantomJSDriver() 
+		{
+			super();
+		}		
+		
+		@Override
+		public String getFolder() 
+		{
+			return (String) getSettingValue(phantomJSDriverGroup, folderSettingName);
+		}
+
+		@Override
+		public String getFile() 
+		{
+			return (String) getSettingValue(phantomJSDriverGroup, fileSettingName);
+		}
+		
+		public Object getSetting(String name)
+		{
+			return  getSettingValue(phantomJSDriverGroup, name);
+		}
+
+	}
+
 	public class TestStatus implements GroupedSetting {
 		private static final String statusOnWarningSetting = "onWarning";
 		
 		private TestStatus()
 		{
+			super();
 		}
 		
 		@Override
@@ -82,6 +111,7 @@ public class Configuration
 		private final static String secsForAwaitinAlertPresentSetting = "secsForAwaitinAlertPresent";
 		
 		private UnhandledWindowsChecking() {
+			super();
 		}
 		
 		@Override
@@ -131,6 +161,7 @@ public class Configuration
 		
 
 		private BrowserWindowsTimeOuts() {
+			super();
 		}
 		
 		public Long getNewBrowserWindowTimeOutSec()
@@ -169,6 +200,7 @@ public class Configuration
 		private static final String visibilityTimeOutSetting = "visibilityTimeOutSec";
 
 		private WebElementVisibility() {
+			super();
 		}
 		
 		public Long getVisibilityTimeOutSec()
@@ -190,6 +222,7 @@ public class Configuration
 		private final static String webDriverName = "driverName";
 		private final static String remoteAddress = "remoteAdress";
 		private WebDriverSettings() {
+			super();
 		}
 		
 		public ESupportedDrivers getSupoortedWebDriver()
@@ -248,6 +281,7 @@ public class Configuration
 		private static final String levelSetting = "Level";
 		
 		private Logging() {
+			super();
 		}
 		
 		public Level getLevel()
@@ -277,6 +311,7 @@ public class Configuration
 	public class ScreenShots implements FileSystemProperty, GroupedSetting{
 		
 		private ScreenShots() {
+			super();
 		}
 		
 		public String getFolder()
@@ -308,6 +343,7 @@ public class Configuration
 		 * Groups specified time outs
 		 */
 		private WebDriverTimeOuts() {
+			super();
 		}
 		
 		public TimeUnit getTimeUnit()
@@ -351,6 +387,7 @@ public class Configuration
 						
 		private IEDriverExe() 
 		{
+			super();
 		}		
 		
 		@Override
@@ -384,6 +421,7 @@ public class Configuration
 				
 		private ChromeDriverExe() 
 		{
+			super();
 		}
 
 		@Override
@@ -447,6 +485,9 @@ public class Configuration
 	
 	//settings for ie driver exe
 	private IEDriverExe ieDriver;
+	
+	//settings for phantomjs.exe	
+	private PhantomJSDriver phantomJSDriver;
 	
 	//settings for time outs
 	private WebDriverTimeOuts webDriverTimeOuts;
@@ -731,6 +772,11 @@ public class Configuration
 		return ieDriver;
 	}
 	
+	public PhantomJSDriver getPhantomJSDriverSettings()
+	{
+		return phantomJSDriver;
+	}
+	
 	public WebDriverTimeOuts getWebDriverTimeOuts()
 	{
 		return webDriverTimeOuts;
@@ -785,5 +831,6 @@ public class Configuration
 		windowTimeOuts       = new BrowserWindowsTimeOuts();
 		unhandledWindowsChecking = new UnhandledWindowsChecking();
 		testStatus               = new TestStatus();
+		phantomJSDriver  = new PhantomJSDriver();
 	}
 }

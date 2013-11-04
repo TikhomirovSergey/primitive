@@ -11,7 +11,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.logging.Log;
-import org.primitive.webdriverencapsulations.factory.products.EFactoryProducts;
+import org.primitive.webdriverencapsulations.production.EFactoryProducts;
 
 
 public class WebDriverEncapsulationFactory 
