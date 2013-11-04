@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.logging.Log;
@@ -18,8 +17,6 @@ public class WebDriverEncapsulationFactory
 {
 	//get tests started with FireFoxDriver by default.
 	private static final ESupportedDrivers defaultSupportedDriver 	= ESupportedDrivers.FIREFOX; 
-	private static final Capabilities 	 defaultRemoteCapabilities  = DesiredCapabilities.firefox();
-		
 	
 	//the real factory method is there
 	@SuppressWarnings("unchecked")
@@ -51,7 +48,7 @@ public class WebDriverEncapsulationFactory
 		}
 		else //else it need to be run with some capabilities. We use capabilities of firefox in this situation
 		{
-			return initInstance(newInstanceClass, new Class[] {String.class, Capabilities.class} , new Object[] {url,defaultRemoteCapabilities});
+			return initInstance(newInstanceClass, new Class[] {String.class, Capabilities.class} , new Object[] {url, EFactoryProducts.getCapabilities(webDriverMark)});
 		}
 	}
 	
@@ -79,12 +76,12 @@ public class WebDriverEncapsulationFactory
 		}		
 	}
 	
-	private static Capabilities getCapabilitiesFromConfig(Configuration configuration)
+	private static Capabilities getCapabilitiesFromConfig(Configuration configuration, ESupportedDrivers mark)
 	{
 		Capabilities capabilities = configuration.getCapabilities();
 		if (capabilities==null)
 		{
-			capabilities = defaultRemoteCapabilities;
+			capabilities = EFactoryProducts.getCapabilities(mark);
 		}
 		return capabilities;
 	}
@@ -114,7 +111,7 @@ public class WebDriverEncapsulationFactory
 	{		
 		ESupportedDrivers mark = getSupportedDriverFromConfig(configuration);
 		
-		Capabilities capabilities = getCapabilitiesFromConfig(configuration);
+		Capabilities capabilities = getCapabilitiesFromConfig(configuration, mark);
 		
 		String remoteAdress = configuration.getWebDriverSettings().getRemoteAddress();
 		
