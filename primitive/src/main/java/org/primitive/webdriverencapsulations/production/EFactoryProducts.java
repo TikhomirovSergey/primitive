@@ -4,15 +4,15 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.AndroidDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.ChromeDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.FirefoxDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.HtmlUnitDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.InternetExplorerDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.OperaDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.PhantomJSDriverEncapsulation;
 import org.primitive.webdriverencapsulations.factory.RemoteWebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.SafariDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.browser.AndroidDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.browser.ChromeDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.browser.FirefoxDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.browser.HtmlUnitDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.browser.InternetExplorerDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.browser.OperaDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.browser.PhantomJSDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.browser.SafariDriverEncapsulation;
 
 public enum EFactoryProducts {
 	FIREFOX(ESupportedDrivers.FIREFOX, FirefoxDriverEncapsulation.class, DesiredCapabilities.firefox()),

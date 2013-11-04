@@ -5,7 +5,6 @@ import java.net.URL;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CommandExecutor;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -14,24 +13,15 @@ import org.openqa.selenium.server.SeleniumServer;
 import org.primitive.configuration.Configuration;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.exe.ExeProperties;
 
 
 public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	
 	//remote server that is started on localhost
-	private static SeleniumServer server;
-	
-	private static String ieProperty = "webdriver.ie.driver"; 
-	private static String chromeProperty = "webdriver.chrome.driver";
-	private static String phantomJSProperty = PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY;
-	
+	private static SeleniumServer server;	
 	private static Class<? extends WebDriver> remoteDriver = RemoteWebDriver.class;
-	
-	private String defaultIEDriver 	  = "IEDriverServer.exe"; 
-	private String defaultChromeDriver = "chromedriver.exe"; 
-	private String defaultPhantomJSBinary = "phantomjs.exe";
-
-	
+		
 	public RemoteWebDriverEncapsulation(String openingURL,
 			Capabilities capabilities) {
 		super(Configuration.byDefault);
@@ -149,19 +139,19 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 
 		if (brofserName.equals(DesiredCapabilities.chrome().getBrowserName()))
 		{
-			setSystemPropertyLocally(chromeProperty, configuration.getChromeDriverSettings(), defaultChromeDriver);
+			setSystemPropertyLocally(ExeProperties.FORCHROME.getProperty(), configuration.getChromeDriverSettings(), ExeProperties.FORCHROME.getDefaultPropertyValue());
 		}
 		if (brofserName.equals(DesiredCapabilities.internetExplorer().getBrowserName()))
 		{
-			setSystemPropertyLocally(ieProperty, configuration.getIEDriverSettings(), defaultIEDriver);
+			setSystemPropertyLocally(ExeProperties.FORIEXPLORER.getProperty(), configuration.getIEDriverSettings(), ExeProperties.FORIEXPLORER.getDefaultPropertyValue());
 		}
 		if (brofserName.equals(DesiredCapabilities.phantomjs().getBrowserName()))
 		{
-			setSystemPropertyLocally(phantomJSProperty, configuration.getPhantomJSDriverSettings(), defaultPhantomJSBinary);
+			setSystemPropertyLocally(ExeProperties.FORPHANTOMJS.getProperty(), configuration.getPhantomJSDriverSettings(), ExeProperties.FORPHANTOMJS.getDefaultPropertyValue());
 		}
 	}
 
-	private static void startServerLocally()
+	private synchronized static void startServerLocally()
 	{
 		  if (server==null)
 		  {	

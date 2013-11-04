@@ -1,4 +1,4 @@
-package org.primitive.webdriverencapsulations.factory;
+package org.primitive.webdriverencapsulations.factory.browser;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -6,13 +6,12 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.primitive.configuration.Configuration;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.exe.ExeProperties;
 
 
 
 public class InternetExplorerDriverEncapsulation extends WebDriverEncapsulation 
 {
-	private String defaultDriver = "IEDriverServer.exe";  	
-	private static String property = "webdriver.ie.driver";
 	private static final Class<? extends WebDriver> internetExplorerDriver = InternetExplorerDriver.class;
 	
 	public InternetExplorerDriverEncapsulation(String openingURL) 
@@ -99,6 +98,6 @@ public class InternetExplorerDriverEncapsulation extends WebDriverEncapsulation
 
 	@Override
 	protected void prepare() {
-		setSystemPropertyLocally(property, configuration.getIEDriverSettings(), defaultDriver);		
+		setSystemPropertyLocally(ExeProperties.FORIEXPLORER.getProperty(), configuration.getIEDriverSettings(), ExeProperties.FORIEXPLORER.getDefaultPropertyValue());		
 	}
 }

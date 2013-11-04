@@ -1,4 +1,4 @@
-package org.primitive.webdriverencapsulations.factory;
+package org.primitive.webdriverencapsulations.factory.browser;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -7,13 +7,12 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.primitive.configuration.Configuration;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.exe.ExeProperties;
 
 
 
 public class ChromeDriverEncapsulation extends WebDriverEncapsulation 
 {	
-	private final String defaultDriver = "chromedriver.exe";  
-	private final static String property = "webdriver.chrome.driver"; 
 	private static final Class<? extends WebDriver> chromeDriver = ChromeDriver.class; 
 	
 	public ChromeDriverEncapsulation(String openingURL)
@@ -108,6 +107,6 @@ public class ChromeDriverEncapsulation extends WebDriverEncapsulation
 	@Override
 	protected void prepare()
 	{
-		setSystemPropertyLocally(property, configuration.getChromeDriverSettings(), defaultDriver);		
+		setSystemPropertyLocally(ExeProperties.FORCHROME.getProperty(), configuration.getChromeDriverSettings(), ExeProperties.FORCHROME.getDefaultPropertyValue());		
 	}
 }

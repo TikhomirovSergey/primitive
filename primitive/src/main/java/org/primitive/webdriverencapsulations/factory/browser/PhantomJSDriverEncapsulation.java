@@ -1,18 +1,16 @@
-package org.primitive.webdriverencapsulations.factory;
+package org.primitive.webdriverencapsulations.factory.browser;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.service.DriverService;
 import org.primitive.configuration.Configuration;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.factory.exe.ExeProperties;
 
 public class PhantomJSDriverEncapsulation extends WebDriverEncapsulation {
 
-	private final String phantomJSBinary = "phantomjs.exe";  
-	private final static String property = PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY; 
 	private static final Class<? extends WebDriver> phantomJSDriver = PhantomJSDriver.class; 
 	
 	public PhantomJSDriverEncapsulation(Configuration configuration, String openingURL)
@@ -57,7 +55,7 @@ public class PhantomJSDriverEncapsulation extends WebDriverEncapsulation {
 
 	@Override
 	protected void prepare() {
-		setSystemPropertyLocally(property, configuration.getPhantomJSDriverSettings(), phantomJSBinary);		
+		setSystemPropertyLocally(ExeProperties.FORPHANTOMJS.getProperty(), configuration.getPhantomJSDriverSettings(), ExeProperties.FORPHANTOMJS.getDefaultPropertyValue());		
 	}
 	
 	private void constructBody(String openingURL, DriverService service, Capabilities desiredCapabilities)

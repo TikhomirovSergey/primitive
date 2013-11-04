@@ -1,4 +1,4 @@
-package org.primitive.webdriverencapsulations.factory;
+package org.primitive.webdriverencapsulations.factory.browser;
 
 import org.junit.Assume;
 import org.openqa.selenium.safari.SafariDriver;
