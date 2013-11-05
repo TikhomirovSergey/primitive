@@ -32,6 +32,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.HasInputDevices;
+import org.openqa.selenium.interactions.HasTouchScreen;
 import org.openqa.selenium.interactions.Keyboard;
 import org.openqa.selenium.interactions.Mouse;
 import org.openqa.selenium.interactions.TouchScreen;
@@ -54,7 +55,7 @@ import org.primitive.interfaces.IExtendedWebDriverEventListener;
  * @author s.tihomirov
  *For some functions of EventFiringWebDriver
  */
-public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implements WebDriver, HasCapabilities, HasInputDevices, TakesScreenshot {	
+public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implements WebDriver, HasCapabilities, HasInputDevices, TakesScreenshot, HasTouchScreen {	
 
 	/**
 	 * @author s.tihomirov
@@ -951,6 +952,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		return ExtendedEventFiringMouse.newInstance(super.getMouse(), this);	
 	}
 	
+	@Override
 	public TouchScreen getTouch()
 	{
 		return ExtendedEventFiringTouch.newInstance(super.getTouch(),this);
