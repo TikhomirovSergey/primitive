@@ -9,7 +9,7 @@ import org.primitive.configuration.Configuration;
 import org.primitive.interfaces.IConfigurable;
 import org.primitive.logging.Log;
 
-public class TimeOut extends WebdriverComponent implements Timeouts, IConfigurable {
+public final class TimeOut extends WebdriverComponent implements Timeouts, IConfigurable {
 
 	public TimeOut(WebDriver driver, Configuration configuration) {
 		super(driver);

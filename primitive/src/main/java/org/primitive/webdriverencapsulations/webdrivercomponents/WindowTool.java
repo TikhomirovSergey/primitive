@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebDriver.Window;
 
-public class WindowTool extends WebdriverComponent implements Navigation,
+public final class WindowTool extends WebdriverComponent implements Navigation,
 		Window {
 
 	public WindowTool(WebDriver driver) {

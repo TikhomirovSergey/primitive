@@ -20,8 +20,8 @@ import org.primitive.exceptions.UnclosedBrowserWindowException;
 import org.primitive.exceptions.UnswitchableBrowserWindowException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Awaiting;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation.WindowTimeOuts;
+import org.primitive.webdriverencapsulations.webdrivercomponents.AlertHandler;
+import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 
 
 public final class WindowSwitcher implements IDestroyable
@@ -552,6 +552,11 @@ public final class WindowSwitcher implements IDestroyable
 	
 	public synchronized Alert getAlert(long secsToWait) throws NoAlertPresentException
 	{
-		return(driverEncapsulation.getAlert(secsToWait));
+		return(new AlertHandler(driverEncapsulation.getWrappedDriver(), secsToWait));
+	}
+	
+	public synchronized Alert getAlert() throws NoAlertPresentException
+	{
+		return(new AlertHandler(driverEncapsulation.getWrappedDriver()));
 	}
 }

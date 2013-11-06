@@ -16,7 +16,9 @@ import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.interfaces.ITestObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation.BrowserLogs;
+import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
+import org.primitive.webdriverencapsulations.webdrivercomponents.BrowserLogs;
+import org.primitive.webdriverencapsulations.webdrivercomponents.ScriptExecutor;
 
 public abstract class TestObject implements IDestroyable
 {	
@@ -47,8 +49,8 @@ public abstract class TestObject implements IDestroyable
 	protected SingleWindow nativeWindow; //browser window that object placed on
 	protected WebDriverEncapsulation driverEncapsulation; //wrapped web driver for situations when it needs to be used
 	
-	protected WebDriverEncapsulation.Awaiting awaiting;
-	protected WebDriverEncapsulation.ScriptExecutor scriptExecutor;
+	protected Awaiting awaiting;
+	protected ScriptExecutor scriptExecutor;
 	protected BrowserLogs logs;
 	protected final HashSet<TestObjectExceptionHandler> checkedInExceptionHandlers = 
 			new HashSet<TestObjectExceptionHandler>();	

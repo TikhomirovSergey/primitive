@@ -25,8 +25,9 @@ import org.primitive.logging.Log;
 import org.primitive.testobjects.testobject.TestObject;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Interaction;
-
+import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
+import org.primitive.webdriverencapsulations.webdrivercomponents.Interaction;
+import org.primitive.webdriverencapsulations.webdrivercomponents.PageFactoryWorker;
 /**
  * @author s.tihomirov
  *It describes simple web page or its fragment 
@@ -43,9 +44,9 @@ public class Page extends TestObject {
 	
 	}
 
-	protected WebDriverEncapsulation.PageFactoryWorker pageFactoryWorker;	
+	protected PageFactoryWorker pageFactoryWorker;	
 	protected Page parent; //parent test object	
-	protected WebDriverEncapsulation.FrameSupport frameSupport;	
+	protected FrameSupport frameSupport;	
 	//Integer specification of a frame that object is placed on.
 	private Integer frameToSwitchOnInt = null;
 	//String specification of a frame that object is placed on.

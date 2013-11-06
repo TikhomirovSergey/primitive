@@ -9,9 +9,9 @@ import org.primitive.logging.Log;
 import org.primitive.testobjects.testobject.TestObject;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Cookies;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Ime;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation.TimeOut;
+import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;
+import org.primitive.webdriverencapsulations.webdrivercomponents.Ime;
+import org.primitive.webdriverencapsulations.webdrivercomponents.TimeOut;
 
 //Using it you can model your web application as a complex aggregated object 
 //it should only generate new objects in general

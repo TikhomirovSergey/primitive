@@ -4,7 +4,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.primitive.logging.Log;
 
-public class ScriptExecutor extends WebdriverComponent implements
+public final class ScriptExecutor extends WebdriverComponent implements
 		JavascriptExecutor {
 
 	public ScriptExecutor(WebDriver driver) {

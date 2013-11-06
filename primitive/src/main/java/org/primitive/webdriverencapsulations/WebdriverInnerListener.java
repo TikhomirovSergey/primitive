@@ -13,11 +13,13 @@ import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.WebElement;
+import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
+import org.primitive.webdriverencapsulations.webdrivercomponents.ElementVisibility;
 
-final class WebdriverInnerListener implements IExtendedWebDriverEventListener {
+final class WebdriverInnerListener implements IExtendedWebDriverEventListener, IDestroyable {
 
 	private ElementVisibility elementVisibility;
 	
@@ -258,6 +260,21 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener {
 			OutputType<X> target) {
 		Log.debug("Picture has been taken ...");
 		return null;
+	}
+
+	@Override
+	public void destroy() {
+		try 
+		{
+			elementVisibility = null;
+			this.finalize();
+		} 
+		catch (Throwable e) 
+		{
+			e.printStackTrace();
+			Log.warning(e.getMessage(),e);
+		}
+		
 	}
 
 }

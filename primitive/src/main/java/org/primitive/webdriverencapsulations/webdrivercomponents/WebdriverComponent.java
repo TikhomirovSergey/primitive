@@ -2,6 +2,7 @@ package org.primitive.webdriverencapsulations.webdrivercomponents;
 
 import org.openqa.selenium.WebDriver;
 import org.primitive.interfaces.IDestroyable;
+import org.primitive.logging.Log;
 
 /**
  * @author s.tihomirov
@@ -19,6 +20,7 @@ public abstract class WebdriverComponent implements IDestroyable{
 	@Override
 	public void destroy()
 	{
+		driver = null;
 		try 
 		{
 			finalize();
@@ -26,6 +28,7 @@ public abstract class WebdriverComponent implements IDestroyable{
 		catch (Throwable e) 
 		{
 			e.printStackTrace();
+			Log.warning(e.getMessage(),e);
 		}
 	}
 	

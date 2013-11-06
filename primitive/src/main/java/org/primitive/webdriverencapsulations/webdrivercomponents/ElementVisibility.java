@@ -1,4 +1,4 @@
-package org.primitive.webdriverencapsulations;
+package org.primitive.webdriverencapsulations.webdrivercomponents;
 
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -10,25 +10,23 @@ import org.primitive.configuration.Configuration;
 import org.primitive.interfaces.IConfigurable;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation.Awaiting;
 
 /**
  * @author s.tihomirov
  * It checks element visibility
  */
-final class ElementVisibility implements IConfigurable {
+public final class ElementVisibility extends WebdriverComponent implements IConfigurable{
 
 	private Awaiting awaiting;
-	private WebDriver driver;
 	
 	private final long defaultTimeOut = 20; //We will wait visibility of a web element for 20 seconds
 	//if there is no settings		
 	private long timeOut;
 	
-	ElementVisibility(Awaiting awaiting, WebDriver driver)
+	public ElementVisibility(WebDriver driver)
 	{
-		this.awaiting = awaiting;
-		this.driver   = driver;
+		super(driver);
+		this.awaiting = new Awaiting(driver);
 	}
 	
 	public synchronized void resetAccordingTo(Configuration config)
@@ -77,7 +75,7 @@ final class ElementVisibility implements IConfigurable {
 		};
 	}
 	
-	void throwIllegalVisibility(WebElement element)
+	public void throwIllegalVisibility(WebElement element)
 	{
 		try
 		{
@@ -90,6 +88,13 @@ final class ElementVisibility implements IConfigurable {
 		  	Photographer.takeAPictureOfAWarning(driver, "Page with the invisible element!");
 		  	throw new ElementNotVisibleException("Element is not visible!");
 		}
+	}
+
+	@Override
+	public void destroy(){
+		awaiting.destroy();
+		super.destroy();
+		
 	}
 
 }

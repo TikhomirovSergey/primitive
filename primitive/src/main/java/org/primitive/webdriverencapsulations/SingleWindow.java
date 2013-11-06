@@ -17,6 +17,7 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.exceptions.UnclosedBrowserWindowException;
 import org.primitive.interfaces.ISingleBrowserWindow;
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.webdrivercomponents.WindowTool;
 
 
 
@@ -26,7 +27,7 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
 	private String objectWindow;
 	protected final static List<SingleWindow> openedWindows = Collections.synchronizedList(new ArrayList<SingleWindow>());
 	private WebDriverEncapsulation driverEncapsulation;
-	private WebDriverEncapsulation.WindowTool windowTool;
+	private WindowTool windowTool;
 	
     public static SingleWindow checkForInit(String handle, WindowSwitcher switcher)
     {   	
@@ -55,7 +56,7 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
 		this.nativeSwitcher 		=  Switcher;
 		this.driverEncapsulation 	=  Switcher.driverEncapsulation;
 		this.objectWindow			=  handle;
-		this.windowTool              = driverEncapsulation.getWinwowTool();
+		this.windowTool              = new WindowTool(driverEncapsulation.getWrappedDriver());
 		openedWindows.add(this);
 		takeAPictureOfAnInfo("New object has been made of browser window");
     }
