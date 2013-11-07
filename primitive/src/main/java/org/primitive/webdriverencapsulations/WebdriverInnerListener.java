@@ -261,6 +261,19 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 		Log.debug("Picture has been taken ...");
 		return null;
 	}
+	
+	private String elementDescription(WebElement element) {
+        String description = "tag:" + element.getTagName();
+        if (element.getAttribute("id") != null) {
+            description += " id: " + element.getAttribute("id");
+        }
+        else if (element.getAttribute("name") != null) {
+            description += " name: " + element.getAttribute("name");
+        }
+         
+        description += " ('" + element.getText() + "')";         
+        return description;
+    }
 
 	@Override
 	public void destroy() {
