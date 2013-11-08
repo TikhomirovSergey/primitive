@@ -6,7 +6,6 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Navigation;
@@ -30,7 +29,7 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	
 	@Override
 	public void afterChangeValueOf(WebElement arg0, WebDriver arg1) {
-		Photographer.takeAPictureOfAnInfo(arg1, arg0, "Element with value that is changed.");
+		Photographer.takeAPictureOfAnInfo(arg1, arg0, "Element with value that is changed: " + elementDescription(arg0));
 	}
 
 	@Override
@@ -41,7 +40,7 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 
 	@Override
 	public void afterFindBy(By arg0, WebElement arg1, WebDriver arg2) {
-		Log.debug("Searching for web element has been finished. Locator is " + arg0.toString());
+		Log.debug("Searching for web element has been finished. Locator is " + arg0.toString() + ". Element is:" + elementDescription(arg1));
 	}
 
 	@Override
@@ -73,11 +72,10 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 		elementVisibility.throwIllegalVisibility(arg0);
 		if (!arg0.isEnabled())
 		{
-			Log.warning("Webelement is disabled!");
-			Photographer.takeAPictureOfAWarning(arg1, arg0, "Webelemet that is disabled");
-			throw new InvalidElementStateException("Attempt to change value of disabled page element!");
+			Photographer.takeAPictureOfAWarning(arg1, arg0, "Webelement is disabled! " + elementDescription(arg0));
+			throw new InvalidElementStateException("Attempt to change value of disabled page element: "  + elementDescription(arg0));
 		}
-		Photographer.takeAPictureOfAnInfo(arg1, arg0, "Element with value that will be changed");
+		Photographer.takeAPictureOfAnInfo(arg1, arg0, "Element with value that will be changed: "  + elementDescription(arg0));
 	}
 
 
@@ -85,7 +83,7 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	public void beforeClickOn(WebElement arg0, WebDriver arg1)
 	{
 		elementVisibility.throwIllegalVisibility(arg0);
-		Photographer.takeAPictureOfAnInfo(arg1, arg0, "Click will be performed on this element");
+		Photographer.takeAPictureOfAnInfo(arg1, arg0, "Click will be performed on this element: "  + elementDescription(arg0));
 	}
 
 	@Override
@@ -124,13 +122,13 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	
 
 	@Override
-	public void beforeClose(WebDriver driver) 
+	public void beforeWindowClose(WebDriver driver) 
 	{
 		Log.message("Attempt to close browser window...");
 	}
 
 	@Override
-	public void afterClose(WebDriver driver) 
+	public void afterWindowClose(WebDriver driver) 
 	{
 		Log.message("Not any problem has occurred when browser window was closed...");			
 	}
@@ -138,7 +136,7 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	@Override
 	public void beforeSubmit(WebDriver driver, WebElement element) {
 		elementVisibility.throwIllegalVisibility(element);
-		Photographer.takeAPictureOfAnInfo(driver, element, "Element that will perform submit");			
+		Photographer.takeAPictureOfAnInfo(driver, element, "Element that will perform submit: "  + elementDescription(element));			
 	}
 
 	@Override
@@ -148,130 +146,120 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	}
 
 	@Override
-	public void beforeDismiss(WebDriver driver, Alert alert) 
+	public void beforeAlertDismiss(WebDriver driver, Alert alert) 
 	{
 		Log.message("Attempt to dismiss the alert...");
 		
 	}
 
 	@Override
-	public void afterDismiss(WebDriver driver, Alert alert) 
+	public void afterAlertDismiss(WebDriver driver, Alert alert) 
 	{
 		Log.message("Alert has been dismissed");
 	}
 
 	@Override
-	public void beforeAccept(WebDriver driver, Alert alert) 
+	public void beforeAlertAccept(WebDriver driver, Alert alert) 
 	{
 		Log.message("Attempt to accept alert...");			
 	}
 
 	@Override
-	public void afterAccept(WebDriver driver, org.openqa.selenium.Alert alert) 
+	public void afterAlertAccept(WebDriver driver, Alert alert) 
 	{
 		Log.message("Alert has been accepted");		
 	}
 
 	@Override
-	public void beforeSendKeys(WebDriver driver, Alert alert, String keys) 
+	public void beforeAlertSendKeys(WebDriver driver, Alert alert, String keys) 
 	{
 		Log.message("Attemt to send string " + keys + " to alert...");		
 	}
 
 	@Override
-	public void afterSendKeys(WebDriver driver, Alert alert, String keys) 
+	public void afterAlertSendKeys(WebDriver driver, Alert alert, String keys) 
 	{
 		Log.message("String " + keys + " has been sent to alert");			
 	}
 
 	@Override
-	public void beforeSetSize(WebDriver driver, Window window, 	Dimension size) 
+	public void beforeWindowSetSize(WebDriver driver, Window window, 	Dimension size) 
 	{
 		Log.message("Attempt to change window size. New height is " + Integer.toString(size.getHeight()) + 
 					" new width is " + Integer.toString(size.getWidth()));
 	}
 
 	@Override
-	public void afterSetSize(WebDriver driver, Window window, 	Dimension size) 
+	public void afterWindowSetSize(WebDriver driver, Window window, 	Dimension size) 
 	{
 		Log.message("Window size has been changed!");			
 	}
 	
 	@Override
-	public void beforeSetPosition(WebDriver driver, Window window, 	Point position) 
+	public void beforeWindowSetPosition(WebDriver driver, Window window, 	Point position) 
 	{
 		Log.message("Attempt to change window position. X " + Integer.toString(position.getX()) + 
 					" Y " + Integer.toString(position.getY()));			
 	}
 
 	@Override
-	public void afterSetPosition(WebDriver driver, Window window, Point position) 
+	public void afterWindowSetPosition(WebDriver driver, Window window, Point position) 
 	{
 		Log.message("Window position has been changed!.");
 	}
 	
 	@Override
-	public void beforeMaximize(WebDriver driver, Window window) 
+	public void beforeWindowMaximize(WebDriver driver, Window window) 
 	{
 		Log.message("Attempt to maximize browser window");
 		
 	}
 
 	@Override
-	public void afterMaximize(WebDriver driver, Window window) 
+	public void afterWindowMaximize(WebDriver driver, Window window) 
 	{
 		Log.message("Browser window has been maximized");		
 	}
 
 	@Override
-	public void beforeRefresh(WebDriver driver, Navigation navigate) {
+	public void beforeWindowRefresh(WebDriver driver, Navigation navigate) {
 		Log.message("Attempt to refresh current browser window");
 		
 	}
 
 	@Override
-	public void afterRefresh(WebDriver driver, Navigation navigate) {
+	public void afterWindowRefresh(WebDriver driver, Navigation navigate) {
 		Photographer.takeAPictureOfAnInfo(driver, "After window refresh");
 		Log.message("Current browser window has been refreshed");		
 	}
 
 	@Override
-	public void beforeSetTimeOut(WebDriver driver, Timeouts timeouts,
+	public void beforeWebDriverSetTimeOut(WebDriver driver, Timeouts timeouts,
 			long timeOut, TimeUnit timeUnit) {
 		Log.debug("Attempt to set time out. Value is " + Long.toString(timeOut) + " time unit is " + timeUnit.toString());
 		
 	}
 
 	@Override
-	public void afterSetTimeOut(WebDriver driver, Timeouts timeouts,
+	public void afterWebDriverSetTimeOut(WebDriver driver, Timeouts timeouts,
 			long timeOut, TimeUnit timeUnit) {
 		Log.message("Time out has been set. Value is " + Long.toString(timeOut) + " time unit is " + timeUnit.toString());		
 	}
 
-	@Override
-	public <X> X beforeTakingScringShot(WebDriver driver,
-			OutputType<X> target) {
-		Log.debug("Attempt to take a picture...");
-		return null;
-	}
-
-	@Override
-	public <X> X afterTakingScringShot(WebDriver driver,
-			OutputType<X> target) {
-		Log.debug("Picture has been taken ...");
-		return null;
-	}
-	
 	private String elementDescription(WebElement element) {
-        String description = "tag:" + element.getTagName();
-        if (element.getAttribute("id") != null) {
-            description += " id: " + element.getAttribute("id");
-        }
-        else if (element.getAttribute("name") != null) {
-            description += " name: " + element.getAttribute("name");
-        }
-         
-        description += " ('" + element.getText() + "')";         
+		String description = "";
+		if (element!=null)
+		{	
+	        description += "tag:" + String.valueOf(element.getTagName());
+	        if (element.getAttribute("id") != null) {
+	            description += " id: " + String.valueOf(element.getAttribute("id"));
+	        }
+	        else if (element.getAttribute("name") != null) {
+	            description += " name: " + String.valueOf(element.getAttribute("name"));
+	        }
+	         
+	        description += " ('" + element.getText() + "')";      
+		}
         return description;
     }
 

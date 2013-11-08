@@ -353,27 +353,27 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		@Override
 		public Timeouts implicitlyWait(long arg0, TimeUnit arg1) 
 		{
-			driver.extendedDispatcher.beforeSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
+			driver.extendedDispatcher.beforeWebDriverSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
 			timeouts.implicitlyWait(arg0, arg1);
-			driver.extendedDispatcher.afterSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
+			driver.extendedDispatcher.afterWebDriverSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
 			return timeouts;		
 		}
 
 		@Override
 		public Timeouts pageLoadTimeout(long arg0, TimeUnit arg1) 
 		{
-			driver.extendedDispatcher.beforeSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
+			driver.extendedDispatcher.beforeWebDriverSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
 			timeouts.pageLoadTimeout(arg0, arg1);
-			driver.extendedDispatcher.afterSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
+			driver.extendedDispatcher.afterWebDriverSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
 			return timeouts;			
 		}
 
 		@Override
 		public Timeouts setScriptTimeout(long arg0, TimeUnit arg1) 
 		{
-			driver.extendedDispatcher.beforeSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
+			driver.extendedDispatcher.beforeWebDriverSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
 			timeouts.setScriptTimeout(arg0, arg1);
-			driver.extendedDispatcher.afterSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
+			driver.extendedDispatcher.afterWebDriverSetTimeOut(driver.driverForExtension, timeouts, arg0, arg1);
 			return timeouts;			
 		}
 
@@ -413,9 +413,9 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		@Override
 		public void refresh() 
 		{
-			driver.extendedDispatcher.beforeRefresh(driver.driverForExtension, naviagation);
+			driver.extendedDispatcher.beforeWindowRefresh(driver.driverForExtension, naviagation);
 			naviagation.refresh();
-			driver.extendedDispatcher.afterRefresh(driver.driverForExtension, naviagation);			
+			driver.extendedDispatcher.afterWindowRefresh(driver.driverForExtension, naviagation);			
 		}
 
 		@Override
@@ -473,17 +473,17 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		@Override
 		public void setPosition(Point arg0) 
 		{
-			driver.extendedDispatcher.beforeSetPosition(driver.driverForExtension, window, arg0);
+			driver.extendedDispatcher.beforeWindowSetPosition(driver.driverForExtension, window, arg0);
 			window.setPosition(arg0);
-			driver.extendedDispatcher.afterSetPosition(driver.driverForExtension, window, arg0);	
+			driver.extendedDispatcher.afterWindowSetPosition(driver.driverForExtension, window, arg0);	
 		}
 
 		@Override
 		public void setSize(Dimension arg0) 
 		{
-			driver.extendedDispatcher.beforeSetSize(driver.driverForExtension, window, arg0);
+			driver.extendedDispatcher.beforeWindowSetSize(driver.driverForExtension, window, arg0);
 			window.setSize(arg0);
-			driver.extendedDispatcher.afterSetSize(driver.driverForExtension, window, arg0);
+			driver.extendedDispatcher.afterWindowSetSize(driver.driverForExtension, window, arg0);
 		}
 
 	}
@@ -811,9 +811,9 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		@Override
 		public void accept() 
 		{
-			driver.extendedDispatcher.beforeAccept(driver.driverForExtension, alert);
+			driver.extendedDispatcher.beforeAlertAccept(driver.driverForExtension, alert);
 			alert.accept();
-			driver.extendedDispatcher.afterAccept(driver.driverForExtension, alert);
+			driver.extendedDispatcher.afterAlertAccept(driver.driverForExtension, alert);
 		}
 	
 		@Override
@@ -826,9 +826,9 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		@Override
 		public void dismiss() 
 		{
-			driver.extendedDispatcher.beforeDismiss(driver.driverForExtension, alert);
+			driver.extendedDispatcher.beforeAlertDismiss(driver.driverForExtension, alert);
 			alert.dismiss();
-			driver.extendedDispatcher.afterDismiss(driver.driverForExtension, alert);
+			driver.extendedDispatcher.afterAlertDismiss(driver.driverForExtension, alert);
 		}
 	
 		@Override
@@ -840,9 +840,9 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		@Override
 		public void sendKeys(String arg0) 
 		{
-			driver.extendedDispatcher.beforeSendKeys(driver.driverForExtension, alert, arg0);
+			driver.extendedDispatcher.beforeAlertSendKeys(driver.driverForExtension, alert, arg0);
 			alert.sendKeys(arg0);
-			driver.extendedDispatcher.afterSendKeys(driver.driverForExtension, alert, arg0);
+			driver.extendedDispatcher.afterAlertSendKeys(driver.driverForExtension, alert, arg0);
 		}
 	
 	}
@@ -973,9 +973,9 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 	
 	public void close()
 	{
-		extendedDispatcher.beforeClose(driverForExtension);
+		extendedDispatcher.beforeWindowClose(driverForExtension);
 		super.close();
-		extendedDispatcher.afterClose(driverForExtension);	
+		extendedDispatcher.afterWindowClose(driverForExtension);	
 	}
 	
     public List<WebElement> findElements(By by) {
@@ -1005,7 +1005,6 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
     
     public <X> X getScreenshotAs(OutputType<X> target)
     {
-	    extendedDispatcher.beforeTakingScringShot(driverForExtension, target); 
 	    X result = null;
 	    try
 	    {
@@ -1016,7 +1015,6 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 	    	WebDriver augmentedDriver = new Augmenter().augment(driverForExtension);
 	    	result = ((TakesScreenshot) augmentedDriver).getScreenshotAs(target);	
 	    }
-	    extendedDispatcher.afterTakingScringShot(driverForExtension, target);
 	    return result;    	
     }
 }
