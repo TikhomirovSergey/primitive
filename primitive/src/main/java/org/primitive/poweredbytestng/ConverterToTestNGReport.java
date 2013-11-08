@@ -23,11 +23,10 @@ public class ConverterToTestNGReport implements ILogConverter{
 	private final String debugColor = "Snow";
 	private final String errorColor = "Red";
 	private final String htmlItemPattern = 
-	"<li><table align='center' width='100%'>"+
+			  "<table align='center' width='100%'>"+
 		      "<tr  bgcolor=" + "#Color" + " valign=top align=left>"+
 		      "<td><b>"+"#Time" + " " +"#Message"+" </d></td>"+
-		      "</tr>"+
-		      "</table></li>";
+		      "</tr></table>";
 	private final String successColor = "LimeGreen";
 	private final String warnColor = "Yellow";
 	
