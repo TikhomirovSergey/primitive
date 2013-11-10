@@ -444,7 +444,7 @@ public class Configuration
 	}
 
 	private enum EAvailableDataTypes {
-		STRING, BOOL, LONG, FLOAT
+		STRING, BOOL, LONG, FLOAT, INT;
 	}
 	
 	private final static String commonFileName = "settings.xml"; //settings file should be put in project directory
@@ -579,10 +579,11 @@ public class Configuration
 		if ((!type.equals(EAvailableDataTypes.STRING.toString()))&
 				(!type.equals(EAvailableDataTypes.BOOL.toString()))&
 				(!type.equals(EAvailableDataTypes.LONG.toString()))&
-				(!type.equals(EAvailableDataTypes.FLOAT.toString())))
+				(!type.equals(EAvailableDataTypes.FLOAT.toString()))&
+				(!type.equals(EAvailableDataTypes.INT.toString())))
 		{
 			throw new ParserConfigurationException("Type specification that is not supported! Specification is " + type + ". " +
-					" STRING, BOOL, LONG, FLOAT are suppurted. Setting name is " + settingElement.getAttribute("name"));
+					" STRING, BOOL, LONG, FLOAT, INT are suppurted. Setting name is " + settingElement.getAttribute("name"));
 		}		
 		
 		Object returnValue = null;
@@ -617,6 +618,10 @@ public class Configuration
 				if (type.equals(EAvailableDataTypes.FLOAT.toString()))
 				{
 					returnValue = new Float(value);
+				}
+				if (type.equals(EAvailableDataTypes.INT.toString()))
+				{
+					returnValue = new Integer(value);
 				}
 				return returnValue;
 			}
