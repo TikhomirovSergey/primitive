@@ -4,7 +4,7 @@ package org.primitive.exceptions;
  * @author s.tihomirov
  *
  */
-public class ConcstructTestObjectException extends Exception {
+public class ConcstructTestObjectException extends RuntimeException {
 
 	/**
 	 * 
