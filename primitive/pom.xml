@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>primitive</groupId>
   <artifactId>primitive</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
   
   <properties>
      <selenium.version>2.37.0</selenium.version>

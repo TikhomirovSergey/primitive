@@ -15,7 +15,7 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.TimeOut;
 
 //Using it you can model your web application as a complex aggregated object 
 //it should only generate new objects in general
-public class Entity extends TestObject{
+public abstract class Entity extends TestObject{
 	
 	protected Cookies cookies;
 	protected Ime ime;
@@ -59,43 +59,43 @@ public class Entity extends TestObject{
 	//Class "SingleWindow" should be first in the list of constructor parameters
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use the first opened window of the test application 
-	protected  <T extends Page> T get(Class<? extends Page> pageClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	protected  <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		T page =  TestObjectFactory.getPage(pageClass, restructureParamArray(params), restructureValueArray(nativeWindow, values));
+		T page =  ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(nativeWindow, values));
 		page.originalEntity = this;
 		return page;
 	}	
 	
 	//- simple constructor
-	public <T extends Page> T get(Class<? extends Page> pageClass) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
-		return get(pageClass, params, values);
+		return get(partClass, params, values);
 	}
 	
 	//- with specified frame index
-	public <T extends Page> T get(Integer frameIndex, Class<? extends Page> pageClass) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(Integer frameIndex, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex};
-		return get(pageClass, params, values);
+		return get(partClass, params, values);
 	}
 	
 	// - with specified path to any frame
-	public <T extends Page> T get(String pathToFrame, Class<? extends Page> pageClass) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(String pathToFrame, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame};
-		return get(pageClass, params, values);
+		return get(partClass, params, values);
 	}
 	
 	// - with specified path to any frame and time out for switching to it
-	public <T extends Page> T get(String pathToFrame, Long timeOutInSec,  Class<? extends Page> pageClass) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec};
-		return get(pageClass, params, values);
+		return get(partClass, params, values);
 	}
     
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,43 +106,43 @@ public class Entity extends TestObject{
 	//Class "SingleWindow" should be first in the list of constructor parameters
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use any opened window that specified by index
-	protected  <T extends Page> T get(Class<? extends Page> pageClass, Class<?>[] params, Object[] values, int windowIndex) throws ConcstructTestObjectException
+	protected  <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, int windowIndex) throws ConcstructTestObjectException
 	{
-		T page = TestObjectFactory.getPage(pageClass, restructureParamArray(params), restructureValueArray(SingleWindow.initWindowByIndex(nativeSwitcher, windowIndex), values));
+		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initWindowByIndex(nativeSwitcher, windowIndex), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
-	public <T extends Page> T get(Class<? extends Page> pageClass, int windowIndex) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
-		return get(pageClass, params, values, windowIndex);
+		return get(partClass, params, values, windowIndex);
 	}
 	
 	//- with specified frame index
-	public <T extends Page> T get(Integer frameIndex, Class<? extends Page> pageClass, int windowIndex) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(Integer frameIndex, Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
-		return get(pageClass, params, values, windowIndex);
+		return get(partClass, params, values, windowIndex);
 	}
 	
 	// - with specified path to any frame
-	public <T extends Page> T get(String pathToFrame, Class<? extends Page> pageClass, int windowIndex) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(String pathToFrame, Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
-		return get(pageClass, params, values, windowIndex);
+		return get(partClass, params, values, windowIndex);
 	}
 	
 	// - with specified path to any frame and time out for switching to it
-	public <T extends Page> T get(String pathToFrame, Long timeOutInSec,  Class<? extends Page> pageClass, int windowIndex) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
-		return get(pageClass, params, values, windowIndex);
+		return get(partClass, params, values, windowIndex);
 	}
 	
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -153,43 +153,43 @@ public class Entity extends TestObject{
 	//Class "SingleWindow" should be first in the list of constructor parameters
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use any window that has appeared while default time was passing
-	protected  <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		T page = TestObjectFactory.getPage(pageClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher), values));
+		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
-	public <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
-		return getFromNewWindow(pageClass, params, values);
+		return getFromNewWindow(partClass, params, values);
 	}
 	
 	//- with specified frame index
-	public <T extends Page> T getFromNewWindow(Integer frameIndex, Class<? extends Page> pageClass) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] 	values = new Object[] {frameIndex}; 
-		return getFromNewWindow(pageClass, params, values);
+		return getFromNewWindow(partClass, params, values);
 	}
 	
 	// - with specified path to any frame
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Class<? extends Page> pageClass) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] 	values = new Object[] {pathToFrame}; 
-		return getFromNewWindow(pageClass, params, values);
+		return getFromNewWindow(partClass, params, values);
 	}
 	
 	// - with specified path to any frame and time out for switching to it
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends Page> pageClass) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] 	values = new Object[] {pathToFrame, timeOutInSec}; 
-		return getFromNewWindow(pageClass, params, values);
+		return getFromNewWindow(partClass, params, values);
 	}	
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------
 	//if application opens other pages in another windows 
@@ -199,43 +199,43 @@ public class Entity extends TestObject{
 	//Class "SingleWindow" should be first in the list of constructor parameters
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use any window that has appeared while specified time was passing
-	protected  <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, Class<?>[] params, Object[] values, long timeOutSec) throws ConcstructTestObjectException
+	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, long timeOutSec) throws ConcstructTestObjectException
 	{
-		T page = TestObjectFactory.getPage(pageClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, timeOutSec), values));
+		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, timeOutSec), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	// - simple constructor
-	public <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
-		return getFromNewWindow(pageClass,  params, values, timeOutSec);
+		return getFromNewWindow(partClass,  params, values, timeOutSec);
 	}	
 	
 	//- with specified frame index
-	public <T extends Page> T getFromNewWindow(Integer frameIndex, Class<? extends Page> pageClass, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
-		return getFromNewWindow(pageClass,  params, values, timeOutSec);
+		return getFromNewWindow(partClass,  params, values, timeOutSec);
 	}
 	
 	// - with specified path to any frame
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Class<? extends Page> pageClass, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
-		return getFromNewWindow(pageClass,  params, values, timeOutSec);
+		return getFromNewWindow(partClass,  params, values, timeOutSec);
 	}
 	
 	// - with specified path to any frame and time out for switching to it
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends Page> pageClass, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
-		return getFromNewWindow(pageClass,  params, values, timeOutSec);
+		return getFromNewWindow(partClass,  params, values, timeOutSec);
 	}
 	
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------	
@@ -249,43 +249,43 @@ public class Entity extends TestObject{
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use some window that has appeared while default time was passing
 	//this window should has the matching title 
-	protected  <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, Class<?>[] params, Object[] values, String title) throws ConcstructTestObjectException
+	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, String title) throws ConcstructTestObjectException
 	{
-		T page = TestObjectFactory.getPage(pageClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title), values));
+		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	// - simple constructor
-	public <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, String title) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
-		return getFromNewWindow(pageClass, params, values, title);
+		return getFromNewWindow(partClass, params, values, title);
 	}
 	
 	//- with specified frame index
-	public <T extends Page> T getFromNewWindow(Integer frameIndex, Class<? extends Page> pageClass, String title) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
-		return getFromNewWindow(pageClass, params, values, title);
+		return getFromNewWindow(partClass, params, values, title);
 	}
 	
 	// - with specified path to any frame
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Class<? extends Page> pageClass, String title) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
-		return getFromNewWindow(pageClass, params, values, title);
+		return getFromNewWindow(partClass, params, values, title);
 	}
 	
 	// - with specified path to any frame and time out for switching to it
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends Page> pageClass, String title) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
-		return getFromNewWindow(pageClass, params, values, title);
+		return getFromNewWindow(partClass, params, values, title);
 	}	
 	
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------	
@@ -300,43 +300,43 @@ public class Entity extends TestObject{
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use some window that has appeared while specified time was passing
 	//this window should has the matching title 	
-	protected  <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, Class<?>[] params, Object[] values, String title, long timeOutSec) throws ConcstructTestObjectException
+	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
-		T page = TestObjectFactory.getPage(pageClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title, timeOutSec), values));
+		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title, timeOutSec), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
-	public <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, WindowSwitcher switcher, String title, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, WindowSwitcher switcher, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {};
-		return getFromNewWindow(pageClass, params, values, title, timeOutSec);
+		return getFromNewWindow(partClass, params, values, title, timeOutSec);
 	}	
 	
 	//- with specified frame index
-	public <T extends Page> T getFromNewWindow(Integer frameIndex, Class<? extends Page> pageClass, String title, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex};
-		return getFromNewWindow(pageClass, params, values, title, timeOutSec);
+		return getFromNewWindow(partClass, params, values, title, timeOutSec);
 	}
 	
 	// - with specified path to any frame
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Class<? extends Page> pageClass, String title, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame};
-		return getFromNewWindow(pageClass, params, values, title, timeOutSec);
+		return getFromNewWindow(partClass, params, values, title, timeOutSec);
 	}
 	
 	// - with specified path to any frame and time out for switching to it
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends Page> pageClass, String title, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec};
-		return getFromNewWindow(pageClass, params, values, title, timeOutSec);
+		return getFromNewWindow(partClass, params, values, title, timeOutSec);
 	}
 	
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------		
@@ -348,43 +348,43 @@ public class Entity extends TestObject{
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use some window that has appeared while default time was passing
 	//this window should has page that loaded by specified url
-	protected  <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, Class<?>[] params, Object[] values, URL url) throws ConcstructTestObjectException
+	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, URL url) throws ConcstructTestObjectException
 	{
-		T page = TestObjectFactory.getPage(pageClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url), values));
+		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
-	public <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, URL url) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
-		return getFromNewWindow(pageClass, params, values, url);
+		return getFromNewWindow(partClass, params, values, url);
 	}
 
 	//- with specified frame index
-	public <T extends Page> T getFromNewWindow(Integer frameIndex, Class<? extends Page> pageClass, URL url) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
-		return getFromNewWindow(pageClass, params, values, url);
+		return getFromNewWindow(partClass, params, values, url);
 	}
 		
 	// - with specified path to any frame
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Class<? extends Page> pageClass, URL url) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
-		return getFromNewWindow(pageClass, params, values, url);
+		return getFromNewWindow(partClass, params, values, url);
 	}
 		
 	// - with specified path to any frame and time out for switching to it
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends Page> pageClass, URL url) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
-		return getFromNewWindow(pageClass, params, values, url);
+		return getFromNewWindow(partClass, params, values, url);
 	}
 		
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------		
@@ -396,56 +396,56 @@ public class Entity extends TestObject{
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use some window that has appeared while specified time was passing
 	//this window should has page that loaded by specified url
-	protected  <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, Class<?>[] params, Object[] values, URL url, long timeOutSec) throws ConcstructTestObjectException
+	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
-		T page = TestObjectFactory.getPage(pageClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url, timeOutSec), values));
+		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url, timeOutSec), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
-	public <T extends Page> T getFromNewWindow(Class<? extends Page> pageClass, URL url, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
-		return getFromNewWindow(pageClass, params, values, url, timeOutSec);
+		return getFromNewWindow(partClass, params, values, url, timeOutSec);
 	}
 	
 	//- with specified frame index
-	public <T extends Page> T getFromNewWindow(Integer frameIndex, Class<? extends Page> pageClass, URL url, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
-		return getFromNewWindow(pageClass, params, values, url, timeOutSec);
+		return getFromNewWindow(partClass, params, values, url, timeOutSec);
 	}
 		
 	// - with specified path to any frame
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Class<? extends Page> pageClass, URL url, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
-		return getFromNewWindow(pageClass, params, values, url, timeOutSec);
+		return getFromNewWindow(partClass, params, values, url, timeOutSec);
 	}
 		
 	// - with specified path to any frame and time out for switching to it
-	public <T extends Page> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends Page> pageClass, URL url, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
-		return getFromNewWindow(pageClass, params, values, url, timeOutSec);
+		return getFromNewWindow(partClass, params, values, url, timeOutSec);
 	}
 	
 	@Override  //destroys itself and all page objects
 	public void destroy() 
 	{
 		
-		ArrayList<SingleWindow> openedWindows = new ArrayList<SingleWindow>(Page.pages.keySet());
+		ArrayList<SingleWindow> openedWindows = new ArrayList<SingleWindow>(FunctionalPart.parts.keySet());
 		//attempt to destroy page objects
 		for (SingleWindow window: openedWindows)
 		{	//if some windows were created by this driver instance
 			if ((window.getDriverEncapsulation()==driverEncapsulation))
 			{
-				Page.destroyPagesByWindow(window);
+				FunctionalPart.destroyInitedPartsByWindow(window);
 				
 				if (window!=nativeWindow)
 				{	

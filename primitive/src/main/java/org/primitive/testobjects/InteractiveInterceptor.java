@@ -6,9 +6,9 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import org.primitive.testobjects.testobject.TestObject.Interceptor;
 
-public final class PageInterceptor extends Interceptor {
+public final class InteractiveInterceptor extends Interceptor {
 
-	public PageInterceptor()
+	public InteractiveInterceptor()
 	{
 		super();
 	}
@@ -16,9 +16,9 @@ public final class PageInterceptor extends Interceptor {
 	@Override
 	public synchronized Object intercept(Object page, Method method, Object[] args,
 			MethodProxy methodProxy) throws Throwable {
-		if (method.isAnnotationPresent(Page.PageMethod.class))
+		if (method.isAnnotationPresent(FunctionalPart.InteractiveMethod.class))
 		{	//if there are actions with a page
-			((Page) page).switchToMe();
+			((FunctionalPart) page).switchToMe();
 		}
 		try
 		{
@@ -26,7 +26,7 @@ public final class PageInterceptor extends Interceptor {
 		}
 		catch (Exception e)
 		{
-			return handleException((Page) page, method, methodProxy, args, e);
+			return handleException((FunctionalPart) page, method, methodProxy, args, e);
 		}
 	}
 }

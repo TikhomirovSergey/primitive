@@ -13,9 +13,9 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulationFactory;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
 
 //This class should be used for creation of a single page and application model instances
-public final class TestObjectFactory extends TestObject {
+public final class ObjectFactory extends TestObject {
 
-	private TestObjectFactory(SingleWindow browserWindow)
+	private ObjectFactory(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {
 		super(browserWindow);
 	}
@@ -257,9 +257,9 @@ public final class TestObjectFactory extends TestObject {
 	
 	//Creation of any Page instance:
 	//- using any accessible constructor:
-	protected static  <T extends Page> T getPage(Class<? extends Page> pageClass, Class<?>[] paramClasses, Object[] paramValues) throws ConcstructTestObjectException
+	protected static  <T extends FunctionalPart> T getPage(Class<? extends FunctionalPart> partClass, Class<?>[] paramClasses, Object[] paramValues) throws ConcstructTestObjectException
 	{
-		T page = getProxy(pageClass, PageInterceptor.class, paramClasses, paramValues);
+		T page = getProxy(partClass, InteractiveInterceptor.class, paramClasses, paramValues);
 		return page;
 	}
 	
@@ -267,12 +267,12 @@ public final class TestObjectFactory extends TestObject {
 	
 	//With a browser window only. 
 	//- using new web driver instance:
-	public static <T extends Page> T getPage(Class<? extends Page> pageClass, ESupportedDrivers supportedDriver, String urlToBeLoaded) throws ConcstructTestObjectException
+	public static <T extends FunctionalPart> T getPage(Class<? extends FunctionalPart> partClass, ESupportedDrivers supportedDriver, String urlToBeLoaded) throws ConcstructTestObjectException
 	{
 		try
 		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, urlToBeLoaded),pageClass);
-			return  getPage(pageClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
+			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, urlToBeLoaded),partClass);
+			return  getPage(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 		}
 		catch (ConcstructTestObjectException e)
 		{
@@ -283,12 +283,12 @@ public final class TestObjectFactory extends TestObject {
 		}		
 	}
 	
-	public static <T extends Page> T getPage(Class<? extends Page> pageClass, ESupportedDrivers supportedDriver,  Capabilities capabilities, String urlToBeLoaded) throws ConcstructTestObjectException
+	public static <T extends FunctionalPart> T getPage(Class<? extends FunctionalPart> partClass, ESupportedDrivers supportedDriver,  Capabilities capabilities, String urlToBeLoaded) throws ConcstructTestObjectException
 	{
 		try
 		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, urlToBeLoaded),pageClass);
-			return  getPage(pageClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
+			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, urlToBeLoaded),partClass);
+			return  getPage(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 		}
 		catch (ConcstructTestObjectException e)
 		{
@@ -299,12 +299,12 @@ public final class TestObjectFactory extends TestObject {
 		}	
 	}
 	
-	public static <T extends Page> T getPage(Class<? extends Page> pageClass, ESupportedDrivers supportedDriver,  Capabilities capabilities, String urlToBeLoaded, URL remoteAddress) throws ConcstructTestObjectException
+	public static <T extends FunctionalPart> T getPage(Class<? extends FunctionalPart> partClass, ESupportedDrivers supportedDriver,  Capabilities capabilities, String urlToBeLoaded, URL remoteAddress) throws ConcstructTestObjectException
 	{
 		try
 		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, urlToBeLoaded, remoteAddress),pageClass);
-			return  getPage(pageClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
+			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, urlToBeLoaded, remoteAddress),partClass);
+			return  getPage(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 		}
 		catch (ConcstructTestObjectException e)
 		{
@@ -316,12 +316,12 @@ public final class TestObjectFactory extends TestObject {
 	}
 	
 	// - using default configuration
-	public static <T extends Page> T getPage(Class<? extends Page> pageClass, String urlToBeLoaded) throws ConcstructTestObjectException
+	public static <T extends FunctionalPart> T getPage(Class<? extends FunctionalPart> partClass, String urlToBeLoaded) throws ConcstructTestObjectException
 	{
 		try
 		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(urlToBeLoaded),pageClass);
-			return  getPage(pageClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
+			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(urlToBeLoaded),partClass);
+			return  getPage(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 		}
 		catch (ConcstructTestObjectException e)
 		{
@@ -333,12 +333,12 @@ public final class TestObjectFactory extends TestObject {
 	}
 	
 	// - using specified configuration
-	public static <T extends Page> T getPage(Class<? extends Page> pageClass, Configuration config, String urlToBeLoaded) throws ConcstructTestObjectException
+	public static <T extends FunctionalPart> T getPage(Class<? extends FunctionalPart> partClass, Configuration config, String urlToBeLoaded) throws ConcstructTestObjectException
 	{
 		try
 		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(config, urlToBeLoaded),pageClass);
-			return  getPage(pageClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
+			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(config, urlToBeLoaded),partClass);
+			return  getPage(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 		}
 		catch (ConcstructTestObjectException e)
 		{

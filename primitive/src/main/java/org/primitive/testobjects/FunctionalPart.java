@@ -32,7 +32,7 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.PageFactoryWork
  * @author s.tihomirov
  *It describes simple web page or its fragment 
  */
-public class Page extends TestObject {
+public abstract class FunctionalPart extends TestObject {
 
 	/**
 	 * @author s.tihomirov
@@ -40,12 +40,12 @@ public class Page extends TestObject {
 	 */
 	@Target(value=ElementType.METHOD)
 	@Retention(value= RetentionPolicy.RUNTIME)
-	public static @interface PageMethod {
+	public static @interface InteractiveMethod {
 	
 	}
 
 	protected PageFactoryWorker pageFactoryWorker;	
-	protected Page parent; //parent test object	
+	protected FunctionalPart parent; //parent test object	
 	protected FrameSupport frameSupport;	
 	//Integer specification of a frame that object is placed on.
 	private Integer frameToSwitchOnInt = null;
@@ -55,7 +55,7 @@ public class Page extends TestObject {
 	private Object frameToSwitchOnElem = null;
 	
 	protected WebDriverEncapsulation.PictureMaker photographer;
-	protected static final HashMap<SingleWindow, HashSet<Page>> pages = new HashMap<SingleWindow, HashSet<Page>>();
+	protected static final HashMap<SingleWindow, HashSet<FunctionalPart>> parts = new HashMap<SingleWindow, HashSet<FunctionalPart>>();
     //page object is created by specified entity
 	protected Entity originalEntity;
 	protected Interaction interaction;
@@ -65,39 +65,39 @@ public class Page extends TestObject {
 	//checks in new page object
 	private void addItselfToMap(SingleWindow browserWindow)
 	{
-		HashSet<Page> node =  pages.get(browserWindow);
+		HashSet<FunctionalPart> node =  parts.get(browserWindow);
 		if (node==null)
 		{
-			HashSet<Page> newSet = new HashSet<Page>();
+			HashSet<FunctionalPart> newSet = new HashSet<FunctionalPart>();
 			newSet.add(this);
-			pages.put(browserWindow, newSet);
+			parts.put(browserWindow, newSet);
 		}
 		else
 		{
 			node.add(this);
-			pages.put(browserWindow, node);
+			parts.put(browserWindow, node);
 		}
 	}
 	
-	protected synchronized static void destroyPagesByWindow(SingleWindow destroyingWindow)
+	protected synchronized static void destroyInitedPartsByWindow(SingleWindow destroyingWindow)
 	{	
-		if (pages.get(destroyingWindow)!=null)
+		if (parts.get(destroyingWindow)!=null)
 		{	
-			ArrayList<Page> pageList = new ArrayList<Page>(pages.get(destroyingWindow));		
-			for (Page destroying: pageList)
+			ArrayList<FunctionalPart> objectList = new ArrayList<FunctionalPart>(parts.get(destroyingWindow));		
+			for (FunctionalPart destroying: objectList)
 			{
 				if (destroying.isAlive) //Some situations are possible 
 				{	//when pages are killed one by one
 					destroying.destroy();
 				}	
 			}		
-			pages.remove(destroyingWindow);
+			parts.remove(destroyingWindow);
 		}
 	}
 	
 	
 	//default constructor body
-	private void pageConstroctorBody()
+	private void constroctorBody()
 	{
 		pageFactoryWorker = driverEncapsulation.getPageFactoryWorker();
 		frameSupport      = driverEncapsulation.getFrameSupport();
@@ -168,17 +168,17 @@ public class Page extends TestObject {
 		frameToSwitchOnStr = pathToFrame;
 	}
 	
-	protected Page(SingleWindow browserWindow)
+	protected FunctionalPart(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {
 		super(browserWindow);
-		pageConstroctorBody();
+		constroctorBody();
 	}
 	
 	//constructs from another page object
-	protected Page(Page parent)
+	protected FunctionalPart(FunctionalPart parent)
 			throws ConcstructTestObjectException {
 		super(parent.nativeWindow);
-		pageConstroctorBody();
+		constroctorBody();
 		this.parent = parent;
 		this.originalEntity = parent.originalEntity;
 	}
@@ -186,10 +186,10 @@ public class Page extends TestObject {
 	
 	
 	//constructor with specified integer frame value
-	protected Page(SingleWindow browserWindow, Integer frameIndex) throws ConcstructTestObjectException
+	protected FunctionalPart(SingleWindow browserWindow, Integer frameIndex) throws ConcstructTestObjectException
 	{
 		super(browserWindow);
-		pageConstroctorBody();
+		constroctorBody();
 		try
 		{
 			frameConstroctorBody(frameIndex);
@@ -201,10 +201,10 @@ public class Page extends TestObject {
 	}
 	
 	//constructs from another page object
-	protected Page(Page parent, Integer frameIndex)
+	protected FunctionalPart(FunctionalPart parent, Integer frameIndex)
 			throws ConcstructTestObjectException {
 		super(parent.nativeWindow);
-		pageConstroctorBody();
+		constroctorBody();
 		try
 		{
 			this.parent = parent;
@@ -218,10 +218,10 @@ public class Page extends TestObject {
 	}
 	
 	//constructor with specified string frame value. pathToFrame can be relative to another frame
-	protected Page(SingleWindow browserWindow, String pathToFrame) throws ConcstructTestObjectException
+	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame) throws ConcstructTestObjectException
 	{
 		super(browserWindow);
-		pageConstroctorBody();
+		constroctorBody();
 		try
 		{
 			frameConstroctorBody(pathToFrame);
@@ -233,10 +233,10 @@ public class Page extends TestObject {
 	}
 	
 	//constructs from another page object
-	protected Page(Page parent, String pathToFrame) throws ConcstructTestObjectException
+	protected FunctionalPart(FunctionalPart parent, String pathToFrame) throws ConcstructTestObjectException
 	{
 		super(parent.nativeWindow);
-		pageConstroctorBody();
+		constroctorBody();
 		try
 		{
 			this.parent = parent; 
@@ -250,10 +250,10 @@ public class Page extends TestObject {
 	}
 	
 	//constructor with specified WebElement frame value.
-	protected Page(SingleWindow browserWindow, WebElement frameElement) throws ConcstructTestObjectException
+	protected FunctionalPart(SingleWindow browserWindow, WebElement frameElement) throws ConcstructTestObjectException
 	{
 		super(browserWindow);
-		pageConstroctorBody();
+		constroctorBody();
 		try
 		{
 			frameConstroctorBody(frameElement);
@@ -265,10 +265,10 @@ public class Page extends TestObject {
 	}	
 	
 	//constructs from another page object
-	protected Page(Page parent, WebElement frameElement) throws ConcstructTestObjectException
+	protected FunctionalPart(FunctionalPart parent, WebElement frameElement) throws ConcstructTestObjectException
 	{
 		super(parent.nativeWindow);
-		pageConstroctorBody();
+		constroctorBody();
 		try
 		{
 			this.parent = parent; 
@@ -283,10 +283,10 @@ public class Page extends TestObject {
 	
 	//constructor with specified string frame value. pathToFrame can be relative to another frame
 	//timeOutInSec is specified for situations when frame can't be switched on instantly
-	protected Page(SingleWindow browserWindow, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
+	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
 	{
 		super(browserWindow);
-		pageConstroctorBody();
+		constroctorBody();
 		try
 		{
 			frameConstroctorBody(pathToFrame, timeOutInSec);
@@ -298,10 +298,10 @@ public class Page extends TestObject {
 	}
 	
 	//constructs from another page object
-	protected Page(Page parent, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
+	protected FunctionalPart(FunctionalPart parent, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
 	{
 		super(parent.nativeWindow);
-		pageConstroctorBody();
+		constroctorBody();
 		try
 		{
 			this.parent = parent; 
@@ -317,7 +317,7 @@ public class Page extends TestObject {
 	
 	//Methods that you see below can be used for loading of a page object
 	//This method loads page object with the list of field decorators
-	protected void loadPageObject(ArrayList<FieldDecorator> decorators)
+	protected void load(ArrayList<FieldDecorator> decorators)
 	{
 		for (FieldDecorator decorator: decorators)
 		{   //decorators that are given from outside or generated inside
@@ -326,7 +326,7 @@ public class Page extends TestObject {
 	}
 	
 	//This method loads page object with the list of ElementLocatorFactory implementations
-	protected  void loadPageObject(List<ElementLocatorFactory> factories)
+	protected  void load(List<ElementLocatorFactory> factories)
 	{
 		for (ElementLocatorFactory factory: factories)
 		{   //factory that are given from outside or generated inside
@@ -335,7 +335,7 @@ public class Page extends TestObject {
 	}
 	
 	//The method below simply loads page factory
-	protected void loadPageObject()
+	protected void load()
 	{
 		pageFactoryWorker.initPageFactory(this);
 	}
@@ -344,7 +344,7 @@ public class Page extends TestObject {
 	private Class<?>[] restructureParamArray(Class<?>[] original)
 	{
 		Class<?>[] constructParams = new Class<?> [original.length + 1];
-		constructParams[0] = Page.class;
+		constructParams[0] = FunctionalPart.class;
 		for (int i=0; i < original.length; i++)
 		{
 			constructParams[i+1] = original[i];
@@ -368,58 +368,58 @@ public class Page extends TestObject {
 	//Class "Page" should be first in the list of constructor parameters
 	//"params" we specify without "Page" because it will be added by this method
 	//So, this way we build hierarchy of page objects
-	protected  <T extends Page> T get(Class<? extends Page> pageClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	protected  <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		return TestObjectFactory.getPage(pageClass, restructureParamArray(params), restructureValueArray(values));
+		return ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(values));
 	}
 	
 	
 	// - simple constructor 
-	public <T extends Page> T get(Class<? extends Page> pageClass) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
-		return get(pageClass, params, values);
+		return get(partClass, params, values);
 	}
 	
 		
 	//- with specified frame index
-	public <T extends Page> T get(Class<? extends Page> pageClass, Integer frameIndex) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Integer frameIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex};
-		return get(pageClass, params, values);
+		return get(partClass, params, values);
 	}
 		
 	// - with specified path to any frame
-	public <T extends Page> T get(Class<? extends Page> pageClass, String pathToFrame) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame};
-		return get(pageClass, params, values);
+		return get(partClass, params, values);
 	}
 		
 	// - with specified path to any frame and time out for switching to it
-	public <T extends Page> T get(Class<? extends Page> pageClass, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec};
-		return get(pageClass, params, values);
+		return get(partClass, params, values);
 	}
 	
 	// - with frame that specified as web element
-	public <T extends Page> T get(Class<? extends Page> pageClass, WebElement frameElement) throws ConcstructTestObjectException
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, WebElement frameElement) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {WebElement.class}; 
 		Object[] values = new Object[] {frameElement};
-		return get(pageClass, params, values);
+		return get(partClass, params, values);
 	}
 	
 	
 	@Override
 	public synchronized void destroy() 
 	{
-		HashSet<Page> node = pages.get(nativeWindow);
+		HashSet<FunctionalPart> node = parts.get(nativeWindow);
 		node.remove(this);
 		try
 		{
@@ -430,11 +430,11 @@ public class Page extends TestObject {
     		Log.warning("A problem with destroying of " + this.getClass().getSimpleName() + " instance has been found out! "+e.getMessage(),e);
 		}
 		isAlive = false;
-		pages.put(nativeWindow, node);		
+		parts.put(nativeWindow, node);		
 		//if browser window doesn't exist anymore
 		if (!nativeWindow.exists())
 		{
-			destroyPagesByWindow(nativeWindow);
+			destroyInitedPartsByWindow(nativeWindow);
     		SingleWindow.remove(nativeWindow);
 		}
 	}
@@ -442,7 +442,7 @@ public class Page extends TestObject {
 	//Closes browser window and destroys all page objects that are placed on it
 	public void close() throws UnclosedBrowserWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException
 	{
-		destroyPagesByWindow(nativeWindow);
+		destroyInitedPartsByWindow(nativeWindow);
 		try
 		{
 			nativeWindow.close();
@@ -464,19 +464,19 @@ public class Page extends TestObject {
 	}
 	
 	//takes screenshots for log messages with SEVERE level
-	@PageMethod
+	@InteractiveMethod
 	public void takeASeverePictire(String comment)
 	{
 		photographer.takeAPictureOfASevere(comment);
 	}
 	
-	@PageMethod
+	@InteractiveMethod
 	public void takeASeverePictire(WebElement element, String comment)
 	{
 		photographer.takeAPictureOfASevere(element, comment);
 	}
 	
-	@PageMethod
+	@InteractiveMethod
 	public void takeASeverePictire(WebElement element, Color highlight, String comment)
 	{
 		photographer.takeAPictureOfASevere(element, highlight, comment);
@@ -484,57 +484,57 @@ public class Page extends TestObject {
 	
 	
 	//takes screenshots for log messages with WARNING level
-	@PageMethod
+	@InteractiveMethod
 	public void takeAWarningPictire(String comment)
 	{
 		photographer.takeAPictureOfAWarning(comment);
 	}
 	
-	@PageMethod
+	@InteractiveMethod
 	public void takeAWarningPictire(WebElement element, String comment)
 	{
 		photographer.takeAPictureOfAWarning(element, comment);
 	}
 	
-	@PageMethod
+	@InteractiveMethod
 	public void takeAWarningPictire(WebElement element, Color highlight, String comment)
 	{
 		photographer.takeAPictureOfAWarning(element, highlight, comment);
 	}	
 	
 	//takes screenshots for log messages with INFO level
-	@PageMethod
+	@InteractiveMethod
 	public void takeAnInfoPictire(String comment)
 	{
 		photographer.takeAPictureOfAnInfo(comment);
 	}
 	
-	@PageMethod
+	@InteractiveMethod
 	public void takeAnInfoPictire(WebElement element, String comment)
 	{
 		photographer.takeAPictureOfAnInfo(element, comment);
 	}
 	
-	@PageMethod
+	@InteractiveMethod
 	public void takeAnInfoPictire(WebElement element, Color highlight, String comment)
 	{
 		photographer.takeAPictureOfAnInfo(element, highlight, comment);
 	}	
 	
 	//takes screenshots for log messages with FINE level
-	@PageMethod
+	@InteractiveMethod
 	public void takeAFinePictire(String comment)
 	{
 		photographer.takeAPictureOfAFine(comment);
 	}
 		
-	@PageMethod
+	@InteractiveMethod
 	public void takeAFinePictire(WebElement element, String comment)
 	{
 		photographer.takeAPictureOfAFine(element, comment);
 	}
 		
-	@PageMethod
+	@InteractiveMethod
 	public void takeAFinePictire(WebElement element, Color highlight, String comment)
 	{
 		photographer.takeAPictureOfAFine(element, highlight, comment);
