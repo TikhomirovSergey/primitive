@@ -32,7 +32,7 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.PageFactoryWork
  * @author s.tihomirov
  *It describes simple web page or its fragment 
  */
-public abstract class FunctionalPart extends TestObject {
+public abstract class FunctionalPart extends TestObject implements IHasWebElementFrames {
 
 	/**
 	 * @author s.tihomirov
@@ -370,11 +370,12 @@ public abstract class FunctionalPart extends TestObject {
 	//So, this way we build hierarchy of page objects
 	protected  <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		return ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(values));
+		return ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(values));
 	}
 	
 	
 	// - simple constructor 
+	@Override
 	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
@@ -384,6 +385,7 @@ public abstract class FunctionalPart extends TestObject {
 	
 		
 	//- with specified frame index
+	@Override
 	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Integer frameIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
@@ -392,6 +394,7 @@ public abstract class FunctionalPart extends TestObject {
 	}
 		
 	// - with specified path to any frame
+	@Override
 	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
@@ -400,6 +403,7 @@ public abstract class FunctionalPart extends TestObject {
 	}
 		
 	// - with specified path to any frame and time out for switching to it
+	@Override
 	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
@@ -408,6 +412,7 @@ public abstract class FunctionalPart extends TestObject {
 	}
 	
 	// - with frame that specified as web element
+	@Override
 	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, WebElement frameElement) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {WebElement.class}; 

@@ -15,7 +15,7 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.TimeOut;
 
 //Using it you can model your web application as a complex aggregated object 
 //it should only generate new objects in general
-public abstract class Entity extends TestObject{
+public abstract class Entity extends TestObject implements IDecomposable, IHasManyWindows{
 	
 	protected Cookies cookies;
 	protected Ime ime;
@@ -61,12 +61,13 @@ public abstract class Entity extends TestObject{
 	//We use the first opened window of the test application 
 	protected  <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		T page =  ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(nativeWindow, values));
+		T page =  ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(nativeWindow, values));
 		page.originalEntity = this;
 		return page;
 	}	
 	
 	//- simple constructor
+	@Override
 	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
@@ -75,7 +76,8 @@ public abstract class Entity extends TestObject{
 	}
 	
 	//- with specified frame index
-	public <T extends FunctionalPart> T get(Integer frameIndex, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
+	@Override
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Integer frameIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex};
@@ -83,7 +85,8 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame
-	public <T extends FunctionalPart> T get(String pathToFrame, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
+	@Override
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame};
@@ -91,7 +94,8 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame and time out for switching to it
-	public <T extends FunctionalPart> T get(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
+	@Override
+	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec};
@@ -108,13 +112,14 @@ public abstract class Entity extends TestObject{
 	//We use any opened window that specified by index
 	protected  <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, int windowIndex) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initWindowByIndex(nativeSwitcher, windowIndex), values));
+		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initWindowByIndex(nativeSwitcher, windowIndex), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
+	@Override
+	public <T extends FunctionalPart> T getFromWinow(Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
@@ -122,7 +127,8 @@ public abstract class Entity extends TestObject{
 	}
 	
 	//- with specified frame index
-	public <T extends FunctionalPart> T get(Integer frameIndex, Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
+	@Override
+	public <T extends FunctionalPart> T getFromWinow(Class<? extends FunctionalPart> partClass, Integer frameIndex, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
@@ -130,7 +136,8 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame
-	public <T extends FunctionalPart> T get(String pathToFrame, Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
+	@Override
+	public <T extends FunctionalPart> T getFromWinow(String pathToFrame, Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
@@ -138,7 +145,8 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame and time out for switching to it
-	public <T extends FunctionalPart> T get(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
+	@Override
+	public <T extends FunctionalPart> T getFromWinow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
@@ -155,12 +163,13 @@ public abstract class Entity extends TestObject{
 	//We use any window that has appeared while default time was passing
 	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher), values));
+		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
@@ -169,6 +178,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	//- with specified frame index
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
@@ -177,6 +187,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
@@ -185,6 +196,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame and time out for switching to it
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
@@ -201,12 +213,13 @@ public abstract class Entity extends TestObject{
 	//We use any window that has appeared while specified time was passing
 	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, long timeOutSec) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, timeOutSec), values));
+		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, timeOutSec), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	// - simple constructor
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
@@ -215,6 +228,7 @@ public abstract class Entity extends TestObject{
 	}	
 	
 	//- with specified frame index
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
@@ -223,6 +237,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
@@ -231,6 +246,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame and time out for switching to it
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
@@ -251,12 +267,13 @@ public abstract class Entity extends TestObject{
 	//this window should has the matching title 
 	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, String title) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title), values));
+		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	// - simple constructor
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
@@ -265,6 +282,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	//- with specified frame index
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
@@ -273,6 +291,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
@@ -281,6 +300,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame and time out for switching to it
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
@@ -302,12 +322,13 @@ public abstract class Entity extends TestObject{
 	//this window should has the matching title 	
 	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title, timeOutSec), values));
+		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title, timeOutSec), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, WindowSwitcher switcher, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
@@ -316,6 +337,7 @@ public abstract class Entity extends TestObject{
 	}	
 	
 	//- with specified frame index
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
@@ -324,6 +346,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
@@ -332,6 +355,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	// - with specified path to any frame and time out for switching to it
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
@@ -350,12 +374,13 @@ public abstract class Entity extends TestObject{
 	//this window should has page that loaded by specified url
 	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, URL url) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url), values));
+		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
@@ -364,6 +389,7 @@ public abstract class Entity extends TestObject{
 	}
 
 	//- with specified frame index
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
@@ -372,6 +398,7 @@ public abstract class Entity extends TestObject{
 	}
 		
 	// - with specified path to any frame
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
@@ -380,6 +407,7 @@ public abstract class Entity extends TestObject{
 	}
 		
 	// - with specified path to any frame and time out for switching to it
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
@@ -398,12 +426,13 @@ public abstract class Entity extends TestObject{
 	//this window should has page that loaded by specified url
 	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.getPage(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url, timeOutSec), values));
+		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url, timeOutSec), values));
 		page.originalEntity = this;
 		return page;
 	}
 	
 	//- simple constructor
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
@@ -412,6 +441,7 @@ public abstract class Entity extends TestObject{
 	}
 	
 	//- with specified frame index
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
@@ -420,6 +450,7 @@ public abstract class Entity extends TestObject{
 	}
 		
 	// - with specified path to any frame
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
@@ -428,6 +459,7 @@ public abstract class Entity extends TestObject{
 	}
 		
 	// - with specified path to any frame and time out for switching to it
+	@Override
 	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
