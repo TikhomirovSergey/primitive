@@ -136,36 +136,13 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 			return;
 		}
 		return;
-	}
-	
-	//constructs from frame that specified as integer index
-	private void frameConstroctorBody(Integer frameIndex)
-	{
-		frameToSwitchOnInt = frameIndex;
-		switchToMe();
-	}
-	
-	//constructs from frame that specified as string Path that can be relative
-	private void frameConstroctorBody(String pathToFrame)
-	{		
-		frameToSwitchOnStr = pathToFrame;
-		switchToMe();
 	}	
 	
-	//constructs from frame that specified as WebElement
-	private void frameConstroctorBody(WebElement frameElement)
-	{
-		frameToSwitchOnElem = frameElement;
-		switchToMe();
-	}
 	
-	//constructs from frame that specified as string Path that can be relative
-	//we use time out
-	private void frameConstroctorBody(String pathToFrame, long timeOutInSec)
+	private void setParent(FunctionalPart parent)
 	{
-		switchToMe();
-		frameSupport.switchTo(pathToFrame, timeOutInSec);
-		frameToSwitchOnStr = pathToFrame;
+		this.parent = parent;
+		this.originalEntity = parent.originalEntity;
 	}
 	
 	protected FunctionalPart(SingleWindow browserWindow)
@@ -179,8 +156,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 			throws ConcstructTestObjectException {
 		super(parent.nativeWindow);
 		constroctorBody();
-		this.parent = parent;
-		this.originalEntity = parent.originalEntity;
+		setParent(parent);
 	}
 	
 	
@@ -190,14 +166,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(browserWindow);
 		constroctorBody();
-		try
-		{
-			frameConstroctorBody(frameIndex);
-		}
-		catch (Exception e)
-		{
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		frameToSwitchOnInt = frameIndex;
 	}
 	
 	//constructs from another page object
@@ -205,16 +174,8 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 			throws ConcstructTestObjectException {
 		super(parent.nativeWindow);
 		constroctorBody();
-		try
-		{
-			this.parent = parent;
-			this.originalEntity = parent.originalEntity;
-			frameConstroctorBody(frameIndex);
-		}
-		catch (Exception e)
-		{
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		setParent(parent);
+		frameToSwitchOnInt = frameIndex;
 	}
 	
 	//constructor with specified string frame value. pathToFrame can be relative to another frame
@@ -222,14 +183,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(browserWindow);
 		constroctorBody();
-		try
-		{
-			frameConstroctorBody(pathToFrame);
-		}
-		catch (Exception e)
-		{
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		frameToSwitchOnStr = pathToFrame;
 	}
 	
 	//constructs from another page object
@@ -237,16 +191,8 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(parent.nativeWindow);
 		constroctorBody();
-		try
-		{
-			this.parent = parent; 
-			this.originalEntity = parent.originalEntity;
-			frameConstroctorBody(pathToFrame);
-		}
-		catch (Exception e)
-		{
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		setParent(parent);
+		frameToSwitchOnStr = pathToFrame;
 	}
 	
 	//constructor with specified WebElement frame value.
@@ -254,14 +200,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(browserWindow);
 		constroctorBody();
-		try
-		{
-			frameConstroctorBody(frameElement);
-		}
-		catch (Exception e)
-		{
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		frameToSwitchOnElem = frameElement;
 	}	
 	
 	//constructs from another page object
@@ -269,16 +208,8 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(parent.nativeWindow);
 		constroctorBody();
-		try
-		{
-			this.parent = parent; 
-			this.originalEntity = parent.originalEntity;
-			frameConstroctorBody(frameElement);
-		}
-		catch (Exception e)
-		{
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		setParent(parent);
+		frameToSwitchOnElem = frameElement;
 	}
 	
 	//constructor with specified string frame value. pathToFrame can be relative to another frame
@@ -287,14 +218,9 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(browserWindow);
 		constroctorBody();
-		try
-		{
-			frameConstroctorBody(pathToFrame, timeOutInSec);
-		}
-		catch (Exception e)
-		{
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		nativeWindow.switchToMe();
+		frameSupport.switchTo(pathToFrame, timeOutInSec);
+		frameToSwitchOnStr = pathToFrame;
 	}
 	
 	//constructs from another page object
@@ -302,16 +228,10 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(parent.nativeWindow);
 		constroctorBody();
-		try
-		{
-			this.parent = parent; 
-			this.originalEntity = parent.originalEntity;
-			frameConstroctorBody(pathToFrame, timeOutInSec);
-		}
-		catch (Exception e)
-		{
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		setParent(parent);
+		nativeWindow.switchToMe();
+		frameSupport.switchTo(pathToFrame, timeOutInSec);
+		frameToSwitchOnStr = pathToFrame;
 	}	
 	
 	
