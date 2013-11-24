@@ -15,24 +15,24 @@ public class SafariDriverEncapsulation extends WebDriverEncapsulation
 {
 	private static final Class<? extends WebDriver> safariDriver = SafariDriver.class;
 	
-	public SafariDriverEncapsulation(String openingURL) {
+	public SafariDriverEncapsulation() {
 		super(Configuration.byDefault);
-		constructBodyInGeneral(openingURL, safariDriver);
+		constructBodyInGeneral(safariDriver);
 	}
 	
-	public SafariDriverEncapsulation(Configuration configuration, String openingURL) {
+	public SafariDriverEncapsulation(Configuration configuration) {
 		super(configuration);
-		constructBodyInGeneral(openingURL, safariDriver);
+		constructBodyInGeneral(safariDriver);
 	}
 
-	public SafariDriverEncapsulation(String openingURL, Capabilities capabilities) {
+	public SafariDriverEncapsulation(Capabilities capabilities) {
 		super(Configuration.byDefault);
-		constructBodyInGeneral(openingURL, safariDriver, capabilities);
+		constructBodyInGeneral(safariDriver, capabilities);
 	}
 	
-	public SafariDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities) {
+	public SafariDriverEncapsulation(Configuration configuration, Capabilities capabilities) {
 		super(configuration);
-		constructBodyInGeneral(openingURL, safariDriver, capabilities);
+		constructBodyInGeneral(safariDriver, capabilities);
 	}	
 
 	@Override

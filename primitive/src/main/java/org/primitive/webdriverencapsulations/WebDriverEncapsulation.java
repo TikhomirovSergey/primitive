@@ -125,14 +125,14 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  //actions before web driver will be created	  
 	  protected abstract void prepare();	  	  
 	  
-	  protected void constructBodyInGeneral(String openingURL, Class<? extends WebDriver> driverClass)
+	  protected void constructBodyInGeneral(Class<? extends WebDriver> driverClass)
 	  {
-		 createWebDriver(openingURL, driverClass, new Class<?>[] {}, new Object[] {});
+		 createWebDriver(driverClass, new Class<?>[] {}, new Object[] {});
 	  }
 	  
-	  protected void constructBodyInGeneral(String openingURL, Class<? extends WebDriver> driverClass, Capabilities capabilities)
+	  protected void constructBodyInGeneral(Class<? extends WebDriver> driverClass, Capabilities capabilities)
 	  {
-	  	  createWebDriver(openingURL, driverClass, new Class<?>[] {Capabilities.class}, new Object[] {capabilities});
+	  	  createWebDriver(driverClass, new Class<?>[] {Capabilities.class}, new Object[] {capabilities});
 	  }
 	  
 	  protected WebDriverEncapsulation(Configuration configuration)
@@ -172,7 +172,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  }
 	  
 	  //it makes objects of any WebDriver and navigates to specified URL
-	  protected void createWebDriver(String openingURL, Class<? extends WebDriver> driverClass, Class<?>[] paramClasses, Object[] values)
+	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Class<?>[] paramClasses, Object[] values)
 	  {
 		  try
 		  {	
@@ -200,7 +200,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 						  Log.message("- " + paramClasses[i].getSimpleName() + ": " + values[i].toString());
 					  }
 				  }
-				  actoinsAfterWebDriverCreation(driver, openingURL);
+				  actoinsAfterWebDriverCreation(driver);
 			  }
 			  else
 			  {
@@ -309,7 +309,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  return firingDriver.getCapabilities();
 	  }
 	  
-	  protected void actoinsAfterWebDriverCreation(WebDriver createdDriver, String URL)
+	  private void actoinsAfterWebDriverCreation(WebDriver createdDriver)
 	  {
 		  		  
 		  firingDriver = ExtendedEventFiringWebDriver.newInstance(createdDriver);		  
@@ -332,7 +332,6 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  windowTimeOuts    = new WindowTimeOuts(configuration);
 		  
 		  firingDriver.register(webInnerListener);
-		  firingDriver.get(URL);
 		  driverList.add(this);
 		  resetAccordingTo(configuration);
 	  }

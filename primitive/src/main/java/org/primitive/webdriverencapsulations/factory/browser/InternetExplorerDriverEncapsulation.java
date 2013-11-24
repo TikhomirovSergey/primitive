@@ -14,86 +14,86 @@ public class InternetExplorerDriverEncapsulation extends WebDriverEncapsulation
 {
 	private static final Class<? extends WebDriver> internetExplorerDriver = InternetExplorerDriver.class;
 	
-	public InternetExplorerDriverEncapsulation(String openingURL) 
+	public InternetExplorerDriverEncapsulation() 
 	{
 		super(Configuration.byDefault);
 		prepare();
-		constructBodyInGeneral(openingURL,internetExplorerDriver);
+		constructBodyInGeneral(internetExplorerDriver);
 	}
 	
-	public InternetExplorerDriverEncapsulation(Configuration configuration, String openingURL) 
+	public InternetExplorerDriverEncapsulation(Configuration configuration) 
 	{
 		super(Configuration.byDefault);
 		prepare();
-		constructBodyInGeneral(openingURL, internetExplorerDriver);
+		constructBodyInGeneral(internetExplorerDriver);
 	}	
 	
-	public InternetExplorerDriverEncapsulation(String openingURL, Capabilities capabilities) 
+	public InternetExplorerDriverEncapsulation(Capabilities capabilities) 
 	{
 		super(Configuration.byDefault);
 		prepare();
-		constructBodyInGeneral(openingURL, internetExplorerDriver, capabilities);
+		constructBodyInGeneral(internetExplorerDriver, capabilities);
 	}
 	
-	public InternetExplorerDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities) 
+	public InternetExplorerDriverEncapsulation(Configuration configuration, Capabilities capabilities) 
 	{
 		super(configuration);
 		prepare();
-		constructBodyInGeneral(openingURL, internetExplorerDriver, capabilities);
+		constructBodyInGeneral(internetExplorerDriver, capabilities);
 	}
 	
-	private void constructBody(String openingURL, InternetExplorerDriverService service)
+	private void constructBody(InternetExplorerDriverService service)
 	{
 		prepare();
-		createWebDriver(openingURL, internetExplorerDriver, new Class[] {InternetExplorerDriverService.class}, new Object[] {service});
+		createWebDriver(internetExplorerDriver, new Class[] {InternetExplorerDriverService.class}, new Object[] {service});
 	}
 	
-	private void constructBody(String openingURL, InternetExplorerDriverService service, Capabilities capabilities)
+	private void constructBody(InternetExplorerDriverService service, Capabilities capabilities)
 	{
 		prepare();
-		createWebDriver(openingURL, internetExplorerDriver, new Class[] {InternetExplorerDriverService.class, Capabilities.class}, new Object[] {service, capabilities});
+		createWebDriver(internetExplorerDriver, new Class[] {InternetExplorerDriverService.class, Capabilities.class}, new Object[] {service, capabilities});
 	}
 	
-	private void constructBody(String openingURL, int port)
+	private void constructBody(int port)
 	{
 		prepare();
-		createWebDriver(openingURL, internetExplorerDriver, new Class[] {Integer.class}, new Object[] {port});
+		createWebDriver(internetExplorerDriver, new Class[] {Integer.class}, new Object[] {port});
 	}	
 	
-	public InternetExplorerDriverEncapsulation(String URL, InternetExplorerDriverService service)
+	public InternetExplorerDriverEncapsulation(InternetExplorerDriverService service)
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, service);
+		constructBody(service);
 	}
 	
-	public InternetExplorerDriverEncapsulation(Configuration configuration, String URL, InternetExplorerDriverService service)
+	public InternetExplorerDriverEncapsulation(Configuration configuration, InternetExplorerDriverService service)
 	{
 		super(configuration);
-		constructBody(URL, service);
+		constructBody(service);
 	}
 	
-	public InternetExplorerDriverEncapsulation(String URL, InternetExplorerDriverService service, Capabilities capabilities)
+	public InternetExplorerDriverEncapsulation(InternetExplorerDriverService service, Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, service, capabilities);
+		constructBody(service, capabilities);
 	}
 	
-	public InternetExplorerDriverEncapsulation(Configuration configuration, String URL, InternetExplorerDriverService service, Capabilities capabilities)
+	public InternetExplorerDriverEncapsulation(Configuration configuration, InternetExplorerDriverService service, Capabilities capabilities)
 	{
 		super(configuration);
-		constructBody(URL, service, capabilities);
+		constructBody(service, capabilities);
 	}	
 	
-	public InternetExplorerDriverEncapsulation(String URL, int port)
+	public InternetExplorerDriverEncapsulation(int port)
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, port);
+		constructBody(port);
 	}
 	
-	public InternetExplorerDriverEncapsulation(Configuration configuration, String URL, int port)
+	public InternetExplorerDriverEncapsulation(Configuration configuration, int port)
 	{
 		super(configuration);
-		constructBody(URL, port);
+		constructBody(port);
 	}
 
 	@Override

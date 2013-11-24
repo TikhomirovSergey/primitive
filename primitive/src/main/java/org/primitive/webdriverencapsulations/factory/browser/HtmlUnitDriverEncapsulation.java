@@ -17,62 +17,54 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 public class HtmlUnitDriverEncapsulation extends WebDriverEncapsulation {
 	private static final Class<? extends WebDriver> htnlUnitDriver = HtmlUnitDriver.class;
 	
-	public HtmlUnitDriverEncapsulation(String openingURL) {
+	public HtmlUnitDriverEncapsulation() {
 		super(Configuration.byDefault);
-		constructBodyInGeneral(openingURL, htnlUnitDriver);
+		constructBodyInGeneral( htnlUnitDriver);
 	}
 	
-	public HtmlUnitDriverEncapsulation(Configuration configuration, String openingURL) {
+	public HtmlUnitDriverEncapsulation(Configuration configuration) {
 		super(configuration);
-		constructBodyInGeneral(openingURL,htnlUnitDriver);
+		constructBodyInGeneral(htnlUnitDriver);
 	}
 
-	public HtmlUnitDriverEncapsulation(String openingURL,
-			Capabilities capabilities) {
+	public HtmlUnitDriverEncapsulation(Capabilities capabilities) {
 		super(Configuration.byDefault);
-		constructBodyInGeneral(openingURL, htnlUnitDriver, capabilities);
+		constructBodyInGeneral(htnlUnitDriver, capabilities);
 	}
 	
-	public HtmlUnitDriverEncapsulation(Configuration configuration, String openingURL,
-			Capabilities capabilities) {
+	public HtmlUnitDriverEncapsulation(Configuration configuration, Capabilities capabilities) {
 		super(configuration);
-		constructBodyInGeneral(openingURL, htnlUnitDriver, capabilities);
+		constructBodyInGeneral(htnlUnitDriver, capabilities);
 	}	
 	
-	private void constructBody(String openingURL,
-			boolean enableJavascript)
+	private void constructBody(boolean enableJavascript)
 	{
-		createWebDriver(openingURL, htnlUnitDriver, new Class<?>[] {Boolean.class}, new Object[] {enableJavascript});
+		createWebDriver(htnlUnitDriver, new Class<?>[] {Boolean.class}, new Object[] {enableJavascript});
 	}
 	
-	private void constructBody(String openingURL,
-			BrowserVersion version)
+	private void constructBody(BrowserVersion version)
 	{
-		createWebDriver(openingURL, htnlUnitDriver, new Class<?>[] {BrowserVersion.class}, new Object[] {version});
+		createWebDriver(htnlUnitDriver, new Class<?>[] {BrowserVersion.class}, new Object[] {version});
 	}	
 	
-	public HtmlUnitDriverEncapsulation(String URL,
-			boolean enableJavascript) {
+	public HtmlUnitDriverEncapsulation(boolean enableJavascript) {
 		super(Configuration.byDefault);
-		constructBody(URL, enableJavascript);
+		constructBody(enableJavascript);
 	}
 	
-	public HtmlUnitDriverEncapsulation(Configuration configuration, String URL,
-			boolean enableJavascript) {
+	public HtmlUnitDriverEncapsulation(Configuration configuration, boolean enableJavascript) {
 		super(configuration);
-		constructBody(URL, enableJavascript);
+		constructBody(enableJavascript);
 	}	
 	
-	public HtmlUnitDriverEncapsulation(String URL,
-			BrowserVersion version) {
+	public HtmlUnitDriverEncapsulation(BrowserVersion version) {
 		super(Configuration.byDefault);
-		constructBody(URL, version);
+		constructBody(version);
 	}	
 	
-	public HtmlUnitDriverEncapsulation(Configuration configuration, String URL,
-			BrowserVersion version) {
+	public HtmlUnitDriverEncapsulation(Configuration configuration, BrowserVersion version) {
 		super(configuration);
-		constructBody(URL, version);
+		constructBody(version);
 	}
 
 	@Override

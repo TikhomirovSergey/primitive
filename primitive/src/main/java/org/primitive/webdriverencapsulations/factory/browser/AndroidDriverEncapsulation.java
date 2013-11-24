@@ -13,83 +13,83 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 public class AndroidDriverEncapsulation extends WebDriverEncapsulation {
 	private static final Class<? extends WebDriver> androidDriver = AndroidDriver.class; 
 		
-	public AndroidDriverEncapsulation(Configuration configuration, String openingURL)
+	public AndroidDriverEncapsulation(Configuration configuration)
 	{
 		super(configuration);
-		constructBodyInGeneral(openingURL, androidDriver);
+		constructBodyInGeneral(androidDriver);
 	}
 	
-	public AndroidDriverEncapsulation(String openingURL)
+	public AndroidDriverEncapsulation()
 	{
 		super(Configuration.byDefault);
-		constructBodyInGeneral(openingURL, androidDriver);
+		constructBodyInGeneral(androidDriver);
 	}
 	
-	public AndroidDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities)
+	public AndroidDriverEncapsulation(Configuration configuration, Capabilities capabilities)
 	{
 		super(configuration);
 		DesiredCapabilities desiredCapabilities = (DesiredCapabilities) capabilities;
-		constructBodyInGeneral(openingURL, androidDriver, desiredCapabilities);
+		constructBodyInGeneral(androidDriver, desiredCapabilities);
 	}
 	
-	public AndroidDriverEncapsulation(String openingURL, Capabilities capabilities)
+	public AndroidDriverEncapsulation(Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
 		DesiredCapabilities desiredCapabilities = (DesiredCapabilities) capabilities;
-		constructBodyInGeneral(openingURL, androidDriver, desiredCapabilities);
+		constructBodyInGeneral(androidDriver, desiredCapabilities);
 	}
 	
-	private void constructBody(String openingURL, String remoteAddress)
+	private void constructBody(String remoteAddress)
 	{
-		createWebDriver(openingURL, androidDriver, new Class[] {String.class}, new Object[] {remoteAddress});
+		createWebDriver(androidDriver, new Class[] {String.class}, new Object[] {remoteAddress});
 	}
 	
-	public AndroidDriverEncapsulation(Configuration configuration, String openingURL, String remoteAddress)
-	{
-		super(configuration);
-		constructBody(openingURL, remoteAddress);
-	}
-	
-	public AndroidDriverEncapsulation(String openingURL, String remoteAddress)
-	{
-		super(Configuration.byDefault);
-		constructBody(openingURL, remoteAddress);
-	}
-	
-	private void constructBody(String openingURL, URL remoteAddress)
-	{
-		createWebDriver(openingURL, androidDriver, new Class[] {URL.class}, new Object[] {remoteAddress});
-	}
-	
-	public AndroidDriverEncapsulation(Configuration configuration, String openingURL, URL remoteAddress)
+	public AndroidDriverEncapsulation(Configuration configuration, String remoteAddress)
 	{
 		super(configuration);
-		constructBody(openingURL, remoteAddress);
+		constructBody(remoteAddress);
 	}
 	
-	
-	public AndroidDriverEncapsulation(String openingURL, URL remoteAddress)
+	public AndroidDriverEncapsulation(String remoteAddress)
 	{
 		super(Configuration.byDefault);
-		constructBody(openingURL, remoteAddress);
+		constructBody(remoteAddress);
 	}
 	
-	private void constructBody(String openingURL, URL remoteAddress, DesiredCapabilities capabilities)
+	private void constructBody(URL remoteAddress)
 	{
-		createWebDriver(openingURL, androidDriver, new Class[] {URL.class, DesiredCapabilities.class}, new Object[] {remoteAddress,capabilities});
+		createWebDriver(androidDriver, new Class[] {URL.class}, new Object[] {remoteAddress});
 	}
 	
-	public AndroidDriverEncapsulation(Configuration configuration, String openingURL, URL remoteAddress, DesiredCapabilities capabilities)
+	public AndroidDriverEncapsulation(Configuration configuration, URL remoteAddress)
 	{
 		super(configuration);
-		constructBody(openingURL, remoteAddress, capabilities);
+		constructBody(remoteAddress);
 	}
 	
 	
-	public AndroidDriverEncapsulation(String openingURL, URL remoteAddress, DesiredCapabilities capabilities)
+	public AndroidDriverEncapsulation(URL remoteAddress)
 	{
 		super(Configuration.byDefault);
-		constructBody(openingURL, remoteAddress, capabilities);
+		constructBody(remoteAddress);
+	}
+	
+	private void constructBody(URL remoteAddress, DesiredCapabilities capabilities)
+	{
+		createWebDriver(androidDriver, new Class[] {URL.class, DesiredCapabilities.class}, new Object[] {remoteAddress,capabilities});
+	}
+	
+	public AndroidDriverEncapsulation(Configuration configuration, URL remoteAddress, DesiredCapabilities capabilities)
+	{
+		super(configuration);
+		constructBody(remoteAddress, capabilities);
+	}
+	
+	
+	public AndroidDriverEncapsulation(URL remoteAddress, DesiredCapabilities capabilities)
+	{
+		super(Configuration.byDefault);
+		constructBody(remoteAddress, capabilities);
 	}	
 	
 	

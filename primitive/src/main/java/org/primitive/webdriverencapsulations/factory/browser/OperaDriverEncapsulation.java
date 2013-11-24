@@ -15,60 +15,60 @@ import com.opera.core.systems.OperaSettings;
 public class OperaDriverEncapsulation extends WebDriverEncapsulation {
 	private static final Class<? extends WebDriver> operaDriver = OperaDriver.class;
 
-	public OperaDriverEncapsulation(String openingURL) {
+	public OperaDriverEncapsulation() {
 		super(Configuration.byDefault);
-		constructBodyInGeneral(openingURL, operaDriver);
+		constructBodyInGeneral(operaDriver);
 	}
 	
-	public OperaDriverEncapsulation(Configuration configuration, String openingURL) {
+	public OperaDriverEncapsulation(Configuration configuration) {
 		super(configuration);
-		constructBodyInGeneral(openingURL, operaDriver);
+		constructBodyInGeneral(operaDriver);
 	}
 	
-	public OperaDriverEncapsulation(String openingURL, Capabilities capabilities) {
+	public OperaDriverEncapsulation(Capabilities capabilities) {
 		super(Configuration.byDefault);
-		constructBodyInGeneral(openingURL, operaDriver);
+		constructBodyInGeneral(operaDriver);
 	}
 	
-	public OperaDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities) {
+	public OperaDriverEncapsulation(Configuration configuration, Capabilities capabilities) {
 		super(configuration);
-		constructBodyInGeneral(openingURL, operaDriver, capabilities);
+		constructBodyInGeneral(operaDriver, capabilities);
 	}	
 	
-	private void constructBody(String openingURL, OperaProfile profile)
+	private void constructBody(OperaProfile profile)
 	{
-		createWebDriver(openingURL, operaDriver, new Class[] {OperaProfile.class}, new Object[] {profile}); 
+		createWebDriver(operaDriver, new Class[] {OperaProfile.class}, new Object[] {profile}); 
 	}
 	
-	private void constructBody(String openingURL, OperaSettings settings)
+	private void constructBody(OperaSettings settings)
 	{
-		createWebDriver(openingURL, operaDriver, new Class[] {OperaSettings.class}, new Object[] {settings});
+		createWebDriver(operaDriver, new Class[] {OperaSettings.class}, new Object[] {settings});
 	}	
 	
-	public OperaDriverEncapsulation(String URL, OperaProfile profile)
+	public OperaDriverEncapsulation(OperaProfile profile)
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, profile);
+		constructBody(profile);
 
 	}
 	
-	public OperaDriverEncapsulation(Configuration configuration, String URL, OperaProfile profile)
+	public OperaDriverEncapsulation(Configuration configuration, OperaProfile profile)
 	{
 		super(configuration);
-		constructBody(URL, profile);
+		constructBody(profile);
 
 	}	
 	
-	public OperaDriverEncapsulation(String URL, OperaSettings settings)
+	public OperaDriverEncapsulation(OperaSettings settings)
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, settings);
+		constructBody(settings);
 	}	
 	
-	public OperaDriverEncapsulation(Configuration configuration, String URL, OperaSettings settings)
+	public OperaDriverEncapsulation(Configuration configuration, OperaSettings settings)
 	{
 		super(configuration);
-		constructBody(URL, settings);
+		constructBody(settings);
 	}
 
 

@@ -22,113 +22,101 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	private static SeleniumServer server;	
 	private static Class<? extends WebDriver> remoteDriver = RemoteWebDriver.class;
 		
-	public RemoteWebDriverEncapsulation(String openingURL,
-			Capabilities capabilities) {
+	public RemoteWebDriverEncapsulation(Capabilities capabilities) {
 		super(Configuration.byDefault);
 		prepare(); //starts server locally
 		initForLocalWorking(capabilities);
-		constructBodyInGeneral(openingURL, remoteDriver, capabilities);
+		constructBodyInGeneral(remoteDriver, capabilities);
 	}
 	
-	public RemoteWebDriverEncapsulation(Configuration configuration, String openingURL,
+	public RemoteWebDriverEncapsulation(Configuration configuration,
 			Capabilities capabilities) {
 		super(configuration);
 		prepare(); //starts server locally
 		initForLocalWorking(capabilities);
-		constructBodyInGeneral(openingURL, remoteDriver, capabilities);
+		constructBodyInGeneral(remoteDriver, capabilities);
 	}
 	
-	private void constructBody(String openingURL,
-			Capabilities capabilities, URL remoteAddress)
+	private void constructBody(Capabilities capabilities, URL remoteAddress)
 	{
-		createWebDriver(openingURL, remoteDriver, new Class[] {URL.class, Capabilities.class}, new Object[] {remoteAddress, capabilities});
+		createWebDriver(remoteDriver, new Class[] {URL.class, Capabilities.class}, new Object[] {remoteAddress, capabilities});
 	}
 	
-	private void constructBody(String openingURL,
-			Capabilities capabilities, CommandExecutor executor)
+	private void constructBody(Capabilities capabilities, CommandExecutor executor)
 	{
 		prepare(); //starts server locally
 		initForLocalWorking(capabilities);
-		createWebDriver(openingURL, remoteDriver, new Class[] {CommandExecutor.class, Capabilities.class}, new Object[] {executor, capabilities});
+		createWebDriver(remoteDriver, new Class[] {CommandExecutor.class, Capabilities.class}, new Object[] {executor, capabilities});
 	}	
 	
-	private void constructBody(String openingURL,
-			Capabilities desiredCapabilities, 
+	private void constructBody(Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  CommandExecutor executor)
 	{
 		prepare(); //starts server locally
-		createWebDriver(openingURL, remoteDriver, new Class[] {CommandExecutor.class, Capabilities.class, Capabilities.class},
+		createWebDriver(remoteDriver, new Class[] {CommandExecutor.class, Capabilities.class, Capabilities.class},
 				new Object[] {executor, desiredCapabilities, requiredCapabilities});
 	}	
 	
-	private void constructBody(String openingURL,
-			Capabilities desiredCapabilities, 
+	private void constructBody(Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  URL remoteAddress)
 	{
-		createWebDriver(openingURL, remoteDriver, new Class[] {URL.class, Capabilities.class, Capabilities.class},
+		createWebDriver(remoteDriver, new Class[] {URL.class, Capabilities.class, Capabilities.class},
 				new Object[] {remoteAddress, desiredCapabilities, requiredCapabilities});
 	}	
 	
-	public RemoteWebDriverEncapsulation(String URL,
-			Capabilities capabilities, URL remoteAddress) 
+	public RemoteWebDriverEncapsulation(Capabilities capabilities, URL remoteAddress) 
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, capabilities, remoteAddress);
+		constructBody(capabilities, remoteAddress);
 	}
 	
-	public RemoteWebDriverEncapsulation(Configuration configuration, String URL,
-			Capabilities capabilities, URL remoteAddress) 
+	public RemoteWebDriverEncapsulation(Configuration configuration, Capabilities capabilities, URL remoteAddress) 
 	{
 		super(configuration);
-		constructBody(URL, capabilities, remoteAddress);
+		constructBody(capabilities, remoteAddress);
 	}
 	
-	public RemoteWebDriverEncapsulation(String URL,
-			Capabilities capabilities, CommandExecutor executor) 
+	public RemoteWebDriverEncapsulation(Capabilities capabilities, CommandExecutor executor) 
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, capabilities, executor);
+		constructBody(capabilities, executor);
 		
 	}	
 	
-	public RemoteWebDriverEncapsulation(Configuration configuration, String URL,
+	public RemoteWebDriverEncapsulation(Configuration configuration, 
 			Capabilities capabilities, CommandExecutor executor) 
 	{
 		super(configuration);
-		constructBody(URL, capabilities, executor);
+		constructBody(capabilities, executor);
 		
 	}
 	
-	public RemoteWebDriverEncapsulation(String URL,
-			Capabilities desiredCapabilities, 
+	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  CommandExecutor executor) 
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, desiredCapabilities, requiredCapabilities, executor);
+		constructBody(desiredCapabilities, requiredCapabilities, executor);
 	}
 	
-	public RemoteWebDriverEncapsulation(Configuration configuration, String URL,
-			Capabilities desiredCapabilities, 
+	public RemoteWebDriverEncapsulation(Configuration configuration, Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  CommandExecutor executor) 
 	{
 		super(configuration);
-		constructBody(URL, desiredCapabilities, requiredCapabilities, executor);
+		constructBody(desiredCapabilities, requiredCapabilities, executor);
 	}
 	
-	public RemoteWebDriverEncapsulation(String URL,
-			Capabilities desiredCapabilities, 
+	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  URL remoteAddress) 
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, desiredCapabilities, requiredCapabilities, remoteAddress);		
+		constructBody(desiredCapabilities, requiredCapabilities, remoteAddress);		
 	}
 	
-	public RemoteWebDriverEncapsulation(Configuration configuration, String URL,
-			Capabilities desiredCapabilities, 
+	public RemoteWebDriverEncapsulation(Configuration configuration, Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  URL remoteAddress) 
 	{
 		super(configuration);
-		constructBody(URL, desiredCapabilities, requiredCapabilities, remoteAddress);		
+		constructBody(desiredCapabilities, requiredCapabilities, remoteAddress);		
 	}	
 
 	

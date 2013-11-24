@@ -13,44 +13,44 @@ public class PhantomJSDriverEncapsulation extends WebDriverEncapsulation {
 
 	private static final Class<? extends WebDriver> phantomJSDriver = PhantomJSDriver.class; 
 	
-	public PhantomJSDriverEncapsulation(Configuration configuration, String openingURL)
+	public PhantomJSDriverEncapsulation(Configuration configuration)
 	{
 		super(configuration);
 		prepare();
-		constructBodyInGeneral(openingURL, phantomJSDriver);
+		constructBodyInGeneral(phantomJSDriver);
 	}
 
-	public PhantomJSDriverEncapsulation(String openingURL)
+	public PhantomJSDriverEncapsulation()
 	{
 		super(Configuration.byDefault);
 		prepare();
-		constructBodyInGeneral(openingURL, phantomJSDriver);
+		constructBodyInGeneral( phantomJSDriver);
 	}
 
-	public PhantomJSDriverEncapsulation(Configuration configuration, String openingURL, Capabilities capabilities)
+	public PhantomJSDriverEncapsulation(Configuration configuration, Capabilities capabilities)
 	{
 		super(configuration);
 		prepare();
-		constructBodyInGeneral(openingURL, phantomJSDriver, capabilities);
+		constructBodyInGeneral(phantomJSDriver, capabilities);
 	}
 
-	public PhantomJSDriverEncapsulation(String openingURL, Capabilities capabilities)
+	public PhantomJSDriverEncapsulation(Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
 		prepare();
-		constructBodyInGeneral(openingURL, phantomJSDriver, capabilities);
+		constructBodyInGeneral(phantomJSDriver, capabilities);
 	}
 
-	public PhantomJSDriverEncapsulation(Configuration configuration, String URL, DriverService service, Capabilities desiredCapabilities)
+	public PhantomJSDriverEncapsulation(Configuration configuration, DriverService service, Capabilities desiredCapabilities)
 	{
 		super(configuration);
-		constructBody(URL, service, desiredCapabilities);
+		constructBody(service, desiredCapabilities);
 	}
 
-	public PhantomJSDriverEncapsulation(String URL, ChromeDriverService service, Capabilities desiredCapabilities)
+	public PhantomJSDriverEncapsulation(ChromeDriverService service, Capabilities desiredCapabilities)
 	{
 		super(Configuration.byDefault);
-		constructBody(URL, service, desiredCapabilities);
+		constructBody(service, desiredCapabilities);
 	}
 
 	@Override
@@ -58,10 +58,10 @@ public class PhantomJSDriverEncapsulation extends WebDriverEncapsulation {
 		setSystemPropertyLocally(ExeProperties.FORPHANTOMJS.getProperty(), configuration.getPhantomJSDriverSettings(), ExeProperties.FORPHANTOMJS.getDefaultPropertyValue());		
 	}
 	
-	private void constructBody(String openingURL, DriverService service, Capabilities desiredCapabilities)
+	private void constructBody(DriverService service, Capabilities desiredCapabilities)
 	{
 		prepare();
-		createWebDriver(openingURL, phantomJSDriver, new Class<?> [] {DriverService.class, Capabilities.class}, new Object[] {service, desiredCapabilities});
+		createWebDriver(phantomJSDriver, new Class<?> [] {DriverService.class, Capabilities.class}, new Object[] {service, desiredCapabilities});
 	}
 
 }
