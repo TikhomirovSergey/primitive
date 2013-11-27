@@ -42,6 +42,13 @@ public final class ObjectFactory extends TestObject {
 		}
 	}
 	
+	//The same action with the URL to be opened
+	private static SingleWindow getFirstBrowserWindow(WebDriverEncapsulation driver, Class<? extends TestObject> requiredClass, String urlToBeOpened) throws ConcstructTestObjectException
+	{
+		driver.getTo(urlToBeOpened);
+		return getFirstBrowserWindow(driver, requiredClass);
+	}	
+	
 	//Steps: 1. Creates new web driver instance using specified parameters
 	//       2. Loads specified URL
 	//       3. Gets new entity instance from first browser window with loaded URL
@@ -52,18 +59,15 @@ public final class ObjectFactory extends TestObject {
 	//Argument "values" should be specified without any "SingleWindow" object
 	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, ESupportedDrivers supportedDriver, String urlToBeLoaded, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		try
-		{
-			SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, urlToBeLoaded),entityClass);
-			return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params),  restructureValueArrayUsingWindow(statrtWindow, values));
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver),entityClass, urlToBeLoaded);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params),  restructureValueArrayUsingWindow(statrtWindow, values));
+	}
+	
+	//the same without any URL
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, ESupportedDrivers supportedDriver, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	{
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver),entityClass);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params),  restructureValueArrayUsingWindow(statrtWindow, values));
 	}
 	
 	//Here default constructor is used
@@ -73,6 +77,13 @@ public final class ObjectFactory extends TestObject {
 		Object[] values = new Object[] {}; 
 		return getEntity(entityClass, supportedDriver, urlToBeLoaded, params, values);
 	}
+	
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, ESupportedDrivers supportedDriver) throws ConcstructTestObjectException
+	{
+		Class<?>[] params = new Class<?>[] {};
+		Object[] values = new Object[] {}; 
+		return getEntity(entityClass, supportedDriver, params, values);
+	}
 		
 	//This factory method uses any accessible Entity constructor
 	//"SingleWindow" should be first in the list of constructor parameters 
@@ -80,18 +91,15 @@ public final class ObjectFactory extends TestObject {
 	//Argument "values" should be specified without any "SingleWindow" object
 	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, ESupportedDrivers supportedDriver, Capabilities capabilities, String urlToBeLoaded, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		try
-		{
-			SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, urlToBeLoaded),entityClass);
-			return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params),  restructureValueArrayUsingWindow(statrtWindow, values));
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities),entityClass, urlToBeLoaded);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params),  restructureValueArrayUsingWindow(statrtWindow, values));
+	}
+	
+	//the same without any URL
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, ESupportedDrivers supportedDriver, Capabilities capabilities, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	{
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities),entityClass);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params),  restructureValueArrayUsingWindow(statrtWindow, values));
 	}
 	
 	//Here default constructor is used
@@ -102,24 +110,27 @@ public final class ObjectFactory extends TestObject {
 		return getEntity(entityClass, supportedDriver, capabilities, urlToBeLoaded, params, values);
 	}
 	
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, ESupportedDrivers supportedDriver, Capabilities capabilities) throws ConcstructTestObjectException
+	{
+		Class<?>[] params = new Class<?>[] {};
+		Object[] values = new Object[] {}; 
+		return getEntity(entityClass, supportedDriver, capabilities, params, values);
+	}
+	
 	//This factory method uses any accessible Entity constructor
 	//"SingleWindow" should be first in the list of constructor parameters 
 	//Argument "params" should be defined without "SingleWindow" class because it will be added by this method
 	//Argument "values" should be specified without any "SingleWindow" object
 	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, ESupportedDrivers supportedDriver, Capabilities capabilities, String urlToBeLoaded, URL remoteAddress, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		try
-		{
-			SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, urlToBeLoaded, remoteAddress), entityClass);
-			return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params),  restructureValueArrayUsingWindow(statrtWindow, values));
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, remoteAddress), entityClass, urlToBeLoaded);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params),  restructureValueArrayUsingWindow(statrtWindow, values));
+	}
+	
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, ESupportedDrivers supportedDriver, Capabilities capabilities, URL remoteAddress, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	{
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, remoteAddress), entityClass);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params),  restructureValueArrayUsingWindow(statrtWindow, values));
 	}
 	
 	//Here default constructor is used
@@ -128,6 +139,13 @@ public final class ObjectFactory extends TestObject {
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {}; 
 		return getEntity(entityClass, supportedDriver, capabilities, urlToBeLoaded, remoteAddress, params, values);
+	}	
+	
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, ESupportedDrivers supportedDriver, Capabilities capabilities, URL remoteAddress) throws ConcstructTestObjectException
+	{
+		Class<?>[] params = new Class<?>[] {};
+		Object[] values = new Object[] {}; 
+		return getEntity(entityClass, supportedDriver, capabilities, remoteAddress, params, values);
 	}	
 	
 	//Steps: 1. Creates new web driver instance using configuration
@@ -141,18 +159,14 @@ public final class ObjectFactory extends TestObject {
 	//Default configuration is used below	
 	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, String url, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{	
-		try
-		{
-			SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(url),entityClass);
-			return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(),entityClass, url);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
+	}
+	
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	{	
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(),entityClass);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
 	}
 	
 	//default constructor is used here
@@ -163,6 +177,13 @@ public final class ObjectFactory extends TestObject {
 		return getEntity(entityClass, url, params, values);
 	}
 	
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass) throws ConcstructTestObjectException
+	{	
+		Class<?>[] params = new Class<?>[] {};
+		Object[] values = new Object[] {}; 
+		return getEntity(entityClass, params, values);
+	}
+	
 	
 	//This factory method uses any accessible Entity constructor
 	//"SingleWindow" should be first in the list of constructor parameters 
@@ -171,18 +192,14 @@ public final class ObjectFactory extends TestObject {
 	//Specified configuration is used below	
 	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, Configuration config, String url, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{	
-		try
-		{
-			SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(config, url),entityClass);
-			return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(config),entityClass, url);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
+	}
+	
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, Configuration config, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	{	
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(config),entityClass);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
 	}
 	
 	//default constructor is used here
@@ -193,6 +210,16 @@ public final class ObjectFactory extends TestObject {
 		return getEntity(entityClass, config, url, params, values);
 	}	
 	
+	//default constructor is used here
+	public static <T extends Entity> T getEntity(Class<? extends Entity> entityClass, Configuration config) throws ConcstructTestObjectException
+	{	//with default configuration
+		Class<?>[] params = new Class<?>[] {};
+		Object[] values = new Object[] {}; 
+		return getEntity(entityClass, config, params, values);
+	}
+	
+	
+	
 	//-------
 	//Steps: 1. Uses existing web driver instance
 	//       2. Loads specified URL
@@ -200,8 +227,13 @@ public final class ObjectFactory extends TestObject {
 	//Specified configuration is used below	
 	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver, Class<? extends Entity> entityClass, String url, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(driver, entityClass, url);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
+	}
+	
+	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver, Class<? extends Entity> entityClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	{
 		SingleWindow   statrtWindow   = getFirstBrowserWindow(driver, entityClass);
-		driver.getTo(url);
 		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
 	}
 	
@@ -213,6 +245,13 @@ public final class ObjectFactory extends TestObject {
 		return getEntity(driver, entityClass, url, params, values);
 	}
 	
+	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver, Class<? extends Entity> entityClass) throws ConcstructTestObjectException
+	{	//with default configuration
+		Class<?>[] params = new Class<?>[] {};
+		Object[] values = new Object[] {}; 
+		return getEntity(driver, entityClass, params, values);
+	}
+	
 	//Steps: 1. Uses existing web driver instance and resets with specified configuration
 	//       2. Loads specified URL
 	//       3. Gets new entity instance from first browser window with loaded URL
@@ -220,8 +259,14 @@ public final class ObjectFactory extends TestObject {
 	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver, Class<? extends Entity> entityClass, Configuration config, String url,  Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
 		driver.resetAccordingTo(config);
+		SingleWindow   statrtWindow   = getFirstBrowserWindow(driver, entityClass,url);
+		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
+	}
+	
+	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver, Class<? extends Entity> entityClass, Configuration config,  Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	{
+		driver.resetAccordingTo(config);
 		SingleWindow   statrtWindow   = getFirstBrowserWindow(driver, entityClass);
-		driver.getTo(url);
 		return getProxy(entityClass, EntityInterceptor.class, restructureParamArrayUsingWindow(params), restructureValueArrayUsingWindow(statrtWindow, values));
 	}
 	
@@ -231,6 +276,13 @@ public final class ObjectFactory extends TestObject {
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {}; 
 		return getEntity(driver, entityClass, config, url, params, values);
+	}
+	
+	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver, Class<? extends Entity> entityClass, Configuration config) throws ConcstructTestObjectException
+	{	//with default configuration
+		Class<?>[] params = new Class<?>[] {};
+		Object[] values = new Object[] {}; 
+		return getEntity(driver, entityClass, config, params, values);
 	}
 	
 	private static Class<?>[] restructureParamArrayUsingWindow(Class<?>[] original)
@@ -269,84 +321,34 @@ public final class ObjectFactory extends TestObject {
 	//- using new web driver instance:
 	public static <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, ESupportedDrivers supportedDriver, String urlToBeLoaded) throws ConcstructTestObjectException
 	{
-		try
-		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, urlToBeLoaded),partClass);
-			return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}		
+		SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver),partClass, urlToBeLoaded);
+		return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 	}
 	
 	public static <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, ESupportedDrivers supportedDriver,  Capabilities capabilities, String urlToBeLoaded) throws ConcstructTestObjectException
 	{
-		try
-		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, urlToBeLoaded),partClass);
-			return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}	
+		SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities),partClass, urlToBeLoaded);
+		return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 	}
 	
 	public static <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, ESupportedDrivers supportedDriver,  Capabilities capabilities, String urlToBeLoaded, URL remoteAddress) throws ConcstructTestObjectException
 	{
-		try
-		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, urlToBeLoaded, remoteAddress),partClass);
-			return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}	
+		SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(supportedDriver, capabilities, remoteAddress),partClass, urlToBeLoaded);
+		return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 	}
 	
 	// - using default configuration
 	public static <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String urlToBeLoaded) throws ConcstructTestObjectException
 	{
-		try
-		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(urlToBeLoaded),partClass);
-			return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}	
+		SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(),partClass,urlToBeLoaded);
+		return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 	}
 	
 	// - using specified configuration
 	public static <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Configuration config, String urlToBeLoaded) throws ConcstructTestObjectException
 	{
-		try
-		{
-			SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(config, urlToBeLoaded),partClass);
-			return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
-		}
-		catch (ConcstructTestObjectException e)
-		{
-			throw e;
-		}
-		catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}	
+		SingleWindow   pageWindow   = getFirstBrowserWindow(WebDriverEncapsulationFactory.initNewInstance(config),partClass, urlToBeLoaded);
+		return  get(partClass, new Class[] {SingleWindow.class},  new Object[] {pageWindow});
 	}	
 	
 }

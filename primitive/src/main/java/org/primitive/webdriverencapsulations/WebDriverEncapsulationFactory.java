@@ -1,6 +1,7 @@
 package org.primitive.webdriverencapsulations;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class WebDriverEncapsulationFactory
 	//the real factory method is there
 	@SuppressWarnings("unchecked")
 	private static <T extends WebDriverEncapsulation> T initInstance(Class<? extends WebDriverEncapsulation> instanseClass,
-																Class<?>[] classParams, Object[] values) throws Exception
+																Class<?>[] classParams, Object[] values)
 	{
 
 		Constructor<?>[] constructors = instanseClass.getConstructors();
@@ -31,22 +32,20 @@ public class WebDriverEncapsulationFactory
 			Class<?>[] params = constructors[i].getParameterTypes();  
 			if (Arrays.equals(params, classParams))
 			{
-				return (T) constructors[i].newInstance(values);
+				try {
+					return (T) constructors[i].newInstance(values);
+				} catch (InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 			  
-		throw new NoSuchMethodException("Wrong specified constructor of WebDriver encapsulation innstance! " + instanseClass.getSimpleName());
+		throw new RuntimeException(new NoSuchMethodException("Wrong specified constructor of WebDriver encapsulation innstance! " + instanseClass.getSimpleName()));
 	}
 	
-	private static WebDriverEncapsulation getTo(WebDriverEncapsulation instance, String appUrl)
-	{
-		instance.getTo(appUrl);
-		return instance;
-	}
-	
-	//It is the invocation of factory method with manually specified web driver and opening URL
-	//Application is not defined as URL. It is defined in another way
-	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark) throws Exception
+	//It is the invocation of factory method with manually specified web driver
+	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark)
 	{
 		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.getProduct(webDriverMark);
 		if (webDriverMark != ESupportedDrivers.REMOTE) //if there is web driver that can be started without any capabities
@@ -59,30 +58,17 @@ public class WebDriverEncapsulationFactory
 		}
 	}
 	
-	//It is the invocation of factory method with manually specified web driver and opening URL
-	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, String url) throws Exception
-	{
-		return getTo(initNewInstance(webDriverMark), url);
-	}
-	
-	//It is the invocation of factory method with manually specified web driver, capabilities and opening URL
-	//Application is not defined as URL. It is defined in another way
-	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities) throws Exception
+	//It is the invocation of factory method with manually specified web driver, capabilities
+	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities)
 	{
 		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.getProduct(webDriverMark);
 		return initInstance(newInstanceClass, new Class[] {Capabilities.class} , new Object[] {capabilities});
 	}
 	
-	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, String url) throws Exception
-	{
-		return getTo(initNewInstance(webDriverMark, capabilities), url);
-	}
-	
-	//It is the invocation of factory method with manually specified web driver, capabilities, remote address and opening URL
+	//It is the invocation of factory method with manually specified web driver, capabilities, remote address
 	//It is necessary to know - remote address will be used when RempteWebDriver is created.
 	//For any other web driver it will be ignored.
-	//Application is not defined as URL. It is defined in another way
-	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, URL remoteAdress) throws Exception
+	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, URL remoteAdress)
 	{
 		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.getProduct(webDriverMark);
 		if (webDriverMark == ESupportedDrivers.REMOTE)
@@ -94,14 +80,6 @@ public class WebDriverEncapsulationFactory
 			Log.message("Remote address " + remoteAdress.toString() + " has been ignored");
 			return initInstance(newInstanceClass, new Class[] { Capabilities.class} , new Object[] {capabilities});
 		}		
-	}
-	
-	//It is the invocation of factory method with manually specified web driver, capabilities, remote address and opening URL
-	//It is necessary to know - remote address will be used when RempteWebDriver is created.
-	//For any other web driver it will be ignored.
-	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, String url, URL remoteAdress) throws Exception
-	{
-		return getTo(initNewInstance(webDriverMark, capabilities, remoteAdress),url);
 	}
 	
 	private static Capabilities getCapabilitiesFromConfig(Configuration configuration, ESupportedDrivers mark)
@@ -135,8 +113,7 @@ public class WebDriverEncapsulationFactory
 	}
 	
 	//It is the invocation of factory method with parameters that are specified in configuration
-	//Application is not defined as URL. It is defined in another way
-	public static WebDriverEncapsulation initNewInstance(Configuration configuration) throws Exception
+	public static WebDriverEncapsulation initNewInstance(Configuration configuration)
 	{		
 		ESupportedDrivers mark = getSupportedDriverFromConfig(configuration);
 		
@@ -178,23 +155,9 @@ public class WebDriverEncapsulationFactory
 		return initInstance(EFactoryProducts.getProduct(mark), convertToClassArray(classes) , values.toArray());	
 	}
 	
-	//It is the invocation of factory method with parameters that are specified in configuration
-	public static WebDriverEncapsulation initNewInstance(Configuration configuration, String appUrl) throws Exception
-	{		
-		return getTo(initNewInstance(configuration),appUrl);
-	}
-	
 	//It is the invocation of factory method with parameters that are specified in default configuration
-	//Application is not defined as URL. It is defined in another way
-	public static WebDriverEncapsulation initNewInstance() throws Exception
+	public static WebDriverEncapsulation initNewInstance()
 	{
 		return initNewInstance(Configuration.byDefault);
-	}
-
-	//It is the invocation of factory method with parameters that are specified in default configuration
-	public static WebDriverEncapsulation initNewInstance(String url) throws Exception
-	{
-		return initNewInstance(Configuration.byDefault,url);
-	}
-	
+	}	
 }

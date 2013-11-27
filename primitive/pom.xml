@@ -29,7 +29,31 @@
             <groupId>com.opera</groupId>
             <artifactId>operadriver</artifactId>
             <version>1.5</version>
-        </dependency>       
+        </dependency>  
+        <dependency>
+			<groupId>com.github.detro.ghostdriver</groupId>
+			<artifactId>phantomjsdriver</artifactId>
+			<version>1.0.4</version>
+			  
+			   <exclusions>
+			   
+			     <exclusion>
+		            <groupId>org.seleniumhq.selenium</groupId>
+		            <artifactId>selenium-java</artifactId>
+			     </exclusion>
+			     
+			     <exclusion>
+		            <groupId>org.seleniumhq.selenium</groupId>
+		            <artifactId>selenium-server</artifactId>
+			     </exclusion>
+			     
+			     <exclusion>
+		            <groupId>org.seleniumhq.selenium</groupId>
+		            <artifactId>selenium-remote-driver</artifactId>
+			     </exclusion>
+			  </exclusions>
+			   
+		</dependency>     
   </dependencies> 
   
   <developers>
