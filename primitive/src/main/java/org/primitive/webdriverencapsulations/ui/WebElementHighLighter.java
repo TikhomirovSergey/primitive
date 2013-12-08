@@ -145,6 +145,10 @@ public class WebElementHighLighter implements IConfigurable,
 		{	
 			Photographer.takeAPictureForLog(driver, LogLevel, Comment);
 		}	
+		else
+		{
+			Log.log(LogLevel, Comment);
+		}
 		currentHighLighter.interrupt();
 	}
 
@@ -156,6 +160,10 @@ public class WebElementHighLighter implements IConfigurable,
 		{	
 			Photographer.takeAPictureOfAFine(driver, Comment);
 		}	
+		else
+		{
+			Log.debug(Comment);
+		}
 		currentHighLighter.interrupt();
 	}
 
@@ -167,6 +175,10 @@ public class WebElementHighLighter implements IConfigurable,
 		{	
 			Photographer.takeAPictureOfAFine(driver, Comment);
 		}	
+		else
+		{
+			Log.debug(Comment);
+		}
 		currentHighLighter.interrupt();
 
 	}
@@ -178,7 +190,11 @@ public class WebElementHighLighter implements IConfigurable,
 		if (toDoScreenShots)
 		{	
 			Photographer.takeAPictureOfAnInfo(driver, Comment);
-		}	
+		}
+		else
+		{
+			Log.message(Comment);
+		}
 		currentHighLighter.interrupt();
 	}
 
@@ -190,6 +206,10 @@ public class WebElementHighLighter implements IConfigurable,
 		{	
 			Photographer.takeAPictureOfAnInfo(driver, Comment);
 		}	
+		else
+		{
+			Log.message(Comment);
+		}
 		currentHighLighter.interrupt();
 	}
 
@@ -200,7 +220,11 @@ public class WebElementHighLighter implements IConfigurable,
 		if (toDoScreenShots)
 		{	
 			Photographer.takeAPictureOfASevere(driver, Comment);
-		}	
+		}
+		else
+		{
+			Log.error(Comment);
+		}
 		currentHighLighter.interrupt();
 	}
 
@@ -211,7 +235,11 @@ public class WebElementHighLighter implements IConfigurable,
 		if (toDoScreenShots)
 		{	
 			Photographer.takeAPictureOfASevere(driver, Comment);
-		}	
+		}
+		else
+		{
+			Log.error(Comment);
+		}
 		currentHighLighter.interrupt();
 
 	}
@@ -224,6 +252,10 @@ public class WebElementHighLighter implements IConfigurable,
 		{	
 			Photographer.takeAPictureOfAWarning(driver, Comment);
 		}	
+		else
+		{
+			Log.warning(Comment);
+		}
 		currentHighLighter.interrupt();
 
 	}
@@ -235,7 +267,11 @@ public class WebElementHighLighter implements IConfigurable,
 		if (toDoScreenShots)
 		{	
 			Photographer.takeAPictureOfAWarning(driver, Comment);
-		}	
+		}
+		else
+		{
+			Log.warning(Comment);
+		}
 		currentHighLighter.interrupt();
 	}
 
