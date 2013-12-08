@@ -16,20 +16,27 @@ import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
+import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.ElementVisibility;
 
 final class WebdriverInnerListener implements IExtendedWebDriverEventListener, IDestroyable {
 
 	private ElementVisibility elementVisibility;
+	private WebElementHighLighter highLighter;
 	
 	void setElementVisibilityChecker(ElementVisibility elementVisibility)
 	{
 		this.elementVisibility = elementVisibility;
 	}
 	
+	void setHighLighter(WebElementHighLighter highLighter)
+	{
+		this.highLighter = highLighter;
+	}
+	
 	@Override
 	public void afterChangeValueOf(WebElement arg0, WebDriver arg1) {
-		Photographer.takeAPictureOfAnInfo(arg1, arg0, "Element with value that is changed: " + elementDescription(arg0));
+		highLighter.highlightAsInfo(arg1, arg0, "Element with value that is changed: " + elementDescription(arg0));
 	}
 
 	@Override
@@ -72,10 +79,10 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 		elementVisibility.throwIllegalVisibility(arg0);
 		if (!arg0.isEnabled())
 		{
-			Photographer.takeAPictureOfAWarning(arg1, arg0, "Webelement is disabled! " + elementDescription(arg0));
+			highLighter.highlightAsWarning(arg1, arg0, "Webelement is disabled! " + elementDescription(arg0));
 			throw new InvalidElementStateException("Attempt to change value of disabled page element: "  + elementDescription(arg0));
 		}
-		Photographer.takeAPictureOfAnInfo(arg1, arg0, "Element with value that will be changed: "  + elementDescription(arg0));
+		highLighter.highlightAsInfo(arg1, arg0, "Element with value that will be changed: "  + elementDescription(arg0));
 	}
 
 
@@ -83,7 +90,7 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	public void beforeClickOn(WebElement arg0, WebDriver arg1)
 	{
 		elementVisibility.throwIllegalVisibility(arg0);
-		Photographer.takeAPictureOfAnInfo(arg1, arg0, "Click will be performed on this element: "  + elementDescription(arg0));
+		highLighter.highlightAsInfo(arg1, arg0, "Click will be performed on this element: "  + elementDescription(arg0));
 	}
 
 	@Override
@@ -136,7 +143,7 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	@Override
 	public void beforeSubmit(WebDriver driver, WebElement element) {
 		elementVisibility.throwIllegalVisibility(element);
-		Photographer.takeAPictureOfAnInfo(driver, element, "Element that will perform submit: "  + elementDescription(element));			
+		highLighter.highlightAsInfo(driver, element, "Element that will perform submit: "  + elementDescription(element));			
 	}
 
 	@Override

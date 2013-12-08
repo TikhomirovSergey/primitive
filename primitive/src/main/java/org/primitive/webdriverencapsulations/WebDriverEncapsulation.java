@@ -1,8 +1,6 @@
 package org.primitive.webdriverencapsulations;
 
 import static org.junit.Assert.fail;
-
-import java.awt.Color;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +11,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.primitive.configuration.Configuration;
@@ -22,8 +19,8 @@ import org.primitive.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.logging.Log;
-import org.primitive.logging.Photographer;
 import org.primitive.webdriverencapsulations.firing.ExtendedEventFiringWebDriver;
+import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.BrowserLogs;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;
@@ -38,77 +35,12 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.TimeOut;
 
 public abstract class WebDriverEncapsulation implements IDestroyable, IConfigurable, WrapsDriver, HasCapabilities
 {
-	public final class PictureMaker {
-
-		public void takeAPictureOfAFine(String comment)
-		{
-			Photographer.takeAPictureOfAFine(firingDriver, comment);
-		}
-
-		public void takeAPictureOfAFine(WebElement webElement, Color highlight, String comment)
-		{
-			Photographer.takeAPictureOfAFine(firingDriver, webElement, highlight, comment);				
-		}
-
-		public void takeAPictureOfAFine(WebElement webElement, String comment)
-		{
-			Photographer.takeAPictureOfAFine(firingDriver, webElement, comment);			
-		}
-
-		public void takeAPictureOfAnInfo(String comment)
-		{
-			Photographer.takeAPictureOfAnInfo(firingDriver, comment);
-		}
-
-		public void takeAPictureOfAnInfo(WebElement webElement, Color highlight, String comment)
-		{
-			Photographer.takeAPictureOfAnInfo(firingDriver, webElement, highlight, comment);
-		}
-
-		public void takeAPictureOfAnInfo(WebElement webElement, String comment)
-		{
-			Photographer.takeAPictureOfAnInfo(firingDriver, webElement, comment);			
-		}
-
-		public void takeAPictureOfASevere(String comment)
-		{
-			Photographer.takeAPictureOfASevere(firingDriver, comment);
-		}
-
-		public void takeAPictureOfASevere(WebElement webElement, Color highlight, String comment)
-		{
-			Photographer.takeAPictureOfASevere(firingDriver, webElement, comment);
-		}
-
-		public void takeAPictureOfASevere(WebElement webElement, String comment)
-		{
-			Photographer.takeAPictureOfASevere(firingDriver, webElement, comment);				
-		}
-
-		public void takeAPictureOfAWarning(String comment)
-		{
-			Photographer.takeAPictureOfAWarning(firingDriver, comment);
-		}
-
-		public void takeAPictureOfAWarning(WebElement webElement, Color highlight, String comment)
-		{		
-			Photographer.takeAPictureOfAWarning(firingDriver, webElement,highlight, comment);
-		}
-
-		public void takeAPictureOfAWarning(WebElement webElement, String comment)
-		{
-			Photographer.takeAPictureOfAWarning(firingDriver, webElement, comment);					
-		}
-
-	}
-
 	private ExtendedEventFiringWebDriver firingDriver;
 	  protected Configuration configuration;
 	  
 	  protected final static List<WebDriverEncapsulation> driverList = Collections.synchronizedList(new ArrayList<WebDriverEncapsulation>());
 	  
 	  private Awaiting awaiting;	  
-	  private final PictureMaker photoMaker = new PictureMaker();	 
 	  private WindowTimeOuts windowTimeOuts;	 
 	  private PageFactoryWorker pageFactoryWorker;	  
 	  private ScriptExecutor scriptExecutor;	  
@@ -120,6 +52,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  private Interaction interaction;
 	  private ElementVisibility elementVisibility;
 	  private WebdriverInnerListener webInnerListener;
+	  private WebElementHighLighter elementHighLighter;
 
 	  
 	  //actions before web driver will be created	  
@@ -253,9 +186,9 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  return(awaiting);
 	  }
 	  
-	  public PictureMaker getPhotograther()
+	  public WebElementHighLighter getHighlighter()
 	  {
-		  return(photoMaker);
+		  return(elementHighLighter);
 	  }
 	  
 	  public PageFactoryWorker getPageFactoryWorker()
@@ -314,22 +247,24 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  		  
 		  firingDriver = ExtendedEventFiringWebDriver.newInstance(createdDriver);		  
 		  
-		  elementVisibility = new ElementVisibility(firingDriver);
+		  elementVisibility  = new ElementVisibility(firingDriver);
+		  elementHighLighter = new WebElementHighLighter();
 		  
 		  webInnerListener = new WebdriverInnerListener();
 		  webInnerListener.setElementVisibilityChecker(elementVisibility);	
+		  webInnerListener.setHighLighter(elementHighLighter);
 		  
-		  awaiting 			= new Awaiting(firingDriver);	  	  
-		  pageFactoryWorker = new PageFactoryWorker(firingDriver);	  
-		  scriptExecutor    = new ScriptExecutor(firingDriver);	  
-		  frameSupport		= new FrameSupport(firingDriver);	    
-		  cookies           = new Cookies(firingDriver);	  
-		  timeout           = new TimeOut(firingDriver, configuration);	  
-		  logs  			= new BrowserLogs(firingDriver);	  
-		  ime				= new Ime(firingDriver);
-		  interaction       = new Interaction(firingDriver);
+		  awaiting 			 = new Awaiting(firingDriver);	  	  
+		  pageFactoryWorker  = new PageFactoryWorker(firingDriver);	  
+		  scriptExecutor     = new ScriptExecutor(firingDriver);	  
+		  frameSupport		 = new FrameSupport(firingDriver);	    
+		  cookies            = new Cookies(firingDriver);	  
+		  timeout            = new TimeOut(firingDriver, configuration);	  
+		  logs  			 = new BrowserLogs(firingDriver);	  
+		  ime				 = new Ime(firingDriver);
+		  interaction        = new Interaction(firingDriver);
 		  
-		  windowTimeOuts    = new WindowTimeOuts(configuration);
+		  windowTimeOuts     = new WindowTimeOuts(configuration);
 		  
 		  firingDriver.register(webInnerListener);
 		  driverList.add(this);
@@ -358,6 +293,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  finalizeInner(webInnerListener);
 		  finalizeInner(elementVisibility);
 		  finalizeInner(windowTimeOuts);
+		  finalizeInner(elementHighLighter);
 	  }
 	  
 	  //if attempt to create a new web driver instance has been failed 
@@ -403,6 +339,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  timeout.resetAccordingTo(configuration);
 		  elementVisibility.resetAccordingTo(configuration);
 		  windowTimeOuts.resetAccordingTo(configuration);
+		  elementHighLighter.resetAccordingTo(configuration);
 	  }
 	  
 	  //it goes to another URL

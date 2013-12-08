@@ -114,6 +114,11 @@
 		<value>img</value>
 	</setting>	
 	
+	<setting name="toDoScreenShotsOnElementHighLighting">
+  		<type>BOOL</type>
+		<value>true</value>
+	</setting>	
+	
 </group>
 
 <group name="testStatus">

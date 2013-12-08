@@ -20,6 +20,7 @@ import org.primitive.exceptions.UnclosedBrowserWindowException;
 import org.primitive.exceptions.UnswitchableBrowserWindowException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
+import org.primitive.logging.Photographer;
 import org.primitive.webdriverencapsulations.webdrivercomponents.AlertHandler;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 
@@ -270,7 +271,6 @@ public final class WindowSwitcher implements IDestroyable
 	}
 
 	protected WebDriverEncapsulation driverEncapsulation;
-	private WebDriverEncapsulation.PictureMaker photographer;
 	private final static List<WindowSwitcher> swithcerList = Collections.synchronizedList(new ArrayList<WindowSwitcher>());
 	private WindowTimeOuts windowTimeOuts;
 	private Awaiting awaiting;
@@ -319,7 +319,6 @@ public final class WindowSwitcher implements IDestroyable
 	{
 		driverEncapsulation = InitialDriverPerformance;
 		windowTimeOuts   = driverEncapsulation.getWindowTimeOuts();
-		photographer    = driverEncapsulation.getPhotograther();
 		awaiting        = driverEncapsulation.getAwaiting();
 		fluent          = new Fluent(this);
 		swithcerList.add(this);
@@ -529,25 +528,25 @@ public final class WindowSwitcher implements IDestroyable
 	protected synchronized void takeAPictureOfASevere(String handle, String Comment)
 	{
 		changeActiveWindow(handle);
-		photographer.takeAPictureOfASevere(Comment);	
+		Photographer.takeAPictureOfASevere(driverEncapsulation.getWrappedDriver(), Comment);	
 	}
 	
 	protected synchronized void takeAPictureOfAWarning(String handle, String Comment)
 	{
 		changeActiveWindow(handle);
-		photographer.takeAPictureOfAWarning(Comment);	
+		Photographer.takeAPictureOfAWarning(driverEncapsulation.getWrappedDriver(), Comment);	
 	}
 	
 	protected synchronized void takeAPictureOfAnInfo(String handle, String Comment)
 	{
 		changeActiveWindow(handle);
-		photographer.takeAPictureOfAnInfo(Comment);
+		Photographer.takeAPictureOfAnInfo(driverEncapsulation.getWrappedDriver(), Comment);
 	}
 	
 	protected synchronized void takeAPictureOfAFine(String handle, String Comment)
 	{
 		changeActiveWindow(handle);
-		photographer.takeAPictureOfAFine(Comment);	
+		Photographer.takeAPictureOfAFine(driverEncapsulation.getWrappedDriver(), Comment);	
 	}	
 	
 	public synchronized Alert getAlert(long secsToWait) throws NoAlertPresentException

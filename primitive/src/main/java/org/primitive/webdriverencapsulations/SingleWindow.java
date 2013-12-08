@@ -16,13 +16,14 @@ import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.exceptions.UnclosedBrowserWindowException;
 import org.primitive.interfaces.ISingleBrowserWindow;
+import org.primitive.interfaces.ITakesPictureOfItSelf;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.webdrivercomponents.WindowTool;
 
 
 
 //It is performs actions on a single browser window
-public final class SingleWindow implements Window, Navigation, ISingleBrowserWindow {
+public final class SingleWindow implements Window, Navigation, ISingleBrowserWindow, ITakesPictureOfItSelf{
 	private WindowSwitcher nativeSwitcher;
 	private String objectWindow;
 	protected final static List<SingleWindow> openedWindows = Collections.synchronizedList(new ArrayList<SingleWindow>());
@@ -299,21 +300,25 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
 		windowTool.setSize(size);		
 	} 
 	
+	@Override
 	public synchronized void takeAPictureOfAnInfo(String Comment)
 	{
 		nativeSwitcher.takeAPictureOfAnInfo(objectWindow, Comment);
 	}
 
+	@Override
 	public synchronized void takeAPictureOfAFine(String Comment)
 	{
 		nativeSwitcher.takeAPictureOfAFine(objectWindow, Comment);
 	}
 	
+	@Override
 	public synchronized void takeAPictureOfAWarning(String Comment)
 	{
 		nativeSwitcher.takeAPictureOfAWarning(objectWindow, Comment);
 	}
 	
+	@Override
 	public synchronized void takeAPictureOfASevere(String Comment)
 	{
 		nativeSwitcher.takeAPictureOfASevere(objectWindow, Comment);

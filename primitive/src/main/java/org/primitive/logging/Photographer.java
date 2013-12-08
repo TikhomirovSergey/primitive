@@ -1,6 +1,5 @@
 package org.primitive.logging;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -9,12 +8,10 @@ import java.util.Calendar;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.primitive.configuration.Configuration;
@@ -110,38 +107,6 @@ public final class Photographer
 		}
 	}
 	
-	private static void changeStyle(JavascriptExecutor jScriptExecutor, WebElement element, String style)
-	{
-		jScriptExecutor.executeScript("arguments[0].setAttribute('style', '" + style + "');",  element);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			Log.warning(e.getMessage(),e);
-		}
-	}
-	
-	//takes pictures, highlights elements on page and makes buffered images
-	private static BufferedImage takeAPicture(WebDriver driver, WebElement webElement, Color highlight) throws IOException, NoSuchWindowException
-	{
-		try
-		{
-			JavascriptExecutor js = ((JavascriptExecutor) driver);
-			String originalStyle  = webElement.getAttribute("style");
-			changeStyle(js, webElement, "border: 2px solid rgb("+ Integer.toString(highlight.getRed()) +  ","+Integer.toString(highlight.getGreen())+","+Integer.toString(highlight.getBlue())+");");
-			BufferedImage buffer = takeAPicture(driver);
-			changeStyle(js, webElement, originalStyle);
-			return(buffer);
-		}
-		catch (IOException e)
-		{
-			throw e;
-		}
-		catch (NoSuchWindowException e)
-		{
-			throw e;
-		}
-	}
-		
 	//applies images
 	private static void makeFileForLog(BufferedImage imageForLog, Level LogLevel, String Comment)
 	{
@@ -189,30 +154,6 @@ public final class Photographer
 		}		
 	}
 	
-	//takes pictures of full browser windows with highlighted web element
-	public synchronized static void takeAPictureForLog(WebDriver driver, WebElement webElement, Color highlight, Level LogLevel, String Comment) throws NoSuchWindowException
-	{
-		try 
-		{
-			BufferedImage imageForLog= takeAPicture(driver, webElement, highlight);
-			makeFileForLog(imageForLog, LogLevel, Comment);
-		} 
-		catch(IOException e)
-		{
-			Log.warning("Can't post a picture to log! " + e.getMessage());
-			Log.log(LogLevel, Comment);
-		}
-		catch (NoSuchWindowException e) 
-		{
-			throw e;
-		}
-		catch (ClassCastException|UnsupportedOperationException e)
-		{
-			Log.debug("Operation is not supported! Take a screenshot." + e.getMessage(), e);
-			Log.log(LogLevel, Comment);
-		}
-	}
-	
 	public synchronized static void takeAPictureOfASevere(WebDriver driver,  String Comment)
 	{
 		takeAPictureForLog(driver, Level.SEVERE, Comment);
@@ -231,45 +172,5 @@ public final class Photographer
 	public synchronized static void takeAPictureOfAFine(WebDriver driver,  String Comment)
 	{
 		takeAPictureForLog(driver, Level.FINE, Comment);
-	}
-	
-	public synchronized static void takeAPictureOfASevere(WebDriver driver, WebElement webElement, Color highlight, String Comment)
-	{
-		takeAPictureForLog(driver, webElement, highlight, Level.SEVERE, Comment);
-	}
-			
-	public synchronized static void takeAPictureOfAWarning(WebDriver driver, WebElement webElement, Color highlight, String Comment)
-	{
-		takeAPictureForLog(driver, webElement, highlight,Level.WARNING, Comment);
-	}
-			
-	public synchronized static void takeAPictureOfAnInfo(WebDriver driver, WebElement webElement, Color highlight,  String Comment)
-	{
-		takeAPictureForLog(driver, webElement, highlight,  Level.INFO, Comment);
-	}
-	
-	public synchronized static void takeAPictureOfAFine(WebDriver driver,  WebElement webElement, Color highlight,   String Comment)
-	{
-		takeAPictureForLog(driver, webElement, highlight, Level.FINE, Comment);
-	}
-	
-	public synchronized static void takeAPictureOfASevere(WebDriver driver, WebElement webElement, String Comment)
-	{
-		takeAPictureForLog(driver, webElement, eLogColors.SEVERESTATECOLOR.getStateColor(), Level.SEVERE, Comment);
-	}
-
-	public synchronized static void takeAPictureOfAWarning(WebDriver driver, WebElement webElement, String Comment)
-	{
-		takeAPictureForLog(driver, webElement, eLogColors.WARNSTATECOLOR.getStateColor(), Level.WARNING, Comment);
-	}
-		
-	public synchronized static void takeAPictureOfAnInfo(WebDriver driver, WebElement webElement, String Comment)
-	{
-		takeAPictureForLog(driver, webElement, eLogColors.CORRECTSTATECOLOR.getStateColor(),  Level.INFO, Comment);
-	}
-	
-	public synchronized static void takeAPictureOfAFine(WebDriver driver,  WebElement webElement, String Comment)
-	{
-		takeAPictureForLog(driver, webElement, eLogColors.DEBUGCOLOR.getStateColor(), Level.FINE, Comment);
 	}	
 }

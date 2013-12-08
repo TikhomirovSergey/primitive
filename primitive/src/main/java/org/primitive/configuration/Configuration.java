@@ -309,11 +309,13 @@ public class Configuration
 	 *
 	 */
 	public class ScreenShots implements FileSystemProperty, GroupedSetting{
+		private static final String toDoScreenShotsOnElementHighLighting = "toDoScreenShotsOnElementHighLighting";
 		
 		private ScreenShots() {
 			super();
 		}
 		
+		@Override
 		public String getFolder()
 		{
 			return (String) getSettingValue(screenShotssGroup, folderSettingName);
@@ -322,6 +324,11 @@ public class Configuration
 		@Override
 		public String getFile() {
 			return (String) getSettingValue(screenShotssGroup, fileSettingName);
+		}
+		
+		public Boolean getToDoScreenShotsOnElementHighLighting()
+		{
+			return (Boolean) getSettingValue(screenShotssGroup, toDoScreenShotsOnElementHighLighting);
 		}
 		
 		public Object getSetting(String name)

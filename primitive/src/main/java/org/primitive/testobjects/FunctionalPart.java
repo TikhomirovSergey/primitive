@@ -21,10 +21,12 @@ import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.exceptions.UnclosedBrowserWindowException;
+import org.primitive.interfaces.ITakesPictureOfItSelf;
 import org.primitive.logging.Log;
+import org.primitive.logging.Photographer;
 import org.primitive.testobjects.testobject.TestObject;
 import org.primitive.webdriverencapsulations.SingleWindow;
-import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Interaction;
 import org.primitive.webdriverencapsulations.webdrivercomponents.PageFactoryWorker;
@@ -32,7 +34,7 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.PageFactoryWork
  * @author s.tihomirov
  *It describes simple web page or its fragment 
  */
-public abstract class FunctionalPart extends TestObject implements IHasWebElementFrames {
+public abstract class FunctionalPart extends TestObject implements IHasWebElementFrames, ITakesPictureOfItSelf {
 
 	/**
 	 * @author s.tihomirov
@@ -54,10 +56,10 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	//WebElement specification of a frame that object is placed on
 	private Object frameToSwitchOnElem = null;
 	
-	protected WebDriverEncapsulation.PictureMaker photographer;
 	protected static final HashMap<SingleWindow, HashSet<FunctionalPart>> parts = new HashMap<SingleWindow, HashSet<FunctionalPart>>();
     //page object is created by specified entity
 	protected Entity originalEntity;
+	private WebElementHighLighter highLighter;
 	protected Interaction interaction;
 	
 	private boolean isAlive = true; //This attribute is for methods that destroy page objects
@@ -101,7 +103,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		pageFactoryWorker = driverEncapsulation.getPageFactoryWorker();
 		frameSupport      = driverEncapsulation.getFrameSupport();
-		photographer   = driverEncapsulation.getPhotograther();
+		highLighter   = driverEncapsulation.getHighlighter();
 		interaction    = driverEncapsulation.getInteraction();
 		addItselfToMap(nativeWindow);
 	}
@@ -390,79 +392,83 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	
 	//takes screenshots for log messages with SEVERE level
 	@InteractiveMethod
-	public void takeASeverePictire(String comment)
+	@Override
+	public void takeAPictureOfASevere(String comment)
 	{
-		photographer.takeAPictureOfASevere(comment);
+		Photographer.takeAPictureOfASevere(driverEncapsulation.getWrappedDriver(), comment);
 	}
 	
 	@InteractiveMethod
-	public void takeASeverePictire(WebElement element, String comment)
+	public void highlightAsSevere(WebElement element, String comment)
 	{
-		photographer.takeAPictureOfASevere(element, comment);
+		highLighter.highlightAsSevere(driverEncapsulation.getWrappedDriver(), element, comment);
 	}
 	
 	@InteractiveMethod
-	public void takeASeverePictire(WebElement element, Color highlight, String comment)
+	public void highlightAsSevere(WebElement element, Color highlight, String comment)
 	{
-		photographer.takeAPictureOfASevere(element, highlight, comment);
+		highLighter.highlightAsSevere(driverEncapsulation.getWrappedDriver(), element, highlight, comment);
 	}
 	
 	
 	//takes screenshots for log messages with WARNING level
 	@InteractiveMethod
-	public void takeAWarningPictire(String comment)
+	@Override
+	public void takeAPictureOfAWarning(String comment)
 	{
-		photographer.takeAPictureOfAWarning(comment);
+		Photographer.takeAPictureOfAWarning(driverEncapsulation.getWrappedDriver(), comment);
 	}
 	
 	@InteractiveMethod
-	public void takeAWarningPictire(WebElement element, String comment)
+	public void highlightAsWarning(WebElement element, String comment)
 	{
-		photographer.takeAPictureOfAWarning(element, comment);
+		highLighter.highlightAsWarning(driverEncapsulation.getWrappedDriver(), element, comment);
 	}
 	
 	@InteractiveMethod
-	public void takeAWarningPictire(WebElement element, Color highlight, String comment)
+	public void highlightAsWarning(WebElement element, Color highlight, String comment)
 	{
-		photographer.takeAPictureOfAWarning(element, highlight, comment);
+		highLighter.highlightAsWarning(driverEncapsulation.getWrappedDriver(), element, highlight, comment);
 	}	
 	
 	//takes screenshots for log messages with INFO level
 	@InteractiveMethod
-	public void takeAnInfoPictire(String comment)
+	@Override
+	public void takeAPictureOfAnInfo(String comment)
 	{
-		photographer.takeAPictureOfAnInfo(comment);
+		Photographer.takeAPictureOfAnInfo(driverEncapsulation.getWrappedDriver(), comment);
 	}
 	
 	@InteractiveMethod
-	public void takeAnInfoPictire(WebElement element, String comment)
+	public void highlightAsInfo(WebElement element, String comment)
 	{
-		photographer.takeAPictureOfAnInfo(element, comment);
+		highLighter.highlightAsInfo(driverEncapsulation.getWrappedDriver(), element, comment);
 	}
 	
 	@InteractiveMethod
-	public void takeAnInfoPictire(WebElement element, Color highlight, String comment)
+	public void highlightAsInfo(WebElement element, Color highlight, String comment)
 	{
-		photographer.takeAPictureOfAnInfo(element, highlight, comment);
+		highLighter.highlightAsInfo(driverEncapsulation.getWrappedDriver(), element, highlight, comment);
 	}	
 	
 	//takes screenshots for log messages with FINE level
 	@InteractiveMethod
-	public void takeAFinePictire(String comment)
+	@Override
+	public void takeAPictureOfAFine(String comment)
 	{
-		photographer.takeAPictureOfAFine(comment);
+		Photographer.takeAPictureOfAFine(driverEncapsulation.getWrappedDriver(), comment);
 	}
 		
 	@InteractiveMethod
-	public void takeAFinePictire(WebElement element, String comment)
+	public void highlightAsFine(WebElement element, String comment)
 	{
-		photographer.takeAPictureOfAFine(element, comment);
+		highLighter.highlightAsFine(driverEncapsulation.getWrappedDriver(), element, comment);
 	}
 		
 	@InteractiveMethod
-	public void takeAFinePictire(WebElement element, Color highlight, String comment)
+	public void highlightAsFine(WebElement element, Color highlight, String comment)
 	{
-		photographer.takeAPictureOfAFine(element, highlight, comment);
+		highLighter.highlightAsFine(driverEncapsulation.getWrappedDriver(), element, highlight, comment);
 	}
 	
 }
