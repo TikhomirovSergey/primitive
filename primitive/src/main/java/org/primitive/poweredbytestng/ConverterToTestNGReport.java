@@ -9,6 +9,7 @@ import java.util.logging.Level;
 
 import org.primitive.logging.ILogConverter;
 import org.primitive.logging.Photographer;
+import org.primitive.logging.eLogColors;
 import org.primitive.logging.Log.LogRecWithAttach;
 import org.testng.Reporter;
 
@@ -20,15 +21,15 @@ import org.testng.Reporter;
  */	
 public class ConverterToTestNGReport implements ILogConverter{
 
-	private final String debugColor = "Snow";
-	private final String errorColor = "Red";
+	private final String debugColor = eLogColors.DEBUGCOLOR.getHTMLColorDescription();
+	private final String errorColor = eLogColors.SEVERESTATECOLOR.getHTMLColorDescription();
 	private final String htmlItemPattern = 
 			  "<table align='center' width='100%'>"+
 		      "<tr  bgcolor=" + "#Color" + " valign=top align=left>"+
 		      "<td><b>"+"#Time" + " " +"#Message"+" </d></td>"+
 		      "</tr></table>";
-	private final String successColor = "LimeGreen";
-	private final String warnColor = "Yellow";
+	private final String successColor = eLogColors.CORRECTSTATECOLOR.getHTMLColorDescription();
+	private final String warnColor = eLogColors.WARNSTATECOLOR.getHTMLColorDescription();
 	
 	//for posting screenshots as pictures
 	private final String textPatternForPicture = "<p><img src=\"file:///FilePath\" alt=\"Comment\"></p>";

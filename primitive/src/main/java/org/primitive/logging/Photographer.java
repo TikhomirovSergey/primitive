@@ -255,21 +255,21 @@ public final class Photographer
 	
 	public synchronized static void takeAPictureOfASevere(WebDriver driver, WebElement webElement, String Comment)
 	{
-		takeAPictureForLog(driver, webElement, eLogColors.SEVERESTATECOLOR, Level.SEVERE, Comment);
+		takeAPictureForLog(driver, webElement, eLogColors.SEVERESTATECOLOR.getStateColor(), Level.SEVERE, Comment);
 	}
 
 	public synchronized static void takeAPictureOfAWarning(WebDriver driver, WebElement webElement, String Comment)
 	{
-		takeAPictureForLog(driver, webElement, eLogColors.WARNSTATECOLOR, Level.WARNING, Comment);
+		takeAPictureForLog(driver, webElement, eLogColors.WARNSTATECOLOR.getStateColor(), Level.WARNING, Comment);
 	}
 		
 	public synchronized static void takeAPictureOfAnInfo(WebDriver driver, WebElement webElement, String Comment)
 	{
-		takeAPictureForLog(driver, webElement, eLogColors.CORRECTSTATECOLOR,  Level.INFO, Comment);
+		takeAPictureForLog(driver, webElement, eLogColors.CORRECTSTATECOLOR.getStateColor(),  Level.INFO, Comment);
 	}
 	
 	public synchronized static void takeAPictureOfAFine(WebDriver driver,  WebElement webElement, String Comment)
 	{
-		takeAPictureForLog(driver, webElement, eLogColors.DEBUGCOLOR, Level.FINE, Comment);
+		takeAPictureForLog(driver, webElement, eLogColors.DEBUGCOLOR.getStateColor(), Level.FINE, Comment);
 	}	
 }
