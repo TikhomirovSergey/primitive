@@ -1,7 +1,6 @@
 package org.primitive.webdriverencapsulations;
-
-import static org.junit.Assert.fail;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +9,6 @@ import java.util.List;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.primitive.configuration.Configuration;
@@ -107,41 +105,37 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  //it makes objects of any WebDriver and navigates to specified URL
 	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Class<?>[] paramClasses, Object[] values)
 	  {
-		  try
-		  {	
-			  WebDriver driver = null;
-			  Constructor<?>[] constructors = driverClass.getConstructors();
-			  int constructorCount = constructors.length;
-			  for (int i=0; i<constructorCount; i++)
-			  {  //looking for constructor we need
-				 Class<?>[] params = constructors[i].getParameterTypes();  
-				 if (Arrays.equals(params, paramClasses))
-				 {
-					 driver = (WebDriver) constructors[i].newInstance(values);
-					 break;
-				 }
-			  }
-			  
-			  if (driver!=null) //if instance of specified web driver has been created
-			  {
-				  Log.message("Getting started with " + driverClass.getSimpleName());
-				  if (paramClasses.length>0)
-				  {
-					  Log.message("Parameters: ");
-					  for (int i=0; i<paramClasses.length; i++)
-					  {
-						  Log.message("- " + paramClasses[i].getSimpleName() + ": " + values[i].toString());
-					  }
-				  }
-				  actoinsAfterWebDriverCreation(driver);
-			  }
-			  else
-			  {
-				  throw new NoSuchMethodException("Wrong specified constructor of WebDriver! " + driverClass.getSimpleName());
-			  }
+		  WebDriver driver = null;
+		  
+		  Constructor<?>[] constructors      = driverClass.getConstructors();
+		  Constructor<?> suitableConstructor = null;
+		  int constructorCount = constructors.length;
+		  for (int i=0; i<constructorCount; i++)
+		  {  //looking for constructor we need
+			 Class<?>[] params = constructors[i].getParameterTypes();  
+			 if (Arrays.equals(params, paramClasses))
+			 {
+				 suitableConstructor = constructors[i];
+				 break;
+			 }
 		  }
-		  catch (Exception e)
+		  
+		  if (suitableConstructor==null)
 		  {
+			  throw new RuntimeException(new NoSuchMethodException("Wrong specified constructor of WebDriver! " + driverClass.getSimpleName()));
+		  }
+		  
+		  try
+		  {
+			  driver = (WebDriver) suitableConstructor.newInstance(values);
+			  actoinsAfterWebDriverCreation(driver);
+		  }
+		  catch (RuntimeException | InstantiationException | IllegalAccessException | InvocationTargetException e)
+		  {
+			  if (driver!=null)
+			  {
+				  driver.quit();
+			  }
 			  actoinsOnConstructFailure(e);
 		  }
 	  }
@@ -149,20 +143,19 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  public void destroy()
 	  {
 		  firingDriver.unregister(webInnerListener);		  
-		  try
-		  {
+		  try {
 			  firingDriver.quit();
-			  driverList.remove(this);
 		  }
-		  catch (WebDriverException e1)
-		  {
-			  driverList.remove(this);
+		  catch (RuntimeException e1) {
 			  Log.warning("Some problem has been found while the instance of webdriver was quitted! " + e1.getMessage(), e1);
 		  }
+		  finally {
+			  driverList.remove(this); 
+		  }
+		  
 		  try 
 		  {
 			destroyEnclosedObjects();  
-			webInnerListener  = null;
 			this.finalize();
 		  } 
 		  catch (Throwable e) 
@@ -300,7 +293,6 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  protected void actoinsOnConstructFailure(Exception e)
 	  {
 		  Log.error("Attempt to create a new web driver instance has been failed! "+e.getMessage(),e);
-		  e.printStackTrace();
 		  if (firingDriver!=null)
 		  {
 			  destroy();
@@ -310,7 +302,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 			  destroyEnclosedObjects();
 		  }
 		  driverList.remove(this);
-		  fail("Cannot create new instance of required webdriver! "+e.getMessage());	  
+		  throw new RuntimeException(e);
 	  }
 	  
 	  public void registerListener(WebDriverEventListener listener)

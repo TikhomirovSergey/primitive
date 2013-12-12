@@ -36,8 +36,8 @@ public final class ObjectFactory extends TestObject {
 			result.switchToMe();
 			return result;
 		}
-		catch (Exception e)
-		{
+		catch (Exception e)	{
+			driver.destroy();
 			throw new ConcstructTestObjectException("Cannot create an instance of the " + requiredClass.getSimpleName(), e);
 		}
 	}
@@ -45,7 +45,13 @@ public final class ObjectFactory extends TestObject {
 	//The same action with the URL to be opened
 	private static SingleWindow getFirstBrowserWindow(WebDriverEncapsulation driver, Class<? extends TestObject> requiredClass, String urlToBeOpened) throws ConcstructTestObjectException
 	{
-		driver.getTo(urlToBeOpened);
+		try
+		{
+			driver.getTo(urlToBeOpened);
+		}
+		catch (RuntimeException e){
+			driver.destroy();
+		}
 		return getFirstBrowserWindow(driver, requiredClass);
 	}	
 	
