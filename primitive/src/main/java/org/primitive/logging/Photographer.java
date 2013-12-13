@@ -15,21 +15,30 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.primitive.configuration.Configuration;
+import org.primitive.interfaces.IConfigurable;
 
 
 
-public final class Photographer 
+public final class Photographer implements IConfigurable 
 {
 	private static final String pictureNameByDefault = "Picture";
 	private static final String pictureFolderNameByDefault = "Imgs/"; //in case if there is no customized settings for picture storing
 	public static final String format = "png";
+	private static final ThreadLocal<Photographer> photographerThreadLocal = new ThreadLocal<Photographer>();
 	
-	private static String picture = resetPictureName();
-	private static String folder  = resetFolderName();
+	private String picture = pictureNameByDefault;
+	private String folder  = pictureFolderNameByDefault;
 	
-	private static String resetPictureName()
+	
+	private Photographer()
 	{
-		String picName = Configuration.byDefault.getScreenShots().getFile();
+		super();
+		resetAccordingTo(Configuration.byDefault);
+	}
+	
+	private String resetPictureName(Configuration configuration)
+	{
+		String picName = configuration.getScreenShots().getFile();
 		if (picName == null)
 		{
 			picture = pictureNameByDefault;
@@ -41,9 +50,9 @@ public final class Photographer
 		return picture;
 	}
 	
-	private static String resetFolderName()
+	private String resetFolderName(Configuration configuration)
 	{
-		String dirName = Configuration.byDefault.getScreenShots().getFolder();
+		String dirName =configuration.getScreenShots().getFolder();
 		if (dirName == null)
 		{
 			folder = pictureFolderNameByDefault;
@@ -55,7 +64,14 @@ public final class Photographer
 		return folder;
 	}
 	
-	private static BufferedImage getImageFromDriver(WebDriver driver) throws IOException
+	@Override
+	public void resetAccordingTo(Configuration config)
+	{
+		resetPictureName(config);
+		resetFolderName(config);
+	}
+	
+	private BufferedImage getImageFromDriver(WebDriver driver) throws IOException
 	{
 		byte[] bytes = null;
 		try
@@ -72,7 +88,7 @@ public final class Photographer
 	}
 	
 	//takes pictures and makes buffered images
-	private static BufferedImage takeAPicture(WebDriver driver) throws IOException, NoSuchWindowException, UnsupportedOperationException
+	private synchronized BufferedImage takeAPicture(WebDriver driver) throws IOException, NoSuchWindowException, UnsupportedOperationException
 	{
 		try
 		{
@@ -92,7 +108,7 @@ public final class Photographer
 		}
 	}
 		
-	private static BufferedImage getBufferedImage(byte[] original) throws IOException
+	private BufferedImage getBufferedImage(byte[] original) throws IOException
 	{
 		BufferedImage buffer = null;
 		try 
@@ -108,11 +124,10 @@ public final class Photographer
 	}
 	
 	//applies images
-	private static void makeFileForLog(BufferedImage imageForLog, Level LogLevel, String Comment)
+	private synchronized void makeFileForLog(BufferedImage imageForLog, Level LogLevel, String Comment)
 	{
 		
-		String FolderPath = "";	
-		FolderPath = folder;	
+		String FolderPath = folder;		
 				
 		File ImgFolder = new File(FolderPath);
 		ImgFolder.mkdirs();
@@ -131,12 +146,18 @@ public final class Photographer
 	}
 	
 	//takes pictures of full browser windows
-	public synchronized static void takeAPictureForLog(WebDriver driver, Level LogLevel, String Comment) throws NoSuchWindowException
+	public static void takeAPictureForLog(WebDriver driver, Level LogLevel, String Comment) throws NoSuchWindowException
 	{
+		Photographer photographer = photographerThreadLocal.get();
+		if (photographer==null)
+		{
+			photographer = new Photographer();
+			photographerThreadLocal.set(photographer);
+		}
 		try
 		{
-			BufferedImage imageForLog = takeAPicture(driver); 
-			makeFileForLog(imageForLog, LogLevel, Comment);
+			BufferedImage imageForLog = photographer.takeAPicture(driver); 
+			photographer.makeFileForLog(imageForLog, LogLevel, Comment);
 		}
 		catch(IOException e)
 		{
@@ -154,22 +175,22 @@ public final class Photographer
 		}		
 	}
 	
-	public synchronized static void takeAPictureOfASevere(WebDriver driver,  String Comment)
+	public static void takeAPictureOfASevere(WebDriver driver,  String Comment)
 	{
 		takeAPictureForLog(driver, Level.SEVERE, Comment);
 	}
 	
-	public synchronized static void takeAPictureOfAWarning(WebDriver driver,  String Comment)
+	public static void takeAPictureOfAWarning(WebDriver driver,  String Comment)
 	{
 		takeAPictureForLog(driver, Level.WARNING, Comment);
 	}
 	
-	public synchronized static void takeAPictureOfAnInfo(WebDriver driver,  String Comment)
+	public static void takeAPictureOfAnInfo(WebDriver driver,  String Comment)
 	{
 		takeAPictureForLog(driver, Level.INFO, Comment);
 	}
 	
-	public synchronized static void takeAPictureOfAFine(WebDriver driver,  String Comment)
+	public static void takeAPictureOfAFine(WebDriver driver,  String Comment)
 	{
 		takeAPictureForLog(driver, Level.FINE, Comment);
 	}	
