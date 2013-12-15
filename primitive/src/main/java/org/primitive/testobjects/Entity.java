@@ -479,7 +479,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 			{
 				FunctionalPart.destroyInitedPartsByWindow(window);
 				
-				if (window!=nativeWindow)
+				if ((window!=nativeWindow)&(window.exists()))
 				{	
 					window.close();
 				}	
