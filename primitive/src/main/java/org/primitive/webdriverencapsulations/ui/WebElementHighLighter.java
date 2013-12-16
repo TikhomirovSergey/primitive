@@ -7,6 +7,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.internal.WrapsElement;
 import org.primitive.configuration.Configuration;
 import org.primitive.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
@@ -22,125 +23,46 @@ import org.primitive.logging.eLogColors;
 public class WebElementHighLighter implements IConfigurable,
 		IWebElementHighlighter, IDestroyable {
 
-	/**
-	 * @author s.tihomirov
-	 * it highlights element changing its style
-	 * All this happens in another thread
-	 */	
-	private final class HighLighter extends Thread {
-		private final JavascriptExecutor scriptExecutor;
-		private final WebElement elementToBeHiglighted;
-		private final Color highlightColor;
-		
-		private String originalStyle;
-		
-		private final String borderExpression = "2px solid ";
-		
-		private HighLighter(JavascriptExecutor scriptExecutor, WebElement elementToBeHiglighted, Color color)
-		{
-			this.scriptExecutor = scriptExecutor;
-			this.elementToBeHiglighted = elementToBeHiglighted;
-			this.highlightColor = color;
-		}
-		
-		private void setOriginalStyle()
-		{
-			scriptExecutor.executeScript("arguments[0].setAttribute('style', '" + originalStyle + "');",  elementToBeHiglighted);
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-			}
-		}
-		
-		private void getOriginalStyle()
-		{
-			originalStyle  = elementToBeHiglighted.getAttribute("style");
-		}
-		
-		private String getNewColor()
-		{
-			return borderExpression + "rgb("+ Integer.toString(highlightColor.getRed()) +  ","+Integer.toString(highlightColor.getGreen())+","+Integer.toString(highlightColor.getBlue())+")";
-		}
-		
-		private void setNewColor(String colorExpression)
-		{
-			scriptExecutor.executeScript("arguments[0].style.border = '" + colorExpression + "'",  elementToBeHiglighted);
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-			}
-		}
-		
-		@Override
-		public void run()
-		{
-			try
-			{
-				getOriginalStyle();
-				setNewColor(getNewColor());
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-				}
-				setOriginalStyle();
-			}
-			catch (StaleElementReferenceException e)
-			{
-				Log.debug(e.getClass().getSimpleName() + " has been caught out!",e);
-			}
-		}
-		
-		@Override
-		public synchronized void interrupt()
-		{
-			try
-			{
-				super.interrupt();
-			}
-			catch (IllegalThreadStateException e)
-			{
-				Log.debug("Highlighting has neen already finished");
-			}
-			
-			try
-			{
-				setOriginalStyle();
-			}
-			catch (StaleElementReferenceException e)
-			{
-				Log.debug(e.getClass().getSimpleName() + " has been caught out!",e);
-			}
-			finally
-			{				
-				try {
-					this.finalize();
-				} catch (Throwable e) {
-				}
-			}
-		}
-
-	}
-
 	//is this doing screenshots
 	private boolean toDoScreenShots; 
 	private final boolean isDoingScreenShotsByDefault = true;
-	private HighLighter currentHighLighter;
 	
-	
-	private void setNewCurrentHighLigter(WebDriver driver, WebElement webElement, Color color)
+	private String getOriginalStyle(WebElement elementToBeHiglighted)
 	{
-		currentHighLighter = new HighLighter((JavascriptExecutor) driver, webElement, color);
-		currentHighLighter.start();
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-		}
+		return elementToBeHiglighted.getAttribute("style");
 	}
 	
-	@Override
-	public synchronized void highlight(WebDriver driver, WebElement webElement,
-			Color highlight, Level LogLevel, String Comment) {
-		setNewCurrentHighLigter(driver, webElement, highlight);
+	private void execDecorativeScript(JavascriptExecutor scriptExecutor, WebElement element, String script) throws InterruptedException
+	{
+		try
+		{
+			scriptExecutor.executeScript(script,  element);
+		}
+		catch (ClassCastException e)
+		{
+			scriptExecutor.executeScript(script,  ((WrapsElement) element).getWrappedElement());
+		}
+		Thread.sleep(100);
+	}
+	
+	private void setNewColor(JavascriptExecutor scriptExecutor, WebElement elementToBeHiglighted, String colorExpression)
+	{
+		try {
+			execDecorativeScript(scriptExecutor, elementToBeHiglighted, "arguments[0].style.border = '" + colorExpression + "'");
+		} catch (InterruptedException|StaleElementReferenceException e) {}
+	}
+	
+	private void setStyle(JavascriptExecutor scriptExecutor, WebElement elementToBeHiglighted, String style)
+	{
+		try {
+			execDecorativeScript(scriptExecutor, elementToBeHiglighted, "arguments[0].setAttribute('style', '" + style + "');"); 
+		}  catch (InterruptedException|StaleElementReferenceException e) {}
+	}
+	
+	private void highlightelement(WebDriver driver, WebElement webElement, Color color, Level LogLevel, String Comment)
+	{
+		String originalStyle = getOriginalStyle(webElement);
+		setNewColor((JavascriptExecutor) driver, webElement, "2px solid rgb("+ Integer.toString(color.getRed()) +  ","+Integer.toString(color.getGreen())+","+Integer.toString(color.getBlue())+")");
 		if (toDoScreenShots)
 		{	
 			Photographer.takeAPictureForLog(driver, LogLevel, Comment);
@@ -149,130 +71,61 @@ public class WebElementHighLighter implements IConfigurable,
 		{
 			Log.log(LogLevel, Comment);
 		}
-		currentHighLighter.interrupt();
+		setStyle((JavascriptExecutor) driver, webElement, originalStyle);
+	}
+	
+	@Override
+	public synchronized void highlight(WebDriver driver, WebElement webElement,
+			Color highlight, Level LogLevel, String Comment) {
+		highlightelement(driver, webElement, highlight, LogLevel, Comment);
 	}
 
 	@Override
 	public synchronized void highlightAsFine(WebDriver driver, WebElement webElement,
 			Color highlight, String Comment) {
-		setNewCurrentHighLigter(driver, webElement, highlight);
-		if (toDoScreenShots)
-		{	
-			Photographer.takeAPictureOfAFine(driver, Comment);
-		}	
-		else
-		{
-			Log.debug(Comment);
-		}
-		currentHighLighter.interrupt();
+		highlightelement(driver, webElement, highlight, Level.FINE, Comment);
 	}
 
 	@Override
 	public synchronized void highlightAsFine(WebDriver driver, WebElement webElement,
 			String Comment) {
-		setNewCurrentHighLigter(driver, webElement, eLogColors.DEBUGCOLOR.getStateColor());
-		if (toDoScreenShots)
-		{	
-			Photographer.takeAPictureOfAFine(driver, Comment);
-		}	
-		else
-		{
-			Log.debug(Comment);
-		}
-		currentHighLighter.interrupt();
-
+		highlightelement(driver, webElement, eLogColors.DEBUGCOLOR.getStateColor(), Level.FINE, Comment);
 	}
 
 	@Override
 	public synchronized void highlightAsInfo(WebDriver driver, WebElement webElement,
 			Color highlight, String Comment) {
-		setNewCurrentHighLigter(driver, webElement, highlight);
-		if (toDoScreenShots)
-		{	
-			Photographer.takeAPictureOfAnInfo(driver, Comment);
-		}
-		else
-		{
-			Log.message(Comment);
-		}
-		currentHighLighter.interrupt();
+		highlightelement(driver, webElement, highlight, Level.INFO, Comment);
 	}
 
 	@Override
 	public synchronized void highlightAsInfo(WebDriver driver, WebElement webElement,
 			String Comment) {
-		setNewCurrentHighLigter(driver, webElement, eLogColors.CORRECTSTATECOLOR.getStateColor());
-		if (toDoScreenShots)
-		{	
-			Photographer.takeAPictureOfAnInfo(driver, Comment);
-		}	
-		else
-		{
-			Log.message(Comment);
-		}
-		currentHighLighter.interrupt();
+		highlightelement(driver, webElement, eLogColors.CORRECTSTATECOLOR.getStateColor(), Level.INFO, Comment);
 	}
 
 	@Override
 	public synchronized void highlightAsSevere(WebDriver driver, WebElement webElement,
 			Color highlight, String Comment) {
-		setNewCurrentHighLigter(driver, webElement, highlight);
-		if (toDoScreenShots)
-		{	
-			Photographer.takeAPictureOfASevere(driver, Comment);
-		}
-		else
-		{
-			Log.error(Comment);
-		}
-		currentHighLighter.interrupt();
+		highlightelement(driver, webElement, highlight, Level.SEVERE, Comment);
 	}
 
 	@Override
 	public synchronized void highlightAsSevere(WebDriver driver, WebElement webElement,
 			String Comment) {
-		setNewCurrentHighLigter(driver, webElement, eLogColors.SEVERESTATECOLOR.getStateColor());
-		if (toDoScreenShots)
-		{	
-			Photographer.takeAPictureOfASevere(driver, Comment);
-		}
-		else
-		{
-			Log.error(Comment);
-		}
-		currentHighLighter.interrupt();
-
+		highlightelement(driver, webElement, eLogColors.SEVERESTATECOLOR.getStateColor(), Level.SEVERE, Comment);
 	}
 
 	@Override
 	public synchronized void highlightAsWarning(WebDriver driver, WebElement webElement,
 			Color highlight, String Comment) {
-		setNewCurrentHighLigter(driver, webElement, highlight);
-		if (toDoScreenShots)
-		{	
-			Photographer.takeAPictureOfAWarning(driver, Comment);
-		}	
-		else
-		{
-			Log.warning(Comment);
-		}
-		currentHighLighter.interrupt();
-
+		highlightelement(driver, webElement, highlight, Level.WARNING, Comment);
 	}
 
 	@Override
 	public synchronized void highlightAsWarning(WebDriver driver, WebElement webElement,
 			String Comment) {
-		setNewCurrentHighLigter(driver, webElement, eLogColors.WARNSTATECOLOR.getStateColor());
-		if (toDoScreenShots)
-		{	
-			Photographer.takeAPictureOfAWarning(driver, Comment);
-		}
-		else
-		{
-			Log.warning(Comment);
-		}
-		currentHighLighter.interrupt();
+		highlightelement(driver, webElement, eLogColors.WARNSTATECOLOR.getStateColor(), Level.WARNING, Comment);
 	}
 
 	@Override
