@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>primitive</groupId>
   <artifactId>primitive</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
   
   <properties>
-     <selenium.version>2.37.0</selenium.version>
+     <selenium.version>2.38.0</selenium.version>
   </properties>
   
    <dependencies>
@@ -29,14 +29,26 @@
             <groupId>com.opera</groupId>
             <artifactId>operadriver</artifactId>
             <version>1.5</version>
+            <exclusions>		
+            	   
+			     <exclusion>
+		            <groupId>org.seleniumhq.selenium</groupId>
+		            <artifactId>selenium-java</artifactId>
+			     </exclusion>	
+			     		     
+			     <exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+			     </exclusion>
+			     
+			</exclusions>
         </dependency>  
         <dependency>
 			<groupId>com.github.detro.ghostdriver</groupId>
 			<artifactId>phantomjsdriver</artifactId>
 			<version>1.0.4</version>
 			  
-			   <exclusions>
-			   
+			   <exclusions>			   
 			     <exclusion>
 		            <groupId>org.seleniumhq.selenium</groupId>
 		            <artifactId>selenium-java</artifactId>
@@ -55,7 +67,25 @@
 			   
 		</dependency>     
   </dependencies> 
-  
+
+   <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+  </build>
+
   <developers>
         <developer>
             <id>Sergey Tikhomirov</id>
