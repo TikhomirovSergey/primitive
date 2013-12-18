@@ -6,14 +6,13 @@ package	org.primitive.poweredbytestng;
 import java.io.File;
 import java.util.Date;
 import java.util.logging.Level;
-
 import org.primitive.logging.ILogConverter;
 import org.primitive.logging.Photographer;
 import org.primitive.logging.eLogColors;
 import org.primitive.logging.Log.LogRecWithAttach;
+import org.primitive.poweredbytestng.report.htmlpatterns.EHtmlPatterns;
+import org.primitive.poweredbytestng.report.iconsforreport.EIconsForReport;
 import org.testng.Reporter;
-
-
 
 /**
  * @author s.tihomirov
@@ -23,18 +22,32 @@ public class ConverterToTestNGReport implements ILogConverter{
 
 	private final String debugColor = eLogColors.DEBUGCOLOR.getHTMLColorDescription();
 	private final String errorColor = eLogColors.SEVERESTATECOLOR.getHTMLColorDescription();
-	private final String htmlItemPattern = 
-			  "<table align='center' width='100%'>"+
-		      "<tr  bgcolor=" + "#Color" + " valign=top align=left>"+
-		      "<td><b>"+"#Time" + " " +"#Message"+" </d></td>"+
-		      "</tr></table>";
+
 	private final String successColor = eLogColors.CORRECTSTATECOLOR.getHTMLColorDescription();
 	private final String warnColor = eLogColors.WARNSTATECOLOR.getHTMLColorDescription();
 	
+	private final String expressionOfFilePath    = "#filepath";
+	private final String expressionOfComment    = "#Comment";
+	
+	private final String expressionOfColorPattern    = "#Color";
+	private final String expressionOfTimePattern     = "#Time";
+	private final String expressionOfMessagePattern  = "#Message";
+	
+	static String outputDirectory;
+	
+	private final String iconFineFile      = EIconsForReport.FINE.getCopy(outputDirectory);  
+	private final String iconSuccessFile   = EIconsForReport.SUCCESS.getCopy(outputDirectory);  
+	private final String iconWarningFile   = EIconsForReport.WARNING.getCopy(outputDirectory);  
+	private final String iconErrorFile     = EIconsForReport.ERROR.getCopy(outputDirectory);
+	
+	private final String htmlPatternString   = EHtmlPatterns.HTMLPATTERN.getHtmlCode();
+	private final String htmlImageMaskString = EHtmlPatterns.IMAGEMASK.getHtmlCode();
+	private final String htmlFileMaskString  = EHtmlPatterns.FILEMASK.getHtmlCode();
+	
 	//for posting screenshots as pictures
-	private final String textPatternForPicture = "<p><img src=\"file:///FilePath\" alt=\"Comment\"></p>";
+	//private final String textPatternForPicture = "<p><img src=\"file:///FilePath\" alt=\"Comment\"></p>";
 	//for posting files as links
-	private final String textPatternForAnyFile = "<a href= \"FilePath\" type=\"file\">Comment> </a>";
+	//private final String textPatternForAnyFile = "<a href= \"FilePath\" type=\"file\">Comment> </a>";
 	private String formatWithStackTrace(String original, LogRecWithAttach rec)
 	{
 		String formatted = null;
@@ -73,14 +86,14 @@ public class ConverterToTestNGReport implements ILogConverter{
 			String pattern = null;
 			if (!filepath.contains(Photographer.format)) //if there is not a picture
 			{
-				pattern = textPatternForAnyFile;
+				pattern = htmlImageMaskString;
 			}
 			else
 			{
-				pattern = textPatternForPicture;
+				pattern = htmlFileMaskString;
 			}
-			formattedMessage = pattern.replace("Comment", rec.getMessage());
-			formattedMessage = formattedMessage.replace("FilePath", attachment.getAbsolutePath());
+			formattedMessage = pattern.replace(expressionOfComment, rec.getMessage());
+			formattedMessage = formattedMessage.replace(expressionOfFilePath, attachment.getAbsolutePath());
 		}
 		return formatWithStackTrace(formattedMessage, rec);
 	}
@@ -89,27 +102,34 @@ public class ConverterToTestNGReport implements ILogConverter{
 	{
 		Level level = rec.getLevel();
 		String color = null; 
+		String icon  = null;
 		if (level==Level.SEVERE)
 		{
 			color = errorColor;
+			icon  = iconErrorFile;
 		}
 		else if (level==Level.WARNING)
 		{
 			color = warnColor;
+			icon  = iconWarningFile;
 		}
 		else if (level==Level.INFO)
 		{
 			color = successColor;
+			icon  = iconSuccessFile;
 		}
 		else 
 		{
 			color = debugColor;
+			icon  = iconFineFile;
 		}
 		
 		Date date = new Date(rec.getMillis());
-		String turnedString = htmlItemPattern.replace("#Color", color);
-		turnedString        = turnedString.replace("#Time", date.toString());
-		turnedString        = turnedString.replace("#Message", returnLogMessage(rec));
+		String turnedString = htmlPatternString;
+		turnedString = htmlPatternString.replace(expressionOfColorPattern, color);
+		turnedString 		= turnedString.replace(expressionOfFilePath, icon);
+		turnedString        = turnedString.replace(expressionOfTimePattern, date.toString());
+		turnedString        = turnedString.replace(expressionOfMessagePattern, returnLogMessage(rec));
 		
 		return turnedString;
 	}

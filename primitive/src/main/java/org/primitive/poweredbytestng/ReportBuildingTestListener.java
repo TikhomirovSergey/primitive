@@ -17,7 +17,7 @@ public class ReportBuildingTestListener implements IConfigurable, ITestListener 
 	private static final int defaultStatusOnWarning = ITestResult.SUCCESS_PERCENTAGE_FAILURE;
 	//By default test will be failed if there are warnings
 	private int statusOnWarning;
-	private static final ConverterToTestNGReport converter = new ConverterToTestNGReport();;
+	private ConverterToTestNGReport converter;
 	
 	@Override
 	public void onFinish(ITestContext arg0)
@@ -28,6 +28,8 @@ public class ReportBuildingTestListener implements IConfigurable, ITestListener 
 	@Override
 	public void onStart(ITestContext arg0)
 	{
+		ConverterToTestNGReport.outputDirectory = arg0.getOutputDirectory();
+		converter = new ConverterToTestNGReport();
 		Log.addConverter(converter);
 	}
 

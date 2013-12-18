@@ -146,7 +146,7 @@ public final class Photographer implements IConfigurable
 	}
 	
 	//takes pictures of full browser windows
-	public static void takeAPictureForLog(WebDriver driver, Level LogLevel, String Comment) throws NoSuchWindowException
+	public synchronized static void takeAPictureForLog(WebDriver driver, Level LogLevel, String Comment) throws NoSuchWindowException
 	{
 		Photographer photographer = photographerThreadLocal.get();
 		if (photographer==null)

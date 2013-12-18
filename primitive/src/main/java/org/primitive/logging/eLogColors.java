@@ -5,7 +5,7 @@ import java.awt.Color;
 public enum eLogColors {
 	CORRECTSTATECOLOR(new Color(0, 139, 0), "Green4"),
 	WARNSTATECOLOR(new Color(255, 69, 0),"OrangeRed"),
-	DEBUGCOLOR(new Color(255, 250, 250), "Snow"), SEVERESTATECOLOR(new Color(205, 0, 0),"Red3");
+	DEBUGCOLOR(new Color(255, 250, 250), "Snow"), SEVERESTATECOLOR(new Color(139, 0, 0 ),"DarkRed");
 	
 	private Color stateColor;
 	private String htmlColorDescription;

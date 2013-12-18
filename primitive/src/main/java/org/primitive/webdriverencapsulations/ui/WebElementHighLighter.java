@@ -62,7 +62,7 @@ public class WebElementHighLighter implements IConfigurable,
 	private void highlightelement(WebDriver driver, WebElement webElement, Color color, Level LogLevel, String Comment)
 	{
 		String originalStyle = getOriginalStyle(webElement);
-		setNewColor((JavascriptExecutor) driver, webElement, "2px solid rgb("+ Integer.toString(color.getRed()) +  ","+Integer.toString(color.getGreen())+","+Integer.toString(color.getBlue())+")");
+		setNewColor((JavascriptExecutor) driver, webElement, "6px solid rgb("+ Integer.toString(color.getRed()) +  ","+Integer.toString(color.getGreen())+","+Integer.toString(color.getBlue())+")");
 		if (toDoScreenShots)
 		{	
 			Photographer.takeAPictureForLog(driver, LogLevel, Comment);
