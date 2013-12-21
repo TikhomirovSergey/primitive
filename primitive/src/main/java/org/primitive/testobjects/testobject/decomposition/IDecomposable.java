@@ -1,4 +1,4 @@
-package org.primitive.testobjects;
+package org.primitive.testobjects.testobject.decomposition;
 
 
 /**
@@ -9,12 +9,12 @@ package org.primitive.testobjects;
 
 public interface IDecomposable {
 
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass);
+	public <T extends IDecomposable> T getPart(Class<T> partClass);
     //if object is placed in frame defined by integer value
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Integer frameIndex);
+	public <T extends IDecomposable> T getPart(Class<T> partClass, Integer frameIndex);
 	//if object is placed in frame defined by string path
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame);
+	public <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame);
 	//if object is placed in frame defined by string path. It needs some time to frame switch on 
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame, Long timeOutInSec);
+	public <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame, Long timeOutInSec);
 		
 }

@@ -14,13 +14,14 @@ import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.interfaces.ITestObjectExceptionHandler;
+import org.primitive.testobjects.testobject.decomposition.IDecomposable;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.BrowserLogs;
 import org.primitive.webdriverencapsulations.webdrivercomponents.ScriptExecutor;
 
-public abstract class TestObject implements IDestroyable
+public abstract class TestObject implements IDestroyable, IDecomposable
 {	
 	/**
 	 * @author s.tihomirov
@@ -104,7 +105,7 @@ public abstract class TestObject implements IDestroyable
     }
     
     @SuppressWarnings("unchecked")
-	protected static <T extends TestObject> T getProxy(Class<? extends TestObject> clazz, Class<? extends Interceptor> interceptorClass, Class<?>[] paramClasses, Object[] paramValues) throws ConcstructTestObjectException
+	protected static <T extends IDecomposable> T getProxy(Class<T> clazz, Class<? extends Interceptor> interceptorClass, Class<?>[] paramClasses, Object[] paramValues) throws ConcstructTestObjectException
     {	//should be closed by child class method
     	Enhancer enhancer = new Enhancer();
     	Interceptor interceptor = null;
@@ -135,5 +136,17 @@ public abstract class TestObject implements IDestroyable
 	{
 		checkedInExceptionHandlers.remove(exceptionHandler);
 	}
+
+	@Override
+	public abstract <T extends IDecomposable> T getPart(Class<T> partClass);
+
+	@Override
+	public abstract <T extends IDecomposable> T getPart(Class<T> partClass, Integer frameIndex);
+
+	@Override
+	public abstract <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame);
+
+	@Override
+	public abstract <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame, Long timeOutInSec);
 }	
 

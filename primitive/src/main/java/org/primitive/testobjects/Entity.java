@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.logging.Log;
 import org.primitive.testobjects.testobject.TestObject;
+import org.primitive.testobjects.testobject.decomposition.IDecomposable;
+import org.primitive.testobjects.testobject.decomposition.IHasManyWindows;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;
@@ -15,7 +17,7 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.TimeOut;
 
 //Using it you can model your web application as a complex aggregated object 
 //it should only generate new objects in general
-public abstract class Entity extends TestObject implements IDecomposable, IHasManyWindows{
+public abstract class Entity extends TestObject implements IHasManyWindows{
 	
 	protected Cookies cookies;
 	protected Ime ime;
@@ -59,16 +61,16 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	//Class "SingleWindow" should be first in the list of constructor parameters
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use the first opened window of the test application 
-	protected  <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	protected  <T extends IDecomposable> T get(Class<T> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		T page =  ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(nativeWindow, values));
-		page.originalEntity = this;
-		return page;
+		T part =  ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(nativeWindow, values));
+		((FunctionalPart) part).originalEntity = this;
+		return part;
 	}	
 	
 	//- simple constructor
 	@Override
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getPart(Class<T> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
@@ -77,7 +79,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	//- with specified frame index
 	@Override
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Integer frameIndex) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getPart(Class<T> partClass, Integer frameIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex};
@@ -86,7 +88,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame
 	@Override
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame};
@@ -95,7 +97,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec};
@@ -110,16 +112,16 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	//Class "SingleWindow" should be first in the list of constructor parameters
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use any opened window that specified by index
-	protected  <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, int windowIndex) throws ConcstructTestObjectException
+	protected  <T extends IDecomposable> T get(Class<T> partClass, Class<?>[] params, Object[] values, int windowIndex) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initWindowByIndex(nativeSwitcher, windowIndex), values));
-		page.originalEntity = this;
-		return page;
+		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initWindowByIndex(nativeSwitcher, windowIndex), values));
+		((FunctionalPart) part).originalEntity = this;
+		return part;
 	}
 	
 	//- simple constructor
 	@Override
-	public <T extends FunctionalPart> T getFromWinow(Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromWinow(Class<T> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
@@ -128,7 +130,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	//- with specified frame index
 	@Override
-	public <T extends FunctionalPart> T getFromWinow(Class<? extends FunctionalPart> partClass, Integer frameIndex, int windowIndex) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromWinow(Class<T> partClass, Integer frameIndex, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
@@ -137,7 +139,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame
 	@Override
-	public <T extends FunctionalPart> T getFromWinow(String pathToFrame, Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromWinow(String pathToFrame, Class<T> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
@@ -146,7 +148,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends FunctionalPart> T getFromWinow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, int windowIndex) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromWinow(String pathToFrame, Long timeOutInSec,  Class<T> partClass, int windowIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
@@ -161,16 +163,16 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	//Class "SingleWindow" should be first in the list of constructor parameters
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use any window that has appeared while default time was passing
-	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	protected  <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher), values));
-		page.originalEntity = this;
-		return page;
+		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher), values));
+		((FunctionalPart) part).originalEntity = this;
+		return part;
 	}
 	
 	//- simple constructor
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
@@ -179,7 +181,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	//- with specified frame index
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex, Class<T> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] 	values = new Object[] {frameIndex}; 
@@ -188,7 +190,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Class<T> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] 	values = new Object[] {pathToFrame}; 
@@ -197,7 +199,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<T> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] 	values = new Object[] {pathToFrame, timeOutInSec}; 
@@ -211,16 +213,16 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	//Class "SingleWindow" should be first in the list of constructor parameters
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use any window that has appeared while specified time was passing
-	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, long timeOutSec) throws ConcstructTestObjectException
+	protected  <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, Class<?>[] params, Object[] values, long timeOutSec) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, timeOutSec), values));
-		page.originalEntity = this;
-		return page;
+		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, timeOutSec), values));
+		((FunctionalPart) part).originalEntity = this;
+		return part;
 	}
 	
 	// - simple constructor
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
@@ -229,7 +231,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	//- with specified frame index
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex, Class<T> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
@@ -238,7 +240,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Class<T> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
@@ -247,7 +249,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<T> partClass, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
@@ -265,16 +267,16 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use some window that has appeared while default time was passing
 	//this window should has the matching title 
-	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, String title) throws ConcstructTestObjectException
+	protected  <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, Class<?>[] params, Object[] values, String title) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title), values));
-		page.originalEntity = this;
-		return page;
+		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title), values));
+		((FunctionalPart) part).originalEntity = this;
+		return part;
 	}
 	
 	// - simple constructor
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
@@ -283,7 +285,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	//- with specified frame index
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex, Class<T> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
@@ -292,7 +294,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Class<T> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
@@ -301,7 +303,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, String title) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<T> partClass, String title) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
@@ -320,16 +322,16 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use some window that has appeared while specified time was passing
 	//this window should has the matching title 	
-	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, String title, long timeOutSec) throws ConcstructTestObjectException
+	protected  <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, Class<?>[] params, Object[] values, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title, timeOutSec), values));
-		page.originalEntity = this;
-		return page;
+		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title, timeOutSec), values));
+		((FunctionalPart) part).originalEntity = this;
+		return part;
 	}
 	
 	//- simple constructor
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, WindowSwitcher switcher, String title, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, WindowSwitcher switcher, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {};
@@ -338,7 +340,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	//- with specified frame index
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex, Class<T> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex};
@@ -347,7 +349,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Class<T> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame};
@@ -356,7 +358,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<T> partClass, String title, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec};
@@ -372,16 +374,16 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use some window that has appeared while default time was passing
 	//this window should has page that loaded by specified url
-	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, URL url) throws ConcstructTestObjectException
+	protected  <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, Class<?>[] params, Object[] values, URL url) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url), values));
-		page.originalEntity = this;
-		return page;
+		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url), values));
+		((FunctionalPart) part).originalEntity = this;
+		return part;
 	}
 	
 	//- simple constructor
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
@@ -390,7 +392,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 
 	//- with specified frame index
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex, Class<T> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
@@ -399,7 +401,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 		
 	// - with specified path to any frame
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Class<T> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
@@ -408,7 +410,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 		
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, URL url) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<T> partClass, URL url) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 
@@ -424,16 +426,16 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	//"params" we specify without "SingleWindow" because it will be added by this method
 	//We use some window that has appeared while specified time was passing
 	//this window should has page that loaded by specified url
-	protected  <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values, URL url, long timeOutSec) throws ConcstructTestObjectException
+	protected  <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, Class<?>[] params, Object[] values, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
-		T page = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url, timeOutSec), values));
-		page.originalEntity = this;
-		return page;
+		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url, timeOutSec), values));
+		((FunctionalPart) part).originalEntity = this;
+		return part;
 	}
 	
 	//- simple constructor
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
@@ -442,7 +444,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 	
 	//- with specified frame index
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(Integer frameIndex, Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex, Class<T> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex}; 
@@ -451,7 +453,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 		
 	// - with specified path to any frame
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Class<T> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame}; 
@@ -460,7 +462,7 @@ public abstract class Entity extends TestObject implements IDecomposable, IHasMa
 		
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends FunctionalPart> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<? extends FunctionalPart> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<T> partClass, URL url, long timeOutSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec}; 

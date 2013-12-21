@@ -25,6 +25,8 @@ import org.primitive.interfaces.ITakesPictureOfItSelf;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
 import org.primitive.testobjects.testobject.TestObject;
+import org.primitive.testobjects.testobject.decomposition.IDecomposable;
+import org.primitive.testobjects.testobject.decomposition.IHasWebElementFrames;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
@@ -290,7 +292,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	//Class "Page" should be first in the list of constructor parameters
 	//"params" we specify without "Page" because it will be added by this method
 	//So, this way we build hierarchy of page objects
-	protected  <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
+	protected  <T extends IDecomposable> T get(Class<T> partClass, Class<?>[] params, Object[] values) throws ConcstructTestObjectException
 	{
 		return ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(values));
 	}
@@ -298,7 +300,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	
 	// - simple constructor 
 	@Override
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getPart(Class<T> partClass) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {}; 
 		Object[] values = new Object[] {}; 
@@ -308,7 +310,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 		
 	//- with specified frame index
 	@Override
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, Integer frameIndex) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getPart(Class<T> partClass, Integer frameIndex) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {Integer.class}; 
 		Object[] values = new Object[] {frameIndex};
@@ -317,7 +319,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 		
 	// - with specified path to any frame
 	@Override
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class}; 
 		Object[] values = new Object[] {pathToFrame};
@@ -326,7 +328,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 		
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame, Long timeOutInSec) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {String.class, Long.class}; 
 		Object[] values = new Object[] {pathToFrame, timeOutInSec};
@@ -335,7 +337,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	
 	// - with frame that specified as web element
 	@Override
-	public <T extends FunctionalPart> T get(Class<? extends FunctionalPart> partClass, WebElement frameElement) throws ConcstructTestObjectException
+	public <T extends IDecomposable> T getPart(Class<T> partClass, WebElement frameElement) throws ConcstructTestObjectException
 	{
 		Class <?>[] params = new Class[] {WebElement.class}; 
 		Object[] values = new Object[] {frameElement};
