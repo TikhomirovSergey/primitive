@@ -33,12 +33,10 @@ public class ConverterToTestNGReport implements ILogConverter{
 	private final String expressionOfTimePattern     = "#Time";
 	private final String expressionOfMessagePattern  = "#Message";
 	
-	static String outputDirectory;
-	
-	private final String iconFineFile      = EIconsForReport.FINE.getCopy(outputDirectory);  
-	private final String iconSuccessFile   = EIconsForReport.SUCCESS.getCopy(outputDirectory);  
-	private final String iconWarningFile   = EIconsForReport.WARNING.getCopy(outputDirectory);  
-	private final String iconErrorFile     = EIconsForReport.ERROR.getCopy(outputDirectory);
+	private final String iconFineFile      = EIconsForReport.FINE.getCopy();  
+	private final String iconSuccessFile   = EIconsForReport.SUCCESS.getCopy();  
+	private final String iconWarningFile   = EIconsForReport.WARNING.getCopy();  
+	private final String iconErrorFile     = EIconsForReport.ERROR.getCopy();
 	
 	private final String htmlPatternString   = EHtmlPatterns.HTMLPATTERN.getHtmlCode();
 	private final String htmlImageMaskString = EHtmlPatterns.IMAGEMASK.getHtmlCode();

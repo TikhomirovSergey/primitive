@@ -535,20 +535,20 @@ public class Configuration
 		if (list.length == 0)
 		{
 			File inner[] = defaultConfig.listFiles();
-			String result = "nothing";
+			String result = null;
 			for (int i=0; i<inner.length; i++)
 			{
 				if (inner[i].isDirectory())
 				{
 					result = getPathToDefault(inner[i].getPath());
 				}
-				if (result!="nothing")
+				if (result!=null)
 				{
 					return result;
 				}
 			}
 		}
-		return "nothing";
+		return null;
 	}
 	
 	
@@ -687,7 +687,7 @@ public class Configuration
 				docBuilder = docBuilderFactory.newDocumentBuilder();
 				doc = docBuilder.parse(settingFile);
 			} catch (ParserConfigurationException | SAXException  e) {
-				fail("Cann't parse file " + commonFileName + "! Please, check it. You can look at SAMPLE_SETTINGS.xml for verifying. " + e.getLocalizedMessage());
+				fail("Cann't parse file " + commonFileName + "! Please, check it. You can look at SAMPLE_SETTING.xml for verifying. " + e.getLocalizedMessage());
 			}
 			catch (IOException e) 
 			{
@@ -831,7 +831,7 @@ public class Configuration
 	
 	protected Configuration(String filePath)
 	{
-		parseSettings(filePath);
+		parseSettings(String.valueOf(filePath));
 		buildCapability();
 		chromeDriver = new ChromeDriverExe();
 		ieDriver     = new IEDriverExe();

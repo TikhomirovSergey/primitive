@@ -17,11 +17,12 @@ public enum EIconsForReport {
 		this.fileName = fileName;
 	}
 	
-	public String getCopy(String folder)
+	public String getCopy()
 	{
 		InputStream inputStream = getClass().getResourceAsStream(fileName);
 		try {
-			FileOutputStream outputStream = new FileOutputStream(new File(folder + '/' + fileName));
+			File tempIconFile = File.createTempFile("temp_", fileName);
+			FileOutputStream outputStream = new FileOutputStream(tempIconFile);
 			int data = inputStream.read();
 			
 			while(data != -1) {
@@ -29,10 +30,10 @@ public enum EIconsForReport {
 				data = inputStream.read();
 	        }
 			outputStream.close();
+			return tempIconFile.getAbsolutePath();
 		}	
 		catch (Exception e) {	
 			throw new RuntimeException(e);
 		}		
-		return (folder + '/' + fileName);
 	}
 }

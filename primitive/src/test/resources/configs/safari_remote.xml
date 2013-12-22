@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<root>
+
+<group name="webdriver">
+	  <setting name="driverName">
+		  <type>STRING</type>
+		  <value>remote</value>
+	  </setting>  	  
+</group>
+
+<group name="DesiredCapabilities">	  
+	  <setting name="browserName">
+		  <type>STRING</type>
+		  <value>safari</value>
+	  </setting>	  
+</group>
+
+<group name="webDriverTimeOuts">
+
+	<setting name="timeUnit">
+	  <type>STRING</type>
+	  <value>SECONDS</value>
+	</setting>
+
+	<setting name="implicitlyWait">
+	  <type>LONG</type>
+	  <value>10</value>
+	</setting>
+	
+	<setting name="pageLoadTimeout">
+	  <type>LONG</type>
+	  <value>10</value>
+	</setting>	
+	
+	<setting name="setScriptTimeout">
+	  <type>LONG</type>
+	  <value>10</value>
+	</setting>		
+</group>
+
+<group name="webElementVisibilityTimeOut">
+	
+	<setting name="visibilityTimeOutSec">
+	  <type>LONG</type>
+	  <value>10</value>
+	</setting>	
+	  
+</group>
+
+<group name="browserWindowsTimeOuts">
+		
+	<setting name="newBrowserWindowTimeOutSec">
+	  <type>LONG</type>
+	  <value>15</value>
+	</setting>
+
+	<setting name="browserWindowCountTimeOutSec">
+	  <type>LONG</type>
+	  <value>1</value>
+	</setting>
+	
+	<setting name="browserWindowSwitchOnTimeOutSec">
+	  <type>LONG</type>
+	  <value>1</value>
+	</setting>	
+
+	<setting name="browserWindowClosingTimeOutSec">
+	  <type>LONG</type>
+	  <value>2</value>
+	</setting>	  
+</group>
+
+<group name="Log">
+
+	<setting name="Level">
+		<type>STRING</type>
+		<value>FINE</value>
+	</setting>
+		 	
+</group>
+
+<group name="screenShots">
+
+	<setting name="folder">
+		<type>STRING</type>
+		<value>Imgs/</value>
+	</setting>
+		  
+	<setting name="file">
+		<type>STRING</type>
+		<value>img</value>
+	</setting>	
+	
+	<setting name="toDoScreenShotsOnElementHighLighting">
+  		<type>BOOL</type>
+		<value>true</value>
+	</setting>	
+	
+</group>
+
+<group name="testStatus">
+
+	<setting name="onWarning">
+		<type>STRING</type>
+		<value>SUCCESS_PERCENTAGE_FAILURE</value>
+	</setting>	
+	
+</group>
+
+<group name="PhantomJSDriver">
+
+	<setting name="folder">
+		<type>STRING</type>
+		<value>src/test/resources/binaries/</value>
+	</setting>
+		  
+	<setting name="file">
+		<type>STRING</type>
+		<value>phantomjs.exe</value>
+	</setting>		  
+</group>
+
+<group name="unhandledWindowsChecking">
+		
+	<setting name="timeUnit">
+	  <type>STRING</type>
+	  <value>SECONDS</value>
+	</setting>
+
+	<setting name="sessionTime">
+	  <type>LONG</type>
+	  <value>5</value>
+	</setting>
+	
+	<setting name="timeForWaiting">
+	  <type>LONG</type>
+	  <value>20</value>
+	</setting>	
+
+	<setting name="secsForAwaitinAlertPresent">
+	  <type>LONG</type>
+	  <value>1</value>
+	</setting>	  
+</group>
+
+</root>
