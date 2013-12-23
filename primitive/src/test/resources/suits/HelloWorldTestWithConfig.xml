@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite with configurations" parallel="false">
+   
+  <test name="Hello world Google test with remote chrome">
+    <parameter name="config"  value="chrome_remote.xml"/>    
+    <classes>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+    
+  <test name="Hello world Google test with local chrome">
+    <classes>
+      <parameter name="config"  value="chrome.xml"/>  
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+  
+  <test name="Hello world Google test with remote firefox">
+    <classes>
+      <parameter name="config"  value="firefox_remote.xml"/>    
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+    
+  <test name="Hello world Google test with local firefox">
+    <classes>
+      <parameter name="config"  value="firefox.xml"/>  
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->  
+    
+  <test name="Hello world Google test with remote internet explorer">
+    <classes>
+      <parameter name="config"  value="internetexplorer_remote.xml"/>    
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+  
+  <test name="Hello world Google test with local internet explorer">
+    <classes>
+      <parameter name="config"  value="internetexplorer.xml"/>    
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->      
+  
+  <test name="Hello world Google test with remote phantomjs">
+    <classes>
+      <parameter name="config"  value="phantomjs_remote.xml"/>    
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+  
+  <test name="Hello world Google test with local phantomjs">
+    <classes>
+      <parameter name="config"  value="phantomjs.xml"/>     
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->   
+  
+  <test name="Hello world Google test with remote safari">
+    <classes>
+      <parameter name="config"  value="safari_remote.xml"/>    
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+    
+  <test name="Hello world Google test with local safari">
+    <classes>
+      <parameter name="config"  value="safari.xml"/>  
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->   
+  
+</suite> <!-- Suite -->

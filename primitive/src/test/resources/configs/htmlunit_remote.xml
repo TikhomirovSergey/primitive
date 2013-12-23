@@ -12,7 +12,22 @@
 	  <setting name="browserName">
 		  <type>STRING</type>
 		  <value>htmlunit</value>
+	  </setting>	
+	  
+	  <setting name="version">
+		  <type>STRING</type>
+		  <value></value>
 	  </setting>	  
+	  
+	  <setting name="platform">
+		  <type>STRING</type>
+		  <value>ANY</value>
+	  </setting>
+	  
+	  <setting name="javascriptEnabled">
+		  <type>BOOL</type>
+		  <value>true</value>
+	  </setting>	  	  
 </group>
 
 <group name="webDriverTimeOuts">
@@ -56,12 +71,12 @@
 
 	<setting name="browserWindowCountTimeOutSec">
 	  <type>LONG</type>
-	  <value>3</value>
+	  <value>5</value>
 	</setting>
 	
 	<setting name="browserWindowSwitchOnTimeOutSec">
 	  <type>LONG</type>
-	  <value>1</value>
+	  <value>3</value>
 	</setting>	
 
 	<setting name="browserWindowClosingTimeOutSec">
