@@ -5,12 +5,9 @@ import googledescripription.AnyPage;
 import googledescripription.Google;
 
 import org.primitive.configuration.Configuration;
-import org.primitive.poweredbytestng.ReportBuildingTestListener;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-@Listeners(ReportBuildingTestListener.class)
 public class HelloWorldGoogleTest {
 	
 	

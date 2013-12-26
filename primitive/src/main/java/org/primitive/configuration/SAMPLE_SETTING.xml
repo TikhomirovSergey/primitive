@@ -121,15 +121,6 @@
 	
 </group>
 
-<group name="testStatus">
-
-	<setting name="onWarning">
-		<type>STRING</type>
-		<value>SUCCESS_PERCENTAGE_FAILURE</value>
-	</setting>	
-	
-</group>
-
 <group name="ChromeDriver">
 
 	<setting name="folder">

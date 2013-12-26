@@ -3,8 +3,6 @@
  */
 package org.primitive.configuration;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -59,26 +57,6 @@ public class Configuration
 		public Object getSetting(String name)
 		{
 			return  getSettingValue(phantomJSDriverGroup, name);
-		}
-
-	}
-
-	public class TestStatus implements GroupedSetting {
-		private static final String statusOnWarningSetting = "onWarning";
-		
-		private TestStatus()
-		{
-			super();
-		}
-		
-		@Override
-		public Object getSetting(String name) {
-			return getSettingValue(testStatusGroup, name); 
-		}
-		
-		public String getOnWarning()
-		{
-			return (String) getSettingValue(testStatusGroup, statusOnWarningSetting);
 		}
 
 	}
@@ -475,7 +453,6 @@ public class Configuration
 	private final static String browserWindowsTimeOutsGroup = "browserWindowsTimeOuts";
 
 	private final static String unhandledWindowsCheckingGroup= "unhandledWindowsChecking"; 
-	private final static String testStatusGroup = "testStatus";
 	
 	//spicified settings for *Driver.exe
 	private static final String folderSettingName = "folder";
@@ -512,9 +489,6 @@ public class Configuration
 	private WebDriverSettings webDriverSettings;
 	//unhandled windows and alerts group
 	private UnhandledWindowsChecking unhandledWindowsChecking;
-	//setting for test status
-	private TestStatus testStatus;
-	
 	private static String getPathToDefault(String startPath)
 	{
 		//attempt to find configuration in the specified directory
@@ -687,11 +661,11 @@ public class Configuration
 				docBuilder = docBuilderFactory.newDocumentBuilder();
 				doc = docBuilder.parse(settingFile);
 			} catch (ParserConfigurationException | SAXException  e) {
-				fail("Cann't parse file " + commonFileName + "! Please, check it. You can look at SAMPLE_SETTING.xml for verifying. " + e.getLocalizedMessage());
+				new RuntimeException("Cann't parse file " + commonFileName + "! Please, check it. You can look at SAMPLE_SETTING.xml for verifying. " + e.getLocalizedMessage(),e);
 			}
 			catch (IOException e) 
 			{
-				fail("IO Exception: " + e.getLocalizedMessage());
+				new RuntimeException("IO Exception: " + e.getLocalizedMessage(),e);
 			}
 			
 			doc.getDocumentElement().normalize();
@@ -707,7 +681,7 @@ public class Configuration
 			}
 			catch (ParserConfigurationException e)
 			{
-				fail("Configuration building has failed! " + e.getLocalizedMessage());
+				new RuntimeException("Configuration building has failed! " + e.getLocalizedMessage(),e);
 			}
 
 		}		
@@ -824,11 +798,6 @@ public class Configuration
 		return unhandledWindowsChecking;
 	}
 	
-	public TestStatus getTestStatus()
-	{
-		return testStatus;
-	}
-	
 	protected Configuration(String filePath)
 	{
 		parseSettings(String.valueOf(filePath));
@@ -842,7 +811,6 @@ public class Configuration
 		webElementVisibility = new WebElementVisibility();
 		windowTimeOuts       = new BrowserWindowsTimeOuts();
 		unhandledWindowsChecking = new UnhandledWindowsChecking();
-		testStatus               = new TestStatus();
 		phantomJSDriver  = new PhantomJSDriver();
 	}
 }

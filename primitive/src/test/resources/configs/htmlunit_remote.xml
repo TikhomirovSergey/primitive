@@ -108,16 +108,7 @@
 	
 	<setting name="toDoScreenShotsOnElementHighLighting">
   		<type>BOOL</type>
-		<value>true</value>
-	</setting>	
-	
-</group>
-
-<group name="testStatus">
-
-	<setting name="onWarning">
-		<type>STRING</type>
-		<value>SUCCESS_PERCENTAGE_FAILURE</value>
+		<value>false</value>
 	</setting>	
 	
 </group>

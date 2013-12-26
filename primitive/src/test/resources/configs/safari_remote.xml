@@ -79,34 +79,6 @@
 		 	
 </group>
 
-<group name="screenShots">
-
-	<setting name="folder">
-		<type>STRING</type>
-		<value>Imgs/</value>
-	</setting>
-		  
-	<setting name="file">
-		<type>STRING</type>
-		<value>img</value>
-	</setting>	
-	
-	<setting name="toDoScreenShotsOnElementHighLighting">
-  		<type>BOOL</type>
-		<value>true</value>
-	</setting>	
-	
-</group>
-
-<group name="testStatus">
-
-	<setting name="onWarning">
-		<type>STRING</type>
-		<value>SUCCESS_PERCENTAGE_FAILURE</value>
-	</setting>	
-	
-</group>
-
 <group name="PhantomJSDriver">
 
 	<setting name="folder">

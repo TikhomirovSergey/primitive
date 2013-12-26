@@ -1,12 +1,11 @@
 package org.primitive.webdriverencapsulations.factory.browser;
 
-import org.junit.Assume;
 import org.openqa.selenium.safari.SafariDriver;
 
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.primitive.configuration.Configuration;
+import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
@@ -36,10 +35,10 @@ public class SafariDriverEncapsulation extends WebDriverEncapsulation
 	}	
 
 	@Override
+	@Deprecated
 	protected void prepare() 
 	{
-		 Platform current = Platform.getCurrent();
-		 Assume.assumeTrue(Platform.MAC.is(current) || Platform.WINDOWS.is(current));		
+		Log.warning("I do nothing");
 	}
 
 }
