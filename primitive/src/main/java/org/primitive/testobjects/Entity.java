@@ -502,7 +502,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 	public void quit() 
 	{
 		destroy();
-		SingleWindow.remove(nativeWindow);
+		nativeWindow.destroy();
 		nativeSwitcher.destroy();
 		driverEncapsulation.destroy();
 	}

@@ -2,9 +2,6 @@ package org.primitive.webdriverencapsulations;
 
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.Dimension;
@@ -15,6 +12,7 @@ import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.exceptions.UnclosedBrowserWindowException;
+import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.ISingleBrowserWindow;
 import org.primitive.interfaces.ITakesPictureOfItSelf;
 import org.primitive.logging.Log;
@@ -23,10 +21,9 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.WindowTool;
 
 
 //It is performs actions on a single browser window
-public final class SingleWindow implements Window, Navigation, ISingleBrowserWindow, ITakesPictureOfItSelf{
+public final class SingleWindow implements Window, Navigation, ISingleBrowserWindow, ITakesPictureOfItSelf, IDestroyable{
 	private WindowSwitcher nativeSwitcher;
 	private String objectWindow;
-	protected final static List<SingleWindow> openedWindows = Collections.synchronizedList(new ArrayList<SingleWindow>());
 	private WebDriverEncapsulation driverEncapsulation;
 	private WindowTool windowTool;
 	
@@ -35,7 +32,7 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     	SingleWindow result = null;
     	try
     	{
-    		for (SingleWindow ObjWindow:openedWindows)
+    		for (SingleWindow ObjWindow: switcher.openedWindows)
     		{
     			if ((handle.equals(ObjWindow.objectWindow))&(ObjWindow.nativeSwitcher.equals(switcher)))
     			{
@@ -52,13 +49,13 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     	
     }
     
-    private SingleWindow(WindowSwitcher Switcher, String handle)
+    private SingleWindow(WindowSwitcher switcher, String handle)
     {
-		this.nativeSwitcher 		=  Switcher;
-		this.driverEncapsulation 	=  Switcher.driverEncapsulation;
+		this.nativeSwitcher 		=  switcher;
+		this.driverEncapsulation 	=  switcher.driverEncapsulation;
 		this.objectWindow			=  handle;
 		this.windowTool              = new WindowTool(driverEncapsulation.getWrappedDriver());
-		openedWindows.add(this);
+		switcher.openedWindows.add(this);
 		takeAPictureOfAnInfo("New object has been made of browser window");
     }
        
@@ -170,12 +167,12 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     	nativeSwitcher.switchTo(objectWindow);
     }
     
-    public synchronized static void remove(SingleWindow window)
+    public void destroy()
     {
-	    openedWindows.remove(window);
+	    nativeSwitcher.openedWindows.remove(this);
 		try 
 		{
-			window.finalize();
+			finalize();
 		} 
 		catch (Throwable e) 
 		{
@@ -188,21 +185,16 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     	try
     	{
     		nativeSwitcher.close(objectWindow);
-    		remove(this);
+    		destroy();
     	}
-    	catch (UnhandledAlertException e)
+    	catch (UnhandledAlertException|UnclosedBrowserWindowException|NoSuchWindowException e)
     	{
     		throw e;
     	}
-    	catch (UnclosedBrowserWindowException e)
+    	finally
     	{
-    		throw e;
-    	}   
-    	catch (NoSuchWindowException e)
-    	{
-    		remove(this);
-    		throw e;
-    	}  	
+    		destroy();
+    	}
     }
     
     public synchronized void switchToMe() throws NoSuchWindowException

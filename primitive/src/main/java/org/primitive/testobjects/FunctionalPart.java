@@ -364,7 +364,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 		if (!nativeWindow.exists())
 		{
 			destroyInitedPartsByWindow(nativeWindow);
-    		SingleWindow.remove(nativeWindow);
+			nativeWindow.destroy();
 		}
 	}
 

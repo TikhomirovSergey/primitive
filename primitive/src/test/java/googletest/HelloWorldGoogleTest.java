@@ -13,14 +13,20 @@ public class HelloWorldGoogleTest {
 	
   private void test(Google google)
   {
-	  google.performSearch("Hello world. I have just wrote it using Selenium Webdriver");
-	  Assert.assertEquals(10, google.getLinkCount());
-	  google.clickOn(1);
-	  AnyPage anyPage =  google.getFromWinow(AnyPage.class, 1);
-	  anyPage.close();
+	  try
+	  {
+		  google.performSearch("Hello world. I have just wrote it using Selenium Webdriver");
+		  Assert.assertEquals(10, google.getLinkCount());
+		  google.clickOn(1);
+		  AnyPage anyPage =  google.getFromWinow(AnyPage.class, 1);
+		  anyPage.close();
 	  
-	  google.performSearch("In is Just another attempt to search something");
-	  google.quit();
+		  google.performSearch("In is Just another attempt to search something");
+	  }
+	  finally
+	  {
+		  google.quit();
+	  }	  
   }
 	
   @Test(description = "This is just a test of basic functionality without any configuration")
