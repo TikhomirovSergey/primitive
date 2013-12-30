@@ -1,14 +1,10 @@
 package org.primitive.testobjects;
 
 import java.net.URL;
-import java.util.ArrayList;
-
 
 import org.primitive.exceptions.ConcstructTestObjectException;
-import org.primitive.logging.Log;
-import org.primitive.testobjects.testobject.TestObject;
-import org.primitive.testobjects.testobject.decomposition.IDecomposable;
-import org.primitive.testobjects.testobject.decomposition.IHasManyWindows;
+import org.primitive.testobjects.decomposition.IDecomposable;
+import org.primitive.testobjects.decomposition.IHasManyWindows;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;
@@ -65,6 +61,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 	{
 		T part =  ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(nativeWindow, values));
 		((FunctionalPart) part).originalEntity = this;
+		addChild((TestObject) part);
 		return part;
 	}	
 	
@@ -116,6 +113,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 	{
 		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initWindowByIndex(nativeSwitcher, windowIndex), values));
 		((FunctionalPart) part).originalEntity = this;
+		addChild((TestObject) part);
 		return part;
 	}
 	
@@ -167,6 +165,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 	{
 		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher), values));
 		((FunctionalPart) part).originalEntity = this;
+		addChild((TestObject) part);
 		return part;
 	}
 	
@@ -217,6 +216,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 	{
 		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, timeOutSec), values));
 		((FunctionalPart) part).originalEntity = this;
+		addChild((TestObject) part);
 		return part;
 	}
 	
@@ -271,6 +271,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 	{
 		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title), values));
 		((FunctionalPart) part).originalEntity = this;
+		addChild((TestObject) part);
 		return part;
 	}
 	
@@ -326,6 +327,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 	{
 		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title, timeOutSec), values));
 		((FunctionalPart) part).originalEntity = this;
+		addChild((TestObject) part);
 		return part;
 	}
 	
@@ -378,6 +380,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 	{
 		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url), values));
 		((FunctionalPart) part).originalEntity = this;
+		addChild((TestObject) part);
 		return part;
 	}
 	
@@ -430,6 +433,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 	{
 		T part = ObjectFactory.get(partClass, restructureParamArray(params), restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, url, timeOutSec), values));
 		((FunctionalPart) part).originalEntity = this;
+		addChild((TestObject) part);
 		return part;
 	}
 	
@@ -469,40 +473,10 @@ public abstract class Entity extends TestObject implements IHasManyWindows{
 		return getFromNewWindow(partClass, params, values, url, timeOutSec);
 	}
 	
-	@Override  //destroys itself and all page objects
-	public void destroy() 
-	{
-		
-		ArrayList<SingleWindow> openedWindows = new ArrayList<SingleWindow>(FunctionalPart.parts.keySet());
-		//attempt to destroy page objects
-		for (SingleWindow window: openedWindows)
-		{	//if some windows were created by this driver instance
-			if ((window.getDriverEncapsulation()==driverEncapsulation))
-			{
-				FunctionalPart.destroyInitedPartsByWindow(window);
-				
-				if ((window!=nativeWindow)&(window.exists()))
-				{	
-					window.close();
-				}	
-			}
-		}
-
-		try 
-		{
-			this.finalize();
-		} 
-		catch (Throwable e) 
-		{
-			Log.warning("A problem with destroying of " + this.getClass().getSimpleName() + " instance has been found out! "+e.getMessage(),e);
-		}
-	}	
-	
 	//destroys an Entity instance and makes WebDriver quit 
 	public void quit() 
 	{
 		destroy();
-		nativeWindow.destroy();
 		nativeSwitcher.destroy();
 		driverEncapsulation.destroy();
 	}

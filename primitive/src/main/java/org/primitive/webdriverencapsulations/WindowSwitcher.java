@@ -17,7 +17,6 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.primitive.configuration.Configuration.BrowserWindowsTimeOuts;
 import org.primitive.exceptions.UnclosedBrowserWindowException;
-import org.primitive.exceptions.UnswitchableBrowserWindowException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
@@ -35,39 +34,6 @@ public final class WindowSwitcher implements IDestroyable
 		private WindowSwitcher switcher;
 		protected Fluent(WindowSwitcher switcher) {
 			this.switcher = switcher;
-		}
-		
-		//Is browser window really switched on?
-		private Boolean isSwitchedOn(final WebDriver from, String handle)
-		{
-			synchronized (switcher)
-			{
-				if (from.getWindowHandle().equals(handle))
-				{
-					return true;
-				}
-				else
-				{
-					return null;
-				}
-			}
-		}
-		
-		//fluent waiting of the result. See above
-		protected ExpectedCondition<Boolean> isSwitchedOn(final String handle)
-		{	
-			WebDriver driver = switcher.driverEncapsulation.getWrappedDriver();
-			driver.switchTo().window(handle);
-			return new ExpectedCondition<Boolean>()
-			{
-				public Boolean apply(final WebDriver from)
-				{
-					Boolean result =  isSwitchedOn(from, handle);
-					Log.message("Browser window title: " + from.getTitle() + 
-							". Loaded URL: " + from.getCurrentUrl());
-					return result;
-				}
-			};
 		}
 		
 		//is there such window count? It it is true this method returns handle of window 
@@ -277,7 +243,7 @@ public final class WindowSwitcher implements IDestroyable
 	private Fluent fluent;
 	final List<SingleWindow> openedWindows = Collections.synchronizedList(new ArrayList<SingleWindow>());
 		
-	private void changeActiveWindow(String handle) throws NoSuchWindowException, UnswitchableBrowserWindowException, UnhandledAlertException
+	private void changeActiveWindow(String handle) throws NoSuchWindowException, UnhandledAlertException
 	{
 		Log.debug("Attempt to switch browser window on by handle "+handle);
 		Set<String> handles = getWindowHandles();
@@ -285,20 +251,13 @@ public final class WindowSwitcher implements IDestroyable
 		{
 			throw new NoSuchWindowException("There is no browser window with handle " + handle + "!");
 		}	
-		
-		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getBrowserWindowSwitchOnSec(),windowTimeOuts.defaultTime);
 		try
 		{
-			awaiting.awaitCondition(timeOut, 100, fluent.isSwitchedOn(handle));
+			driverEncapsulation.getWrappedDriver().switchTo().window(handle);
 		}
-		catch (UnswitchableBrowserWindowException|UnhandledAlertException e)
+		catch (UnhandledAlertException e)
 		{
 			throw e;
-		}
-		catch (Exception e)
-		{
-			throw new UnswitchableBrowserWindowException(e);
 		}
 	}
 	
@@ -428,7 +387,7 @@ public final class WindowSwitcher implements IDestroyable
 	}
 	
 	
-	public synchronized void switchTo(String Handle) throws NoSuchWindowException, UnswitchableBrowserWindowException
+	public synchronized void switchTo(String Handle) throws NoSuchWindowException
 	{
 		try
 		{
@@ -437,10 +396,6 @@ public final class WindowSwitcher implements IDestroyable
 		catch (NoSuchWindowException e)
 		{
 			throw new NoSuchWindowException("Can't switch to inexisting browser window. Handle of inexisting window is " + Handle, e);
-		}	
-		catch (UnswitchableBrowserWindowException e)
-		{
-			throw e;
 		}			
 	}
 	
@@ -456,11 +411,13 @@ public final class WindowSwitcher implements IDestroyable
 		return (driverEncapsulation.getWrappedDriver().getTitle());
 	}
 	
-	public void destroy()
+	public synchronized void destroy()
 	{		
 		swithcerList.remove(this);
-		fluent.destroy();
-		for (SingleWindow window: openedWindows)
+		fluent.destroy();		
+		List<SingleWindow> windowsToBeDestroyed = new ArrayList<SingleWindow>();
+		windowsToBeDestroyed.addAll(openedWindows);
+		for (SingleWindow window: windowsToBeDestroyed)
 		{
 			window.destroy();
 		}		
@@ -478,15 +435,7 @@ public final class WindowSwitcher implements IDestroyable
 	
 	public synchronized void close(String handle) throws UnclosedBrowserWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException
 	{
-		try
-		{	
-			changeActiveWindow(handle);
-		}
-		catch (UnswitchableBrowserWindowException e)
-		{
-			throw new UnhandledAlertException("Unable to switch to the window. The possible reason is unhandled alert.");
-		}
-		
+		changeActiveWindow(handle);		
 		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowClosingTimeOutSec(),windowTimeOuts.defaultTime);
 		try

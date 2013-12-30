@@ -3,7 +3,6 @@ package googletest;
 import junit.framework.Assert;
 import googledescripription.AnyPage;
 import googledescripription.Google;
-
 import org.primitive.configuration.Configuration;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -20,8 +19,8 @@ public class HelloWorldGoogleTest {
 		  google.clickOn(1);
 		  AnyPage anyPage =  google.getFromWinow(AnyPage.class, 1);
 		  anyPage.close();
-	  
-		  google.performSearch("In is Just another attempt to search something");
+		  google.clickOn(1);
+		  anyPage =  google.getFromWinow(AnyPage.class, 1);
 	  }
 	  finally
 	  {

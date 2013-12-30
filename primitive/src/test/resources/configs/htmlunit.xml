@@ -51,11 +51,6 @@
 	  <type>LONG</type>
 	  <value>5</value>
 	</setting>
-	
-	<setting name="browserWindowSwitchOnTimeOutSec">
-	  <type>LONG</type>
-	  <value>3</value>
-	</setting>	
 
 	<setting name="browserWindowClosingTimeOutSec">
 	  <type>LONG</type>

@@ -1,4 +1,4 @@
-package org.primitive.testobjects.testobject.decomposition;
+package org.primitive.testobjects.decomposition;
 
 import java.net.URL;
 

@@ -50,11 +50,6 @@
 	<setting name="browserWindowCountTimeOutSec">
 	  <type>LONG</type>
 	  <value>1</value>
-	</setting>
-	
-	<setting name="browserWindowSwitchOnTimeOutSec">
-	  <type>LONG</type>
-	  <value>1</value>
 	</setting>	
 
 	<setting name="browserWindowClosingTimeOutSec">

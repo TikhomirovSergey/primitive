@@ -9,8 +9,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import org.openqa.selenium.NoSuchWindowException;
@@ -24,9 +22,8 @@ import org.primitive.exceptions.UnclosedBrowserWindowException;
 import org.primitive.interfaces.ITakesPictureOfItSelf;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
-import org.primitive.testobjects.testobject.TestObject;
-import org.primitive.testobjects.testobject.decomposition.IDecomposable;
-import org.primitive.testobjects.testobject.decomposition.IHasWebElementFrames;
+import org.primitive.testobjects.decomposition.IDecomposable;
+import org.primitive.testobjects.decomposition.IHasWebElementFrames;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
@@ -57,48 +54,10 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	private String frameToSwitchOnStr  = null;	
 	//WebElement specification of a frame that object is placed on
 	private Object frameToSwitchOnElem = null;
-	
-	protected static final HashMap<SingleWindow, HashSet<FunctionalPart>> parts = new HashMap<SingleWindow, HashSet<FunctionalPart>>();
     //page object is created by specified entity
 	protected Entity originalEntity;
 	private WebElementHighLighter highLighter;
 	protected Interaction interaction;
-	
-	private boolean isAlive = true; //This attribute is for methods that destroy page objects
-	
-	//checks in new page object
-	private void addItselfToMap(SingleWindow browserWindow)
-	{
-		HashSet<FunctionalPart> node =  parts.get(browserWindow);
-		if (node==null)
-		{
-			HashSet<FunctionalPart> newSet = new HashSet<FunctionalPart>();
-			newSet.add(this);
-			parts.put(browserWindow, newSet);
-		}
-		else
-		{
-			node.add(this);
-			parts.put(browserWindow, node);
-		}
-	}
-	
-	protected synchronized static void destroyInitedPartsByWindow(SingleWindow destroyingWindow)
-	{	
-		if (parts.get(destroyingWindow)!=null)
-		{	
-			ArrayList<FunctionalPart> objectList = new ArrayList<FunctionalPart>(parts.get(destroyingWindow));		
-			for (FunctionalPart destroying: objectList)
-			{
-				if (destroying.isAlive) //Some situations are possible 
-				{	//when pages are killed one by one
-					destroying.destroy();
-				}	
-			}		
-			parts.remove(destroyingWindow);
-		}
-	}
-	
 	
 	//default constructor body
 	private void constroctorBody()
@@ -107,7 +66,6 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 		frameSupport      = driverEncapsulation.getFrameSupport();
 		highLighter   = driverEncapsulation.getHighlighter();
 		interaction    = driverEncapsulation.getInteraction();
-		addItselfToMap(nativeWindow);
 	}
 	
 	//switches to object
@@ -142,11 +100,13 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 		return;
 	}	
 	
-	
-	private void setParent(FunctionalPart parent)
+	@Override
+	void addChild(TestObject child)
 	{
-		this.parent = parent;
-		this.originalEntity = parent.originalEntity;
+		super.addChild(child);
+		FunctionalPart childPart = (FunctionalPart) child;
+		childPart.parent = this;
+		childPart.originalEntity = this.originalEntity;
 	}
 	
 	protected FunctionalPart(SingleWindow browserWindow)
@@ -160,7 +120,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 			throws ConcstructTestObjectException {
 		super(parent.nativeWindow);
 		constroctorBody();
-		setParent(parent);
+		parent.addChild(this);
 	}
 	
 	
@@ -178,7 +138,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 			throws ConcstructTestObjectException {
 		super(parent.nativeWindow);
 		constroctorBody();
-		setParent(parent);
+		parent.addChild(this);
 		frameToSwitchOnInt = frameIndex;
 	}
 	
@@ -195,7 +155,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(parent.nativeWindow);
 		constroctorBody();
-		setParent(parent);
+		parent.addChild(this);
 		frameToSwitchOnStr = pathToFrame;
 	}
 	
@@ -212,7 +172,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(parent.nativeWindow);
 		constroctorBody();
-		setParent(parent);
+		parent.addChild(this);
 		frameToSwitchOnElem = frameElement;
 	}
 	
@@ -232,7 +192,7 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	{
 		super(parent.nativeWindow);
 		constroctorBody();
-		setParent(parent);
+		parent.addChild(this);
 		nativeWindow.switchToMe();
 		frameSupport.switchTo(pathToFrame, timeOutInSec);
 		frameToSwitchOnStr = pathToFrame;
@@ -344,50 +304,43 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 		return get(partClass, params, values);
 	}
 	
-	
 	@Override
-	public synchronized void destroy() 
+	public void destroy()
 	{
-		HashSet<FunctionalPart> node = parts.get(nativeWindow);
-		node.remove(this);
-		try
-		{
-	    	this.finalize();
-		}
-    	catch (Throwable e) 
-    	{
-    		Log.warning("A problem with destroying of " + this.getClass().getSimpleName() + " instance has been found out! "+e.getMessage(),e);
-		}
-		isAlive = false;
-		parts.put(nativeWindow, node);		
-		//if browser window doesn't exist anymore
+		//if browser window disappeared
+		//all objects that are placed on this will be destroyed. I think it 
+		//should work this way				
+		//if window was closed or it disappeared 			
 		if (!nativeWindow.exists())
 		{
-			destroyInitedPartsByWindow(nativeWindow);
 			nativeWindow.destroy();
 		}
+		super.destroy();
+		return;
 	}
-
+	
 	//Closes browser window and destroys all page objects that are placed on it
 	public void close() throws UnclosedBrowserWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException
 	{
-		destroyInitedPartsByWindow(nativeWindow);
 		try
 		{
 			nativeWindow.close();
+			destroy();
 		}	
 		catch (UnclosedBrowserWindowException e)
 		{
-			Log.warning("Browser window which test object is placed on hasn't been closed!");
+			Log.warning("Browser window which test object is placed on hasn't been closed!",e);
 			throw e;
 		}
 		catch (NoSuchWindowException e)
 		{
-			Log.warning("Browser window which test object is placed on has disappeared!");
+			Log.warning("Browser window which test object is placed on has disappeared!",e);
+			destroy();
 			throw e;
 		}	
 		catch (UnreachableBrowserException e)
 		{
+			destroy();
 			throw e;
 		}
 	}

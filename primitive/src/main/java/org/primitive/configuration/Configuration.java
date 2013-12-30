@@ -134,7 +134,6 @@ public class Configuration
 
 		private static final String newWindowTimeOutSetting = "newBrowserWindowTimeOutSec";
 		private static final String windowCountTimeOutSetting = "browserWindowCountTimeOutSec";
-		private static final String browserWindowSwitchOnSetting = "browserWindowSwitchOnTimeOutSec";
 		private static final String windowClosingTimeOutSetting = "browserWindowClosingTimeOutSec";
 		
 
@@ -150,11 +149,6 @@ public class Configuration
 		public Long getWindowCountTimeOutSec()
 		{
 			return (Long) getSettingValue(browserWindowsTimeOutsGroup, windowCountTimeOutSetting);			
-		}
-		
-		public Long getBrowserWindowSwitchOnSec()
-		{
-			return (Long) getSettingValue(browserWindowsTimeOutsGroup, browserWindowSwitchOnSetting);			
 		}
 		
 		public Long getWindowClosingTimeOutSec()

@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.primitive.testobjects.testobject.TestObject.Interceptor;
+import org.primitive.testobjects.TestObject.Interceptor;
 
 public final class InteractiveInterceptor extends Interceptor {
 

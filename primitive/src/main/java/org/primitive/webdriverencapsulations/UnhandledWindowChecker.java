@@ -16,7 +16,6 @@ import org.openqa.selenium.support.ui.Wait;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.Configuration.UnhandledWindowsChecking;
 import org.primitive.exceptions.UnclosedBrowserWindowException;
-import org.primitive.exceptions.UnswitchableBrowserWindowException;
 import org.primitive.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
@@ -183,10 +182,6 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		catch (UnhandledAlertException e)
 		{
 			throw e;
-		}
-		catch (UnswitchableBrowserWindowException e)
-		{
-			throw e;
 		}		
 		catch (NoSuchWindowException e)
 		{
@@ -351,7 +346,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 				{
 					closed = attemptToCloseWindow(WindowList, i);
 				}	
-				catch (UnclosedBrowserWindowException|UnhandledAlertException|UnswitchableBrowserWindowException e)
+				catch (UnclosedBrowserWindowException|UnhandledAlertException e)
 				{
 					closed = false;
 					Log.warning("Unhandled browser window hasn't been closed!");
@@ -368,7 +363,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 					{
 						closed = attemptToCloseWindow(WindowList, i);
 					}	
-					catch (UnclosedBrowserWindowException|UnhandledAlertException|UnswitchableBrowserWindowException e)
+					catch (UnclosedBrowserWindowException|UnhandledAlertException e)
 					{
 						closed = false;
 					}
@@ -385,7 +380,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 					{
 						attemptToCloseWindow(WindowList, i);
 					}	
-					catch (UnclosedBrowserWindowException|UnhandledAlertException|UnswitchableBrowserWindowException e)
+					catch (UnclosedBrowserWindowException|UnhandledAlertException e)
 					{ 
 						throw e;
 					}
@@ -439,7 +434,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 					killUnexpectedWindows();
 				}
 			}
-			catch (UnclosedBrowserWindowException|UnhandledAlertException|UnswitchableBrowserWindowException e)
+			catch (UnclosedBrowserWindowException|UnhandledAlertException e)
 			{ 
 				Log.warning("Attempting to close unhandled browser windows has been failed",e);
 			}

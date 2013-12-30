@@ -32,11 +32,11 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     	SingleWindow result = null;
     	try
     	{
-    		for (SingleWindow ObjWindow: switcher.openedWindows)
+    		for (SingleWindow objWindow: switcher.openedWindows)
     		{
-    			if ((handle.equals(ObjWindow.objectWindow))&(ObjWindow.nativeSwitcher.equals(switcher)))
+    			if ((handle.equals(objWindow.objectWindow))&(objWindow.nativeSwitcher.equals(switcher)))
     			{
-    				result=ObjWindow;
+    				result=objWindow;
     				break;
     			}
     		}
@@ -187,13 +187,14 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     		nativeSwitcher.close(objectWindow);
     		destroy();
     	}
-    	catch (UnhandledAlertException|UnclosedBrowserWindowException|NoSuchWindowException e)
+    	catch (UnhandledAlertException|UnclosedBrowserWindowException e)
     	{
     		throw e;
     	}
-    	finally
+    	catch (NoSuchWindowException e)
     	{
     		destroy();
+    		throw e;
     	}
     }
     

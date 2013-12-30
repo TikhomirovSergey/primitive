@@ -1,10 +1,13 @@
-package org.primitive.testobjects.testobject;
+package org.primitive.testobjects;
 
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -14,7 +17,9 @@ import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.interfaces.ITestObjectExceptionHandler;
-import org.primitive.testobjects.testobject.decomposition.IDecomposable;
+import org.primitive.logging.Log;
+import org.primitive.testobjects.decomposition.IDecomposable;
+import org.primitive.testobjects.exceptionhandler.TestObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
@@ -70,7 +75,7 @@ public abstract class TestObject implements IDestroyable, IDecomposable
                     for (TestObjectExceptionHandler handler : checkedInExceptionHandlers) 
                     {
                     	//it looks for the suitable handler
-                    	if (handler.throwableList.contains(t.getClass()))
+                    	if (handler.isThrowableInList(t.getClass()))
                     	{
                     		try
                     		{
@@ -86,7 +91,8 @@ public abstract class TestObject implements IDestroyable, IDecomposable
                 }
             }
         );
-	
+
+	final List<TestObject> children = Collections.synchronizedList(new ArrayList<TestObject>());
 	protected TestObject(SingleWindow browserWindow) throws ConcstructTestObjectException
     {
     	try
@@ -124,7 +130,19 @@ public abstract class TestObject implements IDestroyable, IDecomposable
 	    return  objectToBeTested;
     }
     
-    public abstract void destroy();
+    public void destroy()
+    {
+    	for (TestObject child: children)
+    	{
+    		child.destroy();
+    	}    	
+    	children.clear(); 
+    	try {
+			this.finalize();
+		} catch (Throwable e) {
+			Log.warning("A problem with destroying of " + this.getClass().getSimpleName() + " instance has been found out! "+e.getMessage(),e);
+		}
+    }
 	
 	
 	public void checkInExceptionHandler(TestObjectExceptionHandler exceptionHandler)
@@ -145,6 +163,11 @@ public abstract class TestObject implements IDestroyable, IDecomposable
 
 	@Override
 	public abstract <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame);
+
+	void addChild(TestObject child)
+	{
+		children.add(child);
+	}
 
 	@Override
 	public abstract <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame, Long timeOutInSec);

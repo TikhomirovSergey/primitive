@@ -2,7 +2,7 @@ package org.primitive.testobjects;
 
 import java.lang.reflect.Method;
 
-import org.primitive.testobjects.testobject.TestObject.Interceptor;
+import org.primitive.testobjects.TestObject.Interceptor;
 
 import net.sf.cglib.proxy.MethodProxy;
 

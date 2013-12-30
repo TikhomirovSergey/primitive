@@ -1,4 +1,4 @@
-package org.primitive.testobjects.testobject;
+package org.primitive.testobjects.exceptionhandler;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -11,7 +11,12 @@ import org.primitive.interfaces.ITestObjectExceptionHandler;
  * this is an abstract class. It's inheritors should handle exceptions of defined types
  */
 public abstract class TestObjectExceptionHandler implements ITestObjectExceptionHandler{
-	protected List<Class<? extends Throwable>> throwableList = new ArrayList<Class<? extends Throwable>>();
+	private List<Class<? extends Throwable>> throwableList = new ArrayList<Class<? extends Throwable>>();
+	
+	public boolean isThrowableInList(Class<? extends Throwable> tClass)
+	{
+		return throwableList.contains(tClass);
+	}
 	
 	public TestObjectExceptionHandler(Class<? extends Throwable> tClass)
 	{
