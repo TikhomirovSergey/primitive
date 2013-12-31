@@ -739,7 +739,16 @@ public class Configuration
 	
 	public DesiredCapabilities getCapabilities()
 	{
-		return capability;
+		if (capability!=null)
+		{
+			return capability;
+		}
+		ESupportedDrivers supportedDriver = webDriverSettings.getSupoortedWebDriver();
+		if (supportedDriver!=null)
+		{
+			return (DesiredCapabilities) supportedDriver.getDefaultCapabilities();
+		}
+		return null;
 	}
 
 	public ChromeDriverExe getChromeDriverSettings()

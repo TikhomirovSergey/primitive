@@ -47,21 +47,21 @@ public class WebDriverEncapsulationFactory
 	//It is the invocation of factory method with manually specified web driver
 	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark)
 	{
-		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.getProduct(webDriverMark);
+		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.findProduct(webDriverMark).getProduct();
 		if (webDriverMark != ESupportedDrivers.REMOTE) //if there is web driver that can be started without any capabities
 		{
 			return initInstance(newInstanceClass, new Class[] {} , new Object[] {});
 		}
 		else //else it need to be run with some capabilities. We use capabilities of firefox in this situation
 		{
-			return initInstance(newInstanceClass, new Class[] {Capabilities.class} , new Object[] {EFactoryProducts.getCapabilities(webDriverMark)});
+			return initInstance(newInstanceClass, new Class[] {Capabilities.class} , new Object[] {webDriverMark.getDefaultCapabilities()});
 		}
 	}
 	
 	//It is the invocation of factory method with manually specified web driver, capabilities
 	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities)
 	{
-		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.getProduct(webDriverMark);
+		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.findProduct(webDriverMark).getProduct();
 		return initInstance(newInstanceClass, new Class[] {Capabilities.class} , new Object[] {capabilities});
 	}
 	
@@ -70,7 +70,7 @@ public class WebDriverEncapsulationFactory
 	//For any other web driver it will be ignored.
 	public static WebDriverEncapsulation initNewInstance(ESupportedDrivers webDriverMark, Capabilities capabilities, URL remoteAdress)
 	{
-		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.getProduct(webDriverMark);
+		Class<? extends WebDriverEncapsulation> newInstanceClass = EFactoryProducts.findProduct(webDriverMark).getProduct();
 		if (webDriverMark == ESupportedDrivers.REMOTE)
 		{	
 			return initInstance(newInstanceClass, new Class[] {Capabilities.class, URL.class} , new Object[] {capabilities,remoteAdress});
@@ -87,7 +87,7 @@ public class WebDriverEncapsulationFactory
 		Capabilities capabilities = configuration.getCapabilities();
 		if (capabilities==null)
 		{
-			capabilities = EFactoryProducts.getCapabilities(mark);
+			capabilities = mark.getDefaultCapabilities();
 		}
 		return capabilities;
 	}
@@ -152,7 +152,7 @@ public class WebDriverEncapsulationFactory
 				Log.message("Remote address " + remoteAdress.toString() + " has been ignored");
 			}
 		}		
-		return initInstance(EFactoryProducts.getProduct(mark), convertToClassArray(classes) , values.toArray());	
+		return initInstance(EFactoryProducts.findProduct(mark).getProduct(), convertToClassArray(classes) , values.toArray());	
 	}
 	
 	//It is the invocation of factory method with parameters that are specified in default configuration
