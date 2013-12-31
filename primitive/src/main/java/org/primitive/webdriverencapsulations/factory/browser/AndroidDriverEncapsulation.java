@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.Configuration;
-import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 public class AndroidDriverEncapsulation extends WebDriverEncapsulation {
@@ -90,13 +89,6 @@ public class AndroidDriverEncapsulation extends WebDriverEncapsulation {
 	{
 		super(Configuration.byDefault);
 		constructBody(remoteAddress, capabilities);
-	}	
-	
-	
-	@Override
-	@Deprecated
-	protected void prepare() {
-		Log.debug("There is nothing to prepare for " + androidDriver.getSimpleName());
 	}
 
 }

@@ -12,7 +12,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.primitive.configuration.Configuration;
-import org.primitive.configuration.Configuration.FileSystemProperty;
 import org.primitive.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
@@ -50,12 +49,8 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  private Interaction interaction;
 	  private ElementVisibility elementVisibility;
 	  private WebdriverInnerListener webInnerListener;
-	  private WebElementHighLighter elementHighLighter;
-
-	  
-	  //actions before web driver will be created	  
-	  protected abstract void prepare();	  	  
-	  
+	  private WebElementHighLighter elementHighLighter;  	  
+	  	  
 	  protected void constructBodyInGeneral(Class<? extends WebDriver> driverClass)
 	  {
 		 createWebDriver(driverClass, new Class<?>[] {}, new Object[] {});
@@ -69,37 +64,6 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  protected WebDriverEncapsulation(Configuration configuration)
 	  {
 		  this.configuration = configuration; 
-	  }
-	  
-	  //It sets system properties for such web drivers as ChromeDriver, IEDriver according to configuration and default values
-	  protected void setSystemPropertyLocally(String property, FileSystemProperty setting, String fileByDefault)
-	  {
-		  if (System.getProperty(property)==null)
-		  {			
-			  String pathTo   = setting.getFolder();
-			  String fileName = setting.getFile();
-			  
-			  String fullPath;
-			  if (pathTo == null)
-			  {
-				  fullPath = "";
-			  }
-			  else
-			  {
-				  fullPath = pathTo;
-			  }
-			  
-			  if (fileName == null)
-			  {
-				  fullPath = fullPath + fileByDefault;
-			  }
-			  else
-			  {
-				  fullPath = fullPath + fileName; 
-			  }
-
-			  System.setProperty(property, fullPath);
-		  }		  
 	  }
 	  
 	  //it makes objects of any WebDriver and navigates to specified URL

@@ -4,7 +4,6 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.primitive.configuration.Configuration;
-import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -65,11 +64,5 @@ public class HtmlUnitDriverEncapsulation extends WebDriverEncapsulation {
 	public HtmlUnitDriverEncapsulation(Configuration configuration, BrowserVersion version) {
 		super(configuration);
 		constructBody(version);
-	}
-
-	@Override
-	@Deprecated
-	protected void prepare(){
-		Log.debug("There is nothing to prepare for " + htnlUnitDriver.getSimpleName());
 	}	
 }

@@ -294,7 +294,7 @@ public final class WindowSwitcher implements IDestroyable
 		}
 		catch (TimeoutException e)
 		{
-			throw new NoSuchWindowException("Can't find browser window! Index out of bounds! Specified index is " + Integer.toString(windowIndex+1) + 
+			throw new NoSuchWindowException("Can't find browser window! Index out of bounds! Specified index is " + Integer.toString(windowIndex) + 
 											" is more then actual window count", e);
 		}
 	}
@@ -435,16 +435,16 @@ public final class WindowSwitcher implements IDestroyable
 	
 	public synchronized void close(String handle) throws UnclosedBrowserWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException
 	{
-		changeActiveWindow(handle);		
 		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowClosingTimeOutSec(),windowTimeOuts.defaultTime);
 		try
 		{
+			changeActiveWindow(handle);
 			WebDriver driver = driverEncapsulation.getWrappedDriver();	
 			driver.switchTo().window(handle).close();
 			awaiting.awaitCondition(timeOut, fluent.isClosed(handle));
 		}
-		catch (UnhandledAlertException e)
+		catch (UnhandledAlertException|NoSuchWindowException e)
 		{
 			throw e;
 		}

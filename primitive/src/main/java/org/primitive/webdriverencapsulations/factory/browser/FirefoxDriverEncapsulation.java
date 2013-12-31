@@ -6,7 +6,6 @@ import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.primitive.configuration.Configuration;
-import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
@@ -121,11 +120,5 @@ public class FirefoxDriverEncapsulation extends WebDriverEncapsulation{
 	{
 		super(configuration);
 		constructBody(binary, profile, desiredCapabilities, requiredCapabilities);
-	}
-
-	@Override
-	@Deprecated
-	protected void prepare(){
-		Log.debug("There is nothing to prepare for " + fireFoxDriver.getSimpleName());
 	}	
 }

@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.primitive.configuration.Configuration;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.exe.ExeProperties;
+import org.primitive.webdriverencapsulations.systemproperties.ELocalServices;
 
 
 
@@ -18,52 +18,49 @@ public class ChromeDriverEncapsulation extends WebDriverEncapsulation
 	public ChromeDriverEncapsulation()
 	{
 		super(Configuration.byDefault);
-		prepare();
+		ELocalServices.CHROMESERVICE.setSystemProperty();
 		constructBodyInGeneral(chromeDriver);
 	}
 	
 	public ChromeDriverEncapsulation(Configuration configuration)
 	{
 		super(configuration);
-		prepare();
+		ELocalServices.CHROMESERVICE.setSystemProperty();
 		constructBodyInGeneral(chromeDriver);
 	}	
 	
 	public ChromeDriverEncapsulation(Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
-		prepare();
+		ELocalServices.CHROMESERVICE.setSystemProperty();
 		constructBodyInGeneral(chromeDriver, capabilities);
 	}
 	
 	public ChromeDriverEncapsulation(Configuration configuration, Capabilities capabilities)
 	{
 		super(configuration);
-		prepare();
+		ELocalServices.CHROMESERVICE.setSystemProperty();
 		constructBodyInGeneral(chromeDriver, capabilities);
 	}	
 	
 	private void constructBody(ChromeDriverService service)
 	{
-		prepare();
 		createWebDriver(chromeDriver, new Class<?> [] {ChromeDriverService.class}, new Object[] {service});
 	}
 	
 	private void constructBody(ChromeDriverService service, Capabilities capabilities)
 	{
-		prepare();
 		createWebDriver(chromeDriver, new Class<?> [] {ChromeDriverService.class, Capabilities.class}, new Object[] {service, capabilities});
 	}	
 	
 	private void constructBody(ChromeOptions options)
 	{
-		prepare();
+		ELocalServices.CHROMESERVICE.setSystemProperty();
 		createWebDriver(chromeDriver, new Class<?> [] {ChromeOptions.class}, new Object[] {options}); 
 	}
 	
 	private void constructBody(ChromeDriverService service, ChromeOptions options)
 	{
-		prepare();
 		createWebDriver(chromeDriver, new Class<?> [] {ChromeDriverService.class, ChromeOptions.class}, new Object[] {service, options});
 	}	
 	
@@ -102,11 +99,5 @@ public class ChromeDriverEncapsulation extends WebDriverEncapsulation
 	{
 		super(Configuration.byDefault);
 		constructBody(service, options);
-	}
-
-	@Override
-	protected void prepare()
-	{
-		setSystemPropertyLocally(ExeProperties.FORCHROME.getProperty(), configuration.getChromeDriverSettings(), ExeProperties.FORCHROME.getDefaultPropertyValue());		
 	}
 }

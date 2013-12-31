@@ -3,7 +3,6 @@ package org.primitive.webdriverencapsulations.factory.browser;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.primitive.configuration.Configuration;
-import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 import com.opera.core.systems.OperaDriver;
@@ -69,13 +68,6 @@ public class OperaDriverEncapsulation extends WebDriverEncapsulation {
 	{
 		super(configuration);
 		constructBody(settings);
-	}
-
-
-	@Override
-	@Deprecated
-	protected void prepare(){
-		Log.debug("There is nothing to prepare for " + operaDriver.getSimpleName());
 	}
 
 }

@@ -2,42 +2,40 @@ package org.primitive.webdriverencapsulations.factory.browser;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.service.DriverService;
 import org.primitive.configuration.Configuration;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.exe.ExeProperties;
+import org.primitive.webdriverencapsulations.systemproperties.ELocalServices;
 
 public class PhantomJSDriverEncapsulation extends WebDriverEncapsulation {
 
-	private static final Class<? extends WebDriver> phantomJSDriver = PhantomJSDriver.class; 
-	
+	private static final Class<? extends WebDriver> phantomJSDriver = PhantomJSDriver.class;
 	public PhantomJSDriverEncapsulation(Configuration configuration)
 	{
 		super(configuration);
-		prepare();
+		ELocalServices.PHANTOMJSSERVICE.setSystemProperty();
 		constructBodyInGeneral(phantomJSDriver);
 	}
 
 	public PhantomJSDriverEncapsulation()
 	{
 		super(Configuration.byDefault);
-		prepare();
+		ELocalServices.PHANTOMJSSERVICE.setSystemProperty();
 		constructBodyInGeneral( phantomJSDriver);
 	}
 
 	public PhantomJSDriverEncapsulation(Configuration configuration, Capabilities capabilities)
 	{
 		super(configuration);
-		prepare();
+		ELocalServices.PHANTOMJSSERVICE.setSystemProperty();
 		constructBodyInGeneral(phantomJSDriver, capabilities);
 	}
 
 	public PhantomJSDriverEncapsulation(Capabilities capabilities)
 	{
 		super(Configuration.byDefault);
-		prepare();
+		ELocalServices.PHANTOMJSSERVICE.setSystemProperty();
 		constructBodyInGeneral(phantomJSDriver, capabilities);
 	}
 
@@ -47,21 +45,14 @@ public class PhantomJSDriverEncapsulation extends WebDriverEncapsulation {
 		constructBody(service, desiredCapabilities);
 	}
 
-	public PhantomJSDriverEncapsulation(ChromeDriverService service, Capabilities desiredCapabilities)
+	public PhantomJSDriverEncapsulation(DriverService service, Capabilities desiredCapabilities)
 	{
 		super(Configuration.byDefault);
 		constructBody(service, desiredCapabilities);
 	}
-
-	@Override
-	protected void prepare() {
-		setSystemPropertyLocally(ExeProperties.FORPHANTOMJS.getProperty(), configuration.getPhantomJSDriverSettings(), ExeProperties.FORPHANTOMJS.getDefaultPropertyValue());		
-	}
 	
 	private void constructBody(DriverService service, Capabilities desiredCapabilities)
 	{
-		prepare();
 		createWebDriver(phantomJSDriver, new Class<?> [] {DriverService.class, Capabilities.class}, new Object[] {service, desiredCapabilities});
 	}
-
 }

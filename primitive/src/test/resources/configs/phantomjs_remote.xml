@@ -65,47 +65,6 @@
 	</setting>	  
 </group>
 
-<group name="Log">
-
-	<setting name="Level">
-		<type>STRING</type>
-		<value>FINE</value>
-	</setting>
-		 	
-</group>
-
-<group name="screenShots">
-
-	<setting name="folder">
-		<type>STRING</type>
-		<value>Imgs/</value>
-	</setting>
-		  
-	<setting name="file">
-		<type>STRING</type>
-		<value>img</value>
-	</setting>	
-	
-	<setting name="toDoScreenShotsOnElementHighLighting">
-  		<type>BOOL</type>
-		<value>false</value>
-	</setting>	
-	
-</group>
-
-<group name="PhantomJSDriver">
-
-	<setting name="folder">
-		<type>STRING</type>
-		<value>src/test/resources/binaries/</value>
-	</setting>
-		  
-	<setting name="file">
-		<type>STRING</type>
-		<value>phantomjs.exe</value>
-	</setting>		  
-</group>
-
 <group name="unhandledWindowsChecking">
 		
 	<setting name="timeUnit">

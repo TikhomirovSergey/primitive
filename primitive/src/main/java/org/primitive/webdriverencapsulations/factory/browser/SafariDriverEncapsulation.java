@@ -5,7 +5,6 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.primitive.configuration.Configuration;
-import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
@@ -32,13 +31,6 @@ public class SafariDriverEncapsulation extends WebDriverEncapsulation
 	public SafariDriverEncapsulation(Configuration configuration, Capabilities capabilities) {
 		super(configuration);
 		constructBodyInGeneral(safariDriver, capabilities);
-	}	
-
-	@Override
-	@Deprecated
-	protected void prepare() 
-	{
-		Log.warning("I do nothing");
 	}
 
 }

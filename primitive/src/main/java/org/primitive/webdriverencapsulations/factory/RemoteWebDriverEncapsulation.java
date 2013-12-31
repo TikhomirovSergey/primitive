@@ -13,7 +13,7 @@ import org.openqa.selenium.server.SeleniumServer;
 import org.primitive.configuration.Configuration;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.exe.ExeProperties;
+import org.primitive.webdriverencapsulations.systemproperties.ELocalServices;
 
 
 public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
@@ -21,7 +21,6 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	//remote server that is started on localhost
 	private static SeleniumServer server;	
 	private static Class<? extends WebDriver> remoteDriver = RemoteWebDriver.class;
-		
 	public RemoteWebDriverEncapsulation(Capabilities capabilities) {
 		super(Configuration.byDefault);
 		prepare(); //starts server locally
@@ -127,15 +126,15 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 
 		if (brofserName.equals(DesiredCapabilities.chrome().getBrowserName()))
 		{
-			setSystemPropertyLocally(ExeProperties.FORCHROME.getProperty(), configuration.getChromeDriverSettings(), ExeProperties.FORCHROME.getDefaultPropertyValue());
+			ELocalServices.CHROMESERVICE.setSystemProperty();
 		}
 		if (brofserName.equals(DesiredCapabilities.internetExplorer().getBrowserName()))
 		{
-			setSystemPropertyLocally(ExeProperties.FORIEXPLORER.getProperty(), configuration.getIEDriverSettings(), ExeProperties.FORIEXPLORER.getDefaultPropertyValue());
+			ELocalServices.IEXPLORERSERVICE.setSystemProperty();
 		}
 		if (brofserName.equals(DesiredCapabilities.phantomjs().getBrowserName()))
 		{
-			setSystemPropertyLocally(ExeProperties.FORPHANTOMJS.getProperty(), configuration.getPhantomJSDriverSettings(), ExeProperties.FORPHANTOMJS.getDefaultPropertyValue());
+			ELocalServices.PHANTOMJSSERVICE.setSystemProperty();
 		}
 	}
 
@@ -184,7 +183,7 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 		}
 		
 		//for starting server locally only
-		protected void prepare()
+		private void prepare()
 		{
 			startServerLocally();
 		}

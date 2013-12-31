@@ -6,57 +6,54 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.primitive.configuration.Configuration;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.factory.exe.ExeProperties;
+import org.primitive.webdriverencapsulations.systemproperties.ELocalServices;
 
 
 
 public class InternetExplorerDriverEncapsulation extends WebDriverEncapsulation 
 {
 	private static final Class<? extends WebDriver> internetExplorerDriver = InternetExplorerDriver.class;
-	
 	public InternetExplorerDriverEncapsulation() 
 	{
 		super(Configuration.byDefault);
-		prepare();
+		ELocalServices.IEXPLORERSERVICE.setSystemProperty();
 		constructBodyInGeneral(internetExplorerDriver);
 	}
 	
 	public InternetExplorerDriverEncapsulation(Configuration configuration) 
 	{
 		super(Configuration.byDefault);
-		prepare();
+		ELocalServices.IEXPLORERSERVICE.setSystemProperty();
 		constructBodyInGeneral(internetExplorerDriver);
 	}	
 	
 	public InternetExplorerDriverEncapsulation(Capabilities capabilities) 
 	{
 		super(Configuration.byDefault);
-		prepare();
+		ELocalServices.IEXPLORERSERVICE.setSystemProperty();
 		constructBodyInGeneral(internetExplorerDriver, capabilities);
 	}
 	
 	public InternetExplorerDriverEncapsulation(Configuration configuration, Capabilities capabilities) 
 	{
 		super(configuration);
-		prepare();
+		ELocalServices.IEXPLORERSERVICE.setSystemProperty();
 		constructBodyInGeneral(internetExplorerDriver, capabilities);
 	}
 	
 	private void constructBody(InternetExplorerDriverService service)
 	{
-		prepare();
 		createWebDriver(internetExplorerDriver, new Class[] {InternetExplorerDriverService.class}, new Object[] {service});
 	}
 	
 	private void constructBody(InternetExplorerDriverService service, Capabilities capabilities)
 	{
-		prepare();
 		createWebDriver(internetExplorerDriver, new Class[] {InternetExplorerDriverService.class, Capabilities.class}, new Object[] {service, capabilities});
 	}
 	
 	private void constructBody(int port)
 	{
-		prepare();
+		ELocalServices.IEXPLORERSERVICE.setSystemProperty();
 		createWebDriver(internetExplorerDriver, new Class[] {Integer.class}, new Object[] {port});
 	}	
 	
@@ -94,10 +91,5 @@ public class InternetExplorerDriverEncapsulation extends WebDriverEncapsulation
 	{
 		super(configuration);
 		constructBody(port);
-	}
-
-	@Override
-	protected void prepare() {
-		setSystemPropertyLocally(ExeProperties.FORIEXPLORER.getProperty(), configuration.getIEDriverSettings(), ExeProperties.FORIEXPLORER.getDefaultPropertyValue());		
 	}
 }
