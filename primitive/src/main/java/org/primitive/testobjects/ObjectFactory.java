@@ -5,7 +5,6 @@ import java.net.URL;
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
-import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.testobjects.decomposition.IDecomposable;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;

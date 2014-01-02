@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.primitive.exceptions;
+package org.primitive.webdriverencapsulations;
 
 import org.openqa.selenium.WebDriverException;
 

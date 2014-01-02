@@ -1,4 +1,4 @@
-package org.primitive.exceptions;
+package org.primitive.testobjects;
 
 /**
  * @author s.tihomirov

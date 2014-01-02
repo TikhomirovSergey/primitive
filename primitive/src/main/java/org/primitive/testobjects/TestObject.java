@@ -13,7 +13,6 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.interfaces.ITestObjectExceptionHandler;

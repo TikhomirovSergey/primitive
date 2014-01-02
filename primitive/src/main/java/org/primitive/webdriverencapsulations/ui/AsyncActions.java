@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Keyboard;
 import org.openqa.selenium.interactions.Mouse;
-import org.primitive.exceptions.InteractionError;
 import org.primitive.logging.Log;
 
 
@@ -22,7 +21,7 @@ public class AsyncActions extends Actions {
 	private class AsyncPerformer extends Thread {
 		private Actions action;
 		private boolean isExecuting=false; //Are actions executed yet? If time has passed.
-		private Exception error; //it will refer to some exception if it is caught 
+		private RuntimeException error; //it will refer to some exception if it is caught 
 		
 		private AsyncPerformer(Actions actions) 
 		{
@@ -31,7 +30,7 @@ public class AsyncActions extends Actions {
 			this.isExecuting = true;
 		}
 		
-		private void execute(long secsToWait) throws Exception
+		private void execute(long secsToWait) throws RuntimeException
 		{
 			//Verifying execution in another thread.
 			long startTime = Calendar.getInstance().getTimeInMillis();
@@ -57,29 +56,15 @@ public class AsyncActions extends Actions {
 		}
 		
 		//execution for specified time
-		private void perform(long secsToWait) throws InteractionError
+		private void perform(long secsToWait)
 		{
-			try
-			{
-				execute(secsToWait);
-			}
-			catch (Exception e)
-			{
-				throw new InteractionError("Interactive action error: " + e.getMessage(), e);
-			}
+			execute(secsToWait);
 		}
 		
 		//execution for default time
-		private void perform() throws InteractionError
+		private void perform()
 		{
-			try
-			{
-				execute(averageSecsToWait);
-			}
-			catch (Exception e)
-			{
-				throw new InteractionError("Interactive action error: " + e.getMessage(), e);
-			}	
+			execute(averageSecsToWait);	
 		}
 		
 		public void run()
@@ -88,7 +73,7 @@ public class AsyncActions extends Actions {
 			{
 				action.perform();
 			} 
-			catch (Exception e)
+			catch (RuntimeException e)
 			{
 				Log.warning("During execution of specified actions the problem has been found out: " + e.getMessage(),e);
 				error = e;
@@ -127,14 +112,14 @@ public class AsyncActions extends Actions {
 		averageSecsToWait = avaerageTimeForExecution;
 	}
 	
-	public void perform¿synchronously() throws InteractionError
+	public void perform¿synchronously()
 	{
 		
 		AsyncPerformer performer = new AsyncPerformer(this);
 		performer.perform();		
 	}
 
-	public void perform¿synchronously(long secsToWait) throws InteractionError
+	public void perform¿synchronously(long secsToWait)
 	{
 		AsyncPerformer performer = new AsyncPerformer(this);
 		performer.perform(secsToWait);	

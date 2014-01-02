@@ -11,7 +11,6 @@ import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.remote.UnreachableBrowserException;
-import org.primitive.exceptions.UnclosedBrowserWindowException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.ISingleBrowserWindow;
 import org.primitive.interfaces.ITakesPictureOfItSelf;

@@ -2,7 +2,6 @@ package org.primitive.testobjects;
 
 import java.net.URL;
 
-import org.primitive.exceptions.ConcstructTestObjectException;
 import org.primitive.testobjects.decomposition.IDecomposable;
 import org.primitive.testobjects.decomposition.IHasManyWindows;
 import org.primitive.webdriverencapsulations.SingleWindow;

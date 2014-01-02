@@ -1,6 +1,6 @@
 package googledescripription;
 
-import org.primitive.exceptions.ConcstructTestObjectException;
+import org.primitive.testobjects.ConcstructTestObjectException;
 import org.primitive.testobjects.FunctionalPart;
 import org.primitive.webdriverencapsulations.SingleWindow;
 
