@@ -79,7 +79,27 @@
       	<include name="typeHelloWorldAndOpenTheFirstLink2" />
       </methods>
     </classes>
-  </test> <!-- Test -->   
+  </test> <!-- Test -->  
+  
+   <test name="Hello world Google test with remote htmlUnit">
+    <classes>
+      <parameter name="config"  value="htmlunit_remote.xml"/>    
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+  
+  <test name="Hello world Google test with local htmlUnit">
+    <classes>
+      <parameter name="config"  value="htmlunit.xml"/>     
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink2" />
+      </methods>
+    </classes>
+   </test> <!-- Test -->     
   
   <test name="Hello world Google test with remote safari">
     <classes>

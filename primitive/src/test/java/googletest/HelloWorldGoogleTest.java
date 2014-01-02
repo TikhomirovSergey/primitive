@@ -14,7 +14,7 @@ public class HelloWorldGoogleTest {
   {
 	  try
 	  {
-		  google.performSearch("Hello world. I have just wrote it using Selenium Webdriver");
+		  google.performSearch("Hello world Wikipedia");
 		  Assert.assertEquals(10, google.getLinkCount());
 		  google.clickOn(1);
 		  AnyPage anyPage =  google.getFromWinow(AnyPage.class, 1);

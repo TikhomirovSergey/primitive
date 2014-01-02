@@ -1,10 +1,7 @@
 package org.primitive.webdriverencapsulations;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
@@ -34,9 +31,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 {
 	private ExtendedEventFiringWebDriver firingDriver;
 	  protected Configuration configuration;
-	  
-	  protected final static List<WebDriverEncapsulation> driverList = Collections.synchronizedList(new ArrayList<WebDriverEncapsulation>());
-	  
+	  	  
 	  private Awaiting awaiting;	  
 	  private WindowTimeOuts windowTimeOuts;	 
 	  private PageFactoryWorker pageFactoryWorker;	  
@@ -112,11 +107,7 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  }
 		  catch (RuntimeException e1) {
 			  Log.warning("Some problem has been found while the instance of webdriver was quitted! " + e1.getMessage(), e1);
-		  }
-		  finally {
-			  driverList.remove(this); 
-		  }
-		  
+		  }		  
 		  try 
 		  {
 			destroyEnclosedObjects();  
@@ -224,7 +215,6 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  windowTimeOuts     = new WindowTimeOuts(configuration);
 		  
 		  firingDriver.register(webInnerListener);
-		  driverList.add(this);
 		  resetAccordingTo(configuration);
 	  }
 	  
@@ -265,7 +255,6 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 		  {
 			  destroyEnclosedObjects();
 		  }
-		  driverList.remove(this);
 		  throw new RuntimeException(e);
 	  }
 	  
