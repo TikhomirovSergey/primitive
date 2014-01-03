@@ -1,4 +1,4 @@
-package org.primitive.testobjects.decomposition;
+package org.primitive.interfaces;
 
 
 /**

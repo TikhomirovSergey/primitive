@@ -1,4 +1,4 @@
-package org.primitive.testobjects.exceptionhandler;
+package org.primitive.testobjects;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

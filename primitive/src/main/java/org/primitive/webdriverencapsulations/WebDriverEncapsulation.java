@@ -1,19 +1,25 @@
 package org.primitive.webdriverencapsulations;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.primitive.configuration.Configuration;
+import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.firing.ExtendedEventFiringWebDriver;
+import org.primitive.webdriverencapsulations.localserver.LocalRemoteServerInstance;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.BrowserLogs;
@@ -27,10 +33,16 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.ScriptExecutor;
 import org.primitive.webdriverencapsulations.webdrivercomponents.TimeOut;
 
 
-public abstract class WebDriverEncapsulation implements IDestroyable, IConfigurable, WrapsDriver, HasCapabilities
+public class WebDriverEncapsulation implements IDestroyable, IConfigurable, WrapsDriver, HasCapabilities
 {
-	private ExtendedEventFiringWebDriver firingDriver;
-	  protected Configuration configuration;
+	  //get tests started with FireFoxDriver by default.
+	  private static ESupportedDrivers defaultSupportedDriver 	= ESupportedDrivers.FIREFOX;
+	  private final String chromeBrowser    = DesiredCapabilities.chrome().getBrowserName();
+	  private final String internetExplorer = DesiredCapabilities.internetExplorer().getBrowserName();	
+	  private final String phantomJS        = DesiredCapabilities.phantomjs().getBrowserName();	
+	  
+	  private ExtendedEventFiringWebDriver firingDriver;
+	  protected Configuration configuration = Configuration.byDefault;
 	  	  
 	  private Awaiting awaiting;	  
 	  private WindowTimeOuts windowTimeOuts;	 
@@ -44,21 +56,109 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 	  private Interaction interaction;
 	  private ElementVisibility elementVisibility;
 	  private WebdriverInnerListener webInnerListener;
-	  private WebElementHighLighter elementHighLighter;  	  
-	  	  
-	  protected void constructBodyInGeneral(Class<? extends WebDriver> driverClass)
+	  private WebElementHighLighter elementHighLighter;
+  	  
+	  
+	  //creates instance by specified driver
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver)
 	  {
-		 createWebDriver(driverClass, new Class<?>[] {}, new Object[] {});
+		  if (supporteddriver.equals(ESupportedDrivers.REMOTE))
+		  {
+			  LocalRemoteServerInstance.startLocally();
+		  }
+		  supporteddriver.setSystemProperty();
+		  createWebDriver(supporteddriver.getUsingWebDriverClass(), supporteddriver.getDefaultCapabilities());
 	  }
 	  
-	  protected void constructBodyInGeneral(Class<? extends WebDriver> driverClass, Capabilities capabilities)
+	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities)
 	  {
-	  	  createWebDriver(driverClass, new Class<?>[] {Capabilities.class}, new Object[] {capabilities});
+		  if (supporteddriver.equals(ESupportedDrivers.REMOTE))
+		  {   //if there is RemoteWebDriver and capabilities that require service
+			  LocalRemoteServerInstance.startLocally();
+			  String brofserName = capabilities.getBrowserName();			  
+			  
+			  if (chromeBrowser.equals(brofserName))
+			  {
+				  ESupportedDrivers.CHROME.setSystemProperty(); 
+			  }
+			  if (internetExplorer.equals(brofserName))
+			  {
+				  ESupportedDrivers.INTERNETEXPLORER.setSystemProperty();
+			  }
+			  if (phantomJS.equals(brofserName))
+			  {
+				  ESupportedDrivers.PHANTOMJS.setSystemProperty();
+			  }
+		  }
+		  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);	  
 	  }
 	  
-	  protected WebDriverEncapsulation(Configuration configuration)
+	  //creates instance by specified driver and capabilities
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver, Capabilities capabilities)
 	  {
-		  this.configuration = configuration; 
+		  constructorBody(supporteddriver, capabilities);
+	  }
+	  
+	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities, URL remoteAddress)
+	  {
+		  if (supporteddriver.equals(ESupportedDrivers.REMOTE))
+		  {   //if there is RemoteWebDriver that uses remote service
+			  createWebDriver(supporteddriver.getUsingWebDriverClass(), new Class[] {URL.class, Capabilities.class}, new Object[] {remoteAddress, capabilities});
+		  }
+		  else
+		  {	  
+			  Log.message("Remote address " + String.valueOf(remoteAddress) + " has been ignored");
+			  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
+		  }  
+	  }
+	  
+	  //creates instance by specified driver, capabilities and remote address
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver, Capabilities capabilities, URL remoteAddress)
+	  {
+		  constructorBody(supporteddriver, capabilities, remoteAddress);
+	  }
+	  
+	  //creates instance by specified driver and remote address using default capabilities
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver,  URL remoteAddress)
+	  {
+		  this(supporteddriver, supporteddriver.getDefaultCapabilities(), remoteAddress);  
+	  }
+	  
+	  //creates instance by specified driver and remote address using specified configuration
+	  public WebDriverEncapsulation(Configuration configuration)
+	  {
+		 this.configuration = configuration; 
+		 ESupportedDrivers supportedDriver = this.configuration.getWebDriverSettings().getSupoortedWebDriver();
+		 if (supportedDriver==null)
+		 {
+			supportedDriver = defaultSupportedDriver;
+		 }
+		 
+		 Capabilities capabilities = this.configuration.getCapabilities();
+		 if (capabilities == null)
+		 {
+			 capabilities = supportedDriver.getDefaultCapabilities();
+		 }
+		 
+		 String remoteAdress = this.configuration.getWebDriverSettings().getRemoteAddress();
+		 if (remoteAdress==null)
+		 {
+			 constructorBody(supportedDriver, capabilities);
+			 return;
+		 }
+		 
+		 try {
+			URL remoteUrl = new URL(remoteAdress);
+			constructorBody(supportedDriver, capabilities, remoteUrl);
+		 } catch (MalformedURLException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		 }
+	  }
+	  
+	  //creates instance by default configuration
+	  public WebDriverEncapsulation()
+	  {
+		 this(Configuration.byDefault);
 	  }
 	  
 	  //it makes objects of any WebDriver and navigates to specified URL
@@ -98,6 +198,16 @@ public abstract class WebDriverEncapsulation implements IDestroyable, IConfigura
 			  actoinsOnConstructFailure(e);
 		  }
 	  }
+	  
+	  protected void createWebDriver(Class<? extends WebDriver> driverClass)
+	  {
+		 createWebDriver(driverClass, new Class<?>[] {}, new Object[] {});
+	  }
+	  
+	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Capabilities capabilities)
+	  {
+	  	  createWebDriver(driverClass, new Class<?>[] {Capabilities.class}, new Object[] {capabilities});
+	  }	  
 	  
 	  public void destroy()
 	  {

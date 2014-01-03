@@ -743,11 +743,6 @@ public class Configuration
 		{
 			return capability;
 		}
-		ESupportedDrivers supportedDriver = webDriverSettings.getSupoortedWebDriver();
-		if (supportedDriver!=null)
-		{
-			return (DesiredCapabilities) supportedDriver.getDefaultCapabilities();
-		}
 		return null;
 	}
 

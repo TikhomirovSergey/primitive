@@ -2,8 +2,8 @@ package org.primitive.testobjects;
 
 import java.net.URL;
 
-import org.primitive.testobjects.decomposition.IDecomposable;
-import org.primitive.testobjects.decomposition.IHasManyWindows;
+import org.primitive.interfaces.IDecomposable;
+import org.primitive.interfaces.IHasManyWindows;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;

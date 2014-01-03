@@ -13,12 +13,11 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
+import org.primitive.interfaces.IDecomposable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.interfaces.ITestObjectExceptionHandler;
 import org.primitive.logging.Log;
-import org.primitive.testobjects.decomposition.IDecomposable;
-import org.primitive.testobjects.exceptionhandler.TestObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
