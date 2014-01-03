@@ -4,7 +4,6 @@ import java.net.URL;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.CommandExecutor;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
@@ -20,7 +19,7 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	private void constructBody(Capabilities capabilities, CommandExecutor executor)
 	{
 		LocalRemoteServerInstance.startLocally();
-		initForLocalWorking(capabilities);
+		setSystemProprtyByCapabilities(capabilities);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(), new Class[] {CommandExecutor.class, Capabilities.class}, new Object[] {executor, capabilities});
 	}	
 	
@@ -28,7 +27,7 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 			Capabilities requiredCapabilities,  CommandExecutor executor)
 	{
 		LocalRemoteServerInstance.startLocally();
-		initForLocalWorking(desiredCapabilities);
+		setSystemProprtyByCapabilities(desiredCapabilities);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(), new Class[] {CommandExecutor.class, Capabilities.class, Capabilities.class},
 				new Object[] {executor, desiredCapabilities, requiredCapabilities});
 	}	
@@ -84,24 +83,4 @@ public class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 		this.configuration = configuration;
 		constructBody(desiredCapabilities, requiredCapabilities, remoteAddress);		
 	}	
-
-	
-	private void initForLocalWorking(Capabilities capabilities)
-	{
-		//if proxy server need to be run
-		String brofserName = capabilities.getBrowserName();
-
-		if (brofserName.equals(DesiredCapabilities.chrome().getBrowserName()))
-		{
-			ESupportedDrivers.CHROME.setSystemProperty();
-		}
-		if (brofserName.equals(DesiredCapabilities.internetExplorer().getBrowserName()))
-		{
-			ESupportedDrivers.INTERNETEXPLORER.setSystemProperty();
-		}
-		if (brofserName.equals(DesiredCapabilities.phantomjs().getBrowserName()))
-		{
-			ESupportedDrivers.PHANTOMJS.setSystemProperty();
-		}
-	}
 }

@@ -35,13 +35,12 @@ public class OperaDriverEncapsulation extends WebDriverEncapsulation {
 	
 	public OperaDriverEncapsulation(OperaSettings settings)
 	{
-		super(Configuration.byDefault);
 		constructBody(settings);
 	}	
 	
 	public OperaDriverEncapsulation(Configuration configuration, OperaSettings settings)
 	{
-		super(configuration);
+		this.configuration = configuration;
 		constructBody(settings);
 	}
 

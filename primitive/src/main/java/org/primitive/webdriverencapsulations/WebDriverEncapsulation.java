@@ -59,6 +59,35 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  private WebElementHighLighter elementHighLighter;
   	  
 	  
+	  //methods that support constructors functionality:
+	  protected void setSystemProprtyByCapabilities(Capabilities capabilities)
+	  {
+		  String brofserName = capabilities.getBrowserName();			  
+		  
+		  if (chromeBrowser.equals(brofserName))
+		  {
+			  ESupportedDrivers.CHROME.setSystemProperty(); 
+		  }
+		  if (internetExplorer.equals(brofserName))
+		  {
+			  ESupportedDrivers.INTERNETEXPLORER.setSystemProperty();
+		  }
+		  if (phantomJS.equals(brofserName))
+		  {
+			  ESupportedDrivers.PHANTOMJS.setSystemProperty();
+		  }	  
+	  }
+	  
+	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities)
+	  {
+		  if (supporteddriver.equals(ESupportedDrivers.REMOTE))
+		  {   //if there is RemoteWebDriver and capabilities that require service
+			  LocalRemoteServerInstance.startLocally();
+			  setSystemProprtyByCapabilities(capabilities);
+		  }
+		  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);	  
+	  }
+	  
 	  //creates instance by specified driver
 	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver)
 	  {
@@ -68,35 +97,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  }
 		  supporteddriver.setSystemProperty();
 		  createWebDriver(supporteddriver.getUsingWebDriverClass(), supporteddriver.getDefaultCapabilities());
-	  }
-	  
-	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities)
-	  {
-		  if (supporteddriver.equals(ESupportedDrivers.REMOTE))
-		  {   //if there is RemoteWebDriver and capabilities that require service
-			  LocalRemoteServerInstance.startLocally();
-			  String brofserName = capabilities.getBrowserName();			  
-			  
-			  if (chromeBrowser.equals(brofserName))
-			  {
-				  ESupportedDrivers.CHROME.setSystemProperty(); 
-			  }
-			  if (internetExplorer.equals(brofserName))
-			  {
-				  ESupportedDrivers.INTERNETEXPLORER.setSystemProperty();
-			  }
-			  if (phantomJS.equals(brofserName))
-			  {
-				  ESupportedDrivers.PHANTOMJS.setSystemProperty();
-			  }
-		  }
-		  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);	  
-	  }
-	  
-	  //creates instance by specified driver and capabilities
-	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver, Capabilities capabilities)
-	  {
-		  constructorBody(supporteddriver, capabilities);
 	  }
 	  
 	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities, URL remoteAddress)
@@ -110,6 +110,61 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 			  Log.message("Remote address " + String.valueOf(remoteAddress) + " has been ignored");
 			  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
 		  }  
+	  }
+	  
+	  //it makes objects of any WebDriver and navigates to specified URL
+	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Class<?>[] paramClasses, Object[] values)
+	  {
+		  WebDriver driver = null;
+		  
+		  Constructor<?>[] constructors      = driverClass.getConstructors();
+		  Constructor<?> suitableConstructor = null;
+		  int constructorCount = constructors.length;
+		  for (int i=0; i<constructorCount; i++)
+		  {  //looking for constructor we need
+			 Class<?>[] params = constructors[i].getParameterTypes();  
+			 if (Arrays.equals(params, paramClasses))
+			 {
+				 suitableConstructor = constructors[i];
+				 break;
+			 }
+		  }
+		  
+		  if (suitableConstructor==null)
+		  {
+			  throw new RuntimeException(new NoSuchMethodException("Wrong specified constructor of WebDriver! " + driverClass.getSimpleName()));
+		  }
+		  
+		  try
+		  {
+			  driver = (WebDriver) suitableConstructor.newInstance(values);
+			  actoinsAfterWebDriverCreation(driver);
+		  }
+		  catch (RuntimeException | InstantiationException | IllegalAccessException | InvocationTargetException e)
+		  {
+			  if (driver!=null)
+			  {
+				  driver.quit();
+			  }
+			  actoinsOnConstructFailure(e);
+		  }
+	  }
+	  
+	  protected void createWebDriver(Class<? extends WebDriver> driverClass)
+	  {
+		 createWebDriver(driverClass, new Class<?>[] {}, new Object[] {});
+	  }
+	  
+	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Capabilities capabilities)
+	  {
+	  	  createWebDriver(driverClass, new Class<?>[] {Capabilities.class}, new Object[] {capabilities});
+	  }	  
+	  
+	  //constructors are below:
+	  //creates instance by specified driver and capabilities
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver, Capabilities capabilities)
+	  {
+		  constructorBody(supporteddriver, capabilities);
 	  }
 	  
 	  //creates instance by specified driver, capabilities and remote address
@@ -161,53 +216,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		 this(Configuration.byDefault);
 	  }
 	  
-	  //it makes objects of any WebDriver and navigates to specified URL
-	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Class<?>[] paramClasses, Object[] values)
-	  {
-		  WebDriver driver = null;
-		  
-		  Constructor<?>[] constructors      = driverClass.getConstructors();
-		  Constructor<?> suitableConstructor = null;
-		  int constructorCount = constructors.length;
-		  for (int i=0; i<constructorCount; i++)
-		  {  //looking for constructor we need
-			 Class<?>[] params = constructors[i].getParameterTypes();  
-			 if (Arrays.equals(params, paramClasses))
-			 {
-				 suitableConstructor = constructors[i];
-				 break;
-			 }
-		  }
-		  
-		  if (suitableConstructor==null)
-		  {
-			  throw new RuntimeException(new NoSuchMethodException("Wrong specified constructor of WebDriver! " + driverClass.getSimpleName()));
-		  }
-		  
-		  try
-		  {
-			  driver = (WebDriver) suitableConstructor.newInstance(values);
-			  actoinsAfterWebDriverCreation(driver);
-		  }
-		  catch (RuntimeException | InstantiationException | IllegalAccessException | InvocationTargetException e)
-		  {
-			  if (driver!=null)
-			  {
-				  driver.quit();
-			  }
-			  actoinsOnConstructFailure(e);
-		  }
-	  }
-	  
-	  protected void createWebDriver(Class<? extends WebDriver> driverClass)
-	  {
-		 createWebDriver(driverClass, new Class<?>[] {}, new Object[] {});
-	  }
-	  
-	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Capabilities capabilities)
-	  {
-	  	  createWebDriver(driverClass, new Class<?>[] {Capabilities.class}, new Object[] {capabilities});
-	  }	  
+	  //other methods:
 	  
 	  public void destroy()
 	  {
