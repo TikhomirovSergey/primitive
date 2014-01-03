@@ -85,18 +85,17 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 			  LocalRemoteServerInstance.startLocally();
 			  setSystemProprtyByCapabilities(capabilities);
 		  }
-		  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);	  
+		  else
+		  {	  
+			  supporteddriver.setSystemProperty();	  
+		  }	
+		  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
 	  }
 	  
 	  //creates instance by specified driver
 	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver)
 	  {
-		  if (supporteddriver.equals(ESupportedDrivers.REMOTE))
-		  {
-			  LocalRemoteServerInstance.startLocally();
-		  }
-		  supporteddriver.setSystemProperty();
-		  createWebDriver(supporteddriver.getUsingWebDriverClass(), supporteddriver.getDefaultCapabilities());
+		  constructorBody(supporteddriver, supporteddriver.getDefaultCapabilities());
 	  }
 	  
 	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities, URL remoteAddress)
@@ -108,7 +107,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  else
 		  {	  
 			  Log.message("Remote address " + String.valueOf(remoteAddress) + " has been ignored");
-			  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
+			  constructorBody(supporteddriver, capabilities);
 		  }  
 	  }
 	  
@@ -176,7 +175,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  //creates instance by specified driver and remote address using default capabilities
 	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver,  URL remoteAddress)
 	  {
-		  this(supporteddriver, supporteddriver.getDefaultCapabilities(), remoteAddress);  
+		  constructorBody(supporteddriver, supporteddriver.getDefaultCapabilities(), remoteAddress);  
 	  }
 	  
 	  //creates instance by specified driver and remote address using specified configuration
