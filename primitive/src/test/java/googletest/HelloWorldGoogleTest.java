@@ -3,10 +3,14 @@ package googletest;
 import junit.framework.Assert;
 import googledescripription.AnyPage;
 import googledescripription.Google;
+import mocklistener.MockTestListener;
+
 import org.primitive.configuration.Configuration;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+@Listeners(MockTestListener.class)
 public class HelloWorldGoogleTest {
 	
 	
