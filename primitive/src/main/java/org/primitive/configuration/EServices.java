@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.primitive.configuration.Configuration;
-import org.primitive.configuration.Configuration.FileSystemProperty;
+import org.primitive.interfaces.IHasPathToFile;
 
 enum EServices {	
 	CHROMESERVICE(Configuration.byDefault.getChromeDriverSettings(), ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY,  "chromedriver.exe"), 
@@ -14,7 +14,7 @@ enum EServices {
 	
 	private static final String defaultFolder = "";
 	
-	private FileSystemProperty filePaths;
+	private IHasPathToFile filePaths;
 	private final String defaultExeName;
 	private final String propertyName;
 	
@@ -33,7 +33,7 @@ enum EServices {
         }
 	}
 	
-	private EServices(FileSystemProperty filePaths, String propertyName, String defaultExeName)
+	private EServices(IHasPathToFile filePaths, String propertyName, String defaultExeName)
 	{
 		this.filePaths      = filePaths; 
 		this.defaultExeName = defaultExeName;

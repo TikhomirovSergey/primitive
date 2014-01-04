@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
@@ -14,61 +14,21 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.remote.Augmenter;
-import org.primitive.configuration.Configuration;
-import org.primitive.interfaces.IConfigurable;
 
 
 
-public final class Photographer implements IConfigurable 
+public final class Photographer
 {
-	private static final String pictureNameByDefault = "Picture";
-	private static final String pictureFolderNameByDefault = "Imgs/"; //in case if there is no customized settings for picture storing
+	private final static String pictureNameByDefault = "picture";
+	private static String pictureFolderNameByDefault = "Imgs/"; //in case if there is no customized settings for picture storing
 	public static final String format = "png";
 	private static final ThreadLocal<Photographer> photographerThreadLocal = new ThreadLocal<Photographer>();
-	
-	private String picture = pictureNameByDefault;
 	private String folder  = pictureFolderNameByDefault;
 	
 	
 	private Photographer()
 	{
 		super();
-		resetAccordingTo(Configuration.byDefault);
-	}
-	
-	private String resetPictureName(Configuration configuration)
-	{
-		String picName = configuration.getScreenShots().getFile();
-		if (picName == null)
-		{
-			picture = pictureNameByDefault;
-		}
-		else
-		{
-			picture = picName; 
-		}
-		return picture;
-	}
-	
-	private String resetFolderName(Configuration configuration)
-	{
-		String dirName =configuration.getScreenShots().getFolder();
-		if (dirName == null)
-		{
-			folder = pictureFolderNameByDefault;
-		}
-		else
-		{
-			folder= dirName; 
-		}
-		return folder;
-	}
-	
-	@Override
-	public void resetAccordingTo(Configuration config)
-	{
-		resetPictureName(config);
-		resetFolderName(config);
 	}
 	
 	private BufferedImage getImageFromDriver(WebDriver driver) throws IOException
@@ -132,8 +92,7 @@ public final class Photographer implements IConfigurable
 		File ImgFolder = new File(FolderPath);
 		ImgFolder.mkdirs();
 		
-		long currentMills = Calendar.getInstance().getTimeInMillis();
-		File picForLog = new File(FolderPath + picture + '_' + Long.toString(currentMills) + "." + format);
+		File picForLog = new File(FolderPath + pictureNameByDefault + '_' + UUID.randomUUID().toString() + "." + format);
 		try 
 		{
 			ImageIO.write(imageForLog, format, picForLog);
@@ -145,8 +104,17 @@ public final class Photographer implements IConfigurable
 		}
 	}
 	
-	//takes pictures of full browser windows
-	public synchronized static void takeAPictureForLog(WebDriver driver, Level LogLevel, String Comment) throws NoSuchWindowException
+	public static synchronized void setCommonOutputFolder(String pathToFolder)
+	{
+		pictureFolderNameByDefault = pathToFolder;
+	}
+	
+	public static void setOutputFolder(String pathToFolder)
+	{
+		get().folder = pathToFolder;
+	}
+	
+	private static Photographer get()
 	{
 		Photographer photographer = photographerThreadLocal.get();
 		if (photographer==null)
@@ -154,6 +122,13 @@ public final class Photographer implements IConfigurable
 			photographer = new Photographer();
 			photographerThreadLocal.set(photographer);
 		}
+		return photographer;
+	}
+	
+	//takes pictures of full browser windows
+	public static void takeAPictureForLog(WebDriver driver, Level LogLevel, String Comment) throws NoSuchWindowException
+	{
+		Photographer photographer = get();
 		try
 		{
 			BufferedImage imageForLog = photographer.takeAPicture(driver); 

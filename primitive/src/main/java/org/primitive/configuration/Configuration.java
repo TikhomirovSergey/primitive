@@ -24,6 +24,7 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.primitive.interfaces.IHasPathToFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -33,7 +34,7 @@ import org.xml.sax.SAXException;
 //for customizing project
 public class Configuration
 {
-	public class PhantomJSDriver implements FileSystemProperty, GroupedSetting {
+	public class PhantomJSDriver implements IHasPathToFile, GroupedSetting {
 		//getters for phantomjs.exe
 		private static final String phantomJSDriverGroup = "PhantomJSDriver"; 
 				
@@ -280,24 +281,13 @@ public class Configuration
 	 * @author s.tihomirov
 	 *
 	 */
-	public class ScreenShots implements FileSystemProperty, GroupedSetting{
+	public class ScreenShots implements GroupedSetting{
 		private static final String toDoScreenShotsOnElementHighLighting = "toDoScreenShotsOnElementHighLighting";
 		
 		private ScreenShots() {
 			super();
 		}
-		
-		@Override
-		public String getFolder()
-		{
-			return (String) getSettingValue(screenShotssGroup, folderSettingName);
-		}
 
-		@Override
-		public String getFile() {
-			return (String) getSettingValue(screenShotssGroup, fileSettingName);
-		}
-		
 		public Boolean getToDoScreenShotsOnElementHighLighting()
 		{
 			return (Boolean) getSettingValue(screenShotssGroup, toDoScreenShotsOnElementHighLighting);
@@ -360,7 +350,7 @@ public class Configuration
 
 	}
 
-	public class IEDriverExe implements FileSystemProperty, GroupedSetting {
+	public class IEDriverExe implements IHasPathToFile, GroupedSetting {
 		//getters for chromeDriver.exe
 		private static final String ieDriverGroup = "IEDriver"; 
 						
@@ -388,13 +378,7 @@ public class Configuration
 
 	}
 
-	public interface FileSystemProperty {
-		
-		public String getFolder();
-		public String getFile();
-	}
-
-	public class ChromeDriverExe implements FileSystemProperty,GroupedSetting {
+	public class ChromeDriverExe implements IHasPathToFile,GroupedSetting {
 		//getters for chromeDriver.exe
 		private static final String chromeDriverGroup = "ChromeDriver"; 
 				

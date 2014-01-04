@@ -11,16 +11,6 @@
 </group>
     
 <group name="screenShots">
-
-	<setting name="folder">
-		<type>STRING</type>
-		<value>Imgs/</value>
-	</setting>
-		  
-	<setting name="file">
-		<type>STRING</type>
-		<value>img</value>
-	</setting>	
 	
 	<setting name="toDoScreenShotsOnElementHighLighting">
   		<type>BOOL</type>
