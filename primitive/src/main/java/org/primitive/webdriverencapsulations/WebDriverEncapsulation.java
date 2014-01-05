@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
@@ -115,23 +114,11 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Class<?>[] paramClasses, Object[] values)
 	  {
 		  WebDriver driver = null;
-		  
-		  Constructor<?>[] constructors      = driverClass.getConstructors();
-		  Constructor<?> suitableConstructor = null;
-		  int constructorCount = constructors.length;
-		  for (int i=0; i<constructorCount; i++)
-		  {  //looking for constructor we need
-			 Class<?>[] params = constructors[i].getParameterTypes();  
-			 if (Arrays.equals(params, paramClasses))
-			 {
-				 suitableConstructor = constructors[i];
-				 break;
-			 }
-		  }
-		  
-		  if (suitableConstructor==null)
-		  {
-			  throw new RuntimeException(new NoSuchMethodException("Wrong specified constructor of WebDriver! " + driverClass.getSimpleName()));
+		  Constructor<?> suitableConstructor = null;		  
+		  try {
+			 suitableConstructor = driverClass.getConstructor(paramClasses);
+		  } catch (NoSuchMethodException | SecurityException e1) {
+			  throw new RuntimeException("Wrong specified or constructor of WebDriver! " + driverClass.getSimpleName(),e1);
 		  }
 		  
 		  try

@@ -15,7 +15,7 @@ import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.primitive.configuration.Configuration.BrowserWindowsTimeOuts;
+import org.primitive.configuration.commonhelpers.BrowserWindowsTimeOuts;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;

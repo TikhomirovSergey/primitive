@@ -7,11 +7,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,9 +18,18 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.openqa.selenium.Platform;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.primitive.configuration.interfaces.IHasPathToFile;
+import org.openqa.selenium.Capabilities;
+import org.primitive.configuration.commonhelpers.BrowserWindowsTimeOuts;
+import org.primitive.configuration.commonhelpers.CapabilitySettings;
+import org.primitive.configuration.commonhelpers.ChromeDriverExe;
+import org.primitive.configuration.commonhelpers.IEDriverExe;
+import org.primitive.configuration.commonhelpers.Logging;
+import org.primitive.configuration.commonhelpers.PhantomJSDriver;
+import org.primitive.configuration.commonhelpers.ScreenShots;
+import org.primitive.configuration.commonhelpers.UnhandledWindowsChecking;
+import org.primitive.configuration.commonhelpers.WebDriverSettings;
+import org.primitive.configuration.commonhelpers.WebDriverTimeOuts;
+import org.primitive.configuration.commonhelpers.WebElementVisibility;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,196 +39,6 @@ import org.xml.sax.SAXException;
 //for customizing project
 public class Configuration
 {
-	public class PhantomJSDriver implements IHasPathToFile, GroupedSetting {
-		//getters for phantomjs.exe
-		private static final String phantomJSDriverGroup = "PhantomJSDriver"; 
-				
-		private PhantomJSDriver() 
-		{
-			super();
-		}		
-		
-		@Override
-		public String getFolder() 
-		{
-			return (String) getSettingValue(phantomJSDriverGroup, folderSettingName);
-		}
-
-		@Override
-		public String getFile() 
-		{
-			return (String) getSettingValue(phantomJSDriverGroup, fileSettingName);
-		}
-		
-		public Object getSetting(String name)
-		{
-			return  getSettingValue(phantomJSDriverGroup, name);
-		}
-
-	}
-
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	private interface GroupedSetting {
-		public Object getSetting(String name);
-	}
-
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	private interface TimeUnitSetting {
-		public static final String timeUnitSetting = "timeUnit";
-		
-		public TimeUnit getTimeUnit();
-	}
-
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	public class UnhandledWindowsChecking implements TimeUnitSetting, GroupedSetting {
-		private final static String sessionTimeSetting = "sessionTime";
-		private final static String timeForWaitingSetting = "timeForWaiting";
-		private final static String secsForAwaitinAlertPresentSetting = "secsForAwaitinAlertPresent";
-		
-		private UnhandledWindowsChecking() {
-			super();
-		}
-		
-		@Override
-		public TimeUnit getTimeUnit() {
-			String timeUnitStr = (String) getSettingValue(unhandledWindowsCheckingGroup, timeUnitSetting);
-			if (timeUnitStr != null)
-			{
-				return TimeUnit.valueOf(timeUnitStr.toUpperCase());
-			}
-			else
-			{
-				return null;
-			}
-		}
-		
-		public Long getSessionTime()
-		{
-			return (Long) getSettingValue(unhandledWindowsCheckingGroup, sessionTimeSetting);
-		}
-		
-		public Long getTimeForWaiting()
-		{
-			return (Long) getSettingValue(unhandledWindowsCheckingGroup, timeForWaitingSetting);
-		}
-		
-		public Long getSecsForAwaitinAlertPresent()
-		{
-			return (Long) getSettingValue(unhandledWindowsCheckingGroup, secsForAwaitinAlertPresentSetting);
-		}
-		
-		public Object getSetting(String name)
-		{
-			return  getSettingValue(unhandledWindowsCheckingGroup,  name);
-		}
-	}
-
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	public class BrowserWindowsTimeOuts implements GroupedSetting {
-
-		private static final String newWindowTimeOutSetting = "newBrowserWindowTimeOutSec";
-		private static final String windowCountTimeOutSetting = "browserWindowCountTimeOutSec";
-		private static final String windowClosingTimeOutSetting = "browserWindowClosingTimeOutSec";
-		
-
-		private BrowserWindowsTimeOuts() {
-			super();
-		}
-		
-		public Long getNewBrowserWindowTimeOutSec()
-		{
-			return (Long) getSettingValue(browserWindowsTimeOutsGroup, newWindowTimeOutSetting);			
-		}
-		
-		public Long getWindowCountTimeOutSec()
-		{
-			return (Long) getSettingValue(browserWindowsTimeOutsGroup, windowCountTimeOutSetting);			
-		}
-		
-		public Long getWindowClosingTimeOutSec()
-		{
-			return (Long) getSettingValue(browserWindowsTimeOutsGroup, windowClosingTimeOutSetting);			
-		}		
-
-		public Object getSetting(String name)
-		{
-			return getSettingValue(browserWindowsTimeOutsGroup, name);
-		}
-		
-	}
-
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	public class WebElementVisibility implements GroupedSetting{
-
-		private static final String visibilityTimeOutSetting = "visibilityTimeOutSec";
-
-		private WebElementVisibility() {
-			super();
-		}
-		
-		public Long getVisibilityTimeOutSec()
-		{
-			return (Long) getSettingValue(webElementVisibilityGroup, visibilityTimeOutSetting);			
-		}
-		
-		public Object getSetting(String name)
-		{
-			return  getSettingValue(webElementVisibilityGroup, name);
-		}	
-	}
-
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	public class WebDriverSettings implements GroupedSetting {
-		private final static String webDriverName = "driverName";
-		private final static String remoteAddress = "remoteAdress";
-		private WebDriverSettings() {
-			super();
-		}
-		
-		public ESupportedDrivers getSupoortedWebDriver()
-		{
-			String name = (String) getSettingValue(webDriverGroup, webDriverName);
-			if (name!=null)
-			{
-				return ESupportedDrivers.parse(name);
-			}
-			else
-			{
-				return null;
-			}
-		}
-		
-		public String getRemoteAddress()
-		{
-			return (String) getSettingValue(webDriverGroup, remoteAddress);
-		}
-		
-		public Object getSetting(String name)
-		{
-			return  getSettingValue(webDriverGroup, name);
-		}	
-
-	}
-
-
 	/**
 	 * @author s.tihomirov
 	 *
@@ -246,170 +61,6 @@ public class Configuration
 	}
 	
 	
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	public class Logging implements GroupedSetting{
-		private static final String levelSetting = "Level";
-		
-		private Logging() {
-			super();
-		}
-		
-		public Level getLevel()
-		{
-			String levelName = (String) getSettingValue(loggingGroup, levelSetting);
-			if (levelName!=null)
-			{	
-				return Level.parse(levelName.toUpperCase());
-			}
-			else
-			{
-				return null;
-			}
-		}
-		
-		public Object getSetting(String name)
-		{
-			return  getSettingValue(loggingGroup, name);
-		}		
-
-	}	
-
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	public class ScreenShots implements GroupedSetting{
-		private static final String toDoScreenShotsOnElementHighLighting = "toDoScreenShotsOnElementHighLighting";
-		
-		private ScreenShots() {
-			super();
-		}
-
-		public Boolean getToDoScreenShotsOnElementHighLighting()
-		{
-			return (Boolean) getSettingValue(screenShotssGroup, toDoScreenShotsOnElementHighLighting);
-		}
-		
-		public Object getSetting(String name)
-		{
-			return  getSettingValue(screenShotssGroup, name);
-		}			
-
-	}
-
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	public class WebDriverTimeOuts implements TimeUnitSetting, GroupedSetting{		
-		private static final String implicitlyWaitTimeOutSetting = "implicitlyWait";
-		private static final String scriptTimeOutSetting = "setScriptTimeout";
-		private static final String pageLoadTimeoutSetting = "pageLoadTimeout";
-		/**
-		 * Groups specified time outs
-		 */
-		private WebDriverTimeOuts() {
-			super();
-		}
-		
-		public TimeUnit getTimeUnit()
-		{
-			String timeUnitStr = (String) getSettingValue(webDriverTimeOutsGroup, timeUnitSetting);
-			if (timeUnitStr != null)
-			{
-				return TimeUnit.valueOf(timeUnitStr.toUpperCase());
-			}
-			else
-			{
-				return null;
-			}
-		}
-		
-		public Long getImplicitlyWaitTimeOut()
-		{
-			return (Long) getSettingValue(webDriverTimeOutsGroup, implicitlyWaitTimeOutSetting);
-		}
-		
-		public Long getScriptTimeOut()
-		{
-			return (Long) getSettingValue(webDriverTimeOutsGroup, scriptTimeOutSetting);
-		}
-		
-		public Long getLoadTimeout()
-		{
-			return (Long) getSettingValue(webDriverTimeOutsGroup, pageLoadTimeoutSetting);
-		}	
-		
-		public Object getSetting(String name)
-		{
-			return  getSettingValue(webDriverTimeOutsGroup, name);
-		}			
-
-	}
-
-	public class IEDriverExe implements IHasPathToFile, GroupedSetting {
-		//getters for chromeDriver.exe
-		private static final String ieDriverGroup = "IEDriver"; 
-						
-		private IEDriverExe() 
-		{
-			super();
-		}		
-		
-		@Override
-		public String getFolder() 
-		{
-			return (String) getSettingValue(ieDriverGroup, folderSettingName);
-		}
-
-		@Override
-		public String getFile() 
-		{
-			return (String) getSettingValue(ieDriverGroup, fileSettingName);
-		}
-		
-		public Object getSetting(String name)
-		{
-			return  getSettingValue(ieDriverGroup, name);
-		}		
-
-	}
-
-	public class ChromeDriverExe implements IHasPathToFile,GroupedSetting {
-		//getters for chromeDriver.exe
-		private static final String chromeDriverGroup = "ChromeDriver"; 
-				
-		private ChromeDriverExe() 
-		{
-			super();
-		}
-
-		@Override
-		public String getFolder() 
-		{
-			return (String) getSettingValue(chromeDriverGroup, folderSettingName);
-		}
-
-		@Override
-		public String getFile() 
-		{
-			return (String) getSettingValue(chromeDriverGroup, fileSettingName);
-		}
-		
-		public Object getSetting(String name)
-		{
-			return getSettingValue(chromeDriverGroup, name);
-		}
-
-	}
-
-	private enum EAvailableDataTypes {
-		STRING, BOOL, LONG, FLOAT, INT;
-	}
-	
 	private final static String commonFileName = "settings.xml"; //settings file should be put in project directory
 	public final static Configuration byDefault = get(getPathToDefault("."));
 	
@@ -417,31 +68,9 @@ public class Configuration
 	private static final String settingsGroup = "group";
 	private static final String typeTag = "type";
 	private static final String valueTag = "value";
-	
-	private final static String webDriverGroup		        = "webdriver";
-	
+		
 	//specified settings for capabilities
 	private static final String capabilityGroup = "DesiredCapabilities";
-	private static final String browserNameCapabity = "browserName";
-	private static final String platformNameCapabity = "platform";
-	private static final String versionNameCapabity  = "version";	
-	
-	private final static String webDriverTimeOutsGroup 	    = "webDriverTimeOuts";
-	private final static String webElementVisibilityGroup   = "webElementVisibilityTimeOut";
-	private final static String browserWindowsTimeOutsGroup = "browserWindowsTimeOuts";
-
-	private final static String unhandledWindowsCheckingGroup= "unhandledWindowsChecking"; 
-	
-	//spicified settings for *Driver.exe
-	private static final String folderSettingName = "folder";
-	private static final String fileSettingName   = "file";
-	
-	//screenshot group
-	private static final String screenShotssGroup = "screenShots";
-	
-	//Logging group
-	private static final String loggingGroup = "Log";
-	
 	//settings for chrome driver exe
 	private ChromeDriverExe chromeDriver;
 	
@@ -458,9 +87,9 @@ public class Configuration
 	
 	private ScreenShots screenShots;
 		
-	private final HashMap<String, HashMap<String, Object>> mappedSettings = new HashMap<String, HashMap<String, Object>>();
+	final HashMap<String, HashMap<String, Object>> mappedSettings = new HashMap<String, HashMap<String, Object>>();
 	
-	private DesiredCapabilities capability;
+	private CapabilitySettings capability;
 	
 	private Logging logging;
 	
@@ -535,15 +164,16 @@ public class Configuration
 		type = type.toUpperCase();
 		type = type.trim(); 
 		
-		if ((!type.equals(EAvailableDataTypes.STRING.toString()))&
-				(!type.equals(EAvailableDataTypes.BOOL.toString()))&
-				(!type.equals(EAvailableDataTypes.LONG.toString()))&
-				(!type.equals(EAvailableDataTypes.FLOAT.toString()))&
-				(!type.equals(EAvailableDataTypes.INT.toString())))
+		EAvailableDataTypes requiredType = null;
+		try
+		{
+			requiredType = EAvailableDataTypes.valueOf(type);
+		}
+		catch (IllegalArgumentException|NullPointerException e)
 		{
 			throw new ParserConfigurationException("Type specification that is not supported! Specification is " + type + ". " +
 					" STRING, BOOL, LONG, FLOAT, INT are suppurted. Setting name is " + settingElement.getAttribute("name"));
-		}		
+		}	
 		
 		Object returnValue = null;
 		if (valueNode.getChildNodes().getLength()==0)
@@ -562,27 +192,7 @@ public class Configuration
 		{
 			try
 			{
-				if (type.equals(EAvailableDataTypes.STRING.toString()))
-				{
-					returnValue = new String(value);
-				}
-				if (type.equals(EAvailableDataTypes.BOOL.toString()))
-				{
-					returnValue = new Boolean(value);
-				}
-				if (type.equals(EAvailableDataTypes.LONG.toString()))
-				{
-					returnValue = new Long(value);
-				}
-				if (type.equals(EAvailableDataTypes.FLOAT.toString()))
-				{
-					returnValue = new Float(value);
-				}
-				if (type.equals(EAvailableDataTypes.INT.toString()))
-				{
-					returnValue = new Integer(value);
-				}
-				return returnValue;
+				return requiredType.getValue(value);
 			}
 			catch (Exception e)
 			{
@@ -665,42 +275,6 @@ public class Configuration
 		}		
 	}
 	
-	private void buildCapability()
-	{
-		HashMap<String,Object> capabilities = mappedSettings.get(capabilityGroup);
-		if (capabilities!=null)
-		{
-			DesiredCapabilities customizedCapability = new DesiredCapabilities();
-			
-			List<String> capabilityStrings = new ArrayList<String>(capabilities.keySet());
-			
-			for (String capabilityStr: capabilityStrings)
-			{	
-				if (capabilities.get(capabilityStr)!=null)
-				{	
-					//set browser name
-					if (capabilityStr.equals(browserNameCapabity))
-					{
-						customizedCapability.setBrowserName((String) capabilities.get(capabilityStr));
-					} //set version
-					else if (capabilityStr.equals(versionNameCapabity)) 
-					{
-						customizedCapability.setVersion((String) capabilities.get(capabilityStr));
-					} //set platform
-					else if (capabilityStr.equals(platformNameCapabity)) 
-					{
-						customizedCapability.setPlatform(Platform.valueOf((String) capabilities.get(capabilityStr)));
-					}
-					else
-					{	
-						customizedCapability.setCapability(capabilityStr, capabilities.get(capabilityStr));
-					}
-				}
-			}
-			capability = customizedCapability;
-		}
-	}
-	
 	//gets setting group from mapped serrings
 	protected HashMap<String, Object> getSettingGroup(String groupName)
 	{
@@ -721,7 +295,13 @@ public class Configuration
 		}
 	}
 	
-	public DesiredCapabilities getCapabilities()
+	//returns HashMap of settings by its group name
+	HashMap<String, Object> getGroup(String group)
+	{
+		return mappedSettings.get(capabilityGroup);
+	}
+	
+	public Capabilities getCapabilities()
 	{
 		if (capability!=null)
 		{
@@ -783,16 +363,16 @@ public class Configuration
 	protected Configuration(String filePath)
 	{
 		parseSettings(String.valueOf(filePath));
-		buildCapability();
-		chromeDriver = new ChromeDriverExe();
-		ieDriver     = new IEDriverExe();
-		webDriverTimeOuts     = new WebDriverTimeOuts();
-		screenShots  = new ScreenShots();
-		logging      = new Logging();
-		webDriverSettings = new WebDriverSettings();
-		webElementVisibility = new WebElementVisibility();
-		windowTimeOuts       = new BrowserWindowsTimeOuts();
-		unhandledWindowsChecking = new UnhandledWindowsChecking();
-		phantomJSDriver  = new PhantomJSDriver();
+		capability   = new CapabilitySettings(this);
+		chromeDriver = new ChromeDriverExe(this);
+		ieDriver     = new IEDriverExe(this);
+		webDriverTimeOuts     = new WebDriverTimeOuts(this);
+		screenShots  = new ScreenShots(this);
+		logging      = new Logging(this);
+		webDriverSettings = new WebDriverSettings(this);
+		webElementVisibility = new WebElementVisibility(this);
+		windowTimeOuts       = new BrowserWindowsTimeOuts(this);
+		unhandledWindowsChecking = new UnhandledWindowsChecking(this);
+		phantomJSDriver  = new PhantomJSDriver(this);
 	}
 }
