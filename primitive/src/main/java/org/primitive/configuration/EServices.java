@@ -5,7 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.primitive.configuration.Configuration;
-import org.primitive.interfaces.IHasPathToFile;
+import org.primitive.configuration.interfaces.IHasPathToFile;
 
 enum EServices {	
 	CHROMESERVICE(Configuration.byDefault.getChromeDriverSettings(), ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY,  "chromedriver.exe"), 

@@ -1,4 +1,4 @@
-package org.primitive.interfaces;
+package org.primitive.configuration.interfaces;
 
 /**
  * @author s.tihomirov

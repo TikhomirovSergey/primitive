@@ -1,4 +1,4 @@
-package org.primitive.interfaces;
+package org.primitive.webdriverencapsulations.interfaces;
 
 import java.util.concurrent.TimeUnit;
 

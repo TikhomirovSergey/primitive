@@ -24,7 +24,7 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.primitive.interfaces.IHasPathToFile;
+import org.primitive.configuration.interfaces.IHasPathToFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

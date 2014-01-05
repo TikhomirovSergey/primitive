@@ -13,9 +13,9 @@ import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.WebElement;
 import org.primitive.interfaces.IDestroyable;
-import org.primitive.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
+import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.ElementVisibility;
 

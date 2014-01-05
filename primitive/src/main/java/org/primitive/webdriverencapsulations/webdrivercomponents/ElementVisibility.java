@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.primitive.configuration.Configuration;
-import org.primitive.interfaces.IConfigurable;
+import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
 

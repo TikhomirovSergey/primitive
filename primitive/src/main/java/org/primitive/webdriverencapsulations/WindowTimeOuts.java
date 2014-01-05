@@ -2,7 +2,7 @@ package org.primitive.webdriverencapsulations;
 
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.Configuration.BrowserWindowsTimeOuts;
-import org.primitive.interfaces.IConfigurable;
+import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 

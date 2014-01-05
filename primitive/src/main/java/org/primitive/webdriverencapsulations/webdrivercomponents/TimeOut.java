@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.WebDriverException;
 import org.primitive.configuration.Configuration;
-import org.primitive.interfaces.IConfigurable;
+import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.logging.Log;
 
 public final class TimeOut extends WebdriverComponent implements Timeouts, IConfigurable {

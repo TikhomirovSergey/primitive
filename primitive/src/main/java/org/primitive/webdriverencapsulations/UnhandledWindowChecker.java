@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.Configuration.UnhandledWindowsChecking;
-import org.primitive.interfaces.IConfigurable;
+import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 

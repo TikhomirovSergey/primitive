@@ -12,9 +12,9 @@ import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.interfaces.IDestroyable;
-import org.primitive.interfaces.ISingleBrowserWindow;
-import org.primitive.interfaces.ITakesPictureOfItSelf;
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.interfaces.ISingleBrowserWindow;
+import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
 import org.primitive.webdriverencapsulations.webdrivercomponents.WindowTool;
 
 

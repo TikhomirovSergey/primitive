@@ -47,7 +47,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.events.internal.EventFiringKeyboard;
 import org.openqa.selenium.support.events.internal.EventFiringMouse;
 import org.openqa.selenium.support.events.internal.EventFiringTouch;
-import org.primitive.interfaces.IExtendedWebDriverEventListener;
+import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventListener;
 
 
 

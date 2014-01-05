@@ -4,7 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.cglib.proxy.MethodProxy;
-import org.primitive.interfaces.ITestObjectExceptionHandler;
+
+import org.primitive.testobjects.interfaces.ITestObjectExceptionHandler;
 
 /**
  * @author s.tihomirov

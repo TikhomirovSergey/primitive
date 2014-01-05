@@ -9,12 +9,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsElement;
 import org.primitive.configuration.Configuration;
-import org.primitive.interfaces.IConfigurable;
+import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
-import org.primitive.interfaces.IWebElementHighlighter;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
 import org.primitive.logging.eLogColors;
+import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
 
 /**
  * @author s.tihomirov
