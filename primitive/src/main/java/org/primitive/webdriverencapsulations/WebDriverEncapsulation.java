@@ -23,7 +23,6 @@ import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.BrowserLogs;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;
-import org.primitive.webdriverencapsulations.webdrivercomponents.ElementVisibility;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Ime;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Interaction;
@@ -53,7 +52,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  private BrowserLogs logs;	  
 	  private Ime ime;
 	  private Interaction interaction;
-	  private ElementVisibility elementVisibility;
 	  private WebdriverInnerListener webInnerListener;
 	  private WebElementHighLighter elementHighLighter;
   	  
@@ -262,12 +260,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  {
 		  return(frameSupport);
 	  }		
-	  
-	  
-	  public void resetElementVisibilityTimeOut()
-	  {
-		  elementVisibility.resetAccordingTo(configuration);
-	  }
 
 	  public Cookies getCookies()
 	  {
@@ -303,14 +295,9 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  {
 		  		  
 		  firingDriver = ExtendedEventFiringWebDriver.newInstance(createdDriver);		  
-		  
-		  elementVisibility  = new ElementVisibility(firingDriver);
 		  elementHighLighter = new WebElementHighLighter();
 		  
-		  webInnerListener = new WebdriverInnerListener();
-		  webInnerListener.setElementVisibilityChecker(elementVisibility);	
-		  webInnerListener.setHighLighter(elementHighLighter);
-		  
+		  webInnerListener   = new WebdriverInnerListener(createdDriver, configuration);		  
 		  awaiting 			 = new Awaiting(firingDriver);	  	  
 		  pageFactoryWorker  = new PageFactoryWorker(firingDriver);	  
 		  scriptExecutor     = new ScriptExecutor(firingDriver);	  
@@ -347,7 +334,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  finalizeInner(timeout);
 		  finalizeInner(interaction);
 		  finalizeInner(webInnerListener);
-		  finalizeInner(elementVisibility);
 		  finalizeInner(windowTimeOuts);
 		  finalizeInner(elementHighLighter);
 	  }
@@ -391,7 +377,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  {
 		  configuration = config;
 		  timeout.resetAccordingTo(configuration);
-		  elementVisibility.resetAccordingTo(configuration);
+		  webInnerListener.resetAccordingTo(configuration);
 		  windowTimeOuts.resetAccordingTo(configuration);
 		  elementHighLighter.resetAccordingTo(configuration);
 	  }

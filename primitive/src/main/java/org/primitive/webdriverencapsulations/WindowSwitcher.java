@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.NoAlertPresentException;
@@ -27,7 +29,7 @@ public final class WindowSwitcher implements IDestroyable
 {
 	/**
 	 * @author s.tihomirov
-	 * Fluent waiting of browser window conditions
+	 * Fluent waiting for browser window conditions
 	 */
 	protected static class Fluent implements IDestroyable{
 		private WindowSwitcher switcher;
@@ -54,7 +56,7 @@ public final class WindowSwitcher implements IDestroyable
 			}
 		}
 		
-		//fluent waiting of the result. See above
+		//fluent waiting for the result. See above
 		protected ExpectedCondition<String> suchBrowserhWindowWithIndexIsPresent(final int windowIndex)
 		{
 			return new ExpectedCondition<String>()
@@ -84,7 +86,7 @@ public final class WindowSwitcher implements IDestroyable
 			}					
 		}
 		
-		//fluent waiting of the result. See above
+		//fluent waiting for the result. See above
 		protected ExpectedCondition<Boolean> isClosed(final String closingHandle)
 		{
 			return new ExpectedCondition<Boolean>()
@@ -106,22 +108,17 @@ public final class WindowSwitcher implements IDestroyable
 				Set<String> newHandles = from.getWindowHandles();
 				if (newHandles.size()>oldHandles.size())
 				{
-					for (String handle:newHandles)
-					{
-						if (!oldHandles.contains(handle)&(!handle.equals("")))
-						{
-							newHandle = handle;
-							Log.message("New browser window is caught!");
-							return newHandle;
-						}
-					}
+					newHandles.removeAll(oldHandles);
+					Log.message("New browser window is caught!");
+					newHandle = (String) newHandles.toArray()[0];
+					return newHandle;
 				}
 				return newHandle;
 			}
 
 		}
 		
-		//fluent waiting of the result. See above
+		//fluent waiting for the result. See above
 		protected ExpectedCondition<String> newWindowIsAppeared()
 		{
 			return new ExpectedCondition<String>()
@@ -137,27 +134,26 @@ public final class WindowSwitcher implements IDestroyable
 		//is here new browser window?
 		//returns handle of a new browser window that we have been waiting for specified time
 		//new browser window should have defined title. We can specify title in this way:
-		//title, title*, *title, *title*
+		//title, title*, *title, *title*,tit*le and etc
 		private String getNewHandle(final WebDriver from, final Set<String> oldHandles, String title)
 		{
 			synchronized(switcher)
 			{
-				String containingTitle = title.replace("*", "");
+				Pattern titlePattern = Pattern.compile(title);				
 				String newHandle = null;
 				Set<String> newHandles = from.getWindowHandles();
 				if (newHandles.size()>oldHandles.size())
 				{
+					newHandles.removeAll(oldHandles);
 					for (String handle:newHandles)
 					{
-						if (!oldHandles.contains(handle))
+						from.switchTo().window(handle);
+						Matcher titleMatcher = titlePattern.matcher(from.getTitle());
+						if (titleMatcher.matches())
 						{
-							from.switchTo().window(handle);
-							if (from.getTitle().contains(containingTitle))
-							{
-								newHandle = handle;
-								Log.message("New browser window with title " + title + "is caught!");
-								return newHandle;
-							}
+							newHandle = handle;
+							Log.message("New browser window with title " + title + "is caught!");
+							return newHandle;
 						}
 					}
 				}
@@ -165,7 +161,7 @@ public final class WindowSwitcher implements IDestroyable
 			}
 		}	
 		
-		//fluent waiting of the result. See above
+		//fluent waiting for the result. See above
 		protected ExpectedCondition<String> newWindowIsAppeared(final String title)
 		{
 			return new ExpectedCondition<String>()
@@ -189,17 +185,15 @@ public final class WindowSwitcher implements IDestroyable
 				Set<String> newHandles = from.getWindowHandles();
 				if (newHandles.size()>oldHandles.size())
 				{
+					newHandles.removeAll(oldHandles);
 					for (String handle:newHandles)
 					{
-						if (!oldHandles.contains(handle))
+						from.switchTo().window(handle);
+						if (from.getCurrentUrl().equals(url.toString()))
 						{
-							from.switchTo().window(handle);
-							if (from.getCurrentUrl().equals(url.toString()))
-							{
-								newHandle = handle;
-								Log.message("New browser window that loaded by URL " + url.toString() + " is caught!");
-								return newHandle;
-							}
+							newHandle = handle;
+							Log.message("New browser window that loaded by URL " + url.toString() + " is caught!");
+							return newHandle;
 						}
 					}
 				}

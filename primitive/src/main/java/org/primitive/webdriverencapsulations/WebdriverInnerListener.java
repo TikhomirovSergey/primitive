@@ -12,6 +12,8 @@ import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.WebElement;
+import org.primitive.configuration.Configuration;
+import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
@@ -19,19 +21,17 @@ import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventL
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.ElementVisibility;
 
-final class WebdriverInnerListener implements IExtendedWebDriverEventListener, IDestroyable {
+final class WebdriverInnerListener implements IExtendedWebDriverEventListener, IDestroyable, IConfigurable {
 
-	private ElementVisibility elementVisibility;
-	private WebElementHighLighter highLighter;
+	private final ElementVisibility elementVisibility;
+	private final WebElementHighLighter highLighter;
 	
-	void setElementVisibilityChecker(ElementVisibility elementVisibility)
+	public WebdriverInnerListener(WebDriver driver, Configuration configuration)
 	{
-		this.elementVisibility = elementVisibility;
-	}
-	
-	void setHighLighter(WebElementHighLighter highLighter)
-	{
-		this.highLighter = highLighter;
+		super();
+		elementVisibility = new ElementVisibility(driver);
+		elementVisibility.resetAccordingTo(configuration);
+		highLighter = new WebElementHighLighter();
 	}
 	
 	@Override
@@ -274,15 +274,20 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	public void destroy() {
 		try 
 		{
-			elementVisibility = null;
+			elementVisibility.destroy();
+			highLighter.destroy();
 			this.finalize();
 		} 
 		catch (Throwable e) 
 		{
-			e.printStackTrace();
 			Log.warning(e.getMessage(),e);
 		}
 		
+	}
+
+	@Override
+	public void resetAccordingTo(Configuration config) {
+		elementVisibility.resetAccordingTo(config);		
 	}
 
 }
