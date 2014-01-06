@@ -6,7 +6,8 @@ package org.primitive.configuration;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -15,8 +16,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.commonhelpers.BrowserWindowsTimeOuts;
@@ -39,28 +38,6 @@ import org.xml.sax.SAXException;
 //for customizing project
 public class Configuration
 {
-	/**
-	 * @author s.tihomirov
-	 *
-	 */
-	private static class getterInterceptor implements MethodInterceptor {
-
-		/**
-		 * it Intercepts getter methods and redirects its invocation to default configuration when value is null
-		 */
-		@Override
-		public Object intercept(Object proxy, Method method, Object[] args,
-				MethodProxy methodProxy) throws Throwable {
-			Object result = methodProxy.invokeSuper(proxy, args);
-			if ((result==null)&(proxy!=(byDefault)&(byDefault!=null)))
-			{
-				result = methodProxy.invokeSuper(byDefault, args);
-			}
-			return result;
-		}
-	}
-	
-	
 	private final static String commonFileName = "settings.xml"; //settings file should be put in project directory
 	public final static Configuration byDefault = get(getPathToDefault("."));
 	
@@ -68,34 +45,11 @@ public class Configuration
 	private static final String settingsGroup = "group";
 	private static final String typeTag = "type";
 	private static final String valueTag = "value";
-		
-	//specified settings for capabilities
-	private static final String capabilityGroup = "DesiredCapabilities";
-	//settings for chrome driver exe
-	private ChromeDriverExe chromeDriver;
 	
-	//settings for ie driver exe
-	private IEDriverExe ieDriver;
-	
-	//settings for phantomjs.exe	
-	private PhantomJSDriver phantomJSDriver;
-	
-	//settings for time outs
-	private WebDriverTimeOuts webDriverTimeOuts;
-	private WebElementVisibility webElementVisibility;
-	private BrowserWindowsTimeOuts windowTimeOuts;
-	
-	private ScreenShots screenShots;
-		
-	final HashMap<String, HashMap<String, Object>> mappedSettings = new HashMap<String, HashMap<String, Object>>();
-	
-	private CapabilitySettings capability;
-	
-	private Logging logging;
-	
-	private WebDriverSettings webDriverSettings;
-	//unhandled windows and alerts group
-	private UnhandledWindowsChecking unhandledWindowsChecking;
+	private final HashMap<String, HashMap<String, Object>> mappedSettings = new HashMap<String, HashMap<String, Object>>();
+	private final HashMap<Class<? extends AbstractConfigurationAccessHelper>, 
+					AbstractConfigurationAccessHelper> initedHelpers = new HashMap<>();
+					
 	private static String getPathToDefault(String startPath)
 	{
 		//attempt to find configuration in the specified directory
@@ -135,7 +89,7 @@ public class Configuration
 	
 	public static Configuration get(String filePath)
 	{
-		Callback interceptor = new getterInterceptor();
+		Callback interceptor = new ConfigurationInterceptor();
 		
 		Enhancer enhancer = new Enhancer();
 	    enhancer.setCallback(interceptor);
@@ -276,7 +230,7 @@ public class Configuration
 	}
 	
 	//gets setting group from mapped serrings
-	protected HashMap<String, Object> getSettingGroup(String groupName)
+	public HashMap<String, Object> getSettingGroup(String groupName)
 	{
 		return mappedSettings.get(groupName);
 	}
@@ -289,90 +243,95 @@ public class Configuration
 		{
 			return null;
 		}
-		else
-		{
-			return group.get(settingName);
-		}
+		return group.get(settingName);
 	}
 	
-	//returns HashMap of settings by its group name
-	HashMap<String, Object> getGroup(String group)
+	/**
+	 * @author s.tihomirov
+	 * This method is similar as HashMap<String, Object> getSettingGroup(String groupName).
+	 * But it returns some helper instead of HashMap. This helper makes access 
+	 * to required section or set of setting sections easier. 
+	 * Class of the required helper should be implemented with constructor like this: 
+	 * new Helper(org.primitive.configuration.Configuration configuration)
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends AbstractConfigurationAccessHelper> T getSection(Class<T> requiredClass)
 	{
-		return mappedSettings.get(capabilityGroup);
+		T helper = (T) initedHelpers.get(requiredClass);
+		if (helper!=null) //if helper is already initiated
+		{
+			return (T) helper;
+		}	
+		
+		try {
+			Constructor<?> requiredConstructor = requiredClass.getConstructor(Configuration.class);
+			helper = (T) requiredConstructor.newInstance(this);
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
+		
+		initedHelpers.put(requiredClass, helper);
+		return helper;
 	}
 	
 	public Capabilities getCapabilities()
 	{
-		if (capability!=null)
-		{
-			return capability;
-		}
-		return null;
+		return (Capabilities) getSection(CapabilitySettings.class);
 	}
 
 	public ChromeDriverExe getChromeDriverSettings()
 	{
-		return chromeDriver;
+		return getSection(ChromeDriverExe.class);
 	}
 	
 	public IEDriverExe getIEDriverSettings()
 	{
-		return ieDriver;
+		return getSection(IEDriverExe.class);
 	}
 	
 	public PhantomJSDriver getPhantomJSDriverSettings()
 	{
-		return phantomJSDriver;
+		return getSection(PhantomJSDriver.class);
 	}
 	
 	public WebDriverTimeOuts getWebDriverTimeOuts()
 	{
-		return webDriverTimeOuts;
+		return getSection(WebDriverTimeOuts.class);
 	}
 	
 	public ScreenShots getScreenShots()
 	{
-		return screenShots;
+		return getSection(ScreenShots.class);
 	}
 	
 	public Logging getLogging()
 	{
-		return logging;
+		return getSection(Logging.class);
 	}
 	
 	public WebDriverSettings getWebDriverSettings() 
 	{
-		return webDriverSettings;
+		return getSection(WebDriverSettings.class);
 	}
 	
 	public WebElementVisibility getWebElementVisibility()
 	{
-		return webElementVisibility;
+		return getSection(WebElementVisibility.class);
 	}
 	
 	public BrowserWindowsTimeOuts getBrowserWindowsTimeOuts()
 	{
-		return windowTimeOuts;
+		return getSection(BrowserWindowsTimeOuts.class);
 	}
 	
 	public UnhandledWindowsChecking getUnhandledWindowsChecking()
 	{
-		return unhandledWindowsChecking;
+		return getSection(UnhandledWindowsChecking.class);
 	}
 	
 	protected Configuration(String filePath)
 	{
+		super();
 		parseSettings(String.valueOf(filePath));
-		capability   = new CapabilitySettings(this);
-		chromeDriver = new ChromeDriverExe(this);
-		ieDriver     = new IEDriverExe(this);
-		webDriverTimeOuts     = new WebDriverTimeOuts(this);
-		screenShots  = new ScreenShots(this);
-		logging      = new Logging(this);
-		webDriverSettings = new WebDriverSettings(this);
-		webElementVisibility = new WebElementVisibility(this);
-		windowTimeOuts       = new BrowserWindowsTimeOuts(this);
-		unhandledWindowsChecking = new UnhandledWindowsChecking(this);
-		phantomJSDriver  = new PhantomJSDriver(this);
 	}
 }

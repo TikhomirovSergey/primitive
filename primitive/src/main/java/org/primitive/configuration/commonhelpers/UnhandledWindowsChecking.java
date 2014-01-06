@@ -17,7 +17,8 @@ public class UnhandledWindowsChecking extends AbstractConfigurationAccessHelper
 	private final String sessionTimeSetting = "sessionTime";
 	private final String timeForWaitingSetting = "timeForWaiting";
 	private final String unhandledWindowsCheckingGroup= "unhandledWindowsChecking";
-
+	public  final String timeUnitSetting = "timeUnit";
+	
 	public UnhandledWindowsChecking(Configuration configuration) {
 		super(configuration);
 	}

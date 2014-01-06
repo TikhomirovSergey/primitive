@@ -91,12 +91,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
 	  }
 	  
-	  //creates instance by specified driver
-	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver)
-	  {
-		  constructorBody(supporteddriver, supporteddriver.getDefaultCapabilities());
-	  }
-	  
 	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities, URL remoteAddress)
 	  {
 		  if (supporteddriver.equals(ESupportedDrivers.REMOTE))
@@ -147,6 +141,12 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  }	  
 	  
 	  //constructors are below:
+	  //creates instance by specified driver
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver)
+	  {
+		  constructorBody(supporteddriver, supporteddriver.getDefaultCapabilities());
+	  }
+	  
 	  //creates instance by specified driver and capabilities
 	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver, Capabilities capabilities)
 	  {
@@ -177,6 +177,11 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		 
 		 Capabilities capabilities = this.configuration.getCapabilities();
 		 if (capabilities == null)
+		 {
+			 capabilities = supportedDriver.getDefaultCapabilities();
+		 }
+		 
+		 if (capabilities.asMap().size()==0)
 		 {
 			 capabilities = supportedDriver.getDefaultCapabilities();
 		 }

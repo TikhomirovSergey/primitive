@@ -22,9 +22,6 @@ public class CapabilitySettings extends AbstractConfigurationAccessHelper
 	//specified settings for capabilities
 	private final String capabilityGroup = "DesiredCapabilities";
 	private final DesiredCapabilities builtCapabilities = new DesiredCapabilities();
-	private final String browserNameCapabity = "browserName";
-	private final String versionNameCapabity  = "version";	
-	private final String platformNameCapabity = "platform";
 
 	public CapabilitySettings(Configuration configuration) {
 		super(configuration);
@@ -79,32 +76,18 @@ public class CapabilitySettings extends AbstractConfigurationAccessHelper
 	private void buildCapabilities()
 	{
 		HashMap<String,Object> capabilities = getGroup(capabilityGroup);
-		if (capabilities!=null)
+		if (capabilities==null)
 		{			
-			List<String> capabilityStrings = new ArrayList<String>(capabilities.keySet());
+			return;
+		}
+		
+		List<String> capabilityStrings = new ArrayList<String>(capabilities.keySet());
 			
-			for (String capabilityStr: capabilityStrings)
+		for (String capabilityStr: capabilityStrings)
+		{	
+			if (capabilities.get(capabilityStr)!=null)
 			{	
-				if (capabilities.get(capabilityStr)!=null)
-				{	
-					//set browser name
-					if (capabilityStr.equals(browserNameCapabity))
-					{
-						builtCapabilities.setBrowserName((String) capabilities.get(capabilityStr));
-					} //set version
-					else if (capabilityStr.equals(versionNameCapabity)) 
-					{
-						builtCapabilities.setVersion((String) capabilities.get(capabilityStr));
-					} //set platform
-					else if (capabilityStr.equals(platformNameCapabity)) 
-					{
-						builtCapabilities.setPlatform(Platform.valueOf((String) capabilities.get(capabilityStr)));
-					}
-					else
-					{	
-						builtCapabilities.setCapability(capabilityStr, capabilities.get(capabilityStr));
-					}
-				}
+				builtCapabilities.setCapability(capabilityStr, capabilities.get(capabilityStr));
 			}
 		}
 	}

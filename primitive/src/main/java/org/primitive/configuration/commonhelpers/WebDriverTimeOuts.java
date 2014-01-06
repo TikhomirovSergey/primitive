@@ -17,6 +17,7 @@ public class WebDriverTimeOuts extends AbstractConfigurationAccessHelper
 	private final String pageLoadTimeoutSetting = "pageLoadTimeout";
 	private final String scriptTimeOutSetting = "setScriptTimeout";
 	private final String webDriverTimeOutsGroup 	    = "webDriverTimeOuts";
+	public  final String timeUnitSetting = "timeUnit";
 
 	public WebDriverTimeOuts(Configuration configuration) {
 		super(configuration);

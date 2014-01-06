@@ -14,8 +14,8 @@ public abstract class AbstractConfigurationAccessHelper implements IGroupedSetti
 	
 	public AbstractConfigurationAccessHelper(Configuration configuration)
 	{
+		super();
 		this.configuration = configuration;
-		//TODO Add this to configuration
 	}
 	
 	protected Object getSettingValue(String groupName, String settingName)
@@ -25,7 +25,7 @@ public abstract class AbstractConfigurationAccessHelper implements IGroupedSetti
 	
 	protected HashMap<String, Object> getGroup(String groupName)
 	{
-		return configuration.getGroup(groupName);
+		return configuration.getSettingGroup(groupName);
 	}
 	
 	@Override
