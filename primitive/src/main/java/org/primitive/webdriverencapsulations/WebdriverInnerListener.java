@@ -30,8 +30,8 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	{
 		super();
 		elementVisibility = new ElementVisibility(driver);
-		elementVisibility.resetAccordingTo(configuration);
 		highLighter = new WebElementHighLighter();
+		resetAccordingTo(configuration);
 	}
 	
 	@Override
@@ -287,7 +287,8 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 
 	@Override
 	public void resetAccordingTo(Configuration config) {
-		elementVisibility.resetAccordingTo(config);		
+		elementVisibility.resetAccordingTo(config);	
+		highLighter.resetAccordingTo(config);
 	}
 
 }
