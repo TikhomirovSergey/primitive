@@ -4,19 +4,18 @@
 package org.primitive.configuration;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.Set;
 
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.commonhelpers.BrowserWindowsTimeOuts;
 import org.primitive.configuration.commonhelpers.CapabilitySettings;
@@ -29,20 +28,13 @@ import org.primitive.configuration.commonhelpers.UnhandledWindowsChecking;
 import org.primitive.configuration.commonhelpers.WebDriverSettings;
 import org.primitive.configuration.commonhelpers.WebDriverTimeOuts;
 import org.primitive.configuration.commonhelpers.WebElementVisibility;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 //for customizing project
 public class Configuration
 {
-	private final static String commonFileName = "settings.xml"; //settings file should be put in project directory
+	private final static String commonFileName = "settings.json"; //settings file should be put in project directory
 	public final static Configuration byDefault = get(getPathToDefault("."));
 	
-	private static final String singleSetting = "setting";
-	private static final String settingsGroup = "group";
 	private static final String typeTag = "type";
 	private static final String valueTag = "value";
 	
@@ -98,135 +90,69 @@ public class Configuration
 	    return  (Configuration) enhancer.create(new Class[] {String.class}, new Object[] {filePath});
 	}
 	
-	private Object returnSettingValue(Element settingElement) throws ParserConfigurationException
+	//parsing of each one setting
+	private HashMap<String, Object> getParsedGroup(JSONObject jsonObject)
 	{
-		NodeList typeNodes = settingElement.getElementsByTagName(typeTag);
-		if (typeNodes.getLength()==0)
-		{
-			throw new ParserConfigurationException("There is not any node that specifies data type! Setting name is " + settingElement.getAttribute("name"));
-		}
-		Node typeNode = typeNodes.item(0);
+		HashMap<String, Object> result = new HashMap<>();
+		@SuppressWarnings("unchecked")
+		Set<String> keys = jsonObject.keySet();
 		
-		NodeList valueNodes = settingElement.getElementsByTagName(valueTag);
-		if (valueNodes.getLength()==0)
-		{
-			throw new ParserConfigurationException("There is not any node that specifies value! Setting name is " + settingElement.getAttribute("name"));
-		}
-		Node valueNode = valueNodes.item(0);
-		
-		String type = typeNode.getChildNodes().item(0).getNodeValue();
-		type = type.toUpperCase();
-		type = type.trim(); 
-		
-		EAvailableDataTypes requiredType = null;
-		try
-		{
-			requiredType = EAvailableDataTypes.valueOf(type);
-		}
-		catch (IllegalArgumentException|NullPointerException e)
-		{
-			throw new ParserConfigurationException("Type specification that is not supported! Specification is " + type + ". " +
-					" STRING, BOOL, LONG, FLOAT, INT are suppurted. Setting name is " + settingElement.getAttribute("name"));
+		for (String key:keys)
+		{	
+			JSONObject value = (JSONObject) jsonObject.get(key);
+			String type = (String) value.get(typeTag);
+						
+			EAvailableDataTypes requiredType = null;
+			try
+			{
+				requiredType = EAvailableDataTypes.valueOf(type);
+			}
+			catch (IllegalArgumentException|NullPointerException e)
+			{
+				throw new RuntimeException("Type specification that is not supported! Specification is " + String.valueOf(type) + ". " +
+						" STRING, BOOL, LONG, FLOAT, INT are suppurted. Setting name is " + key,e);
+			}	
+			
+			Object returnValue = null;
+			String strValue    = (String) value.get(valueTag);
+			
+			if ("".equals(strValue))
+			{
+				result.put(key, returnValue);
+			}
+			else
+			{
+				result.put(key, requiredType.getValue(String.valueOf(strValue)));
+			}
 		}	
 		
-		Object returnValue = null;
-		if (valueNode.getChildNodes().getLength()==0)
-		{
-			return null;
-		}
+		return result;
 		
-		String value = valueNode.getChildNodes().item(0).getNodeValue();
-		value = value.trim();
-	
-		if (value.equals(""))
-		{
-			return returnValue;
-		}
-		else
-		{
-			try
-			{
-				return requiredType.getValue(value);
-			}
-			catch (Exception e)
-			{
-				throw new ParserConfigurationException("Value cann't be converted! Value is " + value + ". Setting name is " + settingElement.getAttribute("name"));
-			}
-		}
 	}
 	
-	private void buildSettingGroup(Node groupNode) throws ParserConfigurationException
-	{
-		Element groupElem = (Element) groupNode;
-		String name = groupElem.getAttribute("name");
-		name = name.trim();
-		
-		HashMap<String, Object> settings = mappedSettings.get(name);
-		if (settings==null) //if settings have not created yet
-		{
-			settings = new HashMap<String, Object>();
-		}
-		
-		NodeList settingNodes = groupElem.getElementsByTagName(singleSetting);
-		int settingCount = settingNodes.getLength();
-		
-		for (int i=0; i<settingCount; i++){
-			
-			Element settingElem = (Element) settingNodes.item(i);
-			String settingName  = settingElem.getAttribute("name");
-			settingName = settingName.trim();
-			try
-			{
-				Object value = returnSettingValue(settingElem);
-				settings.put(settingName, value);
-			}
-			catch (ParserConfigurationException e)
-			{
-				throw e;
-			}
-		}
-		mappedSettings.put(name, settings);		
-	}
-	
+	//parsing of json configuration
 	private void parseSettings(String filePath)
 	{
 		
 		File settingFile = new File(filePath);
-		if (settingFile.exists())
+		if (!settingFile.exists())
 		{
-			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-	        DocumentBuilder docBuilder;
-			
-	        Document doc = null;
-	        try 
-			{
-				docBuilder = docBuilderFactory.newDocumentBuilder();
-				doc = docBuilder.parse(settingFile);
-			} catch (ParserConfigurationException | SAXException  e) {
-				new RuntimeException("Cann't parse file " + commonFileName + "! Please, check it. You can look at SAMPLE_SETTING.xml for verifying. " + e.getLocalizedMessage(),e);
-			}
-			catch (IOException e) 
-			{
-				new RuntimeException("IO Exception: " + e.getLocalizedMessage(),e);
-			}
-			
-			doc.getDocumentElement().normalize();
-			
-			NodeList nodes = doc.getElementsByTagName(settingsGroup);
-			int nodeCount  = nodes.getLength();
-			
-			try
-			{
-				for (int i=0; i<nodeCount; i++){
-					buildSettingGroup(nodes.item(i));
-				}
-			}
-			catch (ParserConfigurationException e)
-			{
-				new RuntimeException("Configuration building has failed! " + e.getLocalizedMessage(),e);
-			}
-
+			return;
 		}		
+		try
+		{
+			JSONObject jsonObject = (JSONObject) new JSONParser().parse(new FileReader(settingFile));
+			@SuppressWarnings("unchecked")
+			Set<String> keys = jsonObject.keySet(); //there are groups
+			for (String key:keys)
+			{	
+				mappedSettings.put(key, getParsedGroup((JSONObject) jsonObject.get(key)));
+			}
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException("Configuration building has failed! Please, check it. You can look at SAMPLE_SETTING.json for verifying. ", e);
+		}
 	}
 	
 	//gets setting group from mapped serrings
