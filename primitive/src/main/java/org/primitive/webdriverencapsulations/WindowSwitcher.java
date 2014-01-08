@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.NoAlertPresentException;
@@ -16,7 +14,6 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.UnreachableBrowserException;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.primitive.configuration.commonhelpers.BrowserWindowsTimeOuts;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
@@ -27,213 +24,11 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 
 public final class WindowSwitcher implements IDestroyable
 {
-	/**
-	 * @author s.tihomirov
-	 * Fluent waiting for browser window conditions
-	 */
-	protected static class Fluent implements IDestroyable{
-		private WindowSwitcher switcher;
-		protected Fluent(WindowSwitcher switcher) {
-			this.switcher = switcher;
-		}
-		
-		//is there such window count? It it is true this method returns handle of window 
-		private String getWindowHandleByIndex(final WebDriver from, int windowIndex)
-		{
-
-			synchronized(switcher)
-			{
-				Set<String> handles =  from.getWindowHandles();
-				if ((handles.size()-1)>=windowIndex)
-				{
-					Log.message("Browser window that specified by index " + Integer.toString(windowIndex) + " is present");
-					return new ArrayList<String>(handles).get(windowIndex);
-				}
-				else
-				{
-					return null;
-				}	
-			}
-		}
-		
-		//fluent waiting for the result. See above
-		protected ExpectedCondition<String> suchBrowserhWindowWithIndexIsPresent(final int windowIndex)
-		{
-			return new ExpectedCondition<String>()
-			{ 				
-				public String apply(final WebDriver from)
-				{
-					return getWindowHandleByIndex(from, windowIndex);		
-				}
-			};
-		}
-		
-		//is browser window closed?
-		private Boolean isClosed(final WebDriver from, String handle)
-		{
-			synchronized (switcher) 
-			{
-				Set<String> handles = from.getWindowHandles();
-				if (!handles.contains(handle))
-				{
-					Log.message("Browser window has been closed successfully!");
-					return true;
-				}
-				else
-				{
-					return null;
-				}		
-			}					
-		}
-		
-		//fluent waiting for the result. See above
-		protected ExpectedCondition<Boolean> isClosed(final String closingHandle)
-		{
-			return new ExpectedCondition<Boolean>()
-			{
-				public Boolean apply(final WebDriver from)
-				{
-					return isClosed(from, closingHandle);
-				}
-			};	
-		}
-		
-		//is here new browser window?
-		//returns handle of a new browser window that we have been waiting for specified time
-		private String getNewHandle(final WebDriver from, final Set<String> oldHandles)
-		{
-			synchronized (switcher) 
-			{
-				String newHandle = null;
-				Set<String> newHandles = from.getWindowHandles();
-				if (newHandles.size()>oldHandles.size())
-				{
-					newHandles.removeAll(oldHandles);
-					Log.message("New browser window is caught!");
-					newHandle = (String) newHandles.toArray()[0];
-					return newHandle;
-				}
-				return newHandle;
-			}
-
-		}
-		
-		//fluent waiting for the result. See above
-		protected ExpectedCondition<String> newWindowIsAppeared()
-		{
-			return new ExpectedCondition<String>()
-			{ 
-				Set<String> oldHandles = switcher.getWindowHandles();
-				public String apply(final WebDriver from)
-				{
-					return getNewHandle(from, oldHandles);
-				}
-			};
-		}
-		
-		//is here new browser window?
-		//returns handle of a new browser window that we have been waiting for specified time
-		//new browser window should have defined title. We can specify title in this way:
-		//title, title*, *title, *title*,tit*le and etc
-		private String getNewHandle(final WebDriver from, final Set<String> oldHandles, String title)
-		{
-			synchronized(switcher)
-			{
-				Pattern titlePattern = Pattern.compile(title);				
-				String newHandle = null;
-				Set<String> newHandles = from.getWindowHandles();
-				if (newHandles.size()>oldHandles.size())
-				{
-					newHandles.removeAll(oldHandles);
-					for (String handle:newHandles)
-					{
-						from.switchTo().window(handle);
-						Matcher titleMatcher = titlePattern.matcher(from.getTitle());
-						if (titleMatcher.matches())
-						{
-							newHandle = handle;
-							Log.message("New browser window with title " + title + "is caught!");
-							return newHandle;
-						}
-					}
-				}
-				return newHandle;
-			}
-		}	
-		
-		//fluent waiting for the result. See above
-		protected ExpectedCondition<String> newWindowIsAppeared(final String title)
-		{
-			return new ExpectedCondition<String>()
-			{ 
-				Set<String> oldHandles = switcher.getWindowHandles();
-				public String apply(final WebDriver from)
-				{
-					return getNewHandle(from, oldHandles, title);
-				}
-			};
-		}
-		
-		//is here new browser window?
-		//returns handle of a new browser window that we have been waiting for specified time
-		//new browser window should have page that loads by specified URL
-		private String getNewHandle(final WebDriver from, final Set<String> oldHandles, URL url)
-		{
-			synchronized (switcher) 
-			{
-				String newHandle = null;
-				Set<String> newHandles = from.getWindowHandles();
-				if (newHandles.size()>oldHandles.size())
-				{
-					newHandles.removeAll(oldHandles);
-					for (String handle:newHandles)
-					{
-						from.switchTo().window(handle);
-						if (from.getCurrentUrl().equals(url.toString()))
-						{
-							newHandle = handle;
-							Log.message("New browser window that loaded by URL " + url.toString() + " is caught!");
-							return newHandle;
-						}
-					}
-				}
-				return newHandle;	
-			}			
-		}
-		
-		//fluent waiting of the result. See above
-		protected ExpectedCondition<String> newWindowIsAppeared(final URL url)
-		{
-			return new ExpectedCondition<String>()
-			{ 
-				Set<String> oldHandles = switcher.getWindowHandles();
-				public String apply(final WebDriver from)
-				{
-					return getNewHandle(from, oldHandles, url);
-				}
-			};
-		}
-		
-		@Override
-		public void destroy() {
-			try 
-			{
-				this.finalize();
-			} 
-			catch (Throwable e) {
-				Log.warning("There are some problems with finalizing of browser window fluent waiting.", e);
-			}
-			switcher = null;
-			
-		}
-
-	}
-
 	protected WebDriverEncapsulation driverEncapsulation;
 	private final static List<WindowSwitcher> swithcerList = Collections.synchronizedList(new ArrayList<WindowSwitcher>());
 	private WindowTimeOuts windowTimeOuts;
 	private Awaiting awaiting;
-	private Fluent fluent;
+	private FluentWindowConditions fluent;
 	final List<SingleWindow> openedWindows = Collections.synchronizedList(new ArrayList<SingleWindow>());
 		
 	private void changeActiveWindow(String handle) throws NoSuchWindowException, UnhandledAlertException
@@ -273,7 +68,7 @@ public final class WindowSwitcher implements IDestroyable
 		driverEncapsulation = InitialDriverPerformance;
 		windowTimeOuts   = driverEncapsulation.getWindowTimeOuts();
 		awaiting        = driverEncapsulation.getAwaiting();
-		fluent          = new Fluent(this);
+		fluent          = new FluentWindowConditions(this);
 		swithcerList.add(this);
 	}
 	
