@@ -20,13 +20,8 @@ public final class AlertHandler extends WebdriverComponent implements Alert {
 		catch (NoAlertPresentException e)
 		{
 			destroy();
-			throw new NoAlertPresentException();
-		}
-		catch (AssertionError e) 
-		{
-			destroy();
-			throw new NoAlertPresentException();
-		}		
+			throw e;
+		}	
 	}
 
 	public AlertHandler(WebDriver driver, long secTimeOut) throws NoAlertPresentException
@@ -39,18 +34,13 @@ public final class AlertHandler extends WebdriverComponent implements Alert {
 		catch (TimeoutException e)
 		{
 			destroy();
-			throw new NoAlertPresentException();
+			throw new NoAlertPresentException(e.getMessage(),e);
 		}
 		catch (NoAlertPresentException e)
 		{
 			destroy();
-			throw new NoAlertPresentException();
+			throw e;
 		}
-		catch (AssertionError e) 
-		{
-			destroy();
-			throw new NoAlertPresentException();
-		}	
 	}
 
 	public void accept() throws NoAlertPresentException
