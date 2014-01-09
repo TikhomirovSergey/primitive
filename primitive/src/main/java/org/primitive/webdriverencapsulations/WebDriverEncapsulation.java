@@ -199,6 +199,18 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		 }
 	  }
 	  
+	  //creates instance using externally initiated webdriver
+	  public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver)
+	  {
+		  actoinsAfterWebDriverCreation(externallyInitiatedWebDriver); 
+	  }
+	  
+	  public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver, Configuration configuration)
+	  {
+		  this.configuration = configuration; 
+		  actoinsAfterWebDriverCreation(externallyInitiatedWebDriver); 
+	  }
+	  
 	  protected WebDriverEncapsulation()
 	  {
 		  super();

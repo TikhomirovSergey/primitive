@@ -5,7 +5,9 @@ import googledescripription.AnyPage;
 import googledescripription.Google;
 import mocklistener.MockTestListener;
 
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.primitive.configuration.Configuration;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -33,11 +35,7 @@ public class HelloWorldGoogleTest {
   }
 	
   @Test(description = "This is just a test of basic functionality without any configuration")
-  public void typeHelloWorldAndOpenTheFirstLink(
-		  
-		  ) {
-	  //Configuration configuration = Configuration.get("safarisetting.xml");
-	  //Google google = Google.getNew(Configuration.byDefault);
+  public void typeHelloWorldAndOpenTheFirstLink() {
 	  test(Google.getNew());
   }
   
@@ -46,5 +44,13 @@ public class HelloWorldGoogleTest {
   public void typeHelloWorldAndOpenTheFirstLink2(String config) {
 	  Configuration configuration = Configuration.get("src/test/resources/configs/" + config); 
 	  test(Google.getNew(configuration));
+  }
+  
+  @Test(description = "This is just a test of basic functionality with a webdriver instance that was created externally")
+  public void typeHelloWorldAndOpenTheFirstLink3()
+  {
+	  Configuration configuration = Configuration.get("src/test/resources/configs/firefox.json"); 
+	  WebDriverEncapsulation encapsulation = new WebDriverEncapsulation(new FirefoxDriver(), configuration);
+	  test(Google.getNew(encapsulation));
   }
 }

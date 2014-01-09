@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite with externally initiated webdriver" parallel="false">
+  <test name="Hello world Google test">
+    <classes>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+      	<include name="typeHelloWorldAndOpenTheFirstLink3" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

@@ -5,6 +5,7 @@ import org.primitive.testobjects.ConcstructTestObjectException;
 import org.primitive.testobjects.Entity;
 import org.primitive.testobjects.ObjectFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 //модель google как приложения
 public class Google extends Entity implements IPerformsSearch, IPerformsClickOnALink{
@@ -24,14 +25,19 @@ public class Google extends Entity implements IPerformsSearch, IPerformsClickOnA
 	
 	//так экземпляр google уйдет в тест
 	//собирается по некорой дефолтной конфигурации
-	public static Google getNew() throws ConcstructTestObjectException
+	public static Google getNew()
 	{
 		return ObjectFactory.getEntity(Google.class, url);
 	}
 	
-	public static Google getNew(Configuration config) throws ConcstructTestObjectException
+	public static Google getNew(Configuration config)
 	{
 		return ObjectFactory.getEntity(Google.class, config, url);
+	}
+	
+	public static Google getNew(WebDriverEncapsulation externalEncapsulation)
+	{
+		return ObjectFactory.getEntity(externalEncapsulation, Google.class, url);
 	}
 
 	public void performSearch(String searchString) {

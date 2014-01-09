@@ -106,7 +106,8 @@
             <configuration>
 			  <suiteXmlFiles>
 				<suiteXmlFile>src/test/resources/suits/HelloWorldTestWithoutConfig.xml</suiteXmlFile>
-				<suiteXmlFile>src/test/resources/suits/HelloWorldTestWithConfig.xml</suiteXmlFile>				
+				<suiteXmlFile>src/test/resources/suits/HelloWorldTestWithConfig.xml</suiteXmlFile>
+				<suiteXmlFile>src/test/resources/suits/HelloWorldTestWithExternalWebdriver.xml</suiteXmlFile>					
 			  </suiteXmlFiles>
             </configuration> 
        </plugin>           
