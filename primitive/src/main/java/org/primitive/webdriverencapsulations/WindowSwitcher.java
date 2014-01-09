@@ -13,6 +13,7 @@ import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.configuration.commonhelpers.BrowserWindowsTimeOuts;
 import org.primitive.interfaces.IDestroyable;
@@ -30,7 +31,8 @@ public final class WindowSwitcher implements IDestroyable
 	private Awaiting awaiting;
 	private FluentWindowConditions fluent;
 	final List<SingleWindow> openedWindows = Collections.synchronizedList(new ArrayList<SingleWindow>());
-		
+	private boolean isAlive = true;
+	
 	private void changeActiveWindow(String handle) throws NoSuchWindowException, UnhandledAlertException
 	{
 		Log.debug("Attempt to switch browser window on by handle "+handle);
@@ -202,7 +204,9 @@ public final class WindowSwitcher implements IDestroyable
 	public synchronized void destroy()
 	{		
 		swithcerList.remove(this);
-		fluent.destroy();		
+		fluent.destroy();
+		isAlive = false;
+		
 		List<SingleWindow> windowsToBeDestroyed = new ArrayList<SingleWindow>();
 		windowsToBeDestroyed.addAll(openedWindows);
 		for (SingleWindow window: windowsToBeDestroyed)
@@ -225,19 +229,35 @@ public final class WindowSwitcher implements IDestroyable
 	{
 		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowClosingTimeOutSec(),windowTimeOuts.defaultTime);
+		
 		try
 		{
 			changeActiveWindow(handle);
 			WebDriver driver = driverEncapsulation.getWrappedDriver();	
 			driver.switchTo().window(handle).close();
-			awaiting.awaitCondition(timeOut, fluent.isClosed(handle));
 		}
 		catch (UnhandledAlertException|NoSuchWindowException e)
 		{
 			throw e;
 		}
+		
+		try
+		{
+			awaiting.awaitCondition(timeOut, fluent.isClosed(handle));
+		}
 		catch (TimeoutException e) {
 			throw new UnclosedBrowserWindowException(e);
+		}
+		catch (WebDriverException e) { //if all windows are closed
+			destroy();
+			driverEncapsulation.destroy();
+			return;
+		}
+		
+		if (getWindowHandles().size()==0) //if all windows are closed
+		{
+			destroy();
+			driverEncapsulation.destroy();
 		}
 	}
 	
@@ -285,5 +305,10 @@ public final class WindowSwitcher implements IDestroyable
 	public synchronized Alert getAlert() throws NoAlertPresentException
 	{
 		return(new AlertHandler(driverEncapsulation.getWrappedDriver()));
+	}
+	
+	boolean isAlive()
+	{
+		return isAlive;
 	}
 }

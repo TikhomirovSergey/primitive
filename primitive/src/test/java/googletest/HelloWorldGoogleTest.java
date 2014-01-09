@@ -33,6 +33,20 @@ public class HelloWorldGoogleTest {
 		  google.quit();
 	  }	  
   }
+  
+  private void test2(Google google)
+  {
+	  try
+	  {
+		  google.performSearch("Hello world Wikipedia");
+		  Assert.assertEquals(10, google.getLinkCount());
+		  google.close();
+	  }
+	  finally
+	  {
+		  google.quit();
+	  }	  
+  }
 	
   @Test(description = "This is just a test of basic functionality without any configuration")
   public void typeHelloWorldAndOpenTheFirstLink() {
@@ -52,5 +66,12 @@ public class HelloWorldGoogleTest {
 	  Configuration configuration = Configuration.get("src/test/resources/configs/firefox.json"); 
 	  WebDriverEncapsulation encapsulation = new WebDriverEncapsulation(new FirefoxDriver(), configuration);
 	  test(Google.getNew(encapsulation));
+  }
+  
+  @Test(description = "This is just a test of basic functionality. It performs search and closes google as visible browser window")
+  @Parameters(value={"config"})
+  public void typeHelloWorldAndOpenTheFirstLink4(String config) {
+	  Configuration configuration = Configuration.get("src/test/resources/configs/" + config); 
+	  test2(Google.getNew(configuration));
   }
 }

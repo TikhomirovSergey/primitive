@@ -56,4 +56,11 @@ public class Google extends Entity implements IPerformsSearch, IPerformsClickOnA
 	public int getLinkCount() {
 		return linksAreFound.getLinkCount();
 	}
+	
+	//closes google main page
+	public void close()
+	{
+		nativeWindow.close();
+		destroy();
+	}
 }

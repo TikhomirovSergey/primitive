@@ -318,6 +318,10 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
 	
 	public synchronized boolean exists()
 	{
+		if (!nativeSwitcher.isAlive())
+		{
+			return false;
+		}
 		Set<String> handles = nativeSwitcher.getWindowHandles();
 		return handles.contains(objectWindow);
 	}
