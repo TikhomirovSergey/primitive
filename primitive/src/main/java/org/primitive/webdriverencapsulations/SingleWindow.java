@@ -10,6 +10,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebDriver.Window;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
@@ -318,12 +319,16 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
 	
 	public synchronized boolean exists()
 	{
-		if (!nativeSwitcher.isAlive())
-		{
+		if (!nativeSwitcher.isAlive()) 	{
 			return false;
 		}
-		Set<String> handles = nativeSwitcher.getWindowHandles();
-		return handles.contains(objectWindow);
+		try {
+			Set<String> handles = nativeSwitcher.getWindowHandles();
+			return handles.contains(objectWindow);
+		}
+		catch (WebDriverException e) { //if there is no browser window
+			return false;
+		}
 	}
 	
 	public WindowSwitcher getSwitcher()

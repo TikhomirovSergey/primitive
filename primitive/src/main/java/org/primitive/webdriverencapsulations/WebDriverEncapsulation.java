@@ -305,7 +305,9 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  
 	  private void actoinsAfterWebDriverCreation(WebDriver createdDriver)
 	  {
-		  		  
+		  Log.message("Getting started with " + createdDriver.getClass().getSimpleName());	
+		  Log.message("Capabilities are: " + ((HasCapabilities) createdDriver).getCapabilities().asMap().toString());	
+		  
 		  firingDriver = ExtendedEventFiringWebDriver.newInstance(createdDriver);		  
 		  elementHighLighter = new WebElementHighLighter();
 		  
