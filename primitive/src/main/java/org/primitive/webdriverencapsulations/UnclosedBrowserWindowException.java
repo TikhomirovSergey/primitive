@@ -15,11 +15,7 @@ public class UnclosedBrowserWindowException extends WebDriverException {
 	 */
 	private static final long serialVersionUID = -323127995328722233L;
 
-	public UnclosedBrowserWindowException(Exception e) {
-		super(e);
-	}
-	
-	public UnclosedBrowserWindowException(Throwable reason) {
-		super(reason);
+	public UnclosedBrowserWindowException(String message, Exception e) {
+		super(message, e);
 	}
 }

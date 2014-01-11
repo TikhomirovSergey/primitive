@@ -6,9 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.Logs;
 
-public final class BrowserLogs extends WebdriverComponent implements Logs {
+public final class DriverLogs extends WebdriverComponent implements Logs {
 
-	public BrowserLogs(WebDriver driver) {
+	public DriverLogs(WebDriver driver) {
 		super(driver);
 	}
 

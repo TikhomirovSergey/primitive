@@ -8,6 +8,7 @@ import java.net.URL;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.WebDriverEventListener;
@@ -21,7 +22,7 @@ import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventL
 import org.primitive.webdriverencapsulations.localserver.LocalRemoteServerInstance;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
-import org.primitive.webdriverencapsulations.webdrivercomponents.BrowserLogs;
+import org.primitive.webdriverencapsulations.webdrivercomponents.DriverLogs;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Ime;
@@ -49,7 +50,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  private FrameSupport frameSupport;	    
 	  private Cookies cookies;	  
 	  private TimeOut timeout;	  
-	  private BrowserLogs logs;	  
+	  private DriverLogs logs;	  
 	  private Ime ime;
 	  private Interaction interaction;
 	  private WebdriverInnerListener webInnerListener;
@@ -220,21 +221,18 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  
 	  public void destroy()
 	  {
-		  firingDriver.unregister(webInnerListener);		  
-		  try {
+		  firingDriver.unregister(webInnerListener);	
+		  if (firingDriver==null)
+		  {	  
+			 return;
+		  }
+		  try
+		  {
 			  firingDriver.quit();
 		  }
-		  catch (RuntimeException e1) {
-			  Log.warning("Some problem has been found while the instance of webdriver was quitted! " + e1.getMessage(), e1);
-		  }		  
-		  try 
+		  catch (WebDriverException e) //it may be already dead
 		  {
-			destroyEnclosedObjects();  
-			this.finalize();
-		  } 
-		  catch (Throwable e) 
-		  {
-			Log.warning("Some problem has been found while the instance of webdriver was finalized! "+e.getMessage(), e);
+			  return;
 		  }
 	  }
 	  
@@ -283,7 +281,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  return ime;
 	  }
 	  
-	  public BrowserLogs getLogs()
+	  public DriverLogs getLogs()
 	  {
 		  return logs;
 	  }	 
@@ -318,7 +316,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  frameSupport		 = new FrameSupport(firingDriver);	    
 		  cookies            = new Cookies(firingDriver);	  
 		  timeout            = new TimeOut(firingDriver, configuration);	  
-		  logs  			 = new BrowserLogs(firingDriver);	  
+		  logs  			 = new DriverLogs(firingDriver);	  
 		  ime				 = new Ime(firingDriver);
 		  interaction        = new Interaction(firingDriver);
 		  
@@ -328,43 +326,12 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  resetAccordingTo(configuration);
 	  }
 	  
-	  private void finalizeInner(IDestroyable nullable)
-	  {
-		  if (nullable!=null)
-		  {
-			  nullable.destroy();
-		  }
-	  }
-	  
-	  protected void destroyEnclosedObjects()
-	  {		  
-		  finalizeInner(awaiting);	
-		  finalizeInner(pageFactoryWorker);		
-		  finalizeInner(scriptExecutor);
-		  finalizeInner(frameSupport);
-		  finalizeInner(cookies);
-		  finalizeInner(ime);
-		  finalizeInner(logs);
-		  finalizeInner(timeout);
-		  finalizeInner(interaction);
-		  finalizeInner(webInnerListener);
-		  finalizeInner(windowTimeOuts);
-		  finalizeInner(elementHighLighter);
-	  }
-	  
 	  //if attempt to create a new web driver instance has been failed 
 	  protected void actoinsOnConstructFailure(Exception e)
 	  {
 		  Log.error("Attempt to create a new web driver instance has been failed! "+e.getMessage(),e);
-		  if (firingDriver!=null)
-		  {
-			  destroy();
-		  }	
-		  else
-		  {
-			  destroyEnclosedObjects();
-		  }
-		  throw new RuntimeException(e);
+		  destroy();
+		
 	  }
 	  
 	  public void registerListener(WebDriverEventListener listener)

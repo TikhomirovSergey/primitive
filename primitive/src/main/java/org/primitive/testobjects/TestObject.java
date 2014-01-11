@@ -14,14 +14,13 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 import org.primitive.interfaces.IDestroyable;
-import org.primitive.logging.Log;
 import org.primitive.testobjects.interfaces.IDecomposable;
 import org.primitive.testobjects.interfaces.ITestObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
-import org.primitive.webdriverencapsulations.webdrivercomponents.BrowserLogs;
+import org.primitive.webdriverencapsulations.webdrivercomponents.DriverLogs;
 import org.primitive.webdriverencapsulations.webdrivercomponents.ScriptExecutor;
 
 public abstract class TestObject implements IDestroyable, IDecomposable
@@ -55,7 +54,7 @@ public abstract class TestObject implements IDestroyable, IDecomposable
 	
 	protected Awaiting awaiting;
 	protected ScriptExecutor scriptExecutor;
-	protected BrowserLogs logs;
+	protected DriverLogs logs;
 	protected final HashSet<TestObjectExceptionHandler> checkedInExceptionHandlers = 
 			new HashSet<TestObjectExceptionHandler>();	
 	
@@ -135,11 +134,6 @@ public abstract class TestObject implements IDestroyable, IDecomposable
     		child.destroy();
     	}    	
     	children.clear(); 
-    	try {
-			this.finalize();
-		} catch (Throwable e) {
-			Log.warning("A problem with destroying of " + this.getClass().getSimpleName() + " instance has been found out! "+e.getMessage(),e);
-		}
     }
 	
 	

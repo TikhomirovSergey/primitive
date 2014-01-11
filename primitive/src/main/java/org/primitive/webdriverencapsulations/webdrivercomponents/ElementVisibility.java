@@ -35,10 +35,33 @@ public final class ElementVisibility extends WebdriverComponent implements IConf
 		if (time==null)
 		{
 			timeOut = defaultTimeOut;
+			return;
 		}
-		else
+		timeOut = time;
+	}
+	
+	private Boolean isVisible(WebElement elementToBeVisible)
+	{
+		try
+		{   //the element should be displayed on the page
+			Boolean result = null;
+			if (elementToBeVisible.isDisplayed())
+			{
+				result = true;
+			} //if it is transparent
+			else
+			{
+				String opacity = elementToBeVisible.getCssValue("opacity");
+				if (String.valueOf("0").equals(opacity))
+				{
+					result = true;
+				}
+			}
+			return result;
+		}
+		catch (StaleElementReferenceException e)
 		{
-			timeOut = time;
+			return null;
 		}
 	}
 	
@@ -49,28 +72,7 @@ public final class ElementVisibility extends WebdriverComponent implements IConf
 		{
 			public Boolean apply(final WebDriver from)
 			{
-				try
-				{   //the element should be displayed on the page
-					Boolean result = null;
-					if (elementToBeVisible.isDisplayed())
-					{
-						result = true;
-					} //if it is transparent
-					else
-					{
-						String opacity = elementToBeVisible.getCssValue("opacity");
-						if (String.valueOf("0").equals(opacity))
-						{
-							result = true;
-						}
-					}
-					return result;
-				}
-				catch (StaleElementReferenceException e)
-				{
-					return null;
-				}
-				
+				return isVisible(elementToBeVisible);				
 			}
 		};
 	}
@@ -88,13 +90,6 @@ public final class ElementVisibility extends WebdriverComponent implements IConf
 		  	Photographer.takeAPictureOfAWarning(driver, "Page with the invisible element!");
 		  	throw new ElementNotVisibleException("Element is not visible!");
 		}
-	}
-
-	@Override
-	public void destroy(){
-		awaiting.destroy();
-		super.destroy();
-		
 	}
 
 }

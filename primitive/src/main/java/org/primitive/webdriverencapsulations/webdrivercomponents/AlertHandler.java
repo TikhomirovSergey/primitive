@@ -13,15 +13,7 @@ public final class AlertHandler extends WebdriverComponent implements Alert {
 	
 	public AlertHandler(WebDriver driver) {
 		super(driver);
-		try
-		{
-			alert = driver.switchTo().alert();
-		}
-		catch (NoAlertPresentException e)
-		{
-			destroy();
-			throw e;
-		}	
+		alert = driver.switchTo().alert();
 	}
 
 	public AlertHandler(WebDriver driver, long secTimeOut) throws NoAlertPresentException
@@ -33,77 +25,33 @@ public final class AlertHandler extends WebdriverComponent implements Alert {
 		}
 		catch (TimeoutException e)
 		{
-			destroy();
 			throw new NoAlertPresentException(e.getMessage(),e);
-		}
-		catch (NoAlertPresentException e)
-		{
-			destroy();
-			throw e;
 		}
 	}
 
 	public void accept() throws NoAlertPresentException
 	{
-		try 
-		{
-			alert.accept();
-	    } 
-		finally
-		{
-			destroy();
-		}
+		alert.accept();
 	}
 
 	public void authenticateUsing(Credentials credentials) throws NoAlertPresentException
 	{
-		try 
-		{
-			alert.authenticateUsing(credentials);
-	    } 
-		catch (NoAlertPresentException e) 
-	    {
-			destroy();
-	        throw e;
-	    }
+		alert.authenticateUsing(credentials);
 	}
 
 	public void dismiss() throws NoAlertPresentException
 	{
-		try 
-		{
-			alert.dismiss();
-	    } 
-		finally
-		{
-			destroy();
-		}
+		alert.dismiss();
 	}
 
 	public String getText() throws NoAlertPresentException
 	{
-		try 
-		{
-			return(alert.getText());
-	    } 
-		catch (NoAlertPresentException e) 
-	    {
-			destroy();
-	        throw e;
-	    }
+		return(alert.getText());
 	}
 
 	public void sendKeys(String text) throws NoAlertPresentException
 	{
-		try 
-		{
-			alert.sendKeys(text);
-	    } 
-		catch (NoAlertPresentException e) 
-	    {
-			destroy();
-	        throw e;
-	    }
+		alert.sendKeys(text);
 	}
 
 }

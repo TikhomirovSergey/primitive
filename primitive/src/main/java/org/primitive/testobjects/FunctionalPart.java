@@ -17,7 +17,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
-import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
 import org.primitive.testobjects.interfaces.IDecomposable;
 import org.primitive.testobjects.interfaces.IHasWebElementFrames;
@@ -328,12 +327,10 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 		}	
 		catch (UnclosedBrowserWindowException e)
 		{
-			Log.warning("Browser window which test object is placed on hasn't been closed!",e);
 			throw e;
 		}
 		catch (NoSuchWindowException e)
 		{
-			Log.warning("Browser window which test object is placed on has disappeared!",e);
 			destroy();
 			throw e;
 		}	

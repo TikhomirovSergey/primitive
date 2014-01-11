@@ -13,7 +13,6 @@ import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.interfaces.IDestroyable;
-import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.interfaces.ISingleBrowserWindow;
 import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
 import org.primitive.webdriverencapsulations.webdrivercomponents.WindowTool;
@@ -170,14 +169,6 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     public void destroy()
     {
 	    nativeSwitcher.openedWindows.remove(this);
-		try 
-		{
-			finalize();
-		} 
-		catch (Throwable e) 
-		{
-			Log.warning("Some problem has occured while instance of single browser window was finalized! " + e.getMessage(),e);
-		}
     }
     
     public synchronized void close() throws UnclosedBrowserWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException

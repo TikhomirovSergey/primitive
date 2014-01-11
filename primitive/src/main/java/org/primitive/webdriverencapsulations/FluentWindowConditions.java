@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
@@ -149,7 +150,16 @@ final class FluentWindowConditions implements IDestroyable{
 	{
 		synchronized (switcher) 
 		{
-			Set<String> handles = from.getWindowHandles();
+			Set<String> handles;
+			try
+			{
+				handles = from.getWindowHandles();
+			}
+			catch (WebDriverException e) //if all windows are closed
+			{
+				return true;
+			}
+
 			if (!handles.contains(handle))
 			{
 				Log.message("Browser window has been closed successfully!");

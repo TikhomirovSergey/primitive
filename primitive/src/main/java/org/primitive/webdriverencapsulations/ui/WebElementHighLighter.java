@@ -10,7 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsElement;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.interfaces.IConfigurable;
-import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
 import org.primitive.logging.eLogColors;
@@ -21,7 +20,7 @@ import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
  * it can highlight elements and do screenshots
  */	
 public class WebElementHighLighter implements IConfigurable,
-		IWebElementHighlighter, IDestroyable {
+		IWebElementHighlighter{
 
 	//is this doing screenshots
 	private boolean toDoScreenShots; 
@@ -139,13 +138,6 @@ public class WebElementHighLighter implements IConfigurable,
 		{
 			this.toDoScreenShots = toDoScreenShots;
 		}
-	}
-
-	@Override
-	public void destroy() {
-		try {
-			this.finalize();
-		} catch (Throwable e) {}		
 	}
 
 }

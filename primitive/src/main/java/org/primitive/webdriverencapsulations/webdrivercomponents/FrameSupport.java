@@ -37,12 +37,5 @@ public final class FrameSupport extends WebdriverComponent {
 	{
 		driver.switchTo().frame(frame);
 	}
-	
-	@Override
-	public void destroy()
-	{
-		awaiting.destroy();
-		super.destroy();
-	}
 
 }

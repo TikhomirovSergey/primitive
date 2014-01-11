@@ -14,14 +14,13 @@ import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.WebElement;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.interfaces.IConfigurable;
-import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
 import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.ElementVisibility;
 
-final class WebdriverInnerListener implements IExtendedWebDriverEventListener, IDestroyable, IConfigurable {
+final class WebdriverInnerListener implements IExtendedWebDriverEventListener, IConfigurable {
 
 	private final ElementVisibility elementVisibility;
 	private final WebElementHighLighter highLighter;
@@ -269,21 +268,6 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 		}
         return description;
     }
-
-	@Override
-	public void destroy() {
-		try 
-		{
-			elementVisibility.destroy();
-			highLighter.destroy();
-			this.finalize();
-		} 
-		catch (Throwable e) 
-		{
-			Log.warning(e.getMessage(),e);
-		}
-		
-	}
 
 	@Override
 	public void resetAccordingTo(Configuration config) {
