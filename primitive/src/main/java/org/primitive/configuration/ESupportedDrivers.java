@@ -2,7 +2,6 @@ package org.primitive.configuration;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -23,7 +22,6 @@ public enum ESupportedDrivers {
 	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null), 
 	OPERA(DesiredCapabilities.opera(), OperaDriver.class, null),
 	HTMLUNIT(DesiredCapabilities.htmlUnitWithJs(), HtmlUnitDriver.class, null), 
-	ANDROID(DesiredCapabilities.android(), AndroidDriver.class, null),
 	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE);
 	
 	private Capabilities capabilities;
