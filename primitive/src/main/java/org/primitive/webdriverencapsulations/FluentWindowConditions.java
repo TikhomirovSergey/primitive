@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.primitive.logging.Log;
 
 /**
  * @author s.tihomirov
@@ -34,7 +33,6 @@ final class FluentWindowConditions {
 			if (newHandles.size()>oldHandles.size())
 			{
 				newHandles.removeAll(oldHandles);
-				Log.message("New browser window is caught!");
 				newHandle = (String) newHandles.toArray()[0];
 				return newHandle;
 			}
@@ -64,7 +62,6 @@ final class FluentWindowConditions {
 					if (titleMatcher.matches())
 					{
 						newHandle = handle;
-						Log.message("New browser window with title " + title + "is caught!");
 						return newHandle;
 					}
 				}
@@ -91,7 +88,6 @@ final class FluentWindowConditions {
 					if (from.getCurrentUrl().equals(url.toString()))
 					{
 						newHandle = handle;
-						Log.message("New browser window that loaded by URL " + url.toString() + " is caught!");
 						return newHandle;
 					}
 				}
@@ -109,7 +105,6 @@ final class FluentWindowConditions {
 			Set<String> handles =  from.getWindowHandles();
 			if ((handles.size()-1)>=windowIndex)
 			{
-				Log.message("Browser window that specified by index " + Integer.toString(windowIndex) + " is present");
 				return new ArrayList<String>(handles).get(windowIndex);
 			}
 			else
@@ -148,7 +143,6 @@ final class FluentWindowConditions {
 
 			if (!handles.contains(handle))
 			{
-				Log.message("Browser window has been closed successfully!");
 				return true;
 			}
 			else

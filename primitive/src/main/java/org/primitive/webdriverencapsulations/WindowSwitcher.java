@@ -77,6 +77,7 @@ public final class WindowSwitcher implements IDestroyable
 	{
 		try
 		{
+			Log.message("Attempt to get window that is specified by index " + Integer.toString(windowIndex) + " is present");
 			BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 			long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowCountTimeOutSec(),windowTimeOuts.defaultTime);
 			return awaiting.awaitCondition(timeOut, 100, fluent.suchBrowserhWindowWithIndexIsPresent(windowIndex));
@@ -120,7 +121,7 @@ public final class WindowSwitcher implements IDestroyable
 	{	
 		try
 		{
-			Log.message("Waiting the new browser window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have title " + title);
+			Log.message("Waiting a new browser window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have title " + title);
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100, fluent.newWindowIsAppeared(title));
 			synchronized (this) {
 				changeActiveWindow(newHandle);
@@ -150,7 +151,7 @@ public final class WindowSwitcher implements IDestroyable
 	{	
 		try
 		{
-			Log.message("Waiting the new browser window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have page " +  
+			Log.message("Waiting a new browser window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have page " +  
 					" that loads by specified URL. Url is " + url.toString());
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100, fluent.newWindowIsAppeared(url));
 			synchronized (this) {
@@ -259,14 +260,7 @@ public final class WindowSwitcher implements IDestroyable
 	
 	public Set<String> getWindowHandles()
 	{
-		try
-		{	
-			return(driverEncapsulation.getWrappedDriver().getWindowHandles());		
-		}
-		catch (Exception e)
-		{
-			throw e;
-		}
+		return(driverEncapsulation.getWrappedDriver().getWindowHandles());		
 	}
 
 	protected synchronized void takeAPictureOfASevere(String handle, String Comment)
