@@ -14,20 +14,17 @@ public final class Interaction extends WebdriverComponent implements HasInputDev
 	}
 
 	@Override
-	public Keyboard getKeyboard()
-	{
+	public Keyboard getKeyboard()	{
 		return ((HasInputDevices) driver).getKeyboard();				
 	}
 
 	@Override
-	public Mouse getMouse()
-	{
+	public Mouse getMouse()	{
 		return ((HasInputDevices) driver).getMouse();			
 	}
 
 	@Override
-	public TouchScreen getTouch()
-	{
+	public TouchScreen getTouch()	{
 		return ((HasTouchScreen) driver).getTouch();
 	}
 

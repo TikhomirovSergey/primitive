@@ -13,11 +13,9 @@ public class LocalRemoteServerInstance {
 
 	//remote server that is started on localhost
 	private static final SeleniumServer server = getServerLocally();
-	private static synchronized SeleniumServer getServerLocally()
-	{
+	private static synchronized SeleniumServer getServerLocally()	{
 		  SeleniumServer localServer = server;
-		  if (localServer==null)
-		  {	
+		  if (localServer==null)		  {	
 			  
 			  RemoteControlConfiguration rcc = null;
 			  int port = RemoteControlConfiguration.DEFAULT_PORT;
@@ -25,28 +23,22 @@ public class LocalRemoteServerInstance {
 			  rcc = new RemoteControlConfiguration();			  
 			  rcc.setPort(port);
 			  
-		      try 
-		      {
+		      try  {
 		    	 localServer = new SeleniumServer(slowResources, rcc);
 		      } 
-		      catch (Exception e) 
-		      {
+		      catch (Exception e) {
 		    	  throw new WebDriverException("Cann't start server on localhost!",e);
 		      }
 		  }
 		  return localServer;
 	}	
 	
-	public static synchronized void startLocally()
-	{
-		if (!server.getServer().isStarted())
-		{
-			try 
-			{
+	public static synchronized void startLocally()	{
+		if (!server.getServer().isStarted())	{
+			try {
 		   	  server.start();
 			} 
-			catch (Exception e) 
-			{
+			catch (Exception e) {
 				throw new WebDriverException("Cann't start server on localhost!",e);
 			}
 		}
@@ -54,8 +46,7 @@ public class LocalRemoteServerInstance {
 	}
 	
 	
-	public synchronized static SeleniumServer getLocalServer()
-	{
+	public synchronized static SeleniumServer getLocalServer()	{
 		return server;
 	}
 }

@@ -15,19 +15,16 @@ public final class WindowTool extends WebdriverComponent implements Navigation,
 		super(driver);
 	}
 
-	public void back()
-	{
+	public void back()	{
 		driver.navigate().back();			
 	}
 
-	public void forward()
-	{
+	public void forward()	{
 		driver.navigate().forward();	
 	}
 
 	@Override
-	public Point getPosition() 
-	{
+	public Point getPosition() 	{
 		return driver.manage().window().getPosition();
 	}
 
@@ -59,14 +56,12 @@ public final class WindowTool extends WebdriverComponent implements Navigation,
 		driver.manage().window().setSize(arg0);			
 	}
 
-	public void to(String link)
-	{
+	public void to(String link)	{
 		driver.navigate().to(link);
 	}
 
 	@Override
-	public void to(URL url) 
-	{
+	public void to(URL url) {
 		driver.navigate().to(url);			
 	}
 

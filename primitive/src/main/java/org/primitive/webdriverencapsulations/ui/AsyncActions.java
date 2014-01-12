@@ -23,58 +23,47 @@ public class AsyncActions extends Actions {
 		private boolean isExecuting=false; //Are actions executed yet? If time has passed.
 		private RuntimeException error; //it will refer to some exception if it is caught 
 		
-		private AsyncPerformer(Actions actions) 
-		{
+		private AsyncPerformer(Actions actions) {
 			this.action = actions;
 			this.start(); //threat starting
 			this.isExecuting = true;
 		}
 		
-		private void execute(long secsToWait) throws RuntimeException
-		{
+		private void execute(long secsToWait) throws RuntimeException	{
 			//Verifying execution in another thread.
 			long startTime = Calendar.getInstance().getTimeInMillis();
 			long currentTime = Calendar.getInstance().getTimeInMillis();
 			
-			while ((isExecuting)&(Math.abs(currentTime-startTime)<secsToWait*1000))
-			{
+			while ((isExecuting)&(Math.abs(currentTime-startTime)<secsToWait*1000))	{
 				currentTime = Calendar.getInstance().getTimeInMillis();
 			}
-			if (error!=null)
-			{
+			if (error!=null) {
 				throw error;
 			}
-			if (isExecuting)
-			{
+			if (isExecuting)	{
 				Log.message("Actions have not been completed. Specified time: "+Long.toString(secsToWait)+" sec. "+
 							"We will watch results outside.");
 			}
-			else
-			{
+			else	{
 				Log.message("Actions have been completed successfully.");
 			}		
 		}
 		
 		//execution for specified time
-		private void perform(long secsToWait)
-		{
+		private void perform(long secsToWait)	{
 			execute(secsToWait);
 		}
 		
 		//execution for default time
-		private void perform()
-		{
+		private void perform()	{
 			execute(averageSecsToWait);	
 		}
 		
-		public void run()
-		{
-			try 
-			{
+		public void run()	{
+			try {
 				action.perform();
 			} 
-			catch (RuntimeException e)
-			{
+			catch (RuntimeException e)	{
 				Log.warning("During execution of specified actions the problem has been found out: " + e.getMessage(),e);
 				error = e;
 			}

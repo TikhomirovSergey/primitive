@@ -11,24 +11,20 @@ public final class PageFactoryWorker extends WebdriverComponent {
 		super(driver);
 	}
 
-	public <T> T initPageFactory(Class<T> pageClassToProxy)
-	{
+	public <T> T initPageFactory(Class<T> pageClassToProxy)	{
 		return PageFactory.initElements(driver, pageClassToProxy);
 	}
 
-	public void initPageFactory(ElementLocatorFactory factory,Object page)
-	{
+	public void initPageFactory(ElementLocatorFactory factory,Object page)	{
 		PageFactory.initElements(factory, page);
 	}
 
-	public void initPageFactory(FieldDecorator decorator,Object page)
-	{
+	public void initPageFactory(FieldDecorator decorator,Object page)	{
 		PageFactory.initElements(decorator, page);
 	}
 
 	//To provide work with page factory
-	public void initPageFactory(Object page)
-	{
+	public void initPageFactory(Object page)	{
 		PageFactory.initElements(driver, page);
 	}
 

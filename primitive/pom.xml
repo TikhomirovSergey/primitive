@@ -109,6 +109,7 @@
 				<suiteXmlFile>src/test/resources/suits/HelloWorldTestWithConfig.xml</suiteXmlFile>
 				<suiteXmlFile>src/test/resources/suits/HelloWorldTestWithExternalWebdriver.xml</suiteXmlFile>
 				<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatClosesGoogle.xml</suiteXmlFile>														
+			  	<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatChecksServiceProviders.xml</suiteXmlFile>
 			  </suiteXmlFiles>
             </configuration> 
        </plugin>           

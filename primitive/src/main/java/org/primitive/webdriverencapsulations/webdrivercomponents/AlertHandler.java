@@ -16,41 +16,33 @@ public final class AlertHandler extends WebdriverComponent implements Alert {
 		alert = driver.switchTo().alert();
 	}
 
-	public AlertHandler(WebDriver driver, long secTimeOut) throws NoAlertPresentException
-	{
+	public AlertHandler(WebDriver driver, long secTimeOut) throws NoAlertPresentException	{
 		super(driver);
-		try
-		{
+		try		{
 			alert = new Awaiting(driver).awaitCondition(secTimeOut, ExpectedConditions.alertIsPresent());
 		}
-		catch (TimeoutException e)
-		{
+		catch (TimeoutException e)		{
 			throw new NoAlertPresentException(e.getMessage(),e);
 		}
 	}
 
-	public void accept() throws NoAlertPresentException
-	{
+	public void accept() throws NoAlertPresentException	{
 		alert.accept();
 	}
 
-	public void authenticateUsing(Credentials credentials) throws NoAlertPresentException
-	{
+	public void authenticateUsing(Credentials credentials) throws NoAlertPresentException	{
 		alert.authenticateUsing(credentials);
 	}
 
-	public void dismiss() throws NoAlertPresentException
-	{
+	public void dismiss() throws NoAlertPresentException	{
 		alert.dismiss();
 	}
 
-	public String getText() throws NoAlertPresentException
-	{
+	public String getText() throws NoAlertPresentException	{
 		return(alert.getText());
 	}
 
-	public void sendKeys(String text) throws NoAlertPresentException
-	{
+	public void sendKeys(String text) throws NoAlertPresentException	{
 		alert.sendKeys(text);
 	}
 

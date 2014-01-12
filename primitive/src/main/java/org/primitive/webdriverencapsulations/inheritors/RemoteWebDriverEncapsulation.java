@@ -10,16 +10,14 @@ import org.primitive.webdriverencapsulations.localserver.LocalRemoteServerInstan
 
 public final class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	
-	public RemoteWebDriverEncapsulation(Capabilities capabilities, CommandExecutor executor) 
-	{
+	public RemoteWebDriverEncapsulation(Capabilities capabilities, CommandExecutor executor) 	{
 		LocalRemoteServerInstance.startLocally();
 		setSystemProprtyByCapabilities(capabilities);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(), new Class[] {CommandExecutor.class, Capabilities.class}, new Object[] {executor, capabilities});	
 	}	
 	
 	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities, 
-			Capabilities requiredCapabilities,  CommandExecutor executor) 
-	{
+			Capabilities requiredCapabilities,  CommandExecutor executor) 	{
 		LocalRemoteServerInstance.startLocally();
 		setSystemProprtyByCapabilities(desiredCapabilities);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(), new Class[] {CommandExecutor.class, Capabilities.class, Capabilities.class},
@@ -27,8 +25,7 @@ public final class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	}
 	
 	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities, 
-			Capabilities requiredCapabilities,  URL remoteAddress) 
-	{
+			Capabilities requiredCapabilities,  URL remoteAddress) 	{
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(), new Class[] {URL.class, Capabilities.class, Capabilities.class},
 				new Object[] {remoteAddress, desiredCapabilities, requiredCapabilities});
 	}	

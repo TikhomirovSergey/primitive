@@ -46,12 +46,9 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
 		IWindowListener.class.getClassLoader(),
 	    new Class[] {IWindowListener.class },windowListenerInvocationHandler);
 	
-    static SingleWindow isInitiated(String handle, WindowSwitcher switcher)
-    {   	
-    	for (SingleWindow objWindow: switcher.openedWindows)
-    	{
-    		if ((handle.equals(objWindow.objectWindow))&(objWindow.nativeSwitcher.equals(switcher)))
-    		{
+    static SingleWindow isInitiated(String handle, WindowSwitcher switcher)  {   	
+    	for (SingleWindow objWindow: switcher.openedWindows)    	{
+    		if ((handle.equals(objWindow.objectWindow))&(objWindow.nativeSwitcher.equals(switcher))) {
     			return objWindow;
     		}
     	}
@@ -59,58 +56,51 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
     	
     }
     
-    private SingleWindow(WindowSwitcher switcher, String handle)
-    {
+    private SingleWindow(WindowSwitcher switcher, String handle)   {
 		this.nativeSwitcher 		=  switcher;
 		this.driverEncapsulation 	=  switcher.driverEncapsulation;
 		this.objectWindow			=  handle;
 		this.windowTool              = new WindowTool(driverEncapsulation.getWrappedDriver());
 		switcher.openedWindows.add(this);
+		windowEventListeners.addAll(driverEncapsulation.getServises().getServices(IWindowListener.class));
 		windowListenerProxy.whenNewWindewIsAppeared(this);
     }
     
     //Static constructor ¹1 - initialization of new window that will appear.
-    public static SingleWindow initNewWindow(WindowSwitcher switcher) throws NoSuchWindowException
-    {
+    public static SingleWindow initNewWindow(WindowSwitcher switcher) throws NoSuchWindowException  {
     	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow()));
     }
     
     //Static constructor ¹1.1
-    public static SingleWindow initNewWindow(WindowSwitcher switcher, long secondsTimeOut) throws NoSuchWindowException
-    {
+    public static SingleWindow initNewWindow(WindowSwitcher switcher, long secondsTimeOut) throws NoSuchWindowException  {
     	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut)));
     }
     
     //Static constructor ¹2 - initialization of new window that will appear. 
     //We use either title of a window or piece of its title. Fragment is formatted as:
     //title*, *title, *title*
-    public static SingleWindow initNewWindow(WindowSwitcher switcher, String title) throws NoSuchWindowException
-    {
+    public static SingleWindow initNewWindow(WindowSwitcher switcher, String title) throws NoSuchWindowException   {
     	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(title)));
     } 
     
     //Static constructor ¹2.1
-    public static SingleWindow initNewWindow(WindowSwitcher switcher, String title,  long secondsTimeOut) throws NoSuchWindowException
-    {
+    public static SingleWindow initNewWindow(WindowSwitcher switcher, String title,  long secondsTimeOut) throws NoSuchWindowException   {
     	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut, title)));
     }  
     
     //Static constructor ¹3 - initialization of new window that will appear. 
     //We use url of a loaded page.    
-    public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url) throws NoSuchWindowException
-    {
+    public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url) throws NoSuchWindowException   {
     	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(url)));
     }   
     
     //Static constructor ¹3.1  
-    public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url, long secondsTimeOut) throws NoSuchWindowException
-    {
+    public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url, long secondsTimeOut) throws NoSuchWindowException   {
     	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut, url)));
     }    
     
     //Static constructor ¹4 - initialization of new window object by its index. It is known that window is present 
-    public static SingleWindow initWindowByIndex(WindowSwitcher switcher, int index) throws NoSuchWindowException
-    {
+    public static SingleWindow initWindowByIndex(WindowSwitcher switcher, int index) throws NoSuchWindowException    {
     	String handle = switcher.getBrowserWindowHandleByInex(index);
 		SingleWindow  InitedWindow = isInitiated(handle, switcher);
 		if (InitedWindow!=null)
@@ -120,92 +110,79 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
 		return(new SingleWindow(switcher, handle));
     }   
     
-    private void requestToMe()
-    {
+    private void requestToMe()    {
     	windowListenerProxy.beforeWindowIsSwitchedOn(this);
     	nativeSwitcher.switchTo(objectWindow);
     	windowListenerProxy.whenWindowIsSwitchedOn(this);
     }
     
     @Override
-    public void destroy()
-    {
+    public void destroy()    {
 	    nativeSwitcher.openedWindows.remove(this);
+	    removeAllListeners();
     }
     
     public synchronized void close() throws UnclosedBrowserWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException
     {
-    	try
-    	{
+    	try	{
     		windowListenerProxy.beforeWindowIsClosed(this);
     		nativeSwitcher.close(objectWindow);
     		windowListenerProxy.whenWindowIsClosed(this);
     		destroy();
     	}
-    	catch (UnhandledAlertException|UnclosedBrowserWindowException e)
-    	{
+    	catch (UnhandledAlertException|UnclosedBrowserWindowException e)  	{
     		throw e;
     	}
-    	catch (NoSuchWindowException e)
-    	{
+    	catch (NoSuchWindowException e)    	{
     		destroy();
     		throw e;
     	}
     }
     
-    public synchronized void switchToMe() throws NoSuchWindowException
-    {
+    public synchronized void switchToMe() throws NoSuchWindowException   {
     	requestToMe();
     }
     
     
     @Override
-    public synchronized String getWindowHandle()
-    {
+    public synchronized String getWindowHandle()   {
     	return(objectWindow);
     }
     
     @Override
-    public synchronized String getCurrentUrl() throws NoSuchWindowException
-    {
+    public synchronized String getCurrentUrl() throws NoSuchWindowException    {
 		return(nativeSwitcher.getWindowURLbyHandle(objectWindow));
     }
     
     @Override
-    public synchronized String getTitle()
-    {
+    public synchronized String getTitle()    {
     	return nativeSwitcher.getTitleByHandle(objectWindow);
     }
     
-    public WebDriverEncapsulation getDriverEncapsulation()
-    {
+    public WebDriverEncapsulation getDriverEncapsulation()    {
     	return(driverEncapsulation);
     }
     
     @Override
-    public synchronized void to(String link)
-    {
+    public synchronized void to(String link)   {
     	requestToMe();
 		windowTool.to(link);
     }
     
     @Override
-    public synchronized void forward()
-    {
+    public synchronized void forward()   {
     	requestToMe();
     	windowTool.forward();
     }
     
     @Override
-    public synchronized void back()
-    {
+    public synchronized void back()    {
     	requestToMe();
     	windowTool.back();
     }
 
 	@Override
-	public synchronized void refresh() 
-	{
+	public synchronized void refresh() 	{
 		requestToMe();
 		windowListenerProxy.beforeWindowIsRefreshed(this);
 		windowTool.refresh();	
@@ -213,30 +190,26 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
 	}
 
 	@Override
-	public synchronized void to(URL url) 
-	{
+	public synchronized void to(URL url)	{
 		requestToMe();
 		windowTool.to(url);
 		
 	}
 
 	@Override
-	public synchronized Point getPosition() 
-	{
+	public synchronized Point getPosition() 	{
 		requestToMe();
 		return windowTool.getPosition();
 	}
 
 	@Override
-	public synchronized Dimension getSize() 
-	{
+	public synchronized Dimension getSize() 	{
 		requestToMe();
 		return windowTool.getSize();
 	}
 
 	@Override
-	public synchronized void maximize() 
-	{
+	public synchronized void maximize() 	{
 		requestToMe();
 		windowListenerProxy.beforeWindowIsMaximized(this);
 		windowTool.maximize();	
@@ -244,8 +217,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
 	}
 
 	@Override
-	public synchronized void setPosition(Point position) 
-	{
+	public synchronized void setPosition(Point position) 	{
 		requestToMe();
 		windowListenerProxy.beforeWindowIsMoved(this, position);
 		windowTool.setPosition(position);	
@@ -253,8 +225,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
 	}
 
 	@Override
-	public synchronized void setSize(Dimension size) 
-	{
+	public synchronized void setSize(Dimension size) 	{
 		requestToMe();
 		windowListenerProxy.beforeWindowIsResized(this, size);
 		windowTool.setSize(size);
@@ -262,31 +233,26 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
 	} 
 	
 	@Override
-	public synchronized void takeAPictureOfAnInfo(String Comment)
-	{
+	public synchronized void takeAPictureOfAnInfo(String Comment)	{
 		nativeSwitcher.takeAPictureOfAnInfo(objectWindow, Comment);
 	}
 
 	@Override
-	public synchronized void takeAPictureOfAFine(String Comment)
-	{
+	public synchronized void takeAPictureOfAFine(String Comment)	{
 		nativeSwitcher.takeAPictureOfAFine(objectWindow, Comment);
 	}
 	
 	@Override
-	public synchronized void takeAPictureOfAWarning(String Comment)
-	{
+	public synchronized void takeAPictureOfAWarning(String Comment)	{
 		nativeSwitcher.takeAPictureOfAWarning(objectWindow, Comment);
 	}
 	
 	@Override
-	public synchronized void takeAPictureOfASevere(String Comment)
-	{
+	public synchronized void takeAPictureOfASevere(String Comment)	{
 		nativeSwitcher.takeAPictureOfASevere(objectWindow, Comment);
 	}
 	
-	public synchronized boolean exists()
-	{
+	public synchronized boolean exists()	{
 		if (!nativeSwitcher.isAlive()) 	{
 			return false;
 		}
@@ -299,8 +265,19 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
 		}
 	}
 	
-	public WindowSwitcher getSwitcher()
-	{
+	public WindowSwitcher getSwitcher()	{
 		return nativeSwitcher;
 	}
+	
+	public void addListener(IWindowListener listener)	{
+		windowEventListeners.add(listener);
+	}
+	
+	public void removeListener(IWindowListener listener)	{
+		windowEventListeners.remove(listener);
+	}
+	
+	public void removeAllListeners() {
+		windowEventListeners.clear();
+	}	
 }

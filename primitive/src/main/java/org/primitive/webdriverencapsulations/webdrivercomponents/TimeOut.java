@@ -19,47 +19,37 @@ public final class TimeOut extends WebdriverComponent implements Timeouts, IConf
 	private final long defaultTimeOut = 20000; //20 seconds
 	private final TimeUnit defaultTimeUnit = TimeUnit.MILLISECONDS;
 
-	private Long getTimeOutValue(Long longObjParam)
-	{
-		if (longObjParam == null)
-		{
+	private Long getTimeOutValue(Long longObjParam)	{
+		if (longObjParam == null)		{
 			longObjParam = defaultTimeOut;
 		}
 		return longObjParam;
 	}
 
-	public Timeouts implicitlyWait(long timeOut, TimeUnit timeUnit)
-	{
-		try
-		{
+	public Timeouts implicitlyWait(long timeOut, TimeUnit timeUnit)	{
+		try		{
 			return driver.manage().timeouts().implicitlyWait(timeOut, timeUnit);
 		}
-		catch (WebDriverException e)
-		{
+		catch (WebDriverException e)		{
 			Log.debug("Setting of an implicitly wait timeout is not supported.",e);
 			return null;
 		}
 	}
 
-	public Timeouts  pageLoadTimeout(long timeOut, TimeUnit timeUnit)
-	{
-		try
-		{
+	public Timeouts  pageLoadTimeout(long timeOut, TimeUnit timeUnit)	{
+		try		{
 			return driver.manage().timeouts().pageLoadTimeout(timeOut, timeUnit);
 		}
-		catch (WebDriverException e)
-		{
+		catch (WebDriverException e)		{
 			Log.debug("Setting of a page load timeout is not supported.",e);
 			return null;
 		}
 	}
 
 	//set values of time outs according to configuration
-	public synchronized void resetAccordingTo(Configuration config)
-	{
+	public synchronized void resetAccordingTo(Configuration config)	{
 		TimeUnit settingTimeUnit = config.getWebDriverTimeOuts().getTimeUnit();
-		if (settingTimeUnit==null)
-		{
+		if (settingTimeUnit==null)		{
 			settingTimeUnit = defaultTimeUnit;
 		}
 		
@@ -73,14 +63,11 @@ public final class TimeOut extends WebdriverComponent implements Timeouts, IConf
 		pageLoadTimeout(timeOut, settingTimeUnit);
 	}
 
-	public Timeouts setScriptTimeout(long timeOut, TimeUnit timeUnit)
-	{
-		try
-		{
+	public Timeouts setScriptTimeout(long timeOut, TimeUnit timeUnit)	{
+		try	{
 			return driver.manage().timeouts().setScriptTimeout(timeOut, timeUnit);
 		}
-		catch (WebDriverException e)
-		{
+		catch (WebDriverException e)		{
 			Log.debug("Setting of a script execution timeout is not supported.",e);
 			return null;
 		}

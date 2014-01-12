@@ -19,8 +19,7 @@ public class DefaultWindowListener implements IWindowListener, IConfigurable{
 		super();
 	}
 	
-	private void postWindowTitleAndUrl(IExtendedWindow window)
-	{
+	private void postWindowTitleAndUrl(IExtendedWindow window)	{
 		Log.message("Title is " + window.getTitle() + " URL is " + window.getCurrentUrl());
 	}
 

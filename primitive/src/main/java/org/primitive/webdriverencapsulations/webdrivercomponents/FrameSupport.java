@@ -18,23 +18,19 @@ public final class FrameSupport extends WebdriverComponent {
 		this.awaiting = new Awaiting(driver); 
 	}
 
-	public void switchTo(int frame)
-	{
+	public void switchTo(int frame)	{
 	   driver.switchTo().frame(frame);
 	}
 
-	public void switchTo(String frame)
-	{
+	public void switchTo(String frame)	{
 		driver.switchTo().frame(frame);	
 	}
 
-	public void switchTo(String frame, long secTimeOut) throws TimeoutException
-	{
+	public void switchTo(String frame, long secTimeOut) throws TimeoutException	{
 		awaiting.awaitCondition(secTimeOut, ExpectedConditions.frameToBeAvailableAndSwitchToIt(frame));		  
 	}
 
-	public void switchTo(WebElement frame)
-	{
+	public void switchTo(WebElement frame)	{
 		driver.switchTo().frame(frame);
 	}
 

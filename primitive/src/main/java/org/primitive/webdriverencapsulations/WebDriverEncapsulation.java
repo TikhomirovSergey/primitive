@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
@@ -18,8 +19,8 @@ import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.eventlisteners.DefaultWebdriverListener;
-import org.primitive.webdriverencapsulations.eventlisteners.DefaultWindowListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
+import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
 import org.primitive.webdriverencapsulations.firing.ExtendedEventFiringWebDriver;
 import org.primitive.webdriverencapsulations.localserver.LocalRemoteServerInstance;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
@@ -55,14 +56,12 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  private DriverLogs logs;	  
 	  private Ime ime;
 	  private Interaction interaction;
-	  private DefaultWebdriverListener webInnerListener;
 	  private WebElementHighLighter elementHighLighter;
-	  private DefaultWindowListener windowEventListener;
-  	  
+	  private final ConfigurableElements configurableElements = new ConfigurableElements();  	  
+	  private final WebDriverSPIServises servises = new WebDriverSPIServises();
 	  
 	  //methods that support constructors functionality:
-	  protected void setSystemProprtyByCapabilities(Capabilities capabilities)
-	  {
+	  protected void setSystemProprtyByCapabilities(Capabilities capabilities)  {
 		  String brofserName = capabilities.getBrowserName();			  
 		  
 		  if (chromeBrowser.equals(brofserName))
@@ -79,8 +78,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  }	  
 	  }
 	  
-	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities)
-	  {
+	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities)  {
 		  if (supporteddriver.equals(ESupportedDrivers.REMOTE))
 		  {   //if there is RemoteWebDriver and capabilities that require service
 			  LocalRemoteServerInstance.startLocally();
@@ -93,8 +91,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
 	  }
 	  
-	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities, URL remoteAddress)
-	  {
+	  private void constructorBody(ESupportedDrivers supporteddriver, Capabilities capabilities, URL remoteAddress)	  {
 		  if (supporteddriver.equals(ESupportedDrivers.REMOTE))
 		  {   //if there is RemoteWebDriver that uses remote service
 			  createWebDriver(supporteddriver.getUsingWebDriverClass(), new Class[] {URL.class, Capabilities.class}, new Object[] {remoteAddress, capabilities});
@@ -107,8 +104,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  }
 	  
 	  //it makes objects of any WebDriver and navigates to specified URL
-	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Class<?>[] paramClasses, Object[] values)
-	  {
+	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Class<?>[] paramClasses, Object[] values)	  {
 		  WebDriver driver = null;
 		  Constructor<?> suitableConstructor = null;		  
 		  try {
@@ -132,44 +128,37 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  }
 	  }
 	  
-	  protected void createWebDriver(Class<? extends WebDriver> driverClass)
-	  {
+	  protected void createWebDriver(Class<? extends WebDriver> driverClass)  {
 		 createWebDriver(driverClass, new Class<?>[] {}, new Object[] {});
 	  }
 	  
-	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Capabilities capabilities)
-	  {
+	  protected void createWebDriver(Class<? extends WebDriver> driverClass, Capabilities capabilities)  {
 	  	  createWebDriver(driverClass, new Class<?>[] {Capabilities.class}, new Object[] {capabilities});
 	  }	  
 	  
 	  //constructors are below:
 	  //creates instance by specified driver
-	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver)
-	  {
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver)  {
 		  constructorBody(supporteddriver, supporteddriver.getDefaultCapabilities());
 	  }
 	  
 	  //creates instance by specified driver and capabilities
-	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver, Capabilities capabilities)
-	  {
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver, Capabilities capabilities)  {
 		  constructorBody(supporteddriver, capabilities);
 	  }
 	  
 	  //creates instance by specified driver, capabilities and remote address
-	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver, Capabilities capabilities, URL remoteAddress)
-	  {
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver, Capabilities capabilities, URL remoteAddress)  {
 		  constructorBody(supporteddriver, capabilities, remoteAddress);
 	  }
 	  
 	  //creates instance by specified driver and remote address using default capabilities
-	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver,  URL remoteAddress)
-	  {
+	  public WebDriverEncapsulation(ESupportedDrivers supporteddriver,  URL remoteAddress)  {
 		  constructorBody(supporteddriver, supporteddriver.getDefaultCapabilities(), remoteAddress);  
 	  }
 	  
 	  //creates instance by specified driver and remote address using specified configuration
-	  public WebDriverEncapsulation(Configuration configuration)
-	  {
+	  public WebDriverEncapsulation(Configuration configuration)	  {
 		 this.configuration = configuration; 
 		 ESupportedDrivers supportedDriver = this.configuration.getWebDriverSettings().getSupoortedWebDriver();
 		 if (supportedDriver==null)
@@ -204,27 +193,23 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  }
 	  
 	  //creates instance using externally initiated webdriver
-	  public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver)
-	  {
+	  public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver)	  {
 		  actoinsAfterWebDriverCreation(externallyInitiatedWebDriver); 
 	  }
 	  
-	  public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver, Configuration configuration)
-	  {
+	  public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver, Configuration configuration)  {
 		  this.configuration = configuration; 
 		  actoinsAfterWebDriverCreation(externallyInitiatedWebDriver); 
 	  }
 	  
-	  protected WebDriverEncapsulation()
-	  {
+	  protected WebDriverEncapsulation()	  {
 		  super();
 	  }
 	  
 	  //other methods:
 	  
-	  public void destroy()
-	  {
-		  firingDriver.unregister(webInnerListener);	
+	  public void destroy()	  {
+		  unregisterAll(servises.getServices(IExtendedWebDriverEventListener.class));
 		  if (firingDriver==null)
 		  {	  
 			 return;
@@ -239,137 +224,140 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  }
 	  }
 	  
-	  public WebDriver getWrappedDriver()
-	  {
+	  public WebDriver getWrappedDriver()	  {
 		  return(firingDriver);
 	  }
 	  
-	  WindowTimeOuts getWindowTimeOuts()
-	  {
+	  WindowTimeOuts getWindowTimeOuts()	  {
 		  return(windowTimeOuts);
 	  }	  
 	  
-	  public Awaiting getAwaiting()
-	  {
+	  WebDriverSPIServises getServises()	  {
+		  return servises;
+	  }
+	  
+	  public Awaiting getAwaiting()	  {
 		  return(awaiting);
 	  }
 	  
-	  public WebElementHighLighter getHighlighter()
-	  {
+	  public WebElementHighLighter getHighlighter()	  {
 		  return(elementHighLighter);
 	  }
 	  
-	  public PageFactoryWorker getPageFactoryWorker()
-	  {
+	  public PageFactoryWorker getPageFactoryWorker()  {
 		  return(pageFactoryWorker);
 	  }
 	  
-	  public ScriptExecutor getScriptExecutor()
-	  {
+	  public ScriptExecutor getScriptExecutor()  {
 		  return(scriptExecutor);
 	  }		  
 	  
-	  public FrameSupport getFrameSupport()
-	  {
+	  public FrameSupport getFrameSupport()  {
 		  return(frameSupport);
 	  }		
 
-	  public Cookies getCookies()
-	  {
+	  public Cookies getCookies()  {
 		  return cookies;
 	  }
 	  
-	  public Ime getIme()
-	  {
+	  public Ime getIme()  {
 		  return ime;
 	  }
 	  
-	  public DriverLogs getLogs()
-	  {
+	  public DriverLogs getLogs()  {
 		  return logs;
 	  }	 
 	  
-	  public TimeOut getTimeOut()
-	  {
+	  public TimeOut getTimeOut()  {
 		  return timeout;
 	  }	 
 	  
-	  public Interaction getInteraction()
-	  {
+	  public Interaction getInteraction()   {
 		  return interaction;
 	  }
 	  
-	  public Capabilities getCapabilities()
-	  {
+	  public Capabilities getCapabilities()   {
 		  return firingDriver.getCapabilities();
 	  }
 	  
-	  private void actoinsAfterWebDriverCreation(WebDriver createdDriver)
-	  {
+	  private void registerWebDriverListeners()  {
+		  List<IExtendedWebDriverEventListener> webDriverEventListeners = servises.getServices(IExtendedWebDriverEventListener.class);
+		  for (IExtendedWebDriverEventListener listener: webDriverEventListeners)
+		  {	  
+			  firingDriver.register(listener);
+		  }	    
+	  }
+	  
+	  private void actoinsAfterWebDriverCreation(WebDriver createdDriver)  {
 		  Log.message("Getting started with " + createdDriver.getClass().getSimpleName());	
 		  Log.message("Capabilities are: " + ((HasCapabilities) createdDriver).getCapabilities().asMap().toString());	
 		  
 		  firingDriver = ExtendedEventFiringWebDriver.newInstance(createdDriver);		  
-		  elementHighLighter = new WebElementHighLighter();		  
-		  webInnerListener   = new DefaultWebdriverListener();		
-		  webInnerListener.setHighLighter(elementHighLighter);
-		  awaiting 			 = new Awaiting(firingDriver);	  	  
-		  pageFactoryWorker  = new PageFactoryWorker(firingDriver);	  
-		  scriptExecutor     = new ScriptExecutor(firingDriver);	  
-		  frameSupport		 = new FrameSupport(firingDriver);	    
-		  cookies            = new Cookies(firingDriver);	  
-		  timeout            = new TimeOut(firingDriver, configuration);	  
-		  logs  			 = new DriverLogs(firingDriver);	  
-		  ime				 = new Ime(firingDriver);
-		  interaction        = new Interaction(firingDriver);
 		  
+		  elementHighLighter = new WebElementHighLighter();		  		  
+		  
+		  awaiting 			  = new Awaiting(firingDriver);	  	  
+		  pageFactoryWorker   = new PageFactoryWorker(firingDriver);	  
+		  scriptExecutor      = new ScriptExecutor(firingDriver);	  
+		  frameSupport		  = new FrameSupport(firingDriver);	    
+		  cookies             = new Cookies(firingDriver);	  
+		  timeout             = new TimeOut(firingDriver, configuration);	  
+		  logs  			  = new DriverLogs(firingDriver);	  
+		  ime				  = new Ime(firingDriver);
+		  interaction         = new Interaction(firingDriver);		  
 		  windowTimeOuts      = new WindowTimeOuts(configuration);
-		  windowEventListener = new DefaultWindowListener();
+		  		  
+		  configurableElements.addConfigurable(timeout);
+		  configurableElements.addConfigurable(windowTimeOuts);
+		  configurableElements.addConfigurable(elementHighLighter);
 		  
-		  firingDriver.register(webInnerListener);
+		  //some services are implemented. They have their special logic		  
+		  configurableElements.addConfigurable((IConfigurable) servises.getDafaultService(IWindowListener.class));
+		  DefaultWebdriverListener webdriverListener = (DefaultWebdriverListener)  servises.getDafaultService(IExtendedWebDriverEventListener.class);
+		  webdriverListener.setHighLighter(elementHighLighter);
+		  
+		  registerWebDriverListeners();
 		  resetAccordingTo(configuration);
 	  }
 	  
 	  //if attempt to create a new web driver instance has been failed 
-	  protected void actoinsOnConstructFailure(Exception e)
-	  {
+	  protected void actoinsOnConstructFailure(Exception e)	  {
 		  Log.error("Attempt to create a new web driver instance has been failed! "+e.getMessage(),e);
 		  destroy();
 		
 	  }
 	  
-	  public void registerListener(WebDriverEventListener listener)
-	  {
+	  public void registerListener(WebDriverEventListener listener)	  {
 		  firingDriver.register(listener);
 	  }
 	  
-	  public void registerListener(IExtendedWebDriverEventListener listener)
-	  {
+	  public void registerListener(IExtendedWebDriverEventListener listener)  {
 		  firingDriver.register(listener);
 	  }
 	  
-	  public void unregisterListener(WebDriverEventListener listener)
-	  {
-		  firingDriver.register(listener);
+	  public void unregisterListener(WebDriverEventListener listener)  {
+		  firingDriver.unregister(listener);
 	  }
 	  
 	  public void unregisterListener(IExtendedWebDriverEventListener listener)
 	  {
-		  firingDriver.register(listener);
-	  }	 
+		  firingDriver.unregister(listener);
+	  }
 	  
-	  public synchronized void resetAccordingTo(Configuration config)
-	  {
+	  public void unregisterAll(List<IExtendedWebDriverEventListener> listeners)  {
+		  for (IExtendedWebDriverEventListener listener: listeners)
+		  {
+			unregisterListener(listener);  
+		  }		  
+	  }
+	  
+	  public synchronized void resetAccordingTo(Configuration config)  {
 		  configuration = config;
-		  timeout.resetAccordingTo(configuration);
-		  windowTimeOuts.resetAccordingTo(configuration);
-		  elementHighLighter.resetAccordingTo(configuration);
-		  windowEventListener.resetAccordingTo(configuration);
+		  configurableElements.resetAccordingTo(configuration);
 	  }
 	  
 	  //it goes to another URL
-	  public void getTo(String url)
-	  {
+	  public void getTo(String url)  {
 		  firingDriver.get(url);
 	  }
 }

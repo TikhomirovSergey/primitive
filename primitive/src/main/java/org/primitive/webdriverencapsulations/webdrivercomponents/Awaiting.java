@@ -12,14 +12,12 @@ public final class Awaiting extends WebdriverComponent{
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T awaitCondition(long secTimeOut, ExpectedCondition<?> condition) throws TimeoutException
-	{
+	public <T> T awaitCondition(long secTimeOut, ExpectedCondition<?> condition) throws TimeoutException	{
 		return (T) new WebDriverWait(driver,  secTimeOut).until(condition);		
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T awaitCondition(long secTimeOut, long sleepInMillis, ExpectedCondition<?> condition) throws TimeoutException
-	{
+	public <T> T awaitCondition(long secTimeOut, long sleepInMillis, ExpectedCondition<?> condition) throws TimeoutException	{
 		return (T) new WebDriverWait(driver, secTimeOut, sleepInMillis).until(condition);		
 	}
 

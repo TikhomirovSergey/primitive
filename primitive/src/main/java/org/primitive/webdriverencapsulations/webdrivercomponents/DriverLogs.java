@@ -13,14 +13,12 @@ public final class DriverLogs extends WebdriverComponent implements Logs {
 	}
 
 	@Override
-	public LogEntries get(String logType) 
-	{
+	public LogEntries get(String logType) 	{
 		return driver.manage().logs().get(logType);
 	}
 
 	@Override
-	public Set<String> getAvailableLogTypes() 
-	{
+	public Set<String> getAvailableLogTypes() 	{
 		return driver.manage().logs().getAvailableLogTypes();
 	}
 

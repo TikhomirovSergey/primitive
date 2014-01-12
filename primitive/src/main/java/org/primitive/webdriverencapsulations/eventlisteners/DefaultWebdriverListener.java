@@ -12,7 +12,7 @@ import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 
 public final class DefaultWebdriverListener implements IExtendedWebDriverEventListener {
 
-	private WebElementHighLighter highLighter;
+	private WebElementHighLighter highLighter = new WebElementHighLighter();
 	
 	@Override
 	public void afterChangeValueOf(WebElement arg0, WebDriver arg1) {

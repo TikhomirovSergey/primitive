@@ -26,48 +26,39 @@ public class WebElementHighLighter implements IConfigurable,
 	private boolean toDoScreenShots; 
 	private final boolean isDoingScreenShotsByDefault = true;
 	
-	private String getOriginalStyle(WebElement elementToBeHiglighted)
-	{
+	private String getOriginalStyle(WebElement elementToBeHiglighted)	{
 		return elementToBeHiglighted.getAttribute("style");
 	}
 	
-	private void execDecorativeScript(JavascriptExecutor scriptExecutor, WebElement element, String script) throws InterruptedException
-	{
-		try
-		{
+	private void execDecorativeScript(JavascriptExecutor scriptExecutor, WebElement element, String script) throws InterruptedException	{
+		try	{
 			scriptExecutor.executeScript(script,  element);
 		}
-		catch (ClassCastException e)
-		{
+		catch (ClassCastException e)	{
 			scriptExecutor.executeScript(script,  ((WrapsElement) element).getWrappedElement());
 		}
 		Thread.sleep(100);
 	}
 	
-	private void setNewColor(JavascriptExecutor scriptExecutor, WebElement elementToBeHiglighted, String colorExpression)
-	{
+	private void setNewColor(JavascriptExecutor scriptExecutor, WebElement elementToBeHiglighted, String colorExpression)	{
 		try {
 			execDecorativeScript(scriptExecutor, elementToBeHiglighted, "arguments[0].style.border = '" + colorExpression + "'");
 		} catch (InterruptedException|StaleElementReferenceException e) {}
 	}
 	
-	private void setStyle(JavascriptExecutor scriptExecutor, WebElement elementToBeHiglighted, String style)
-	{
+	private void setStyle(JavascriptExecutor scriptExecutor, WebElement elementToBeHiglighted, String style)	{
 		try {
 			execDecorativeScript(scriptExecutor, elementToBeHiglighted, "arguments[0].setAttribute('style', '" + style + "');"); 
 		}  catch (InterruptedException|StaleElementReferenceException e) {}
 	}
 	
-	private void highlightelement(WebDriver driver, WebElement webElement, Color color, Level LogLevel, String Comment)
-	{
+	private void highlightelement(WebDriver driver, WebElement webElement, Color color, Level LogLevel, String Comment)	{
 		String originalStyle = getOriginalStyle(webElement);
 		setNewColor((JavascriptExecutor) driver, webElement, "4px solid rgb("+ Integer.toString(color.getRed()) +  ","+Integer.toString(color.getGreen())+","+Integer.toString(color.getBlue())+")");
-		if (toDoScreenShots)
-		{	
+		if (toDoScreenShots)	{	
 			Photographer.takeAPictureForLog(driver, LogLevel, Comment);
 		}	
-		else
-		{
+		else	{
 			Log.log(LogLevel, Comment);
 		}
 		setStyle((JavascriptExecutor) driver, webElement, originalStyle);
@@ -130,12 +121,10 @@ public class WebElementHighLighter implements IConfigurable,
 	@Override
 	public synchronized void resetAccordingTo(Configuration config) {
 		Boolean toDoScreenShots = config.getScreenShots().getToDoScreenShotsOnElementHighLighting();
-		if (toDoScreenShots==null)
-		{
+		if (toDoScreenShots==null)		{
 			this.toDoScreenShots = isDoingScreenShotsByDefault;
 		}
-		else
-		{
+		else		{
 			this.toDoScreenShots = toDoScreenShots;
 		}
 	}

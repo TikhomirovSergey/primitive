@@ -10,13 +10,11 @@ public final class ScriptExecutor extends WebdriverComponent implements
 		super(driver);
 	}
 
-	public Object executeAsyncScript(String script, Object...  args)
-	{
+	public Object executeAsyncScript(String script, Object...  args)	{
 		return(((JavascriptExecutor) driver).executeAsyncScript(script, args));
 	}
 
-	public Object executeScript(String script, Object... args)
-	{
+	public Object executeScript(String script, Object... args)	{
 		return(((JavascriptExecutor) driver).executeScript(script, args));
 	}
 

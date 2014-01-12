@@ -10,8 +10,7 @@ public abstract class WebdriverComponent {
 	
 	protected WebDriver driver;
 	
-	public WebdriverComponent(WebDriver driver)
-	{
+	public WebdriverComponent(WebDriver driver)	{
 		this.driver = driver;
 	}
 	

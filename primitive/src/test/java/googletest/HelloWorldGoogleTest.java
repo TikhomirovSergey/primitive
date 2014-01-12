@@ -12,6 +12,9 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import services.MockWebDriverListener;
+import services.MockWindowListener;
+
 @Listeners(MockTestListener.class)
 public class HelloWorldGoogleTest {
 	
@@ -73,5 +76,16 @@ public class HelloWorldGoogleTest {
   public void typeHelloWorldAndOpenTheFirstLink4(String config) {
 	  Configuration configuration = Configuration.get("src/test/resources/configs/" + config); 
 	  test2(Google.getNew(configuration));
+  }
+  
+  @Test(description = "This is just a test of basic functionality. Checks possibility of service provider working")
+  public void typeHelloWorldAndOpenTheFirstLink5() {
+	  try {
+		  test(Google.getNew());
+	  }	  
+	  catch (Exception e){
+	  }
+	  Assert.assertEquals(true, MockWebDriverListener.wasInvoked);
+	  Assert.assertEquals(true, MockWindowListener.wasInvoked);
   }
 }
