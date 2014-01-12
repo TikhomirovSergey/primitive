@@ -10,8 +10,12 @@
 	  {
 	      "toDoScreenShotsOnElementHighLighting":{
 	          "type":"BOOL",
-	          "value":"true"           
-	      }       
+	          "value":"false"           
+	      }, 
+	      "toDoScreenShotsOfNewWindows":{
+	          "type":"BOOL",
+	          "value":"false"           
+	      }   	            
 	  },
 	  "ChromeDriver":
 	  {

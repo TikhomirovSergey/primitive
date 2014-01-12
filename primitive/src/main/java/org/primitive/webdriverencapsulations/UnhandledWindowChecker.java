@@ -408,7 +408,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		{	// If there is more than one browser window
 			for (String handle: handles)
 			{
-				if (SingleWindow.checkForInit(handle,switcher)==null)
+				if (SingleWindow.isInitiated(handle,switcher)==null)
 				{   // it trying to filter windows that unhandled 
 					unexpectedList.add(handle);
 				}

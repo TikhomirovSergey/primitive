@@ -49,12 +49,6 @@
           "value":"10"     
       }       
   },
-  "webElementVisibilityTimeOut":{
-       "visibilityTimeOutSec":{
-          "type":"LONG",
-          "value":"10"     
-      }      
-  },
   "browserWindowsTimeOuts":
   {
       "newBrowserWindowTimeOutSec":{
@@ -82,7 +76,11 @@
       "toDoScreenShotsOnElementHighLighting":{
           "type":"BOOL",
           "value":"true"           
-      }       
+      },
+      "toDoScreenShotsOfNewWindows":{
+          "type":"BOOL",
+          "value":"true"           
+      }              
   },
   "ChromeDriver":
   {

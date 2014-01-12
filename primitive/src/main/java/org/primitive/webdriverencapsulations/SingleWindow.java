@@ -1,7 +1,12 @@
 package org.primitive.webdriverencapsulations;
 
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.Dimension;
@@ -9,42 +14,48 @@ import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver.Navigation;
-import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.interfaces.IDestroyable;
-import org.primitive.webdriverencapsulations.interfaces.ISingleBrowserWindow;
-import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
+import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
+import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
 import org.primitive.webdriverencapsulations.webdrivercomponents.WindowTool;
 
 
-
-//It is performs actions on a single browser window
-public final class SingleWindow implements Window, Navigation, ISingleBrowserWindow, ITakesPictureOfItSelf, IDestroyable{
+/**
+* @author s.tihomirov
+**It is performs actions on a single browser window
+*/
+public final class SingleWindow implements Navigation, IExtendedWindow, IDestroyable{
 	private WindowSwitcher nativeSwitcher;
 	private String objectWindow;
 	private WebDriverEncapsulation driverEncapsulation;
 	private WindowTool windowTool;
 	
-    public static SingleWindow checkForInit(String handle, WindowSwitcher switcher)
+	private final List<IWindowListener> windowEventListeners = new ArrayList<IWindowListener>();
+	private final InvocationHandler windowListenerInvocationHandler = 	    new InvocationHandler() {
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            for (IWindowListener eventListener : windowEventListeners) {
+            	method.invoke(eventListener, args);
+            }
+            return null;
+        }
+    };	
+	//It listens to window events and invokes listener methods
+	private final IWindowListener windowListenerProxy = (IWindowListener) Proxy.newProxyInstance(
+		IWindowListener.class.getClassLoader(),
+	    new Class[] {IWindowListener.class },windowListenerInvocationHandler);
+	
+    static SingleWindow isInitiated(String handle, WindowSwitcher switcher)
     {   	
-    	SingleWindow result = null;
-    	try
+    	for (SingleWindow objWindow: switcher.openedWindows)
     	{
-    		for (SingleWindow objWindow: switcher.openedWindows)
+    		if ((handle.equals(objWindow.objectWindow))&(objWindow.nativeSwitcher.equals(switcher)))
     		{
-    			if ((handle.equals(objWindow.objectWindow))&(objWindow.nativeSwitcher.equals(switcher)))
-    			{
-    				result=objWindow;
-    				break;
-    			}
+    			return objWindow;
     		}
     	}
-    	catch(Exception e)
-    	{
-    		result = null;
-    	}
-    	return(result);
+    	return(null);
     	
     }
     
@@ -55,33 +66,19 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
 		this.objectWindow			=  handle;
 		this.windowTool              = new WindowTool(driverEncapsulation.getWrappedDriver());
 		switcher.openedWindows.add(this);
-		takeAPictureOfAnInfo("New object has been made of browser window");
+		windowListenerProxy.whenNewWindewIsAppeared(this);
     }
-       
+    
     //Static constructor ¹1 - initialization of new window that will appear.
     public static SingleWindow initNewWindow(WindowSwitcher switcher) throws NoSuchWindowException
     {
-    	try
-    	{
-			return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow()));
-    	}
-    	catch (NoSuchWindowException e)
-    	{
-    		throw e;
-    	}
+    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow()));
     }
     
     //Static constructor ¹1.1
     public static SingleWindow initNewWindow(WindowSwitcher switcher, long secondsTimeOut) throws NoSuchWindowException
     {
-    	try
-    	{
-			return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut)));
-    	}
-    	catch (NoSuchWindowException e)
-    	{
-    		throw e;
-    	}
+    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut)));
     }
     
     //Static constructor ¹2 - initialization of new window that will appear. 
@@ -89,83 +86,48 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     //title*, *title, *title*
     public static SingleWindow initNewWindow(WindowSwitcher switcher, String title) throws NoSuchWindowException
     {
-    	try
-    	{
-			return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(title)));
-    	}
-    	catch (NoSuchWindowException e)
-    	{
-    		throw e;
-    	}
+    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(title)));
     } 
     
     //Static constructor ¹2.1
     public static SingleWindow initNewWindow(WindowSwitcher switcher, String title,  long secondsTimeOut) throws NoSuchWindowException
     {
-    	try
-    	{
-			return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut, title)));
-    	}
-    	catch (NoSuchWindowException e)
-    	{
-    		throw e;
-    	}
+    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut, title)));
     }  
     
     //Static constructor ¹3 - initialization of new window that will appear. 
     //We use url of a loaded page.    
     public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url) throws NoSuchWindowException
     {
-    	try
-    	{
-			return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(url)));
-    	}
-    	catch (NoSuchWindowException e)
-    	{
-    		throw e;
-    	}
+    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(url)));
     }   
     
     //Static constructor ¹3.1  
     public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url, long secondsTimeOut) throws NoSuchWindowException
     {
-    	try
-    	{
-			return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut, url)));
-    	}
-    	catch (NoSuchWindowException e)
-    	{
-    		throw e;
-    	}
+    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut, url)));
     }    
     
     //Static constructor ¹4 - initialization of new window object by its index. It is known that window is present 
     public static SingleWindow initWindowByIndex(WindowSwitcher switcher, int index) throws NoSuchWindowException
     {
-    	try
-    	{
-			String handle = switcher.getBrowserWindowHandleByInex(index);
-			SingleWindow  InitedWindow = checkForInit(handle, switcher);
-			if (InitedWindow!=null)
-			{
-				return(InitedWindow);
-			}
-			else
-			{	
-	    		return(new SingleWindow(switcher, handle));
-			}	
-    	}
-    	catch (NoSuchWindowException e)
-    	{
-    		throw e; 
-    	}    
-    }  
+    	String handle = switcher.getBrowserWindowHandleByInex(index);
+		SingleWindow  InitedWindow = isInitiated(handle, switcher);
+		if (InitedWindow!=null)
+		{
+			return(InitedWindow);
+		}
+		return(new SingleWindow(switcher, handle));
+    }   
     
     private void requestToMe()
     {
+    	windowListenerProxy.beforeWindowIsSwitchedOn(this);
     	nativeSwitcher.switchTo(objectWindow);
+    	windowListenerProxy.whenWindowIsSwitchedOn(this);
     }
     
+    @Override
     public void destroy()
     {
 	    nativeSwitcher.openedWindows.remove(this);
@@ -175,7 +137,9 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     {
     	try
     	{
+    		windowListenerProxy.beforeWindowIsClosed(this);
     		nativeSwitcher.close(objectWindow);
+    		windowListenerProxy.whenWindowIsClosed(this);
     		destroy();
     	}
     	catch (UnhandledAlertException|UnclosedBrowserWindowException e)
@@ -195,17 +159,19 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     }
     
     
-    
+    @Override
     public synchronized String getWindowHandle()
     {
     	return(objectWindow);
     }
     
+    @Override
     public synchronized String getCurrentUrl() throws NoSuchWindowException
     {
 		return(nativeSwitcher.getWindowURLbyHandle(objectWindow));
     }
     
+    @Override
     public synchronized String getTitle()
     {
     	return nativeSwitcher.getTitleByHandle(objectWindow);
@@ -216,18 +182,21 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
     	return(driverEncapsulation);
     }
     
+    @Override
     public synchronized void to(String link)
     {
     	requestToMe();
 		windowTool.to(link);
     }
     
+    @Override
     public synchronized void forward()
     {
     	requestToMe();
     	windowTool.forward();
     }
     
+    @Override
     public synchronized void back()
     {
     	requestToMe();
@@ -238,7 +207,9 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
 	public synchronized void refresh() 
 	{
 		requestToMe();
-		windowTool.refresh();		
+		windowListenerProxy.beforeWindowIsRefreshed(this);
+		windowTool.refresh();	
+		windowListenerProxy.whenWindowIsRefreshed(this);
 	}
 
 	@Override
@@ -267,21 +238,27 @@ public final class SingleWindow implements Window, Navigation, ISingleBrowserWin
 	public synchronized void maximize() 
 	{
 		requestToMe();
-		windowTool.maximize();		
+		windowListenerProxy.beforeWindowIsMaximized(this);
+		windowTool.maximize();	
+		windowListenerProxy.whenWindowIsMaximized(this);
 	}
 
 	@Override
 	public synchronized void setPosition(Point position) 
 	{
 		requestToMe();
-		windowTool.setPosition(position);		
+		windowListenerProxy.beforeWindowIsMoved(this, position);
+		windowTool.setPosition(position);	
+		windowListenerProxy.whenWindowIsMoved(this, position);
 	}
 
 	@Override
 	public synchronized void setSize(Dimension size) 
 	{
 		requestToMe();
-		windowTool.setSize(size);		
+		windowListenerProxy.beforeWindowIsResized(this, size);
+		windowTool.setSize(size);
+		windowListenerProxy.whenWindowIsResized(this, size);
 	} 
 	
 	@Override

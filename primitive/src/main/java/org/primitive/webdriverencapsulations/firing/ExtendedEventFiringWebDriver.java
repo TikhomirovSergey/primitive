@@ -47,7 +47,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.events.internal.EventFiringKeyboard;
 import org.openqa.selenium.support.events.internal.EventFiringMouse;
 import org.openqa.selenium.support.events.internal.EventFiringTouch;
-import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventListener;
+import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 
 
 
@@ -386,12 +386,9 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 	protected static class ExtendedFiringNavigation implements Navigation {
 
 		private Navigation naviagation;
-		private ExtendedEventFiringWebDriver driver;
-		
 		protected ExtendedFiringNavigation(Navigation naviagation, ExtendedEventFiringWebDriver driver) 
 		{
 			this.naviagation = naviagation;
-			this.driver = driver;
 		}
 
 		private static ExtendedFiringNavigation newInstance(Navigation naviagation, ExtendedEventFiringWebDriver driver)
@@ -413,9 +410,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		@Override
 		public void refresh() 
 		{
-			driver.extendedDispatcher.beforeWindowRefresh(driver.driverForExtension, naviagation);
 			naviagation.refresh();
-			driver.extendedDispatcher.afterWindowRefresh(driver.driverForExtension, naviagation);			
 		}
 
 		@Override
@@ -438,12 +433,10 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 	 */
 	protected static class EventFiringWindow implements Window {
 		private Window window;
-		private ExtendedEventFiringWebDriver driver;		
 		
 		public EventFiringWindow(Window window, ExtendedEventFiringWebDriver driver) 
 		{
 			this.window = window;
-			this.driver = driver;
 		}
 		
 		private static EventFiringWindow newInstance(Window window, ExtendedEventFiringWebDriver driver)
@@ -473,17 +466,13 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		@Override
 		public void setPosition(Point arg0) 
 		{
-			driver.extendedDispatcher.beforeWindowSetPosition(driver.driverForExtension, window, arg0);
 			window.setPosition(arg0);
-			driver.extendedDispatcher.afterWindowSetPosition(driver.driverForExtension, window, arg0);	
 		}
 
 		@Override
 		public void setSize(Dimension arg0) 
 		{
-			driver.extendedDispatcher.beforeWindowSetSize(driver.driverForExtension, window, arg0);
 			window.setSize(arg0);
-			driver.extendedDispatcher.afterWindowSetSize(driver.driverForExtension, window, arg0);
 		}
 
 	}
@@ -892,29 +881,16 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 		driverForExtension = driver;
 	}
 	
-    public EventFiringWebDriver register(IExtendedWebDriverEventListener eventListener) 
+    public void register(IExtendedWebDriverEventListener eventListener) 
     {
-    	
-		try
-    	{
-    		return super.register(eventListener);
-    	}
-    	finally
-    	{
-    		extendedEventListeners.add(eventListener);
-    	}
+    	super.register(eventListener);
+    	extendedEventListeners.add(eventListener);
     }
 
-    public EventFiringWebDriver unregister(IExtendedWebDriverEventListener eventListener) 
+    public void unregister(IExtendedWebDriverEventListener eventListener) 
     {
-    	try
-    	{
-    		return super.unregister(eventListener);
-    	}
-    	finally
-    	{
-    		extendedEventListeners.remove(eventListener);
-    	}    	
+    	super.unregister(eventListener);
+    	extendedEventListeners.remove(eventListener);  	
     }   
     
     public Set<String> getWindowHandles()
@@ -973,9 +949,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver implement
 	
 	public void close()
 	{
-		extendedDispatcher.beforeWindowClose(driverForExtension);
-		super.close();
-		extendedDispatcher.afterWindowClose(driverForExtension);	
+		super.close();	
 	}
 	
     public List<WebElement> findElements(By by) {

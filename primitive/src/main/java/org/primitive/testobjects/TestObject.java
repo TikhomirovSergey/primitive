@@ -18,7 +18,6 @@ import org.primitive.testobjects.interfaces.IDecomposable;
 import org.primitive.testobjects.interfaces.ITestObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.DriverLogs;
 import org.primitive.webdriverencapsulations.webdrivercomponents.ScriptExecutor;
@@ -60,7 +59,7 @@ public abstract class TestObject implements IDestroyable, IDecomposable
 	
 	//this will be invoked when some exception is caught out 
     private ITestObjectExceptionHandler exceptionHandler = (ITestObjectExceptionHandler) Proxy.newProxyInstance(
-        	IExtendedWebDriverEventListener.class.getClassLoader(),
+    		ITestObjectExceptionHandler.class.getClassLoader(),
             new Class[] {ITestObjectExceptionHandler.class },
             new InvocationHandler() 
         	{

@@ -27,7 +27,6 @@ import org.primitive.configuration.commonhelpers.ScreenShots;
 import org.primitive.configuration.commonhelpers.UnhandledWindowsChecking;
 import org.primitive.configuration.commonhelpers.WebDriverSettings;
 import org.primitive.configuration.commonhelpers.WebDriverTimeOuts;
-import org.primitive.configuration.commonhelpers.WebElementVisibility;
 
 //for customizing project
 public class Configuration
@@ -238,11 +237,6 @@ public class Configuration
 	public WebDriverSettings getWebDriverSettings() 
 	{
 		return getSection(WebDriverSettings.class);
-	}
-	
-	public WebElementVisibility getWebElementVisibility()
-	{
-		return getSection(WebElementVisibility.class);
 	}
 	
 	public BrowserWindowsTimeOuts getBrowserWindowsTimeOuts()

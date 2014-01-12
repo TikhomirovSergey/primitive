@@ -1,37 +1,18 @@
-package org.primitive.webdriverencapsulations;
+package org.primitive.webdriverencapsulations.eventlisteners;
 
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebDriver.Timeouts;
-import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.WebElement;
-import org.primitive.configuration.Configuration;
-import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.logging.Log;
-import org.primitive.logging.Photographer;
-import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
-import org.primitive.webdriverencapsulations.webdrivercomponents.ElementVisibility;
 
-final class WebdriverInnerListener implements IExtendedWebDriverEventListener, IConfigurable {
+public final class DefaultWebdriverListener implements IExtendedWebDriverEventListener {
 
-	private final ElementVisibility elementVisibility;
-	private final WebElementHighLighter highLighter;
-	
-	public WebdriverInnerListener(WebDriver driver, Configuration configuration)
-	{
-		super();
-		elementVisibility = new ElementVisibility(driver);
-		highLighter = new WebElementHighLighter();
-		resetAccordingTo(configuration);
-	}
+	private WebElementHighLighter highLighter;
 	
 	@Override
 	public void afterChangeValueOf(WebElement arg0, WebDriver arg1) {
@@ -52,20 +33,17 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	@Override
 	public void afterNavigateBack(WebDriver arg0) {
 		Log.message("Current URL is  " + arg0.getCurrentUrl());
-		Photographer.takeAPictureOfAnInfo(arg0,"After navigation to previous url");
 	}
 
 	@Override
 	public void afterNavigateForward(WebDriver arg0) 
 	{
 		Log.message("Current URL is  " + arg0.getCurrentUrl());
-		Photographer.takeAPictureOfAnInfo(arg0,"After navigation to next url");
 	}
 	
 	@Override
 	public void afterNavigateTo(String arg0, WebDriver arg1) {
 		Log.message("Current URL is " + arg1.getCurrentUrl());
-		Photographer.takeAPictureOfAnInfo(arg1,"After navigate to url " + arg0);
 	}
 
 	@Override
@@ -75,12 +53,6 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	
 	@Override
 	public void beforeChangeValueOf(WebElement arg0, WebDriver arg1) {
-		elementVisibility.throwIllegalVisibility(arg0);
-		if (!arg0.isEnabled())
-		{
-			highLighter.highlightAsWarning(arg1, arg0, "Webelement is disabled! " + elementDescription(arg0));
-			throw new InvalidElementStateException("Attempt to change value of disabled page element: "  + elementDescription(arg0));
-		}
 		highLighter.highlightAsInfo(arg1, arg0, "Element with value that will be changed: "  + elementDescription(arg0));
 	}
 
@@ -88,7 +60,6 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	@Override
 	public void beforeClickOn(WebElement arg0, WebDriver arg1)
 	{
-		elementVisibility.throwIllegalVisibility(arg0);
 		highLighter.highlightAsInfo(arg1, arg0, "Click will be performed on this element: "  + elementDescription(arg0));
 	}
 
@@ -128,26 +99,12 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	
 
 	@Override
-	public void beforeWindowClose(WebDriver driver) 
-	{
-		Log.message("Attempt to close browser window...");
-	}
-
-	@Override
-	public void afterWindowClose(WebDriver driver) 
-	{
-		Log.message("Not any problem has occurred when browser window was closed...");			
-	}
-
-	@Override
 	public void beforeSubmit(WebDriver driver, WebElement element) {
-		elementVisibility.throwIllegalVisibility(element);
 		highLighter.highlightAsInfo(driver, element, "Element that will perform submit: "  + elementDescription(element));			
 	}
 
 	@Override
 	public void afterSubmit(WebDriver driver, WebElement element) {
-		Photographer.takeAPictureOfAnInfo(driver, "After submit");
 		Log.message("Submit has been performed successfully");	
 	}
 
@@ -189,57 +146,6 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 	}
 
 	@Override
-	public void beforeWindowSetSize(WebDriver driver, Window window, 	Dimension size) 
-	{
-		Log.message("Attempt to change window size. New height is " + Integer.toString(size.getHeight()) + 
-					" new width is " + Integer.toString(size.getWidth()));
-	}
-
-	@Override
-	public void afterWindowSetSize(WebDriver driver, Window window, 	Dimension size) 
-	{
-		Log.message("Window size has been changed!");			
-	}
-	
-	@Override
-	public void beforeWindowSetPosition(WebDriver driver, Window window, 	Point position) 
-	{
-		Log.message("Attempt to change window position. X " + Integer.toString(position.getX()) + 
-					" Y " + Integer.toString(position.getY()));			
-	}
-
-	@Override
-	public void afterWindowSetPosition(WebDriver driver, Window window, Point position) 
-	{
-		Log.message("Window position has been changed!.");
-	}
-	
-	@Override
-	public void beforeWindowMaximize(WebDriver driver, Window window) 
-	{
-		Log.message("Attempt to maximize browser window");
-		
-	}
-
-	@Override
-	public void afterWindowMaximize(WebDriver driver, Window window) 
-	{
-		Log.message("Browser window has been maximized");		
-	}
-
-	@Override
-	public void beforeWindowRefresh(WebDriver driver, Navigation navigate) {
-		Log.message("Attempt to refresh current browser window");
-		
-	}
-
-	@Override
-	public void afterWindowRefresh(WebDriver driver, Navigation navigate) {
-		Photographer.takeAPictureOfAnInfo(driver, "After window refresh");
-		Log.message("Current browser window has been refreshed");		
-	}
-
-	@Override
 	public void beforeWebDriverSetTimeOut(WebDriver driver, Timeouts timeouts,
 			long timeOut, TimeUnit timeUnit) {
 		Log.debug("Attempt to set time out. Value is " + Long.toString(timeOut) + " time unit is " + timeUnit.toString());
@@ -268,11 +174,10 @@ final class WebdriverInnerListener implements IExtendedWebDriverEventListener, I
 		}
         return description;
     }
-
-	@Override
-	public void resetAccordingTo(Configuration config) {
-		elementVisibility.resetAccordingTo(config);	
-		highLighter.resetAccordingTo(config);
+	
+	public void setHighLighter(WebElementHighLighter highLighter)
+	{
+		this.highLighter = highLighter;
 	}
 
 }

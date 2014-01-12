@@ -35,7 +35,6 @@ public final class WindowSwitcher implements IDestroyable
 	
 	private void changeActiveWindow(String handle) throws NoSuchWindowException, UnhandledAlertException
 	{
-		Log.debug("Attempt to switch browser window on by handle "+handle);
 		Set<String> handles = getWindowHandles();
 		if (!handles.contains(handle))
 		{
@@ -94,7 +93,6 @@ public final class WindowSwitcher implements IDestroyable
 	{	
 		try
 		{
-			Log.message("Waiting the new browser window for " + Long.toString(timeOutInSeconds) + " seconds ...");
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100, fluent.newWindowIsAppeared());
 			synchronized (this) {
 				changeActiveWindow(newHandle);
@@ -204,7 +202,6 @@ public final class WindowSwitcher implements IDestroyable
 	public synchronized void destroy()
 	{		
 		swithcerList.remove(this);
-		fluent.destroy();
 		isAlive = false;
 		
 		List<SingleWindow> windowsToBeDestroyed = new ArrayList<SingleWindow>();

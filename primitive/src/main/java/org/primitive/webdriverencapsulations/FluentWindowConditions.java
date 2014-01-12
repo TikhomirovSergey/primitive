@@ -9,32 +9,18 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 
 /**
  * @author s.tihomirov
  * Fluent waiting for browser window conditions
  */
-final class FluentWindowConditions implements IDestroyable{
+final class FluentWindowConditions {
 
 	private WindowSwitcher switcher;
 
 	FluentWindowConditions(WindowSwitcher switcher) {
 		this.switcher = switcher;
-	}
-
-	@Override
-	public void destroy() {
-		try 
-		{
-			this.finalize();
-		} 
-		catch (Throwable e) {
-			Log.warning("There are some problems with finalizing of browser window fluent waiting.", e);
-		}
-		switcher = null;
-		
 	}
 
 	//is here new browser window?

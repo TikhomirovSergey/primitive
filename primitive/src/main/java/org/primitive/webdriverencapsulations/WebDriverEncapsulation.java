@@ -17,8 +17,10 @@ import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.eventlisteners.DefaultWebdriverListener;
+import org.primitive.webdriverencapsulations.eventlisteners.DefaultWindowListener;
+import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.firing.ExtendedEventFiringWebDriver;
-import org.primitive.webdriverencapsulations.interfaces.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.localserver.LocalRemoteServerInstance;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
@@ -53,8 +55,9 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  private DriverLogs logs;	  
 	  private Ime ime;
 	  private Interaction interaction;
-	  private WebdriverInnerListener webInnerListener;
+	  private DefaultWebdriverListener webInnerListener;
 	  private WebElementHighLighter elementHighLighter;
+	  private DefaultWindowListener windowEventListener;
   	  
 	  
 	  //methods that support constructors functionality:
@@ -307,9 +310,9 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  Log.message("Capabilities are: " + ((HasCapabilities) createdDriver).getCapabilities().asMap().toString());	
 		  
 		  firingDriver = ExtendedEventFiringWebDriver.newInstance(createdDriver);		  
-		  elementHighLighter = new WebElementHighLighter();
-		  
-		  webInnerListener   = new WebdriverInnerListener(createdDriver, configuration);		  
+		  elementHighLighter = new WebElementHighLighter();		  
+		  webInnerListener   = new DefaultWebdriverListener();		
+		  webInnerListener.setHighLighter(elementHighLighter);
 		  awaiting 			 = new Awaiting(firingDriver);	  	  
 		  pageFactoryWorker  = new PageFactoryWorker(firingDriver);	  
 		  scriptExecutor     = new ScriptExecutor(firingDriver);	  
@@ -320,7 +323,8 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  ime				 = new Ime(firingDriver);
 		  interaction        = new Interaction(firingDriver);
 		  
-		  windowTimeOuts     = new WindowTimeOuts(configuration);
+		  windowTimeOuts      = new WindowTimeOuts(configuration);
+		  windowEventListener = new DefaultWindowListener();
 		  
 		  firingDriver.register(webInnerListener);
 		  resetAccordingTo(configuration);
@@ -358,9 +362,9 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  {
 		  configuration = config;
 		  timeout.resetAccordingTo(configuration);
-		  webInnerListener.resetAccordingTo(configuration);
 		  windowTimeOuts.resetAccordingTo(configuration);
 		  elementHighLighter.resetAccordingTo(configuration);
+		  windowEventListener.resetAccordingTo(configuration);
 	  }
 	  
 	  //it goes to another URL
