@@ -44,39 +44,5 @@
 	          "type":"LONG",
 	          "value":"10"     
 	      }       
-	  },
-	  "browserWindowsTimeOuts":
-	  {
-	      "newBrowserWindowTimeOutSec":{
-	          "type":"LONG",
-	          "value":"15"     
-	      },
-	      "browserWindowCountTimeOutSec":{
-	          "type":"LONG",
-	          "value":"1"     
-	      }, 
-	      "browserWindowClosingTimeOutSec":{
-	          "type":"LONG",
-	          "value":"2"     
-	      }      
-	  },
-	  "unhandledWindowsChecking":
-	  {
-	      "timeUnit":{
-	          "type":"STRING",
-	          "value":"SECONDS"           
-	      },
-	      "sessionTime":{
-	          "type":"LONG",
-	          "value":"5"     
-	      },
-	      "timeForWaiting":{
-	          "type":"LONG",
-	          "value":"20"     
-	      }, 
-	      "secsForAwaitinAlertPresent":{
-	          "type":"LONG",
-	          "value":"1"     
-	      }       
 	  }
   }

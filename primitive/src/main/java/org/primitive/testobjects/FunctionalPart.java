@@ -21,7 +21,7 @@ import org.primitive.logging.Photographer;
 import org.primitive.testobjects.interfaces.IDecomposable;
 import org.primitive.testobjects.interfaces.IHasWebElementFrames;
 import org.primitive.webdriverencapsulations.SingleWindow;
-import org.primitive.webdriverencapsulations.UnclosedBrowserWindowException;
+import org.primitive.webdriverencapsulations.UnclosedWindowException;
 import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
@@ -318,14 +318,14 @@ public abstract class FunctionalPart extends TestObject implements IHasWebElemen
 	}
 	
 	//Closes browser window and destroys all page objects that are placed on it
-	public void close() throws UnclosedBrowserWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException
+	public void close() throws UnclosedWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException
 	{
 		try
 		{
 			nativeWindow.close();
 			destroy();
 		}	
-		catch (UnclosedBrowserWindowException e)
+		catch (UnclosedWindowException e)
 		{
 			throw e;
 		}

@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 
 /**
  * @author s.tihomirov
- * Fluent waiting for browser window conditions
+ * Fluent waiting for some window conditions
  */
 final class FluentWindowConditions {
 
@@ -48,13 +48,13 @@ final class FluentWindowConditions {
 			String newHandle = null;
 			Set<String> newHandles = from.getWindowHandles();
 			if (newHandles.size()>oldHandles.size())			{
+				
 				newHandles.removeAll(oldHandles);
 				for (String handle:newHandles)
 				{
 					from.switchTo().window(handle);
 					Matcher titleMatcher = titlePattern.matcher(from.getTitle());
-					if (titleMatcher.matches())
-					{
+					if (titleMatcher.matches())	{
 						newHandle = handle;
 						return newHandle;
 					}
@@ -73,11 +73,10 @@ final class FluentWindowConditions {
 			Set<String> newHandles = from.getWindowHandles();
 			if (newHandles.size()>oldHandles.size())			{
 				newHandles.removeAll(oldHandles);
-				for (String handle:newHandles)
-				{
+				for (String handle:newHandles)	{
 					from.switchTo().window(handle);
-					if (from.getCurrentUrl().equals(url.toString()))
-					{
+					
+					if (from.getCurrentUrl().equals(url.toString())) {
 						newHandle = handle;
 						return newHandle;
 					}
@@ -92,8 +91,7 @@ final class FluentWindowConditions {
 	
 		synchronized(switcher)		{
 			Set<String> handles =  from.getWindowHandles();
-			if ((handles.size()-1)>=windowIndex)
-			{
+			if ((handles.size()-1)>=windowIndex) {
 				return new ArrayList<String>(handles).get(windowIndex);
 			}
 			else
@@ -136,8 +134,7 @@ final class FluentWindowConditions {
 	ExpectedCondition<String> newWindowIsAppeared()	{
 		return new ExpectedCondition<String>()		{ 
 			Set<String> oldHandles = switcher.getWindowHandles();
-			public String apply(final WebDriver from)
-			{
+			public String apply(final WebDriver from) {
 				return getNewHandle(from, oldHandles);
 			}
 		};
@@ -147,8 +144,7 @@ final class FluentWindowConditions {
 	ExpectedCondition<String> newWindowIsAppeared(final String title)	{
 		return new ExpectedCondition<String>()		{ 
 			Set<String> oldHandles = switcher.getWindowHandles();
-			public String apply(final WebDriver from)
-			{
+			public String apply(final WebDriver from) {
 				return getNewHandle(from, oldHandles, title);
 			}
 		};
@@ -166,7 +162,7 @@ final class FluentWindowConditions {
 	}
 
 	//fluent waiting for the result. See above
-	ExpectedCondition<String> suchBrowserhWindowWithIndexIsPresent(final int windowIndex)	{
+	ExpectedCondition<String> suchWindowWithIndexIsPresent(final int windowIndex)	{
 		return new ExpectedCondition<String>()	{ 				
 			public String apply(final WebDriver from) {
 				return getWindowHandleByIndex(from, windowIndex);		

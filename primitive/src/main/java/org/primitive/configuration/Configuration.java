@@ -17,7 +17,7 @@ import net.sf.cglib.proxy.Enhancer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.Capabilities;
-import org.primitive.configuration.commonhelpers.BrowserWindowsTimeOuts;
+import org.primitive.configuration.commonhelpers.WindowsTimeOuts;
 import org.primitive.configuration.commonhelpers.CapabilitySettings;
 import org.primitive.configuration.commonhelpers.ChromeDriverExe;
 import org.primitive.configuration.commonhelpers.IEDriverExe;
@@ -239,9 +239,9 @@ public class Configuration
 		return getSection(WebDriverSettings.class);
 	}
 	
-	public BrowserWindowsTimeOuts getBrowserWindowsTimeOuts()
+	public WindowsTimeOuts getBrowserWindowsTimeOuts()
 	{
-		return getSection(BrowserWindowsTimeOuts.class);
+		return getSection(WindowsTimeOuts.class);
 	}
 	
 	public UnhandledWindowsChecking getUnhandledWindowsChecking()

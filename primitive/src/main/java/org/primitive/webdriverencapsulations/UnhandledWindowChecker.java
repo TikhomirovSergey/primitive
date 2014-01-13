@@ -165,7 +165,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		}				
 	}
 	
-	private boolean attemptToCloseWindow(List<String> windowList, int index) throws UnclosedBrowserWindowException, UnhandledAlertException
+	private boolean attemptToCloseWindow(List<String> windowList, int index) throws UnclosedWindowException, UnhandledAlertException
 	{
 		try
 		{
@@ -174,7 +174,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 			Log.warning("There is an unhandled browser window!");
 			switcher.close(windowList.get(index).toString());
 		}
-		catch (UnclosedBrowserWindowException e)
+		catch (UnclosedWindowException e)
 		{
 			throw e;
 		}
@@ -328,7 +328,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		return(!thereIsNoUnExpectedWindows);
 	}
 	
-	public synchronized void killUnexpectedWindows() throws UnhandledAlertException, UnclosedBrowserWindowException
+	public synchronized void killUnexpectedWindows() throws UnhandledAlertException, UnclosedWindowException
 	{	 
 		try
 		{
@@ -345,7 +345,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 				{
 					closed = attemptToCloseWindow(WindowList, i);
 				}	
-				catch (UnclosedBrowserWindowException|UnhandledAlertException e)
+				catch (UnclosedWindowException|UnhandledAlertException e)
 				{
 					closed = false;
 					Log.warning("Unhandled browser window hasn't been closed!");
@@ -362,7 +362,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 					{
 						closed = attemptToCloseWindow(WindowList, i);
 					}	
-					catch (UnclosedBrowserWindowException|UnhandledAlertException e)
+					catch (UnclosedWindowException|UnhandledAlertException e)
 					{
 						closed = false;
 					}
@@ -379,7 +379,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 					{
 						attemptToCloseWindow(WindowList, i);
 					}	
-					catch (UnclosedBrowserWindowException|UnhandledAlertException e)
+					catch (UnclosedWindowException|UnhandledAlertException e)
 					{ 
 						throw e;
 					}
@@ -433,7 +433,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 					killUnexpectedWindows();
 				}
 			}
-			catch (UnclosedBrowserWindowException|UnhandledAlertException e)
+			catch (UnclosedWindowException|UnhandledAlertException e)
 			{ 
 				Log.warning("Attempting to close unhandled browser windows has been failed",e);
 			}

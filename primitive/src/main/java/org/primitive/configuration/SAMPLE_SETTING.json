@@ -49,17 +49,17 @@
           "value":"10"     
       }       
   },
-  "browserWindowsTimeOuts":
+  "windowsTimeOuts":
   {
-      "newBrowserWindowTimeOutSec":{
+      "newWindowTimeOutSec":{
           "type":"LONG",
           "value":"15"     
       },
-      "browserWindowCountTimeOutSec":{
+      "windowCountTimeOutSec":{
           "type":"LONG",
           "value":"1"     
       }, 
-      "browserWindowClosingTimeOutSec":{
+      "windowClosingTimeOutSec":{
           "type":"LONG",
           "value":"2"     
       }      

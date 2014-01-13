@@ -24,7 +24,7 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.WindowTool;
 
 /**
 * @author s.tihomirov
-**It is performs actions on a single browser window
+**It is performs actions on a single window
 */
 public final class SingleWindow implements Navigation, IExtendedWindow, IDestroyable{
 	private WindowSwitcher nativeSwitcher;
@@ -68,40 +68,40 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
     
     //Static constructor ¹1 - initialization of new window that will appear.
     public static SingleWindow initNewWindow(WindowSwitcher switcher) throws NoSuchWindowException  {
-    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow()));
+    	return(new SingleWindow(switcher, switcher.switchToNewWindow()));
     }
     
     //Static constructor ¹1.1
     public static SingleWindow initNewWindow(WindowSwitcher switcher, long secondsTimeOut) throws NoSuchWindowException  {
-    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut)));
+    	return(new SingleWindow(switcher, switcher.switchToNewWindow(secondsTimeOut)));
     }
     
     //Static constructor ¹2 - initialization of new window that will appear. 
     //We use either title of a window or piece of its title. Fragment is formatted as:
     //title*, *title, *title*
     public static SingleWindow initNewWindow(WindowSwitcher switcher, String title) throws NoSuchWindowException   {
-    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(title)));
+    	return(new SingleWindow(switcher, switcher.switchToNewWindow(title)));
     } 
     
     //Static constructor ¹2.1
     public static SingleWindow initNewWindow(WindowSwitcher switcher, String title,  long secondsTimeOut) throws NoSuchWindowException   {
-    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut, title)));
+    	return(new SingleWindow(switcher, switcher.switchToNewWindow(secondsTimeOut, title)));
     }  
     
     //Static constructor ¹3 - initialization of new window that will appear. 
     //We use url of a loaded page.    
     public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url) throws NoSuchWindowException   {
-    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(url)));
+    	return(new SingleWindow(switcher, switcher.switchToNewWindow(url)));
     }   
     
     //Static constructor ¹3.1  
     public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url, long secondsTimeOut) throws NoSuchWindowException   {
-    	return(new SingleWindow(switcher, switcher.switchToNewBrowserWindow(secondsTimeOut, url)));
+    	return(new SingleWindow(switcher, switcher.switchToNewWindow(secondsTimeOut, url)));
     }    
     
     //Static constructor ¹4 - initialization of new window object by its index. It is known that window is present 
     public static SingleWindow initWindowByIndex(WindowSwitcher switcher, int index) throws NoSuchWindowException    {
-    	String handle = switcher.getBrowserWindowHandleByInex(index);
+    	String handle = switcher.getWindowHandleByInex(index);
 		SingleWindow  InitedWindow = isInitiated(handle, switcher);
 		if (InitedWindow!=null)
 		{
@@ -122,7 +122,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
 	    removeAllListeners();
     }
     
-    public synchronized void close() throws UnclosedBrowserWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException
+    public synchronized void close() throws UnclosedWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException
     {
     	try	{
     		windowListenerProxy.beforeWindowIsClosed(this);
@@ -130,7 +130,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow, IDestroy
     		windowListenerProxy.whenWindowIsClosed(this);
     		destroy();
     	}
-    	catch (UnhandledAlertException|UnclosedBrowserWindowException e)  	{
+    	catch (UnhandledAlertException|UnclosedWindowException e)  	{
     		throw e;
     	}
     	catch (NoSuchWindowException e)    	{

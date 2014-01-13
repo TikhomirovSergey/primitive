@@ -15,7 +15,7 @@ import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
-import org.primitive.configuration.commonhelpers.BrowserWindowsTimeOuts;
+import org.primitive.configuration.commonhelpers.WindowsTimeOuts;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
@@ -37,7 +37,7 @@ public final class WindowSwitcher implements IDestroyable
 		Set<String> handles = getWindowHandles();
 		if (!handles.contains(handle))
 		{
-			throw new NoSuchWindowException("There is no browser window with handle " + handle + "!");
+			throw new NoSuchWindowException("There is no window with handle " + handle + "!");
 		}	
 		try
 		{
@@ -49,7 +49,9 @@ public final class WindowSwitcher implements IDestroyable
 		}
 	}
 	
-	//returns WindowSwither instance that exists or creates a new instance 
+	/**
+	*returns WindowSwither instance that exists or creates a new instance 
+	*/
 	public static WindowSwitcher get(WebDriverEncapsulation driver)	{
 		for (WindowSwitcher switcher: swithcerList)
 		{
@@ -70,24 +72,29 @@ public final class WindowSwitcher implements IDestroyable
 		swithcerList.add(this);
 	}
 	
-	public String getBrowserWindowHandleByInex(int windowIndex) throws NoSuchWindowException	{
+	/**
+	*returns window handle by it's index
+	*/
+	public String getWindowHandleByInex(int windowIndex) throws NoSuchWindowException	{
 		try		{
 			Log.message("Attempt to get window that is specified by index " + Integer.toString(windowIndex) + " is present");
-			BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+			WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 			long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowCountTimeOutSec(),windowTimeOuts.defaultTime);
-			return awaiting.awaitCondition(timeOut, 100, fluent.suchBrowserhWindowWithIndexIsPresent(windowIndex));
+			return awaiting.awaitCondition(timeOut, 100, fluent.suchWindowWithIndexIsPresent(windowIndex));
 		}
 		catch (TimeoutException e)		{
-			throw new NoSuchWindowException("Can't find browser window! Index out of bounds! Specified index is " + Integer.toString(windowIndex) + 
+			throw new NoSuchWindowException("Can't find window! Index out of bounds! Specified index is " + Integer.toString(windowIndex) + 
 											" is more then actual window count", e);
 		}
 	}
 	
-	//returns handle of a new browser window that we have been waiting for specified time
-	public String switchToNewBrowserWindow(long timeOutInSeconds) throws NoSuchWindowException	{	
+	/**
+	*returns handle of a new window that we have been waiting for specified time
+	*/
+	public String switchToNewWindow(long timeOutInSeconds) throws NoSuchWindowException	{	
 		try
 		{
-			Log.message("Waiting a new browser window for " + Long.toString(timeOutInSeconds) + " seconds.");
+			Log.message("Waiting a new window for " + Long.toString(timeOutInSeconds) + " seconds.");
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100, fluent.newWindowIsAppeared());
 			synchronized (this) {
 				changeActiveWindow(newHandle);
@@ -95,23 +102,27 @@ public final class WindowSwitcher implements IDestroyable
 			return newHandle;
 		}
 		catch (TimeoutException e)		{
-			throw new NoSuchWindowException("There is no new browser window! We have been waiting for "	+ Long.toString(timeOutInSeconds) + " seconds", e);
+			throw new NoSuchWindowException("There is no new window! We have been waiting for "	+ Long.toString(timeOutInSeconds) + " seconds", e);
 		}
 	}
 	
-	//returns handle of a new browser window that we have been waiting for time that specified in configuration 
-	public String switchToNewBrowserWindow() throws NoSuchWindowException	{	
-		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getNewBrowserWindowTimeOutSec(),windowTimeOuts.defaultTimeForNewWindow);
-		return switchToNewBrowserWindow(timeOut);
+	/**
+	*returns handle of a new window that we have been waiting for time that specified in configuration 
+	*/
+	public String switchToNewWindow() throws NoSuchWindowException	{	
+		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getNewWindowTimeOutSec(),windowTimeOuts.defaultTimeForNewWindow);
+		return switchToNewWindow(timeOut);
 	}	
 	
-	//returns handle of a new browser window that we have been waiting for specified time
-	//new browser window should has defined title. We can specify title in this way:
-	//title, title*, *title, *title*
-	public String switchToNewBrowserWindow(long timeOutInSeconds, String title) throws NoSuchWindowException	{	
+	/**
+	*returns handle of a new window that we have been waiting for specified time
+	*new window should has defined title. We can specify title in this way:
+	*title, title*, *title, *title*, ti*tle and another regular expressions
+	*/
+	public String switchToNewWindow(long timeOutInSeconds, String title) throws NoSuchWindowException	{	
 		try		{
-			Log.message("Waiting a new browser window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have title " + title);
+			Log.message("Waiting a new window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have title " + title);
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100, fluent.newWindowIsAppeared(title));
 			synchronized (this) {
 				changeActiveWindow(newHandle);
@@ -119,25 +130,29 @@ public final class WindowSwitcher implements IDestroyable
 			return newHandle;
 		}
 		catch (TimeoutException e)		{
-			throw new NoSuchWindowException("There is no new browser window with title " + title + 
+			throw new NoSuchWindowException("There is no new window with title " + title + 
 					" ! We have been waiting for "	+ Long.toString(timeOutInSeconds) + " seconds", e);
 		}
 	}	
 	
-	//returns handle of a new browser window that we have been waiting for time that specified in configuration
-	//new browser window should has defined title. We can specify title in this way:
-	//title, title*, *title, *title*
-	public String switchToNewBrowserWindow(String title) throws NoSuchWindowException	{	
-		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getNewBrowserWindowTimeOutSec(),windowTimeOuts.defaultTimeForNewWindow);
-		return switchToNewBrowserWindow(timeOut, title);
+	/**
+	*returns handle of a new window that we have been waiting for time that specified in configuration
+	*new window should has defined title. We can specify title in this way:
+	*title, title*, *title, *title*
+	*/
+	public String switchToNewWindow(String title) throws NoSuchWindowException	{	
+		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getNewWindowTimeOutSec(),windowTimeOuts.defaultTimeForNewWindow);
+		return switchToNewWindow(timeOut, title);
 	}
 	
-	//returns handle of a new browser window that we have been waiting for specified time
-	//new browser window should has page that loads by specified URL
-	public String switchToNewBrowserWindow(long timeOutInSeconds, URL url) throws NoSuchWindowException	{	
+	/**
+	*returns handle of a new window that we have been waiting for specified time
+	*new window should has page that loads by specified URL
+	*/
+	public String switchToNewWindow(long timeOutInSeconds, URL url) throws NoSuchWindowException	{	
 		try	{
-			Log.message("Waiting a new browser window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have page " +  
+			Log.message("Waiting a new window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have page " +  
 					" that is loaded by specified URL. Url is " + url.toString());
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100, fluent.newWindowIsAppeared(url));
 			synchronized (this) {
@@ -146,17 +161,19 @@ public final class WindowSwitcher implements IDestroyable
 			return newHandle;
 		}
 		catch (TimeoutException e)	{
-			throw new NoSuchWindowException("There is no new browser window that loads by " + url.toString() + 
+			throw new NoSuchWindowException("There is no new window that loads by " + url.toString() + 
 					" ! We have been waiting for "	+ Long.toString(timeOutInSeconds) + " seconds", e);
 		}	
 	}	
 	
-	//returns handle of a new browser window that we have been waiting for time that specified in configuration 
-	//new browser window should has page that loads by specified URL
-	public String switchToNewBrowserWindow(URL url) throws NoSuchWindowException	{	
-		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getNewBrowserWindowTimeOutSec(),windowTimeOuts.defaultTimeForNewWindow);
-		return switchToNewBrowserWindow(timeOut, url);
+	/**
+	*returns handle of a new window that we have been waiting for time that specified in configuration 
+	*new window should has page that loads by specified URL
+	*/
+	public String switchToNewWindow(URL url) throws NoSuchWindowException	{	
+		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getNewWindowTimeOutSec(),windowTimeOuts.defaultTimeForNewWindow);
+		return switchToNewWindow(timeOut, url);
 	}
 	
 	
@@ -187,8 +204,8 @@ public final class WindowSwitcher implements IDestroyable
 		openedWindows.clear();		
 	}
 	
-	public synchronized void close(String handle) throws UnclosedBrowserWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException	{
-		BrowserWindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+	public synchronized void close(String handle) throws UnclosedWindowException, NoSuchWindowException, UnhandledAlertException, UnreachableBrowserException	{
+		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 		long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowClosingTimeOutSec(),windowTimeOuts.defaultTime);
 		
 		try		{
@@ -204,7 +221,7 @@ public final class WindowSwitcher implements IDestroyable
 			awaiting.awaitCondition(timeOut, fluent.isClosed(handle));
 		}
 		catch (TimeoutException e) {
-			throw new UnclosedBrowserWindowException("Browser window hasn't been closed!",e);
+			throw new UnclosedWindowException("Window hasn't been closed!",e);
 		}
 		
 		int actualWinCount = 0;
