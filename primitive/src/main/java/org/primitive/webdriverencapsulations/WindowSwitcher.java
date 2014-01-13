@@ -77,7 +77,7 @@ public final class WindowSwitcher implements IDestroyable
 	*/
 	public String getWindowHandleByInex(int windowIndex) throws NoSuchWindowException	{
 		try		{
-			Log.message("Attempt to get window that is specified by index " + Integer.toString(windowIndex) + " is present");
+			Log.debug("Attempt to get window that is specified by index " + Integer.toString(windowIndex) + "...");
 			WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 			long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowCountTimeOutSec(),windowTimeOuts.defaultTime);
 			return awaiting.awaitCondition(timeOut, 100, fluent.suchWindowWithIndexIsPresent(windowIndex));
@@ -94,7 +94,7 @@ public final class WindowSwitcher implements IDestroyable
 	public String switchToNewWindow(long timeOutInSeconds) throws NoSuchWindowException	{	
 		try
 		{
-			Log.message("Waiting a new window for " + Long.toString(timeOutInSeconds) + " seconds.");
+			Log.debug("Waiting a new window for " + Long.toString(timeOutInSeconds) + " seconds.");
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100, fluent.newWindowIsAppeared());
 			synchronized (this) {
 				changeActiveWindow(newHandle);
@@ -122,7 +122,7 @@ public final class WindowSwitcher implements IDestroyable
 	*/
 	public String switchToNewWindow(long timeOutInSeconds, String title) throws NoSuchWindowException	{	
 		try		{
-			Log.message("Waiting a new window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have title " + title);
+			Log.debug("Waiting a new window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have title " + title);
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100, fluent.newWindowIsAppeared(title));
 			synchronized (this) {
 				changeActiveWindow(newHandle);
@@ -152,7 +152,7 @@ public final class WindowSwitcher implements IDestroyable
 	*/
 	public String switchToNewWindow(long timeOutInSeconds, URL url) throws NoSuchWindowException	{	
 		try	{
-			Log.message("Waiting a new window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have page " +  
+			Log.debug("Waiting a new window for " + Long.toString(timeOutInSeconds) + " seconds. New window should have page " +  
 					" that is loaded by specified URL. Url is " + url.toString());
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100, fluent.newWindowIsAppeared(url));
 			synchronized (this) {

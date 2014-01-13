@@ -9,6 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.primitive.configuration.Configuration;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -73,7 +74,7 @@ public class HelloWorldGoogleTest {
   
   @Test(description = "This is just a test of basic functionality. It performs search and closes google as visible browser window")
   @Parameters(value={"config"})
-  public void typeHelloWorldAndOpenTheFirstLink4(String config) {
+  public void typeHelloWorldAndOpenTheFirstLink4(@Optional("chrome.json") String config) {
 	  Configuration configuration = Configuration.get("src/test/resources/configs/" + config); 
 	  test2(Google.getNew(configuration));
   }
