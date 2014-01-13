@@ -209,7 +209,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 	  //other methods:
 	  
 	  public void destroy()	  {
-		  unregisterAll(servises.getServices(IExtendedWebDriverEventListener.class));
+		  unregisterAll();
 		  if (firingDriver==null)
 		  {	  
 			 return;
@@ -280,12 +280,16 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  return firingDriver.getCapabilities();
 	  }
 	  
-	  private void registerWebDriverListeners()  {
-		  List<IExtendedWebDriverEventListener> webDriverEventListeners = servises.getServices(IExtendedWebDriverEventListener.class);
-		  for (IExtendedWebDriverEventListener listener: webDriverEventListeners)
-		  {	  
+	  private void registerAll()  {
+		  List<IExtendedWebDriverEventListener> listeners = servises.getServices(IExtendedWebDriverEventListener.class);
+		  for (IExtendedWebDriverEventListener listener: listeners) {	  
 			  firingDriver.register(listener);
 		  }	    
+		  
+		  List<WebDriverEventListener> listeners2 = servises.getServices(WebDriverEventListener.class);
+		  for (WebDriverEventListener listener: listeners2)  {	  
+			  firingDriver.register(listener);
+		  }	 		  
 	  }
 	  
 	  private void actoinsAfterWebDriverCreation(WebDriver createdDriver)  {
@@ -316,7 +320,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  DefaultWebdriverListener webdriverListener = (DefaultWebdriverListener)  servises.getDafaultService(IExtendedWebDriverEventListener.class);
 		  webdriverListener.setHighLighter(elementHighLighter);
 		  
-		  registerWebDriverListeners();
+		  registerAll();
 		  resetAccordingTo(configuration);
 	  }
 	  
@@ -344,9 +348,14 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable, Wrap
 		  firingDriver.unregister(listener);
 	  }
 	  
-	  public void unregisterAll(List<IExtendedWebDriverEventListener> listeners)  {
-		  for (IExtendedWebDriverEventListener listener: listeners)
-		  {
+	  private void unregisterAll()  {
+		  List<IExtendedWebDriverEventListener> listeners = servises.getServices(IExtendedWebDriverEventListener.class);
+		  for (IExtendedWebDriverEventListener listener: listeners)  {
+			unregisterListener(listener);  
+		  }	
+		  
+		  List<WebDriverEventListener> listeners2 = servises.getServices(WebDriverEventListener.class);
+		  for (WebDriverEventListener listener: listeners2)	  {
 			unregisterListener(listener);  
 		  }		  
 	  }

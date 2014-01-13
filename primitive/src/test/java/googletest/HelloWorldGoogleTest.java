@@ -13,6 +13,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import services.MockWebDriverEventListener2;
 import services.MockWebDriverListener;
 import services.MockWindowListener;
 
@@ -81,6 +82,12 @@ public class HelloWorldGoogleTest {
   
   @Test(description = "This is just a test of basic functionality. Checks possibility of service provider working")
   public void typeHelloWorldAndOpenTheFirstLink5() {
+	  MockWebDriverListener.listener = null;
+	  MockWindowListener.listener    = null;
+	  MockWebDriverListener.wasInvoked = false;
+	  MockWindowListener.wasInvoked    = false;
+	  MockWebDriverEventListener2.wasInvoked    = false;
+	  MockWebDriverEventListener2.wasInvoked    = false;
 	  try {
 		  test(Google.getNew());
 	  }	  
@@ -88,5 +95,6 @@ public class HelloWorldGoogleTest {
 	  }
 	  Assert.assertEquals(true, MockWebDriverListener.wasInvoked);
 	  Assert.assertEquals(true, MockWindowListener.wasInvoked);
+	  Assert.assertEquals(true, MockWebDriverEventListener2.wasInvoked);
   }
 }
