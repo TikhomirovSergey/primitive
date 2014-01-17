@@ -1,7 +1,6 @@
 package org.primitive.webdriverencapsulations.interfaces;
 
 import java.awt.Color;
-import java.util.logging.Level;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,11 +11,6 @@ import org.openqa.selenium.WebElement;
  * and generate log messages  
  */
 public interface IWebElementHighlighter {
-	/**
-	 * @author s.tihomirov
-	 * It highlights element any way you want 
-	 */
-	public void highlight(WebDriver driver, WebElement webElement, Color highlight, Level LogLevel, String Comment);
 	/**
 	 * @author s.tihomirov
 	 * It highlights element any color you want. I thing that log messages of FINE level will be generated  

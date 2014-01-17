@@ -3,11 +3,20 @@ package org.primitive.logging;
 import java.util.logging.Level;
 
 public enum eAvailableLevels {
-	;
+	FINE(Level.FINE),
+	INFO(Level.INFO),
+	SEVERE(Level.SEVERE),
+	WARN(Level.WARNING);
+	
 
-	public final static Level FINE 		= Level.FINE;
-	public final static Level INFO  	= Level.INFO;
-	public final static Level SEVERE   	= Level.SEVERE;
-	public final static Level WARN     	= Level.WARNING;
+	private final Level level;
+
+	private eAvailableLevels(Level level) {
+		this.level = level;
+	}
+
+	public Level getLevel() {
+		return level;
+	}
 
 }

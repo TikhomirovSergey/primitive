@@ -7,9 +7,9 @@ public class WindowsTimeOuts extends AbstractConfigurationAccessHelper {
 	private final String newWindowTimeOutSetting = "newWindowTimeOutSec";
 	private final String windowCountTimeOutSetting = "windowCountTimeOutSec";
 	private final String windowClosingTimeOutSetting = "windowClosingTimeOutSec";
-	
+
 	private final String windowsTimeOutsGroup = "windowsTimeOuts";
-	
+
 	public WindowsTimeOuts(Configuration configuration) {
 		super(configuration);
 	}
@@ -18,17 +18,17 @@ public class WindowsTimeOuts extends AbstractConfigurationAccessHelper {
 	public Object getSetting(String name) {
 		return getSettingValue(windowsTimeOutsGroup, name);
 	}
-	
-	public Long getNewWindowTimeOutSec()	{
-		return (Long) getSetting(newWindowTimeOutSetting);			
+
+	public Long getNewWindowTimeOutSec() {
+		return (Long) getSetting(newWindowTimeOutSetting);
 	}
-	
-	public Long getWindowCountTimeOutSec()	{
-		return (Long) getSetting(windowCountTimeOutSetting);			
+
+	public Long getWindowCountTimeOutSec() {
+		return (Long) getSetting(windowCountTimeOutSetting);
 	}
-	
-	public Long getWindowClosingTimeOutSec()	{
-		return (Long) getSetting(windowClosingTimeOutSetting);			
-	}		
+
+	public Long getWindowClosingTimeOutSec() {
+		return (Long) getSetting(windowClosingTimeOutSetting);
+	}
 
 }

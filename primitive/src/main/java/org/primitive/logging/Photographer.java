@@ -5,7 +5,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 import org.openqa.selenium.NoSuchWindowException;
@@ -26,147 +25,120 @@ public final class Photographer
 	private String folder  = pictureFolderNameByDefault;
 	
 	
-	private Photographer()
-	{
+	private Photographer() {
 		super();
 	}
-	
-	private BufferedImage getImageFromDriver(WebDriver driver) throws IOException
-	{
+
+	private BufferedImage getImageFromDriver(WebDriver driver)
+			throws IOException {
 		byte[] bytes = null;
-		try
-	    {
-	    	bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-	    }
-	    catch (ClassCastException e)
-	    {
-	    	WebDriver augmentedDriver = new Augmenter().augment(((WrapsDriver) driver).getWrappedDriver());
-	    	bytes = ((TakesScreenshot) augmentedDriver).getScreenshotAs(OutputType.BYTES);	
-	    }
-		BufferedImage buffer = getBufferedImage(bytes); 
-		return(buffer);
+		try {
+			bytes = ((TakesScreenshot) driver)
+					.getScreenshotAs(OutputType.BYTES);
+		} catch (ClassCastException e) {
+			WebDriver augmentedDriver = new Augmenter()
+					.augment(((WrapsDriver) driver).getWrappedDriver());
+			bytes = ((TakesScreenshot) augmentedDriver)
+					.getScreenshotAs(OutputType.BYTES);
+		}
+		BufferedImage buffer = getBufferedImage(bytes);
+		return (buffer);
 	}
-	
-	//takes pictures and makes buffered images
-	private synchronized BufferedImage takeAPicture(WebDriver driver) throws IOException, NoSuchWindowException, UnsupportedOperationException
-	{
-		try
-		{
-			return(getImageFromDriver(driver));
-		}
-		catch (UnsupportedOperationException e)
-		{
+
+	// takes pictures and makes buffered images
+	private synchronized BufferedImage takeAPicture(WebDriver driver)
+			throws IOException, NoSuchWindowException,
+			UnsupportedOperationException {
+		try {
+			return (getImageFromDriver(driver));
+		} catch (UnsupportedOperationException e) {
 			throw e;
-		}
-		catch (NoSuchWindowException e1)
-		{
+		} catch (NoSuchWindowException e1) {
 			throw e1;
-		}
-		catch (IOException e2)
-		{
+		} catch (IOException e2) {
 			throw e2;
 		}
 	}
-		
-	private BufferedImage getBufferedImage(byte[] original) throws IOException
-	{
+
+	private BufferedImage getBufferedImage(byte[] original) throws IOException {
 		BufferedImage buffer = null;
-		try 
-		{
+		try {
 			buffer = ImageIO.read(new ByteArrayInputStream(original));
-			return(buffer);
-		} 
-		catch (IOException e)
-		{
+			return (buffer);
+		} catch (IOException e) {
 			e.printStackTrace();
 			throw e;
 		}
 	}
-	
-	//applies images
-	private synchronized void makeFileForLog(BufferedImage imageForLog, Level LogLevel, String Comment)
-	{
-		
-		String FolderPath = folder;		
-				
+
+	// applies images
+	private synchronized void makeFileForLog(BufferedImage imageForLog,
+			eAvailableLevels LogLevel, String Comment) {
+
+		String FolderPath = folder;
+
 		File ImgFolder = new File(FolderPath);
 		ImgFolder.mkdirs();
-		
-		File picForLog = new File(FolderPath + pictureNameByDefault + '_' + UUID.randomUUID().toString() + "." + format);
-		try 
-		{
+
+		File picForLog = new File(FolderPath + pictureNameByDefault + '_'
+				+ UUID.randomUUID().toString() + "." + format);
+		try {
 			ImageIO.write(imageForLog, format, picForLog);
-			Log.log(LogLevel, Comment, picForLog); 
-		} 
-		catch (IOException e) 
-		{
-			Log.warning("Can't take a screenshot! " + e.getMessage()); 
+			Log.log(LogLevel, Comment, picForLog);
+		} catch (IOException e) {
+			Log.warning("Can't take a screenshot! " + e.getMessage());
 		}
 	}
-	
-	public static synchronized void setCommonOutputFolder(String pathToFolder)
-	{
+
+	public static synchronized void setCommonOutputFolder(String pathToFolder) {
 		pictureFolderNameByDefault = pathToFolder;
 	}
-	
-	public static void setOutputFolder(String pathToFolder)
-	{
+
+	public static void setOutputFolder(String pathToFolder) {
 		get().folder = pathToFolder;
 	}
-	
-	private static Photographer get()
-	{
+
+	private static Photographer get() {
 		Photographer photographer = photographerThreadLocal.get();
-		if (photographer==null)
-		{
+		if (photographer == null) {
 			photographer = new Photographer();
 			photographerThreadLocal.set(photographer);
 		}
 		return photographer;
 	}
-	
-	//takes pictures of full browser windows
-	public static void takeAPictureForLog(WebDriver driver, Level LogLevel, String Comment) throws NoSuchWindowException
-	{
+
+	// takes pictures of full browser windows
+	public static void takeAPictureForLog(WebDriver driver, eAvailableLevels LogLevel,
+			String Comment) throws NoSuchWindowException {
 		Photographer photographer = get();
-		try
-		{
-			BufferedImage imageForLog = photographer.takeAPicture(driver); 
+		try {
+			BufferedImage imageForLog = photographer.takeAPicture(driver);
 			photographer.makeFileForLog(imageForLog, LogLevel, Comment);
-		}
-		catch(IOException e)
-		{
+		} catch (IOException e) {
 			Log.warning("Can't post a picture to log! " + e.getMessage());
 			Log.log(LogLevel, Comment);
-		}
-		catch (NoSuchWindowException e) 
-		{
+		} catch (NoSuchWindowException e) {
 			throw e;
-		}
-		catch (ClassCastException|UnsupportedOperationException e)
-		{
-			Log.debug("Operation is not supported! Take a screenshot. " + e.getMessage(), e);
+		} catch (ClassCastException | UnsupportedOperationException e) {
+			Log.debug("Operation is not supported! Take a screenshot. "
+							+ e.getMessage(), e);
 			Log.log(LogLevel, Comment);
-		}		
+		}
 	}
-	
-	public static void takeAPictureOfASevere(WebDriver driver,  String Comment)
-	{
-		takeAPictureForLog(driver, Level.SEVERE, Comment);
+
+	public static void takeAPictureOfASevere(WebDriver driver, String Comment) {
+		takeAPictureForLog(driver, eAvailableLevels.SEVERE, Comment);
 	}
-	
-	public static void takeAPictureOfAWarning(WebDriver driver,  String Comment)
-	{
-		takeAPictureForLog(driver, Level.WARNING, Comment);
+
+	public static void takeAPictureOfAWarning(WebDriver driver, String Comment) {
+		takeAPictureForLog(driver, eAvailableLevels.WARN, Comment);
 	}
-	
-	public static void takeAPictureOfAnInfo(WebDriver driver,  String Comment)
-	{
-		takeAPictureForLog(driver, Level.INFO, Comment);
+
+	public static void takeAPictureOfAnInfo(WebDriver driver, String Comment) {
+		takeAPictureForLog(driver, eAvailableLevels.INFO, Comment);
 	}
-	
-	public static void takeAPictureOfAFine(WebDriver driver,  String Comment)
-	{
-		takeAPictureForLog(driver, Level.FINE, Comment);
-	}	
+
+	public static void takeAPictureOfAFine(WebDriver driver, String Comment) {
+		takeAPictureForLog(driver, eAvailableLevels.FINE, Comment);
+	}
 }

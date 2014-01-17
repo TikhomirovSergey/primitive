@@ -27,44 +27,38 @@ public enum ESupportedDrivers {
 	private Capabilities capabilities;
 	private Class<? extends WebDriver> driverClazz;
 	private EServices service;
-	
-	private ESupportedDrivers(Capabilities capabilities, Class<? extends WebDriver> driverClazz, EServices sevice)
-	{
+
+	private ESupportedDrivers(Capabilities capabilities,
+			Class<? extends WebDriver> driverClazz, EServices sevice) {
 		this.capabilities = capabilities;
-		this.driverClazz  = driverClazz;
-		this.service     = sevice;
+		this.driverClazz = driverClazz;
+		this.service = sevice;
 	}
-	
-	public static ESupportedDrivers parse(String original)
-	{
+
+	public static ESupportedDrivers parse(String original) {
 		String parcingStr = original.toUpperCase().trim();
-		
+
 		ESupportedDrivers[] values = ESupportedDrivers.values();
-		for (ESupportedDrivers enumElem: values)
-		{
-			if (parcingStr.equals(enumElem.toString()))
-			{
+		for (ESupportedDrivers enumElem : values) {
+			if (parcingStr.equals(enumElem.toString())) {
 				return enumElem;
 			}
 		}
-		throw new IllegalArgumentException("Webdriver with specified name " + original + " is not supported");
-	}	
-	
-	public Capabilities getDefaultCapabilities()
-	{
+		throw new IllegalArgumentException("Webdriver with specified name "
+				+ original + " is not supported");
+	}
+
+	public Capabilities getDefaultCapabilities() {
 		return capabilities;
 	}
-	
-	public Class<? extends WebDriver> getUsingWebDriverClass()
-	{
+
+	public Class<? extends WebDriver> getUsingWebDriverClass() {
 		return driverClazz;
 	}
-	
-	public void setSystemProperty()
-	{
-		if (service!=null)
-		{	
+
+	public void setSystemProperty() {
+		if (service != null) {
 			this.service.setSystemProperty();
-		}	
+		}
 	}
 }

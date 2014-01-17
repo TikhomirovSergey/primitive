@@ -13,13 +13,12 @@ import org.primitive.configuration.AbstractConfigurationAccessHelper;
 import org.primitive.configuration.Configuration;
 
 /**
- * @author s.tihomirov
- * There are specified webdriver capabilities settings
+ * @author s.tihomirov There are specified webdriver capabilities settings
  */
 public class CapabilitySettings extends AbstractConfigurationAccessHelper
 		implements HasCapabilities, Capabilities {
 
-	//specified settings for capabilities
+	// specified settings for capabilities
 	private final String capabilityGroup = "DesiredCapabilities";
 	private final DesiredCapabilities builtCapabilities = new DesiredCapabilities();
 
@@ -35,7 +34,7 @@ public class CapabilitySettings extends AbstractConfigurationAccessHelper
 
 	@Override
 	public Object getSetting(String name) {
-		return  getSettingValue(capabilityGroup, name);
+		return getSettingValue(capabilityGroup, name);
 	}
 
 	@Override
@@ -73,20 +72,17 @@ public class CapabilitySettings extends AbstractConfigurationAccessHelper
 		return builtCapabilities.isJavascriptEnabled();
 	}
 
-	private void buildCapabilities()
-	{
-		HashMap<String,Object> capabilities = getGroup(capabilityGroup);
-		if (capabilities==null)
-		{			
+	private void buildCapabilities() {
+		HashMap<String, Object> capabilities = getGroup(capabilityGroup);
+		if (capabilities == null) {
 			return;
 		}
-		
-		List<String> capabilityStrings = new ArrayList<String>(capabilities.keySet());
-			
-		for (String capabilityStr: capabilityStrings)
-		{	
-			if (capabilities.get(capabilityStr)!=null)
-			{	
+
+		List<String> capabilityStrings = new ArrayList<String>(
+				capabilities.keySet());
+
+		for (String capabilityStr : capabilityStrings) {
+			if (capabilities.get(capabilityStr) != null) {
 				builtCapabilities.setCapability(capabilityStr, capabilities.get(capabilityStr));
 			}
 		}

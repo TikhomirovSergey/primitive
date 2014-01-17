@@ -11,27 +11,27 @@ public final class Cookies extends WebdriverComponent {
 		super(driver);
 	}
 
-	public void addCookie(Cookie cookie)	{
+	public void addCookie(Cookie cookie) {
 		driver.manage().addCookie(cookie);
 	}
 
-	public void deleteAllCookies()	{
+	public void deleteAllCookies() {
 		driver.manage().deleteAllCookies();
 	}
 
-	public void deleteAllCookies(String cookieName)	{
+	public void deleteAllCookies(String cookieName) {
 		driver.manage().deleteCookieNamed(cookieName);
 	}
 
-	public void deleteCookie(Cookie cookie)	{
+	public void deleteCookie(Cookie cookie) {
 		driver.manage().deleteCookie(cookie);
 	}
 
-	public Cookie getCookieNamed(String cookieName)	{
+	public Cookie getCookieNamed(String cookieName) {
 		return driver.manage().getCookieNamed(cookieName);
 	}
 
-	public Set<Cookie> getCookies()	{
+	public Set<Cookie> getCookies() {
 		return driver.manage().getCookies();
 	}
 

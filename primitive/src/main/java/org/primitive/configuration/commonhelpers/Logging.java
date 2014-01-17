@@ -6,35 +6,29 @@ import org.primitive.configuration.AbstractConfigurationAccessHelper;
 import org.primitive.configuration.Configuration;
 
 /**
- * @author s.tihomirov
- * Settings of logger. I use java.utils.logging
+ * @author s.tihomirov Settings of logger. I use java.utils.logging
  */
 public class Logging extends AbstractConfigurationAccessHelper {
 
 	private final String levelSetting = "Level";
-	//Logging group
+	// Logging group
 	private final String loggingGroup = "Log";
 
 	public Logging(Configuration configuration) {
 		super(configuration);
 	}
 
-	public Level getLevel()
-	{
+	public Level getLevel() {
 		String levelName = (String) getSetting(levelSetting);
-		if (levelName!=null)
-		{	
+		if (levelName != null) {
 			return Level.parse(levelName.toUpperCase());
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
-	
-	public Object getSetting(String name)
-	{
-		return  getSettingValue(loggingGroup, name);
-	}		
+
+	public Object getSetting(String name) {
+		return getSettingValue(loggingGroup, name);
+	}
 
 }

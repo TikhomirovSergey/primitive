@@ -5,13 +5,12 @@ import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
 
 /**
- * @author s.tihomirov
- * Parameters of a webdriver that will be created
+ * @author s.tihomirov Parameters of a webdriver that will be created
  */
 public class WebDriverSettings extends AbstractConfigurationAccessHelper {
 
-	private final String remoteAddress  = "remoteAdress";
-	private final String webDriverName  = "driverName";
+	private final String remoteAddress = "remoteAdress";
+	private final String webDriverName = "driverName";
 	private final String webDriverGroup = "webdriver";
 
 	public WebDriverSettings(Configuration configuration) {
@@ -20,23 +19,18 @@ public class WebDriverSettings extends AbstractConfigurationAccessHelper {
 
 	@Override
 	public Object getSetting(String name) {
-		return  getSettingValue(webDriverGroup, name);
+		return getSettingValue(webDriverGroup, name);
 	}
 
-	public String getRemoteAddress()
-	{
+	public String getRemoteAddress() {
 		return (String) getSetting(remoteAddress);
 	}
 
-	public ESupportedDrivers getSupoortedWebDriver()
-	{
+	public ESupportedDrivers getSupoortedWebDriver() {
 		String name = (String) getSetting(webDriverName);
-		if (name!=null)
-		{
+		if (name != null) {
 			return ESupportedDrivers.parse(name);
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}

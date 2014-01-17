@@ -7,8 +7,7 @@ import org.primitive.configuration.Configuration;
 import org.primitive.configuration.interfaces.ITimeUnitSetting;
 
 /**
- * @author s.tihomirov
- * Specified webdriver time out parameters
+ * @author s.tihomirov Specified webdriver time out parameters
  */
 public class WebDriverTimeOuts extends AbstractConfigurationAccessHelper
 		implements ITimeUnitSetting {
@@ -16,42 +15,34 @@ public class WebDriverTimeOuts extends AbstractConfigurationAccessHelper
 	private final String implicitlyWaitTimeOutSetting = "implicitlyWait";
 	private final String pageLoadTimeoutSetting = "pageLoadTimeout";
 	private final String scriptTimeOutSetting = "setScriptTimeout";
-	private final String webDriverTimeOutsGroup 	    = "webDriverTimeOuts";
-	public  final String timeUnitSetting = "timeUnit";
+	private final String webDriverTimeOutsGroup = "webDriverTimeOuts";
+	public final String timeUnitSetting = "timeUnit";
 
 	public WebDriverTimeOuts(Configuration configuration) {
 		super(configuration);
 	}
 
-	public Long getImplicitlyWaitTimeOut()
-	{
+	public Long getImplicitlyWaitTimeOut() {
 		return (Long) getSetting(implicitlyWaitTimeOutSetting);
 	}
 
-	public Long getLoadTimeout()
-	{
+	public Long getLoadTimeout() {
 		return (Long) getSetting(pageLoadTimeoutSetting);
 	}
 
-	public Long getScriptTimeOut()
-	{
+	public Long getScriptTimeOut() {
 		return (Long) getSetting(scriptTimeOutSetting);
 	}
 
-	public Object getSetting(String name)
-	{
-		return  getSettingValue(webDriverTimeOutsGroup, name);
+	public Object getSetting(String name) {
+		return getSettingValue(webDriverTimeOutsGroup, name);
 	}
 
-	public TimeUnit getTimeUnit()
-	{
+	public TimeUnit getTimeUnit() {
 		String timeUnitStr = (String) getSetting(timeUnitSetting);
-		if (timeUnitStr != null)
-		{
+		if (timeUnitStr != null) {
 			return TimeUnit.valueOf(timeUnitStr.toUpperCase());
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}

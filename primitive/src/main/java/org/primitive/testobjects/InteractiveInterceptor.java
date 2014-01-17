@@ -8,25 +8,22 @@ import org.primitive.testobjects.TestObject.Interceptor;
 
 public final class InteractiveInterceptor extends Interceptor {
 
-	public InteractiveInterceptor()
-	{
+	public InteractiveInterceptor() {
 		super();
 	}
-	
+
 	@Override
-	public synchronized Object intercept(Object page, Method method, Object[] args,
-			MethodProxy methodProxy) throws Throwable {
-		if (method.isAnnotationPresent(FunctionalPart.InteractiveMethod.class))
-		{	//if there are actions with a page
+	public synchronized Object intercept(Object page, Method method,
+			Object[] args, MethodProxy methodProxy) throws Throwable {
+		if (method.isAnnotationPresent(FunctionalPart.InteractiveMethod.class)) { 
+			// if there are actions with a page 
 			((FunctionalPart) page).switchToMe();
 		}
-		try
-		{
+		try {
 			return methodProxy.invokeSuper(page, args);
-		}
-		catch (Exception e)
-		{
-			return handleException((FunctionalPart) page, method, methodProxy, args, e);
+		} catch (Exception e) {
+			return handleException((FunctionalPart) page, method, methodProxy,
+					args, e);
 		}
 	}
 }
