@@ -20,6 +20,7 @@ import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
 import org.primitive.webdriverencapsulations.webdrivercomponents.AlertHandler;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
+import org.primitive.webdriverencapsulations.webdrivercomponents.FluentWindowConditions;
 
 public final class WindowSwitcher implements IDestroyable {
 	protected WebDriverEncapsulation driverEncapsulation;
@@ -28,8 +29,7 @@ public final class WindowSwitcher implements IDestroyable {
 	private WindowTimeOuts windowTimeOuts;
 	private Awaiting awaiting;
 	private FluentWindowConditions fluent;
-	final List<SingleWindow> openedWindows = Collections
-			.synchronizedList(new ArrayList<SingleWindow>());
+	final List<SingleWindow> openedWindows = Collections.synchronizedList(new ArrayList<SingleWindow>());
 	private boolean isAlive = true;
 
 	private void changeActiveWindow(String handle)
@@ -63,7 +63,7 @@ public final class WindowSwitcher implements IDestroyable {
 		driverEncapsulation = InitialDriverPerformance;
 		windowTimeOuts = driverEncapsulation.getWindowTimeOuts();
 		awaiting = driverEncapsulation.getAwaiting();
-		fluent = new FluentWindowConditions(this);
+		fluent = new FluentWindowConditions(driverEncapsulation.getWrappedDriver());
 		swithcerList.add(this);
 	}
 
@@ -76,14 +76,12 @@ public final class WindowSwitcher implements IDestroyable {
 			Log.debug("Attempt to get window that is specified by index "
 					+ Integer.toString(windowIndex) + "...");
 			WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-			long timeOut = windowTimeOuts.getTimeOut(
-					timeOuts.getWindowCountTimeOutSec(),
+			long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowCountTimeOutSec(),
 					windowTimeOuts.defaultTime);
-			return awaiting.awaitCondition(timeOut, 100,
+			return awaiting.awaitCondition(timeOut, 100, 
 					fluent.suchWindowWithIndexIsPresent(windowIndex));
 		} catch (TimeoutException e) {
-			throw new NoSuchWindowException(
-					"Can't find window! Index out of bounds! Specified index is "
+			throw new NoSuchWindowException("Can't find window! Index out of bounds! Specified index is "
 							+ Integer.toString(windowIndex)
 							+ " is more then actual window count", e);
 		}
@@ -93,16 +91,14 @@ public final class WindowSwitcher implements IDestroyable {
 	 * returns handle of a new window that we have been waiting for specified
 	 * time
 	 */
-	public String switchToNewWindow(long timeOutInSeconds)
+	public synchronized String switchToNewWindow(long timeOutInSeconds)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
 					+ Long.toString(timeOutInSeconds) + " seconds.");
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100,
 					fluent.newWindowIsAppeared());
-			synchronized (this) {
-				changeActiveWindow(newHandle);
-			}
+			changeActiveWindow(newHandle);
 			return newHandle;
 		} catch (TimeoutException e) {
 			throw new NoSuchWindowException(
@@ -129,7 +125,7 @@ public final class WindowSwitcher implements IDestroyable {
 	 * way: title, title*, *title, *title*, ti*tle and another regular
 	 * expressions
 	 */
-	public String switchToNewWindow(long timeOutInSeconds, String title)
+	public synchronized String switchToNewWindow(long timeOutInSeconds, String title)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
@@ -137,9 +133,7 @@ public final class WindowSwitcher implements IDestroyable {
 					+ " seconds. New window should have title " + title);
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100,
 					fluent.newWindowIsAppeared(title));
-			synchronized (this) {
-				changeActiveWindow(newHandle);
-			}
+			changeActiveWindow(newHandle);
 			return newHandle;
 		} catch (TimeoutException e) {
 			throw new NoSuchWindowException(
@@ -166,7 +160,7 @@ public final class WindowSwitcher implements IDestroyable {
 	 * returns handle of a new window that we have been waiting for specified
 	 * time new window should has page that loads by specified URL
 	 */
-	public String switchToNewWindow(long timeOutInSeconds, URL url)
+	public synchronized String switchToNewWindow(long timeOutInSeconds, URL url)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
@@ -176,9 +170,7 @@ public final class WindowSwitcher implements IDestroyable {
 					+ url.toString());
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100,
 					fluent.newWindowIsAppeared(url));
-			synchronized (this) {
-				changeActiveWindow(newHandle);
-			}
+			changeActiveWindow(newHandle);
 			return newHandle;
 		} catch (TimeoutException e) {
 			throw new NoSuchWindowException(
@@ -201,7 +193,7 @@ public final class WindowSwitcher implements IDestroyable {
 		return switchToNewWindow(timeOut, url);
 	}
 
-	public synchronized void switchTo(String Handle)
+	synchronized void switchTo(String Handle)
 			throws NoSuchWindowException {
 		changeActiveWindow(Handle);
 	}
@@ -298,14 +290,10 @@ public final class WindowSwitcher implements IDestroyable {
 				driverEncapsulation.getWrappedDriver(), Comment);
 	}
 
-	public synchronized Alert getAlert(long secsToWait)
-			throws NoAlertPresentException {
-		return (new AlertHandler(driverEncapsulation.getWrappedDriver(),
-				secsToWait));
-	}
-
 	public synchronized Alert getAlert() throws NoAlertPresentException {
-		return (new AlertHandler(driverEncapsulation.getWrappedDriver()));
+		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		return (new AlertHandler(driverEncapsulation.getWrappedDriver(), 
+				windowTimeOuts.getTimeOut(timeOuts.getSecsForAwaitinAlertPresent(), windowTimeOuts.defaultTime)));
 	}
 
 	boolean isAlive() {

@@ -24,7 +24,6 @@ import org.primitive.configuration.commonhelpers.IEDriverExe;
 import org.primitive.configuration.commonhelpers.Logging;
 import org.primitive.configuration.commonhelpers.PhantomJSDriver;
 import org.primitive.configuration.commonhelpers.ScreenShots;
-import org.primitive.configuration.commonhelpers.UnhandledWindowsChecking;
 import org.primitive.configuration.commonhelpers.WebDriverSettings;
 import org.primitive.configuration.commonhelpers.WebDriverTimeOuts;
 
@@ -219,10 +218,6 @@ public class Configuration {
 
 	public WindowsTimeOuts getBrowserWindowsTimeOuts() {
 		return getSection(WindowsTimeOuts.class);
-	}
-
-	public UnhandledWindowsChecking getUnhandledWindowsChecking() {
-		return getSection(UnhandledWindowsChecking.class);
 	}
 
 	protected Configuration(String filePath) {

@@ -7,6 +7,7 @@ public class WindowsTimeOuts extends AbstractConfigurationAccessHelper {
 	private final String newWindowTimeOutSetting = "newWindowTimeOutSec";
 	private final String windowCountTimeOutSetting = "windowCountTimeOutSec";
 	private final String windowClosingTimeOutSetting = "windowClosingTimeOutSec";
+	private final String awaitinForAlertPresentSetting = "secsForAwaitinAlertPresent";
 
 	private final String windowsTimeOutsGroup = "windowsTimeOuts";
 
@@ -29,6 +30,10 @@ public class WindowsTimeOuts extends AbstractConfigurationAccessHelper {
 
 	public Long getWindowClosingTimeOutSec() {
 		return (Long) getSetting(windowClosingTimeOutSetting);
+	}
+
+	public Long getSecsForAwaitinAlertPresent() {
+		return (Long) getSetting(awaitinForAlertPresentSetting);
 	}
 
 }

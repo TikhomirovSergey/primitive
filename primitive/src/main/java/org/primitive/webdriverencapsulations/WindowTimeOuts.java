@@ -6,9 +6,9 @@ import org.primitive.configuration.interfaces.IConfigurable;
 
 class WindowTimeOuts implements IConfigurable {
 
-	protected final long defaultTime = 1; // default time we waiting for
+	final long defaultTime = 1; // default time we waiting for
 											// anything
-	protected final long defaultTimeForNewWindow = 30; // we will wait
+	final long defaultTimeForNewWindow = 30; // we will wait
 	// appearance of a new browser window for 30 seconds by default
 	private WindowsTimeOuts timeOuts;
 
@@ -16,7 +16,7 @@ class WindowTimeOuts implements IConfigurable {
 		resetAccordingTo(config);
 	}
 
-	protected Long getTimeOut(Long possibleTimeOut, long defaultValue) {
+	Long getTimeOut(Long possibleTimeOut, long defaultValue) {
 		if (possibleTimeOut == null) {
 			return defaultValue;
 		} else {
@@ -24,7 +24,7 @@ class WindowTimeOuts implements IConfigurable {
 		}
 	}
 
-	protected WindowsTimeOuts getTimeOuts() {
+	WindowsTimeOuts getTimeOuts() {
 		return timeOuts;
 	}
 

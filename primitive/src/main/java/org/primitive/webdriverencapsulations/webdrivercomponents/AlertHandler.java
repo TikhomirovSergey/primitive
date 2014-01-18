@@ -11,11 +11,6 @@ public final class AlertHandler extends WebdriverComponent implements Alert {
 
 	private Alert alert;
 
-	public AlertHandler(WebDriver driver) {
-		super(driver);
-		alert = driver.switchTo().alert();
-	}
-
 	public AlertHandler(WebDriver driver, long secTimeOut)
 			throws NoAlertPresentException {
 		super(driver);

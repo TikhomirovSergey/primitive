@@ -62,25 +62,10 @@
 	      "windowClosingTimeOutSec":{
 	          "type":"LONG",
 	          "value":"2"     
-	      }      
-  	   },
- 	  "unhandledWindowsChecking":
-	  {
-	      "timeUnit":{
-	          "type":"STRING",
-	          "value":"SECONDS"           
 	      },
-	      "sessionTime":{
-	          "type":"LONG",
-	          "value":"5"     
-	      },
-	      "timeForWaiting":{
-	          "type":"LONG",
-	          "value":"20"     
-	      }, 
 	      "secsForAwaitinAlertPresent":{
 	          "type":"LONG",
-	          "value":"1"     
-	      }       
-	  } 	   
+	          "value":"2"     
+      	  }      
+  	   } 	   
   }

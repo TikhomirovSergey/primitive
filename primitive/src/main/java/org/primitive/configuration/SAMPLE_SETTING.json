@@ -62,6 +62,10 @@
       "windowClosingTimeOutSec":{
           "type":"LONG",
           "value":"2"     
+      },  
+      "secsForAwaitinAlertPresent":{
+          "type":"LONG",
+          "value":"2"     
       }      
   },
   "Log":
@@ -114,24 +118,5 @@
           "type":"STRING",
           "value":"phantomjs.exe"           
       }       
-  },
-  "unhandledWindowsChecking":
-  {
-      "timeUnit":{
-          "type":"STRING",
-          "value":"SECONDS"           
-      },
-      "sessionTime":{
-          "type":"LONG",
-          "value":"5"     
-      },
-      "timeForWaiting":{
-          "type":"LONG",
-          "value":"20"     
-      }, 
-      "secsForAwaitinAlertPresent":{
-          "type":"LONG",
-          "value":"1"     
-      }       
-  }  
+  }
 }
