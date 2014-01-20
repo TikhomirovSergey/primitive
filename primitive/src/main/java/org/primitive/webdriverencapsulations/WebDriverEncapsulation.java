@@ -60,7 +60,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	private Interaction interaction;
 	private WebElementHighLighter elementHighLighter;
 	private final ConfigurableElements configurableElements = new ConfigurableElements();
-	private final WebDriverSPIServises servises = new WebDriverSPIServises();
+	private final InnerSPIServises servises = new InnerSPIServises();
 
 	// methods that support constructors functionality:
 	protected void setSystemProprtyByCapabilities(Capabilities capabilities) {
@@ -237,7 +237,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		return (windowTimeOuts);
 	}
 
-	WebDriverSPIServises getServises() {
+	InnerSPIServises getServises() {
 		return servises;
 	}
 

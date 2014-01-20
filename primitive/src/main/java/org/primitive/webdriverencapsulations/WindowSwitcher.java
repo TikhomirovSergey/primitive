@@ -295,6 +295,10 @@ public final class WindowSwitcher implements IDestroyable {
 		return (new AlertHandler(driverEncapsulation.getWrappedDriver(), 
 				windowTimeOuts.getTimeOut(timeOuts.getSecsForAwaitinAlertPresent(), windowTimeOuts.defaultTime)));
 	}
+	
+	public synchronized Alert getAlert(long timeOut) throws NoAlertPresentException {
+		return (new AlertHandler(driverEncapsulation.getWrappedDriver(), timeOut));
+	}
 
 	boolean isAlive() {
 		return isAlive;

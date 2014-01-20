@@ -14,6 +14,11 @@ import org.primitive.logging.Log;
 
 
 public final class UnhandledWindowChecker extends Thread implements IDestroyable {
+	public static interface IUnhandledWindowEventListener {
+		public void onUnhandledWindowHandleHasBeenFound(WindowSwitcher switcher);
+		public void onUnhandledAlert(Alert alert);		
+	}
+
 	/**
 	 * @author s.tihomirov
 	 *

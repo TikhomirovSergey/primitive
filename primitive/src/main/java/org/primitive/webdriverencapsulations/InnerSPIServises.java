@@ -17,7 +17,7 @@ import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
  *         should have default constructor (!!!!) They can be loaded using SPI
  *         mechanism.
  */
-class WebDriverSPIServises {
+class InnerSPIServises {
 
 	private final HashMap<Class<?>, Object> defaultProvidedServices = new HashMap<Class<?>, Object>();
 	private final HashMap<Class<?>, List<Object>> providedServices = new HashMap<Class<?>, List<Object>>();
@@ -25,7 +25,7 @@ class WebDriverSPIServises {
 	private final Class<?> webdriverExtendedListener = IExtendedWebDriverEventListener.class;
 	private final Class<?> windowEventListener = IWindowListener.class;
 
-	WebDriverSPIServises() {
+	InnerSPIServises() {
 		defaultProvidedServices.put(webdriverExtendedListener,
 				new DefaultWebdriverListener());
 		defaultProvidedServices.put(windowEventListener,
