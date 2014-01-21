@@ -9,7 +9,7 @@ import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
 
 /**
 * @author s.tihomirov
-*Implementation of IWindowListener by default
+*Implementation of @link{IWindowListener} by default
 */
 public class DefaultWindowListener implements IWindowListener, IConfigurable{
 

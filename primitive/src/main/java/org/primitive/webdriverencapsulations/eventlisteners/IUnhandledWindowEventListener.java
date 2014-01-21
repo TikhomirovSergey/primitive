@@ -4,6 +4,8 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 
 public interface IUnhandledWindowEventListener {
-	public void onUnhandledWindowHandleHasBeenFound(WebDriver switcher);
-	public void onUnhandledAlert(Alert alert);	
+	public void whenUnhandledWindowIsFound(WebDriver weddriver);
+	public void whenUnhandledAlertIsFound(Alert alert);	
+	public void whenUnhandledWindowIsNotClosed(WebDriver webdriver);
+	public void whenUnhandledWindowIsAlreadyClosed(WebDriver weddriver);
 }

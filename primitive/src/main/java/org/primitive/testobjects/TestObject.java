@@ -47,15 +47,15 @@ public abstract class TestObject implements IDestroyable, IDecomposable {
 
 	}
 
-	protected SingleWindow nativeWindow; // browser window that object placed on
-	protected WebDriverEncapsulation driverEncapsulation; // wrapped web driver
+	protected final SingleWindow nativeWindow; // browser window that object placed on
+	protected final WebDriverEncapsulation driverEncapsulation; // wrapped web driver
 															// for situations
 															// when it needs to
 															// be used
 
-	protected Awaiting awaiting;
-	protected ScriptExecutor scriptExecutor;
-	protected DriverLogs logs;
+	protected final Awaiting awaiting;
+	protected final ScriptExecutor scriptExecutor;
+	protected final DriverLogs logs;
 	protected final HashSet<TestObjectExceptionHandler> checkedInExceptionHandlers = new HashSet<TestObjectExceptionHandler>();
 
 	// this will be invoked when some exception is caught out

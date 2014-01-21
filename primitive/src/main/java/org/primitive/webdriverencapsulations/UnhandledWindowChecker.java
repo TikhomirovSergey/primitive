@@ -2,13 +2,13 @@ package org.primitive.webdriverencapsulations;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.UnhandledAlertException;
-import org.primitive.configuration.Configuration;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 
@@ -23,32 +23,21 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 	}
 
 	private WindowSwitcher switcher = null;
-	private final static List<UnhandledWindowChecker> checkers = new ArrayList<UnhandledWindowChecker>();
+	private final static HashMap<WindowSwitcher, UnhandledWindowChecker> checkers = new HashMap<>();
 	
-	private static UnhandledWindowChecker returnChecker(WindowSwitcher switcher, Configuration configuration)
-	{
-		for (UnhandledWindowChecker checker: checkers)
-		{
-			if (checker.switcher == switcher)
-			{
-				return(checker);
-			}
-		}		
-		UnhandledWindowChecker checker = new UnhandledWindowChecker();
-		checker.switcher   = switcher;
-		checkers.add(checker);
-		return(checker);	
+	private UnhandledWindowChecker(WindowSwitcher switcher)	{
+		this.switcher = switcher;
 	}
 	
-	public synchronized static UnhandledWindowChecker getChecker(WindowSwitcher switcher)
+	public static UnhandledWindowChecker getChecker(WindowSwitcher switcher)
 	{
-		return(returnChecker(switcher,Configuration.byDefault));				
-	}
-	
-	public synchronized static UnhandledWindowChecker getChecker(WindowSwitcher switcher, Configuration configuration)
-	{
-		UnhandledWindowChecker checker = returnChecker(switcher, configuration);
-		return(checker);				
+		UnhandledWindowChecker checker = checkers.get(switcher);
+		if (checker!=null){
+			return(checker);
+		}
+		checker = new UnhandledWindowChecker(switcher);
+		checkers.put(switcher, checker);
+		return(checker);					
 	}
 	
 	public void destroy()
@@ -113,7 +102,6 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		List<String> WindowList = null;
 		WindowList = getUnexpectedWindows();	
 				
-		Log.debug("Let's start killing of unhandled browser windows and alerts!");
 		int i = WindowList.size()-1;
 		while (i>=0)
 		{

@@ -16,10 +16,10 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.TimeOut;
  */
 public abstract class Entity extends TestObject implements IHasManyWindows {
 
-	protected Cookies cookies;
-	protected Ime ime;
-	protected TimeOut timeOuts;
-	protected WindowSwitcher nativeSwitcher;
+	protected final Cookies cookies;
+	protected final Ime ime;
+	protected final TimeOut timeOuts;
+	protected final WindowSwitcher nativeSwitcher;
 
 	protected Entity(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {

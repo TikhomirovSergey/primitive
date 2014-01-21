@@ -44,9 +44,9 @@ public abstract class FunctionalPart extends TestObject implements
 
 	}
 
-	protected PageFactoryWorker pageFactoryWorker;
+	protected final PageFactoryWorker pageFactoryWorker;
 	protected FunctionalPart parent; // parent test object
-	protected FrameSupport frameSupport;
+	protected final FrameSupport frameSupport;
 	// Integer specification of a frame that object is placed on.
 	private Integer frameToSwitchOnInt = null;
 	// String specification of a frame that object is placed on.
@@ -56,15 +56,7 @@ public abstract class FunctionalPart extends TestObject implements
 	// page object is created by specified entity
 	protected Entity originalEntity;
 	private WebElementHighLighter highLighter;
-	protected Interaction interaction;
-
-	// default constructor body
-	private void constroctorBody() {
-		pageFactoryWorker = driverEncapsulation.getPageFactoryWorker();
-		frameSupport = driverEncapsulation.getFrameSupport();
-		highLighter = driverEncapsulation.getHighlighter();
-		interaction = driverEncapsulation.getInteraction();
-	}
+	protected final Interaction interaction;
 
 	// switches to object
 	// this method can be overridden
@@ -102,67 +94,60 @@ public abstract class FunctionalPart extends TestObject implements
 	protected FunctionalPart(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {
 		super(browserWindow);
-		constroctorBody();
+		pageFactoryWorker = driverEncapsulation.getPageFactoryWorker();
+		frameSupport = driverEncapsulation.getFrameSupport();
+		highLighter = driverEncapsulation.getHighlighter();
+		interaction = driverEncapsulation.getInteraction();
 	}
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent)
 			throws ConcstructTestObjectException {
-		super(parent.nativeWindow);
-		constroctorBody();
+		this(parent.nativeWindow);
 		parent.addChild(this);
 	}
 
 	// constructor with specified integer frame value
 	protected FunctionalPart(SingleWindow browserWindow, Integer frameIndex)
 			throws ConcstructTestObjectException {
-		super(browserWindow);
-		constroctorBody();
+		this(browserWindow);
 		frameToSwitchOnInt = frameIndex;
 	}
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, Integer frameIndex)
 			throws ConcstructTestObjectException {
-		super(parent.nativeWindow);
-		constroctorBody();
+		this(parent.nativeWindow, frameIndex);
 		parent.addChild(this);
-		frameToSwitchOnInt = frameIndex;
 	}
 
 	// constructor with specified string frame value. pathToFrame can be
 	// relative to another frame
 	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame)
 			throws ConcstructTestObjectException {
-		super(browserWindow);
-		constroctorBody();
+		this(browserWindow);
 		frameToSwitchOnStr = pathToFrame;
 	}
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, String pathToFrame)
 			throws ConcstructTestObjectException {
-		super(parent.nativeWindow);
-		constroctorBody();
+		this(parent.nativeWindow, pathToFrame);
 		parent.addChild(this);
-		frameToSwitchOnStr = pathToFrame;
 	}
 
 	// constructor with specified WebElement frame value.
 	protected FunctionalPart(SingleWindow browserWindow, WebElement frameElement)
 			throws ConcstructTestObjectException {
-		super(browserWindow);
-		constroctorBody();
+		this(browserWindow);
 		frameToSwitchOnElem = frameElement;
 	}
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, WebElement frameElement)
 			throws ConcstructTestObjectException {
-		super(parent.nativeWindow);
-		constroctorBody();
+		this(parent.nativeWindow, frameElement);
 		parent.addChild(this);
-		frameToSwitchOnElem = frameElement;
 	}
 
 	// constructor with specified string frame value. pathToFrame can be
@@ -171,8 +156,7 @@ public abstract class FunctionalPart extends TestObject implements
 	// instantly
 	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame,
 			Long timeOutInSec) throws ConcstructTestObjectException {
-		super(browserWindow);
-		constroctorBody();
+		this(browserWindow);
 		nativeWindow.switchToMe();
 		frameSupport.switchTo(pathToFrame, timeOutInSec);
 		frameToSwitchOnStr = pathToFrame;
@@ -181,12 +165,8 @@ public abstract class FunctionalPart extends TestObject implements
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, String pathToFrame,
 			Long timeOutInSec) throws ConcstructTestObjectException {
-		super(parent.nativeWindow);
-		constroctorBody();
+		this(parent.nativeWindow, pathToFrame, timeOutInSec);
 		parent.addChild(this);
-		nativeWindow.switchToMe();
-		frameSupport.switchTo(pathToFrame, timeOutInSec);
-		frameToSwitchOnStr = pathToFrame;
 	}
 
 	// Methods that you see below can be used for loading of a page object
