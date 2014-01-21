@@ -80,7 +80,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	private void constructorBody(ESupportedDrivers supporteddriver,
 			Capabilities capabilities) {
 		if (supporteddriver.equals(ESupportedDrivers.REMOTE)) { 
-			// if there is RemoteWebDriver and capabilities that require service
+			// if there is RemoteWebDriver and capabilities that requires service
 			LocalRemoteServerInstance.startLocally();
 			setSystemProprtyByCapabilities(capabilities);
 		} else {
@@ -128,10 +128,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		}
 	}
 
-	protected void createWebDriver(Class<? extends WebDriver> driverClass) {
-		createWebDriver(driverClass, new Class<?>[] {}, new Object[] {});
-	}
-
 	protected void createWebDriver(Class<? extends WebDriver> driverClass,
 			Capabilities capabilities) {
 		createWebDriver(driverClass, new Class<?>[] { Capabilities.class },
@@ -139,34 +135,31 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	}
 
 	// constructors are below:
-	// creates instance by specified driver
-	public WebDriverEncapsulation(ESupportedDrivers supporteddriver) {
-		constructorBody(supporteddriver,
-				supporteddriver.getDefaultCapabilities());
-	}
-
-	// creates instance by specified driver and capabilities
+	/** creates instance by specified driver and capabilities */
 	public WebDriverEncapsulation(ESupportedDrivers supporteddriver,
 			Capabilities capabilities) {
 		constructorBody(supporteddriver, capabilities);
 	}
+	
+	/**  creates instance by specified driver */
+	public WebDriverEncapsulation(ESupportedDrivers supporteddriver) {
+		this(supporteddriver, supporteddriver.getDefaultCapabilities());
+	}
 
-	// creates instance by specified driver, capabilities and remote address
+	/**  creates instance by specified driver, capabilities and remote address */
 	public WebDriverEncapsulation(ESupportedDrivers supporteddriver,
 			Capabilities capabilities, URL remoteAddress) {
 		constructorBody(supporteddriver, capabilities, remoteAddress);
 	}
 
-	// creates instance by specified driver and remote address using default
-	// capabilities
+	/**  creates instance by specified driver and remote address using default capabilities */
 	public WebDriverEncapsulation(ESupportedDrivers supporteddriver,
 			URL remoteAddress) {
-		constructorBody(supporteddriver,
-				supporteddriver.getDefaultCapabilities(), remoteAddress);
+		this(supporteddriver, supporteddriver.getDefaultCapabilities(), remoteAddress);
 	}
 
-	// creates instance by specified driver and remote address using specified
-	// configuration
+	/**  creates instance by specified driver and remote address using specified
+	*configuration */
 	public WebDriverEncapsulation(Configuration configuration) {
 		this.configuration = configuration;
 		ESupportedDrivers supportedDriver = this.configuration
@@ -199,11 +192,12 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		}
 	}
 
-	// creates instance using externally initiated webdriver
+	/**  creates instance using externally initiated webdriver **/
 	public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver) {
 		actoinsAfterWebDriverCreation(externallyInitiatedWebDriver);
 	}
 
+	/**  creates instance using externally initiated webdriver **/
 	public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver,
 			Configuration configuration) {
 		this.configuration = configuration;
