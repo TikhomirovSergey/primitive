@@ -124,7 +124,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 			if (driver != null) {
 				driver.quit();
 			}
-			actoinsOnConstructFailure(e);
+			actoinsOnConstructFailure(new RuntimeException(e));
 		}
 	}
 
@@ -217,11 +217,11 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	// other methods:
 
 	public void destroy() {
-		unregisterAll();
 		if (firingDriver == null) {
 			return;
 		}
 		try {
+			unregisterAll();
 			firingDriver.quit();
 		} catch (WebDriverException e) // it may be already dead
 		{
@@ -337,11 +337,12 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	}
 
 	// if attempt to create a new web driver instance has been failed
-	protected void actoinsOnConstructFailure(Exception e) {
+	protected void actoinsOnConstructFailure(RuntimeException e) {
 		Log.error(
 				"Attempt to create a new web driver instance has been failed! "
 						+ e.getMessage(), e);
 		destroy();
+		throw e;
 
 	}
 
