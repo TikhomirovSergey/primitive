@@ -23,7 +23,7 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FluentWindowConditions;
 
 public final class WindowSwitcher implements IDestroyable {
-	final WebDriverEncapsulation driverEncapsulation;
+	private final WebDriverEncapsulation driverEncapsulation;
 	private final static List<WindowSwitcher> swithcerList = Collections
 			.synchronizedList(new ArrayList<WindowSwitcher>());
 	private WindowTimeOuts windowTimeOuts;
@@ -302,5 +302,13 @@ public final class WindowSwitcher implements IDestroyable {
 
 	boolean isAlive() {
 		return isAlive;
+	}
+
+	WebDriver getWrappedDriver() {
+		return driverEncapsulation.getWrappedDriver();
+	}
+	
+	WebDriverEncapsulation getWebDriverEncapsulation(){
+		return driverEncapsulation;
 	}
 }

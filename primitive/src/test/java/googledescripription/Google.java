@@ -6,6 +6,7 @@ import org.primitive.testobjects.Entity;
 import org.primitive.testobjects.ObjectFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.WindowSwitcher;
 
 //модель google как приложения
 public class Google extends Entity implements IPerformsSearch, IPerformsClickOnALink{
@@ -62,5 +63,9 @@ public class Google extends Entity implements IPerformsSearch, IPerformsClickOnA
 	{
 		nativeWindow.close();
 		destroy();
+	}
+	
+	public WindowSwitcher getSwitcher(){
+		return nativeSwitcher;
 	}
 }

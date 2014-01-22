@@ -59,11 +59,11 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 
 	private SingleWindow(WindowSwitcher switcher, String handle) {
 		this.nativeSwitcher = switcher;
-		this.driverEncapsulation = switcher.driverEncapsulation;
+		this.driverEncapsulation = switcher.getWebDriverEncapsulation();
 		this.objectWindow = handle;
 		this.windowTool = new WindowTool(driverEncapsulation.getWrappedDriver());
 		switcher.openedWindows.add(this);
-		windowEventListeners.addAll(driverEncapsulation.getServises()
+		windowEventListeners.addAll(InnerSPIServises.getBy(driverEncapsulation)
 				.getServices(IWindowListener.class));
 		windowListenerProxy.whenNewWindewIsAppeared(this);
 	}

@@ -57,6 +57,8 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 	
 	private UnhandledWindowChecker(WindowSwitcher switcher)	{
 		this.switcher = switcher;
+		InnerSPIServises servises = InnerSPIServises.getBy(this.switcher.getWebDriverEncapsulation());
+		addListeners(servises.getServices(IUnhandledWindowEventListener.class));
 	}
 	
 	public static UnhandledWindowChecker getChecker(WindowSwitcher switcher) {
@@ -78,8 +80,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 			throws UnclosedWindowException, UnhandledAlertException {
 		try {
 			switcher.switchTo(windowList.get(index));
-			unhandledWindowProxy.whenUnhandledWindowIsFound(switcher.driverEncapsulation.
-					getWrappedDriver());
+			unhandledWindowProxy.whenUnhandledWindowIsFound(switcher.getWrappedDriver());
 			switcher.close(windowList.get(index).toString());
 			return true;
 		} catch (UnclosedWindowException e) {
@@ -87,8 +88,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		} catch (UnhandledAlertException e) {
 			throw e;
 		} catch (NoSuchWindowException e) {
-			unhandledWindowProxy.whenUnhandledWindowIsAlreadyClosed(switcher.driverEncapsulation
-					.getWrappedDriver());
+			unhandledWindowProxy.whenUnhandledWindowIsAlreadyClosed(switcher.getWrappedDriver());
 			return true;
 		}
 	}
@@ -99,8 +99,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 			unhandledWindowProxy.whenUnhandledAlertIsFound(alert);
 			whatToDo.handle(alert);
 		} catch (NoAlertPresentException e1) {
-			unhandledWindowProxy.whenNoAlertThere(switcher.driverEncapsulation
-					.getWrappedDriver());
+			unhandledWindowProxy.whenNoAlertThere(switcher.getWrappedDriver());
 		}
 	}
 	
@@ -109,8 +108,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		try {
 			return attemptToCloseWindow(handleList, winIndex);
 		} catch (UnclosedWindowException | UnhandledAlertException e) {
-			unhandledWindowProxy.whenUnhandledWindowIsNotClosed(switcher.driverEncapsulation
-					.getWrappedDriver());
+			unhandledWindowProxy.whenUnhandledWindowIsNotClosed(switcher.getWrappedDriver());
 			attemptToHandleAlert(whatToDo);
 			return false;
 		}
@@ -158,5 +156,20 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 			}
 		}
 		return (unexpectedList);
+	}
+	
+	/**Adds a list of listeners **/
+	public void addListeners(List<IUnhandledWindowEventListener> listeners){
+		unhandledWindowEventListeners.addAll(listeners);
+	}
+	
+	/**Removes all listeners of defined list**/
+	public void removeListeners(List<IUnhandledWindowEventListener> listeners){
+		unhandledWindowEventListeners.retainAll(listeners);
+	}
+	
+	/**Removes all listeners*/
+	public void removeAllListeners() {
+		unhandledWindowEventListeners.clear();
 	}
 }

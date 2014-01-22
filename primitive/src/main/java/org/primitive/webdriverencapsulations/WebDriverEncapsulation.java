@@ -60,7 +60,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	private Interaction interaction;
 	private WebElementHighLighter elementHighLighter;
 	private final ConfigurableElements configurableElements = new ConfigurableElements();
-	private final InnerSPIServises servises = new InnerSPIServises();
 
 	// methods that support constructors functionality:
 	protected void setSystemProprtyByCapabilities(Capabilities capabilities) {
@@ -231,10 +230,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		return (windowTimeOuts);
 	}
 
-	InnerSPIServises getServises() {
-		return servises;
-	}
-
 	public Awaiting getAwaiting() {
 		return (awaiting);
 	}
@@ -280,6 +275,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	}
 
 	private void registerAll() {
+		InnerSPIServises servises = InnerSPIServises.getBy(this);
 		List<IExtendedWebDriverEventListener> listeners = servises
 				.getServices(IExtendedWebDriverEventListener.class);
 		for (IExtendedWebDriverEventListener listener : listeners) {
@@ -320,6 +316,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		configurableElements.addConfigurable(elementHighLighter);
 
 		// some services are implemented. They have their special logic
+		InnerSPIServises servises = InnerSPIServises.getBy(this);
 		configurableElements.addConfigurable((IConfigurable) servises
 				.getDafaultService(IWindowListener.class));
 		DefaultWebdriverListener webdriverListener = (DefaultWebdriverListener) servises
@@ -357,6 +354,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	}
 
 	private void unregisterAll() {
+		InnerSPIServises servises = InnerSPIServises.getBy(this);
 		List<IExtendedWebDriverEventListener> listeners = servises
 				.getServices(IExtendedWebDriverEventListener.class);
 		for (IExtendedWebDriverEventListener listener : listeners) {
