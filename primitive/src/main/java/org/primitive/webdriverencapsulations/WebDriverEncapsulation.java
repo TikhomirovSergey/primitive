@@ -210,6 +210,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	// other methods:
 
 	public void destroy() {
+		InnerSPIServises.removeBy(this);
 		if (firingDriver == null) {
 			return;
 		}
