@@ -37,4 +37,9 @@ public class DefaultUnhandledWindowEventListener implements
 		Log.debug("Browser window is already closed. Window handle is ");
 	}
 
+	@Override
+	public void whenNoAlertThere(WebDriver weddriver) {
+		Log.debug("There is not any alert! It disappeared...");		
+	}
+
 }

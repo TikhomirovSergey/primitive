@@ -1,6 +1,9 @@
 package org.primitive.webdriverencapsulations;
 
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +13,7 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.primitive.interfaces.IDestroyable;
-import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.eventlisteners.IUnhandledWindowEventListener;
 
 
 public final class UnhandledWindowChecker extends Thread implements IDestroyable {
@@ -19,8 +22,35 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 	 *
 	 */
 	private enum EActionsOnUnhandledAlert {
-		DISMISS, ACCEPT
+		DISMISS, ACCEPT;
+
+		private void handle(Alert alert) {
+			switch (this) {
+			case ACCEPT:
+				alert.accept();
+				break;
+			default:
+				alert.dismiss();
+			}
+		}
 	}
+	
+	// All listeners that were logged in
+	private final List<IUnhandledWindowEventListener> unhandledWindowEventListeners = new ArrayList<IUnhandledWindowEventListener>();
+	private final InvocationHandler unhandledInvocationHandler = new InvocationHandler() {
+		public Object invoke(Object proxy, Method method, Object[] args)
+				throws Throwable {
+			for (IUnhandledWindowEventListener eventListener : unhandledWindowEventListeners) {
+				method.invoke(eventListener, args);
+			}
+			return null;
+		}
+	};
+	// It listens to not handled window events
+	private final IUnhandledWindowEventListener unhandledWindowProxy = (IUnhandledWindowEventListener) Proxy
+			.newProxyInstance(IUnhandledWindowEventListener.class.getClassLoader(),
+					new Class[] {IUnhandledWindowEventListener.class },
+					unhandledInvocationHandler);	
 
 	private WindowSwitcher switcher = null;
 	private final static HashMap<WindowSwitcher, UnhandledWindowChecker> checkers = new HashMap<>();
@@ -29,151 +59,104 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		this.switcher = switcher;
 	}
 	
-	public static UnhandledWindowChecker getChecker(WindowSwitcher switcher)
-	{
+	public static UnhandledWindowChecker getChecker(WindowSwitcher switcher) {
 		UnhandledWindowChecker checker = checkers.get(switcher);
-		if (checker!=null){
-			return(checker);
+		if (checker != null) {
+			return (checker);
 		}
 		checker = new UnhandledWindowChecker(switcher);
 		checkers.put(switcher, checker);
-		return(checker);					
+		return (checker);
 	}
 	
-	public void destroy()
-	{
+	public void destroy() {
 		switcher = null;
-		checkers.remove(this);			
+		checkers.remove(this);
 	}
 	
-	private boolean attemptToCloseWindow(List<String> windowList, int index) throws UnclosedWindowException, UnhandledAlertException
-	{
-		try
-		{
+	private boolean attemptToCloseWindow(List<String> windowList, int index)
+			throws UnclosedWindowException, UnhandledAlertException {
+		try {
 			switcher.switchTo(windowList.get(index));
-			switcher.takeAPictureOfAWarning(windowList.get(index).toString(), "Unhandled browser window!");
-			Log.warning("There is an unhandled browser window!");
+			unhandledWindowProxy.whenUnhandledWindowIsFound(switcher.driverEncapsulation.
+					getWrappedDriver());
 			switcher.close(windowList.get(index).toString());
-		}
-		catch (UnclosedWindowException e)
-		{
+			return true;
+		} catch (UnclosedWindowException e) {
 			throw e;
-		}
-		catch (UnhandledAlertException e)
-		{
+		} catch (UnhandledAlertException e) {
 			throw e;
-		}		
-		catch (NoSuchWindowException e)
-		{
-			Log.debug("Browser window is already closed...");
+		} catch (NoSuchWindowException e) {
+			unhandledWindowProxy.whenUnhandledWindowIsAlreadyClosed(switcher.driverEncapsulation
+					.getWrappedDriver());
+			return true;
 		}
-		return true;
 	}
 	
-	private void attemptToHandleAlert(EActionsOnUnhandledAlert whatToDo)
-	{
-		try
-		{
+	private void attemptToHandleAlert(EActionsOnUnhandledAlert whatToDo) {
+		try {
 			Alert alert = switcher.getAlert();
-			String alertText = alert.getText();
-			if (whatToDo.equals(EActionsOnUnhandledAlert.DISMISS))
-			{
-				alert.dismiss();
-			}
-			if (whatToDo.equals(EActionsOnUnhandledAlert.ACCEPT))
-			{
-				alert.accept();
-			}
-			String msg = "Unhandled alert has been caught out!";
-			if (alertText!=null)
-			{
-				msg = msg + " Text: " + alertText;
-			}
-			Log.warning(msg);
+			unhandledWindowProxy.whenUnhandledAlertIsFound(alert);
+			whatToDo.handle(alert);
+		} catch (NoAlertPresentException e1) {
+			unhandledWindowProxy.whenNoAlertThere(switcher.driverEncapsulation
+					.getWrappedDriver());
 		}
-		catch (NoAlertPresentException e1)
-		{
-			Log.debug("There is not any alert", e1);
-		}			
 	}
 	
-	public synchronized void killUnexpectedWindows() throws UnhandledAlertException, UnclosedWindowException
-	{	 
-		List<String> WindowList = null;
-		WindowList = getUnexpectedWindows();	
-				
-		int i = WindowList.size()-1;
-		while (i>=0)
-		{
-			boolean closed = false;
-			try
-			{
-				closed = attemptToCloseWindow(WindowList, i);
-			}	
-			catch (UnclosedWindowException|UnhandledAlertException e)
-			{
-				closed = false;
-				Log.warning("Unhandled browser window hasn't been closed!");
-			}	
-				
-			if (!closed)
-			{
-				attemptToHandleAlert(EActionsOnUnhandledAlert.DISMISS);
+	private boolean isWindowClosed(int winIndex, List<String> handleList,
+			EActionsOnUnhandledAlert whatToDo) {
+		try {
+			return attemptToCloseWindow(handleList, winIndex);
+		} catch (UnclosedWindowException | UnhandledAlertException e) {
+			unhandledWindowProxy.whenUnhandledWindowIsNotClosed(switcher.driverEncapsulation
+					.getWrappedDriver());
+			attemptToHandleAlert(whatToDo);
+			return false;
+		}
+	}
+	/**kills windows and alerts that weren't handled**/ 
+	public synchronized void killUnexpectedWindows()
+			throws UnhandledAlertException, UnclosedWindowException {
+		List<String> windowList = null;
+		windowList = getUnexpectedWindows();
+
+		int i = windowList.size() - 1;
+		while (i >= 0) {
+			boolean closed = isWindowClosed(i, windowList, EActionsOnUnhandledAlert.DISMISS);
+			if (!closed) {
+				closed = isWindowClosed(i, windowList, EActionsOnUnhandledAlert.ACCEPT);
 			}
-				
-			if (!closed)
-			{
-				try
-				{
-					closed = attemptToCloseWindow(WindowList, i);
-				}	
-				catch (UnclosedWindowException|UnhandledAlertException e)
-				{
-					closed = false;
-				}
-			}
-					
-			if (!closed)
-			{
-				attemptToHandleAlert(EActionsOnUnhandledAlert.ACCEPT);
-			}
-					
-			if (!closed)
-			{
-				try
-				{
-					attemptToCloseWindow(WindowList, i);
-				}	
-				catch (UnclosedWindowException|UnhandledAlertException e)
-				{ 
+
+			if (!closed) {
+				try {
+					attemptToCloseWindow(windowList, i);
+				} catch (UnclosedWindowException | UnhandledAlertException e) {
 					throw e;
 				}
-			}					
-			i=i-1;
+			}
+			i = i - 1;
 		}
-	}	
+	}
 	
 	//getting of browser window handles that probably unexpected
-	private List <String> getUnexpectedWindows()
-	{
+	private List<String> getUnexpectedWindows() {
 		attemptToHandleAlert(EActionsOnUnhandledAlert.DISMISS);
-		List<String>  handles		 = new ArrayList<String>(switcher.getWindowHandles());
-		List <String> unexpectedList = new ArrayList<String>();				
-		//If there is only one browser window we ignore it as it will be handled soon
-		if (handles.size()<=1) // or it is already handled
+		List<String> handles = new ArrayList<String>(switcher.getWindowHandles());
+		List<String> unexpectedList = new ArrayList<String>();
+		// If there is only one browser window we ignore it as it will be
+		// handled soon
+		if (handles.size() <= 1) // or it is already handled
 		{
-			return(unexpectedList); //returns empty list of window handles
+			return (unexpectedList); // returns empty list of window handles
 		}
-		else
-		{	// If there is more than one browser window
-			for (String handle: handles)
-			{
-				if (SingleWindow.isInitiated(handle,switcher)==null)
-				{   // it trying to filter windows that unhandled 
-					unexpectedList.add(handle);
-				}
+		// If there is more than one browser window
+		for (String handle : handles) {
+			if (SingleWindow.isInitiated(handle, switcher) == null) { 
+				// it trying to filter windows that are unhandled
+				unexpectedList.add(handle);
 			}
-			return(unexpectedList);	
-		}		
+		}
+		return (unexpectedList);
 	}
 }

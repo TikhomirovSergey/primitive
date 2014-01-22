@@ -8,4 +8,5 @@ public interface IUnhandledWindowEventListener {
 	public void whenUnhandledAlertIsFound(Alert alert);	
 	public void whenUnhandledWindowIsNotClosed(WebDriver webdriver);
 	public void whenUnhandledWindowIsAlreadyClosed(WebDriver weddriver);
+	public void whenNoAlertThere(WebDriver weddriver);
 }
