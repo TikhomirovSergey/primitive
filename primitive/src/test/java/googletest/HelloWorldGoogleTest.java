@@ -14,6 +14,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import services.MockUnhandledWindowEventListener;
 import services.MockWebDriverEventListener2;
 import services.MockWebDriverListener;
 import services.MockWindowListener;
@@ -53,7 +54,7 @@ public class HelloWorldGoogleTest {
 			google.clickOn(1);
 			UnhandledWindowChecker.getChecker(google.getSwitcher())
 					.killUnexpectedWindows();
-			//Assert.assertEquals(true, MockUnhandledWindowEventListener.wasInvoked);
+			Assert.assertEquals(true, MockUnhandledWindowEventListener.wasInvoked);
 		} finally {
 			google.quit();
 		}

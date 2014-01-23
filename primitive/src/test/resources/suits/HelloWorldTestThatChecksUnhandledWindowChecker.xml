@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="This is just a test of basic functionality. It watches how UnhandledWindowChecker kills windows that exist but were not instantiated as objects of SingleWindow" parallel="false">
+   
+  <test name="Unhandled window test with remote chrome">
+    <parameter name="config" value="chrome_remote.json"/>
+    <classes>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+    
+  <test name="Unhandled window test with local chrome">
+    <classes>
+      <parameter name="config" value="chrome.json"/>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+  
+  <test name="Unhandled window test with remote firefox">
+    <classes>
+      <parameter name="config" value="firefox_remote.json"/>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+    
+  <test name="Unhandled window test with local firefox">
+    <classes>
+      <parameter name="config" value="firefox.json"/>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+  
+  <test name="Unhandled window test with remote internet explorer">
+    <classes>
+      <parameter name="config" value="internetexplorer_remote.json"/>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+    
+  <test name="Unhandled window test with local internet explorer">
+    <classes>
+      <parameter name="config" value="internetexplorer.json"/>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test --> 
+  
+  <test name="Unhandled window test with remote phantomjs">
+    <classes>
+      <parameter name="config" value="phantomjs_remote.json"/>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+  
+  <test name="Unhandled window test with local phantomjs">
+    <classes>
+      <parameter name="config" value="phantomjs.json"/>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+  
+  <test name="Unhandled window test with remote safari">
+    <classes>
+      <parameter name="config" value="safari_remote.json"/>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+    
+  <test name="Unhandled window test with local safari">
+    <classes>
+      <parameter name="config" value="safari.json"/>
+      <class name="googletest.HelloWorldGoogleTest"/>
+      <methods>
+              <include name="typeHelloWorldAndOpenTheFirstLink6" />
+      </methods>
+    </classes>
+  </test> <!-- Test -->
+  
+</suite> <!-- Suite -->
