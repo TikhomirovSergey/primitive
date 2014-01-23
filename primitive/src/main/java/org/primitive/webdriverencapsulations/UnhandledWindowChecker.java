@@ -139,21 +139,17 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 	
 	//getting of browser window handles that probably unexpected
 	private List<String> getUnexpectedWindows() {
-		List<String> handles = new ArrayList<String>(switcher.getWindowHandles());
-		List<String> unexpectedList = new ArrayList<String>();
-		// If there is only one browser window we ignore it as it will be
-		// handled soon
-		if (handles.size() <= 1) // or it is already handled
-		{
-			return (unexpectedList); // returns empty list of window handles
+		List<String> handles = new ArrayList<String>();
+		try { //attempt to get window handles
+			handles.addAll(switcher.getWindowHandles());
+		} catch (UnhandledAlertException e) { //if there is an unhandled alert we try to
+			EActionsOnUnhandledAlert.DISMISS.handle(switcher.getAlert());
+			handles.addAll(switcher.getWindowHandles()); // and do the same
 		}
-		// If there is more than one browser window
-		for (String handle : handles) {
-			if (SingleWindow.isInitiated(handle, switcher) == null) { 
-				// it trying to filter windows that are unhandled
-				unexpectedList.add(handle);
-			}
-		}
+
+		List<String> unexpectedList = new ArrayList<String>(handles);
+		unexpectedList.removeAll(switcher.getWindowReceptionist()
+				.getKnownHandles());
 		return (unexpectedList);
 	}
 	

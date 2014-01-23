@@ -25,10 +25,12 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.WindowTool;
  */
 public final class SingleWindow implements Navigation, IExtendedWindow,
 		IDestroyable {
-	private WindowSwitcher nativeSwitcher;
-	private String objectWindow;
-	private WebDriverEncapsulation driverEncapsulation;
-	private WindowTool windowTool;
+	private final WindowSwitcher nativeSwitcher;
+	private final String objectWindow;
+	private final WebDriverEncapsulation driverEncapsulation;
+	private final WindowTool windowTool;
+	private final WindowReceptionist receptionist;
+	
 
 	private final List<IWindowListener> windowEventListeners = new ArrayList<IWindowListener>();
 	private final InvocationHandler windowListenerInvocationHandler = new InvocationHandler() {
@@ -47,14 +49,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 					windowListenerInvocationHandler);
 
 	static SingleWindow isInitiated(String handle, WindowSwitcher switcher) {
-		for (SingleWindow objWindow : switcher.openedWindows) {
-			if ((handle.equals(objWindow.objectWindow))
-					& (objWindow.nativeSwitcher.equals(switcher))) {
-				return objWindow;
-			}
-		}
-		return (null);
-
+		return (SingleWindow) switcher.getWindowReceptionist().isInstantiated(handle);
 	}
 
 	private SingleWindow(WindowSwitcher switcher, String handle) {
@@ -62,7 +57,8 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 		this.driverEncapsulation = switcher.getWebDriverEncapsulation();
 		this.objectWindow = handle;
 		this.windowTool = new WindowTool(driverEncapsulation.getWrappedDriver());
-		switcher.openedWindows.add(this);
+		this.receptionist = nativeSwitcher.getWindowReceptionist();
+		receptionist.addKnownWindow(this);
 		windowEventListeners.addAll(InnerSPIServises.getBy(driverEncapsulation)
 				.getServices(IWindowListener.class));
 		windowListenerProxy.whenNewWindewIsAppeared(this);
@@ -131,7 +127,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 
 	@Override
 	public void destroy() {
-		nativeSwitcher.openedWindows.remove(this);
+		receptionist.removeWindow(this);
 		removeAllListeners();
 	}
 
