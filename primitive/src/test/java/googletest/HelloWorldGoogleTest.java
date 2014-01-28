@@ -115,5 +115,5 @@ public class HelloWorldGoogleTest {
 		Configuration configuration = Configuration
 				.get("src/test/resources/configs/" + config);
 		test3(Google.getNew(configuration));
-	} 
+	}
 }

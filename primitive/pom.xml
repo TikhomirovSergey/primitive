@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>primitive</groupId>
 	<artifactId>primitive</artifactId>
-	<version>0.1.4</version>
+	<version>0.1.5</version>
 	<properties>
 		<selenium.version>2.39.0</selenium.version>
 	</properties>
@@ -112,6 +112,7 @@
 						<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatClosesGoogle.xml</suiteXmlFile>
 						<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatChecksServiceProviders.xml</suiteXmlFile>
 						<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatChecksUnhandledWindowChecker.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatChecksNewWindowsByTheirURLandTitle.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>

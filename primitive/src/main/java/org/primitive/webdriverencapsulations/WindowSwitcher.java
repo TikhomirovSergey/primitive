@@ -122,9 +122,7 @@ public final class WindowSwitcher implements IDestroyable {
 
 	/**
 	 * returns handle of a new window that we have been waiting for specified
-	 * time new window should has defined title. We can specify title in this
-	 * way: title, title*, *title, *title*, ti*tle and another regular
-	 * expressions
+	 * time. new window should has defined title. We can specify title partially
 	 */
 	public synchronized String switchToNewWindow(long timeOutInSeconds, String title)
 			throws NoSuchWindowException {
@@ -146,8 +144,8 @@ public final class WindowSwitcher implements IDestroyable {
 
 	/**
 	 * returns handle of a new window that we have been waiting for time that
-	 * specified in configuration new window should has defined title. We can
-	 * specify title in this way: title, title*, *title, *title*
+	 * specified in configuration. new window should has defined title. We can
+	 * specify title partially
 	 */
 	public String switchToNewWindow(String title) throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
@@ -159,7 +157,7 @@ public final class WindowSwitcher implements IDestroyable {
 
 	/**
 	 * returns handle of a new window that we have been waiting for specified
-	 * time new window should has page that loads by specified URL
+	 * time. new window should has page that loads by specified URL. We can specify the beginning of required URL
 	 */
 	public synchronized String switchToNewWindow(long timeOutInSeconds, URL url)
 			throws NoSuchWindowException {
@@ -183,8 +181,8 @@ public final class WindowSwitcher implements IDestroyable {
 
 	/**
 	 * returns handle of a new window that we have been waiting for time that
-	 * specified in configuration new window should has page that loads by
-	 * specified URL
+	 * specified in configuration. new window should has page that loads by
+	 * specified URL. We can specify the beginning of required URL
 	 */
 	public String switchToNewWindow(URL url) throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();

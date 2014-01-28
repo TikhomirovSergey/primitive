@@ -1,5 +1,7 @@
 package googledescripription;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.internal.WrapsDriver;
 import org.primitive.configuration.Configuration;
 import org.primitive.testobjects.ConcstructTestObjectException;
 import org.primitive.testobjects.Entity;
@@ -9,7 +11,7 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
 
 //модель google как приложения
-public class Google extends Entity implements IPerformsSearch, IPerformsClickOnALink{
+public class Google extends Entity implements IPerformsSearch, IPerformsClickOnALink, WrapsDriver{
 	
 	private final static String url = "http://www.google.com/";
 	private SearchBar searchBar;
@@ -67,5 +69,10 @@ public class Google extends Entity implements IPerformsSearch, IPerformsClickOnA
 	
 	public WindowSwitcher getSwitcher(){
 		return nativeSwitcher;
+	}
+
+	@Override
+	public WebDriver getWrappedDriver() {
+		return driverEncapsulation.getWrappedDriver();
 	}
 }

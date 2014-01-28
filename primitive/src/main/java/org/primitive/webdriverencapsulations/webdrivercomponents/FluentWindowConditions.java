@@ -3,8 +3,6 @@ package org.primitive.webdriverencapsulations.webdrivercomponents;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -14,14 +12,14 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
  * @author s.tihomirov Fluent waiting for some window conditions
  */
 public final class FluentWindowConditions extends WebdriverComponent{
-
+	
 	public FluentWindowConditions(WebDriver driver) {
 		super(driver);
 	}
 
-	// is here new browser window?
-	// returns handle of a new browser window that we have been waiting for
-	// specified time
+	/*** is here new browser window?
+	* returns handle of a new browser window that we have been waiting for
+	* specified time*/
 	private String getNewHandle(final WebDriver from,
 			final Set<String> oldHandles) {
 		String newHandle = null;
@@ -35,15 +33,12 @@ public final class FluentWindowConditions extends WebdriverComponent{
 
 	}
 
-	// is here new browser window?
-	// returns handle of a new browser window that we have been waiting for
-	// specified time
-	// new browser window should have defined title. We can specify title in
-	// this way:
-	// title, title*, *title, *title*,tit*le and etc
+	/*** is here new browser window?
+	* returns handle of a new browser window that we have been waiting for
+	* specified time
+	* new browser window should have defined title. We can specify part of a title**/
 	private String getNewHandle(final WebDriver from,
 			final Set<String> oldHandles, String title) {
-		Pattern titlePattern = Pattern.compile(title);
 		String newHandle = null;
 		Set<String> newHandles = from.getWindowHandles();
 		if (newHandles.size() > oldHandles.size()) {
@@ -51,8 +46,7 @@ public final class FluentWindowConditions extends WebdriverComponent{
 			newHandles.removeAll(oldHandles);
 			for (String handle : newHandles) {
 				from.switchTo().window(handle);
-				Matcher titleMatcher = titlePattern.matcher(from.getTitle());
-				if (titleMatcher.matches()) {
+				if (from.getTitle().contains(title)) {
 					newHandle = handle;
 					return newHandle;
 				}
@@ -61,10 +55,11 @@ public final class FluentWindowConditions extends WebdriverComponent{
 		return newHandle;
 	}
 
-	// is here new browser window?
-	// returns handle of a new browser window that we have been waiting for
-	// specified time
-	// new browser window should have page that loads by specified URL
+	/***is here new browser window?
+	* returns handle of a new browser window that we have been waiting for
+	* specified time
+	* new browser window should have page that is loaded by specified URL
+	* URL can be defined partially (begins with)**/
 	private String getNewHandle(final WebDriver from,
 			final Set<String> oldHandles, URL url) {
 		String newHandle = null;
@@ -73,8 +68,7 @@ public final class FluentWindowConditions extends WebdriverComponent{
 			newHandles.removeAll(oldHandles);
 			for (String handle : newHandles) {
 				from.switchTo().window(handle);
-				
-				if (from.getCurrentUrl().equals(url.toString())) {
+				if (from.getCurrentUrl().startsWith(url.toString())) {
 					newHandle = handle;
 					return newHandle;
 				}
