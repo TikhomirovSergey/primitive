@@ -1,5 +1,8 @@
 package org.primitive.configuration;
 
+import io.selendroid.SelendroidCapabilities;
+import io.selendroid.SelendroidDriver;
+
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -22,7 +25,8 @@ public enum ESupportedDrivers {
 	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null), 
 	OPERA(DesiredCapabilities.opera(), OperaDriver.class, null),
 	HTMLUNIT(DesiredCapabilities.htmlUnitWithJs(), HtmlUnitDriver.class, null), 
-	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE);
+	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE),
+	ANDROID(new SelendroidCapabilities(), SelendroidDriver.class, null);
 	
 	private Capabilities capabilities;
 	private Class<? extends WebDriver> driverClazz;
