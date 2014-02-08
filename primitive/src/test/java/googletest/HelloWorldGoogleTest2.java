@@ -6,6 +6,7 @@ import googledescripription.Google;
 import mocklistener.MockTestListener;
 
 import org.primitive.configuration.Configuration;
+import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FluentWindowConditions;
 import org.testng.annotations.Listeners;
@@ -46,6 +47,7 @@ public class HelloWorldGoogleTest2 {
         private final HowToGetANewWindow howToGet;
         private Exception exception;
         private AnyPage anyPage;
+        private boolean isRunning = false;
         
 		private WaitingThread(Google google, HowToGetANewWindow howToGet){
 			this.google = google;
@@ -54,12 +56,16 @@ public class HelloWorldGoogleTest2 {
 		
 		@Override
 		public void run(){
+			isRunning = true;
 			try	{
 				anyPage = howToGet.get(google);
 			}
 			catch (Exception e){
 				exception = e;
 				throw e;
+			}
+			finally{
+				isRunning = false;
 			}
 		}
 	}
@@ -69,7 +75,7 @@ public class HelloWorldGoogleTest2 {
 		waitingThread.start();
 		Thread.sleep(1000);
 		google.clickOn(1);
-		Thread.sleep(4000);
+		while (waitingThread.isRunning){Log.message("Waiting for...");}
 		if (waitingThread.exception != null) {
 			throw new RuntimeException(waitingThread.exception);
 		}
