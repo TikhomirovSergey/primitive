@@ -2,11 +2,10 @@ package org.primitive.testobjects;
 
 import java.lang.reflect.Method;
 
+import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.primitive.testobjects.TestObject.Interceptor;
-
-public final class InteractiveInterceptor extends Interceptor {
+public final class InteractiveInterceptor implements MethodInterceptor {
 
 	public InteractiveInterceptor() {
 		super();
@@ -22,7 +21,7 @@ public final class InteractiveInterceptor extends Interceptor {
 		try {
 			return methodProxy.invokeSuper(page, args);
 		} catch (Exception e) {
-			return handleException((FunctionalPart) page, method, methodProxy,
+			return ((FunctionalPart) page).exceptionHandler.handleException(page, method, methodProxy,
 					args, e);
 		}
 	}
