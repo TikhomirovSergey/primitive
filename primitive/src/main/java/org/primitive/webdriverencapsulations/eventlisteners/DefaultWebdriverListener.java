@@ -159,17 +159,33 @@ public final class DefaultWebdriverListener implements
 				+ " time unit is " + timeUnit.toString());
 	}
 
+	@SuppressWarnings("finally")
+	private String addToDescription(WebElement element, String attribute,
+			String description) {
+		try {
+			if (element.getAttribute(attribute) != null) {
+				description += " " + attribute + ": "
+						+ String.valueOf(element.getAttribute(attribute));
+			}
+		} catch (Exception e) {
+			Log.debug("Location is not supported by attribute '" + attribute
+					+ "'...");
+		} finally {
+			return description;
+		}
+	}
+	
 	private String elementDescription(WebElement element) {
 		String description = "";
-		if (element != null) {
-			description += "tag:" + String.valueOf(element.getTagName());
-			if (element.getAttribute("id") != null) {
-				description += " id: " 	+ String.valueOf(element.getAttribute("id"));
-			} else if (element.getAttribute("name") != null) {
-				description += " name: " + String.valueOf(element.getAttribute("name"));
-			}
-			description += " ('" + element.getText() + "')";
+		if (element == null) {
+			return description;			
 		}
+		
+		description += "tag:" + String.valueOf(element.getTagName());
+		description = addToDescription(element, "id", description);
+		description = addToDescription(element, "name", description);
+		description += " ('" + element.getText() + "')";
+		
 		return description;
 	}
 
