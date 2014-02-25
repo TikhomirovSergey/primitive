@@ -18,7 +18,7 @@ public final class DefaultWebdriverListener implements
 	@Override
 	public void afterChangeValueOf(WebElement arg0, WebDriver arg1) {
 		highLighter.highlightAsInfo(arg1, arg0,
-				"Element with value that is changed: "
+				"State after element value was changed. "
 						+ elementDescription(arg0));
 	}
 
@@ -30,7 +30,7 @@ public final class DefaultWebdriverListener implements
 	@Override
 	public void afterFindBy(By arg0, WebElement arg1, WebDriver arg2) {
 		Log.debug("Searching for web element has been finished. Locator is "
-				+ arg0.toString() + ". Element is:" + elementDescription(arg1));
+				+ arg0.toString() + ". " + elementDescription(arg1));
 	}
 
 	@Override
@@ -56,14 +56,14 @@ public final class DefaultWebdriverListener implements
 	@Override
 	public void beforeChangeValueOf(WebElement arg0, WebDriver arg1) {
 		highLighter.highlightAsInfo(arg1, arg0,
-				"Element with value that will be changed: "
+				"State before element value will be changed. "
 						+ elementDescription(arg0));
 	}
 
 	@Override
 	public void beforeClickOn(WebElement arg0, WebDriver arg1) {
 		highLighter.highlightAsInfo(arg1, arg0,
-				"Click will be performed on this element: "
+				"State before element will be clicked on. "
 						+ elementDescription(arg0));
 	}
 
@@ -104,7 +104,7 @@ public final class DefaultWebdriverListener implements
 	@Override
 	public void beforeSubmit(WebDriver driver, WebElement element) {
 		highLighter.highlightAsInfo(driver, element,
-				"Element that will perform submit: "
+				"State before submit will be performed by element: "
 						+ elementDescription(element));
 	}
 
@@ -159,20 +159,22 @@ public final class DefaultWebdriverListener implements
 				+ " time unit is " + timeUnit.toString());
 	}
 
-	@SuppressWarnings("finally")
 	private String addToDescription(WebElement element, String attribute,
 			String description) {
 		try {
-			if (element.getAttribute(attribute) != null) {
-				description += " " + attribute + ": "
-						+ String.valueOf(element.getAttribute(attribute));
+			if (element.getAttribute(attribute) == null) {
+				return description;
 			}
+			if (element.getAttribute(attribute).equals("")) {
+				return description;
+			}
+			description += " " + attribute + ": "
+					+ String.valueOf(element.getAttribute(attribute));
 		} catch (Exception e) {
 			Log.debug("Location is not supported by attribute '" + attribute
 					+ "'...");
-		} finally {
-			return description;
 		}
+		return description;
 	}
 	
 	private String elementDescription(WebElement element) {
@@ -181,10 +183,17 @@ public final class DefaultWebdriverListener implements
 			return description;			
 		}
 		
-		description += "tag:" + String.valueOf(element.getTagName());
+		if (!String.valueOf(element.getTagName()).equals("")){
+			description += "tag:" + String.valueOf(element.getTagName());
+		}
 		description = addToDescription(element, "id", description);
 		description = addToDescription(element, "name", description);
-		description += " ('" + element.getText() + "')";
+		if (!element.getText().equals("")){
+			description += " ('" + element.getText() + "')";
+		}
+		if (!description.equals("")) {
+			description = "Element is: " + description;
+		}
 		
 		return description;
 	}

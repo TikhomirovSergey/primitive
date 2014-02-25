@@ -3,6 +3,7 @@ package org.primitive.webdriverencapsulations.ui;
 import java.awt.Color;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -60,19 +61,29 @@ public class WebElementHighLighter implements IConfigurable,
 
 	private void highlightelement(WebDriver driver, WebElement webElement,
 			Color color, eAvailableLevels LogLevel, String Comment) {
-		String originalStyle = getOriginalStyle(webElement);
-		setNewColor(
-				(JavascriptExecutor) driver,
-				webElement,
-				"4px solid rgb(" + Integer.toString(color.getRed()) + ","
-						+ Integer.toString(color.getGreen()) + ","
-						+ Integer.toString(color.getBlue()) + ")");
-		if (toDoScreenShots) {
-			Photographer.takeAPictureForLog(driver, LogLevel, Comment);
-		} else {
-			Log.log(LogLevel, Comment);
+		try {
+			String originalStyle = getOriginalStyle(webElement);
+			setNewColor(
+					(JavascriptExecutor) driver,
+					webElement,
+					"4px solid rgb(" + Integer.toString(color.getRed()) + ","
+							+ Integer.toString(color.getGreen()) + ","
+							+ Integer.toString(color.getBlue()) + ")");
+			if (toDoScreenShots) {
+				Photographer.takeAPictureForLog(driver, LogLevel, Comment);
+			} else {
+				Log.log(LogLevel, Comment);
+			}
+			setStyle((JavascriptExecutor) driver, webElement, originalStyle);
+		} //There is a problem with mobile applications. Not all locators are supported
+		catch (NoSuchElementException e){
+			Log.debug("Location by CSS is not supported...");
+			if (toDoScreenShots) {
+				Photographer.takeAPictureForLog(driver, LogLevel, Comment);
+			} else {
+				Log.log(LogLevel, Comment);
+			}
 		}
-		setStyle((JavascriptExecutor) driver, webElement, originalStyle);
 	}
 
 	@Override
