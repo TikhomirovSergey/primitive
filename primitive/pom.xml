@@ -106,13 +106,13 @@
 				<inherited>true</inherited>
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>src/test/resources/suits/HelloWorldTestWithoutConfig.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/HelloWorldTestWithConfig.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/HelloWorldTestWithExternalWebdriver.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatClosesGoogle.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatChecksServiceProviders.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatChecksUnhandledWindowChecker.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/HelloWorldTestThatChecksNewWindowsByTheirURLandTitle.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestWithoutConfig.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestWithConfig.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestWithExternalWebdriver.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatClosesGoogle.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatChecksServiceProviders.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatChecksUnhandledWindowChecker.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatChecksNewWindowsByTheirURLandTitle.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>

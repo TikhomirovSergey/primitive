@@ -2,7 +2,7 @@
 <suite name="Suite with externally initiated webdriver" parallel="false">
   <test name="Hello world Google test">
     <classes>
-      <class name="googletest.HelloWorldGoogleTest"/>
+      <class name="googletest.desctop.HelloWorldGoogleTest"/>
       <methods>
       	<include name="typeHelloWorldAndOpenTheFirstLink3" />
       </methods>

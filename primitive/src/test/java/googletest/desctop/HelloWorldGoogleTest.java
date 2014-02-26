@@ -1,4 +1,4 @@
-package googletest;
+package googletest.desctop;
 
 import junit.framework.Assert;
 import googledescripription.AnyPage;
@@ -69,14 +69,14 @@ public class HelloWorldGoogleTest {
 	@Parameters(value = { "config" })
 	public void typeHelloWorldAndOpenTheFirstLink2(String config) {
 		Configuration configuration = Configuration
-				.get("src/test/resources/configs/" + config);
+				.get("src/test/resources/configs/desctop/" + config);
 		test(Google.getNew(configuration));
 	}
 
 	@Test(description = "This is just a test of basic functionality with a webdriver instance that was created externally")
 	public void typeHelloWorldAndOpenTheFirstLink3() {
 		Configuration configuration = Configuration
-				.get("src/test/resources/configs/firefox.json");
+				.get("src/test/resources/configs/desctop/firefox.json");
 		WebDriverEncapsulation encapsulation = new WebDriverEncapsulation(
 				new FirefoxDriver(), configuration);
 		test(Google.getNew(encapsulation));
@@ -87,7 +87,7 @@ public class HelloWorldGoogleTest {
 	public void typeHelloWorldAndOpenTheFirstLink4(
 			@Optional("chrome.json") String config) {
 		Configuration configuration = Configuration
-				.get("src/test/resources/configs/" + config);
+				.get("src/test/resources/configs/desctop/" + config);
 		test2(Google.getNew(configuration));
 	}
 
@@ -113,7 +113,7 @@ public class HelloWorldGoogleTest {
 	public void typeHelloWorldAndOpenTheFirstLink6(
 			@Optional("chrome.json") String config) {
 		Configuration configuration = Configuration
-				.get("src/test/resources/configs/" + config);
+				.get("src/test/resources/configs/desctop/" + config);
 		test3(Google.getNew(configuration));
 	}
 }

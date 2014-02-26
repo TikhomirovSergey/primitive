@@ -4,7 +4,7 @@
   <test name="Hello world Google test with remote chrome">
     <parameter name="config" value="chrome_remote.json"/>
     <classes>
-      <class name="googletest.HelloWorldGoogleTest"/>
+      <class name="googletest.desctop.HelloWorldGoogleTest"/>
       <methods>
               <include name="typeHelloWorldAndOpenTheFirstLink2" />
       </methods>
@@ -14,7 +14,7 @@
   <test name="Hello world Google test with local chrome">
     <classes>
       <parameter name="config" value="chrome.json"/>
-      <class name="googletest.HelloWorldGoogleTest"/>
+      <class name="googletest.desctop.HelloWorldGoogleTest"/>
       <methods>
               <include name="typeHelloWorldAndOpenTheFirstLink2" />
       </methods>
@@ -24,7 +24,7 @@
   <test name="Hello world Google test with remote firefox">
     <classes>
       <parameter name="config" value="firefox_remote.json"/>
-      <class name="googletest.HelloWorldGoogleTest"/>
+      <class name="googletest.desctop.HelloWorldGoogleTest"/>
       <methods>
               <include name="typeHelloWorldAndOpenTheFirstLink2" />
       </methods>
@@ -34,7 +34,7 @@
   <test name="Hello world Google test with local firefox">
     <classes>
       <parameter name="config" value="firefox.json"/>
-      <class name="googletest.HelloWorldGoogleTest"/>
+      <class name="googletest.desctop.HelloWorldGoogleTest"/>
       <methods>
               <include name="typeHelloWorldAndOpenTheFirstLink2" />
       </methods>
@@ -44,7 +44,7 @@
   <test name="Hello world Google test with remote phantomjs">
     <classes>
       <parameter name="config" value="phantomjs_remote.json"/>
-      <class name="googletest.HelloWorldGoogleTest"/>
+      <class name="googletest.desctop.HelloWorldGoogleTest"/>
       <methods>
               <include name="typeHelloWorldAndOpenTheFirstLink2" />
       </methods>
@@ -54,7 +54,7 @@
   <test name="Hello world Google test with local phantomjs">
     <classes>
       <parameter name="config" value="phantomjs.json"/>
-      <class name="googletest.HelloWorldGoogleTest"/>
+      <class name="googletest.desctop.HelloWorldGoogleTest"/>
       <methods>
               <include name="typeHelloWorldAndOpenTheFirstLink2" />
       </methods>
@@ -64,7 +64,7 @@
   <test name="Hello world Google test with remote safari">
     <classes>
       <parameter name="config" value="safari_remote.json"/>
-      <class name="googletest.HelloWorldGoogleTest"/>
+      <class name="googletest.desctop.HelloWorldGoogleTest"/>
       <methods>
               <include name="typeHelloWorldAndOpenTheFirstLink2" />
       </methods>
@@ -74,7 +74,7 @@
   <test name="Hello world Google test with local safari">
     <classes>
       <parameter name="config" value="safari.json"/>
-      <class name="googletest.HelloWorldGoogleTest"/>
+      <class name="googletest.desctop.HelloWorldGoogleTest"/>
       <methods>
               <include name="typeHelloWorldAndOpenTheFirstLink2" />
       </methods>

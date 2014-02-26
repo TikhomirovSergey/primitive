@@ -1,4 +1,4 @@
-package googletest;
+package googletest.desctop;
 import java.net.URL;
 
 import googledescripription.AnyPage;
@@ -87,7 +87,7 @@ public class HelloWorldGoogleTest2 {
 	public void typeHelloWorldAndOpenTheFirstLink(
 			@Optional("chrome.json") String config) throws Exception {
 		Configuration configuration = Configuration
-				.get("src/test/resources/configs/" + config);
+				.get("src/test/resources/configs/desctop/" + config);
 		Google google = Google.getNew(configuration);
 		try {
 			google.performSearch("Hello world Wikipedia");
