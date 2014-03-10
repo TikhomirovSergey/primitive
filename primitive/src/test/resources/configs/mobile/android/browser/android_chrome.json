@@ -19,7 +19,7 @@
 	      },  
 	      "version": {
 	          "type":"STRING",
-	          "value":"4.2"         
+	          "value":"4.3"         
 	      },    
 	      "platform": {
 	          "type":"STRING",
@@ -42,7 +42,7 @@
 	      },
 	      "pageLoadTimeout":{
 	          "type":"LONG",
-	          "value":"20"     
+	          "value":"60"     
 	      }, 
 	      "setScriptTimeout":{
 	          "type":"LONG",
