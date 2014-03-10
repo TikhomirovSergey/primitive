@@ -16,11 +16,11 @@
 	      "device":{
 	          "type":"STRING",
 	          "value":"Android"    
-	      },      
+	      },  
 	      "version": {
 	          "type":"STRING",
-	          "value":"4.2" 
-	      },
+	          "value":"4.2"         
+	      },    
 	      "platform": {
 	          "type":"STRING",
 	          "value":"WINDOWS"         
