@@ -15,7 +15,7 @@
 	  {
 	      "device":{
 	          "type":"STRING",
-	          "value":"Android"    
+	          "value":"Selendroid"    
 	      },  
 	      "version": {
 	          "type":"STRING",

@@ -13,10 +13,9 @@ public class HelloWorldGoogleMobileTestTest {
 	
 	private void test(Google google) throws Exception {
 		try {
-			google.performSearch("http://docs.seleniumhq.org/");
+			google.performSearch("Hello world Wikipedia");
 			google.clickOn(1);
 			AnyPage anyPage = google.getFromWinow(AnyPage.class, 1);
-			Thread.sleep(5000);
 			anyPage.close();
 			google.clickOn(1);
 			anyPage = google.getFromWinow(AnyPage.class, 1);
@@ -31,6 +30,25 @@ public class HelloWorldGoogleMobileTestTest {
 		test(Google.getNew(configuration));	
 	}
 
+	/**
+	 * JSON setting see here: /primitive/src/test/resources/configs/mobile/android/browser/android_chrome.json
+	 * Appium settings: - IP Address = 127.0.0.1
+	 * 				   - Port = 4723
+	 * 				   - Use remote server = yes
+	 * 				   - Launch AVD = {avd name}
+	 * 				   - Device ready timeout = 40 sec
+	 * 				   - Perform full reset = yes
+	 * 
+	 * AVD parameters:
+	 * 				   - Device = Galaxy Nexus 4'65
+	 * 				   - Target = Android 4.3 API Level 18
+	 * 				   - CPU = ARM
+	 * 				   - Skin = WXGA800
+	 * 				   - RAM = 1024M
+	 * 				   - VM Heap = 32
+	 * 				   - Internal Starage = 200
+	 * 				   - Use Host GPU = true
+	 */
 	@Test(description = "This is just a test of basic functionality on Android Chrome using Appium")
 	@Parameters(value = {"mobileOS",  "config" })
 	public void typeHelloWorldAndOpenTheFirstLinkOnAndroidChrome(
