@@ -1,0 +1,60 @@
+  {
+	  "webdriver":
+	  {
+	      "driverName":{
+	          "type":"STRING",
+	          "value":"remote"
+	      },
+		      "remoteAdress":{
+	          "type":"STRING",
+	          "value":"http://127.0.0.1:4723/wd/hub"
+      	  }
+	  },
+	  
+	  "DesiredCapabilities":
+	  {
+	      "device":{
+	          "type":"STRING",
+	          "value":"Android"    
+	      },  
+	      "version": {
+	          "type":"STRING",
+	          "value":"4.3"         
+	      },    
+	      "platform": {
+	          "type":"STRING",
+	          "value":"WINDOWS"         
+	      },
+	      "app":{
+	          "type":"STRING",
+	          "value":"src/test/resources/binaries/mobile_test_apps/ContactManager.apk"           
+	      },	      
+	      "app-package": {
+	          "type":"STRING",
+	          "value":"com.example.android.contactmanager"         
+	      },    
+	      "app-activity": {
+	          "type":"STRING",
+	          "value":".ContactManager"         
+	      },	      
+	  },
+	  "webDriverTimeOuts":
+	  {
+	      "timeUnit":{
+	          "type":"STRING",
+	          "value":"SECONDS"           
+	      },
+	      "implicitlyWait":{
+	          "type":"LONG",
+	          "value":"10"     
+	      },
+	      "pageLoadTimeout":{
+	          "type":"LONG",
+	          "value":"10"     
+	      }, 
+	      "setScriptTimeout":{
+	          "type":"LONG",
+	          "value":"10"     
+	      }       
+	  }
+  }
