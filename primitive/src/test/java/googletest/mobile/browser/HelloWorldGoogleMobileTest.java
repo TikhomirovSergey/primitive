@@ -48,6 +48,7 @@ public class HelloWorldGoogleMobileTest {
 	 * 				   - VM Heap = 32
 	 * 				   - Internal Starage = 200
 	 * 				   - Use Host GPU = true
+	 * Path to chromedriver.exe should be set to PATH environment variable 
 	 */
 	@Test(description = "This is just a test of basic functionality on Android Chrome using Appium")
 	@Parameters(value = {"mobileOS",  "config" })

@@ -15,7 +15,7 @@ public class TestExamples {
 	public void testOnAndroidContactManagerApp(
 			@Optional("androidApp.json") String config) {
 		Configuration configuration = Configuration
-				.get("src/test/resources/configs/desctop/" + config);
+				.get("src/test/resources/configs/desctop/mobile/android/application/" + config);
 		MobileApplicationClient client = MobileApplicationClient
 				.getNew(configuration);
 
