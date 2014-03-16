@@ -15,11 +15,11 @@
 	  {
 	      "device":{
 	          "type":"STRING",
-	          "value":"Android"    
+	          "value":"Selendroid"    
 	      },  
 	      "version": {
 	          "type":"STRING",
-	          "value":"4.3"         
+	          "value":"4.2"         
 	      },    
 	      "platform": {
 	          "type":"STRING",
@@ -27,11 +27,11 @@
 	      },	      
 	      "app-package": {
 	          "type":"STRING",
-	          "value":"com.example.android.contactmanager"         
+	          "value":"com.example.android.apis"         
 	      },    
 	      "app-activity": {
 	          "type":"STRING",
-	          "value":".ContactManager"         
+	          "value":".ApiDemos"         
 	      },	      
 	  },
 	  "webDriverTimeOuts":
