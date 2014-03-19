@@ -19,8 +19,8 @@ public class DefaultWindowListener implements IWindowListener, IConfigurable{
 		super();
 	}
 	
-	private void postWindowTitleAndUrl(IExtendedWindow window)	{
-		Log.message("Title is " + window.getTitle() + " URL is " + window.getCurrentUrl());
+	private void postWindowUrl(IExtendedWindow window)	{
+		Log.message("URL is " + window.getCurrentUrl());
 	}
 
 	@Override
@@ -34,74 +34,74 @@ public class DefaultWindowListener implements IWindowListener, IConfigurable{
 
 	@Override
 	public void beforeWindowIsClosed(IExtendedWindow window) {
-		Log.message("Attempt to close browser window...");
-		postWindowTitleAndUrl(window);
+		Log.message("Attempt to close window...");
+		postWindowUrl(window);
 	}
 
 	@Override
 	public void whenWindowIsClosed(IExtendedWindow window) {
-		Log.message("Not any problem has occurred when browser window was closed...");					
+		Log.message("Not any problem has occurred when window was closed...");					
 	}
 
 	@Override
 	public void beforeWindowIsSwitchedOn(IExtendedWindow window) {
-		Log.debug("Attempt to switch browser window on by handle "+ window.getWindowHandle());
+		Log.debug("Attempt to switch window on by handle "+ window.getWindowHandle());
 	}
 
 	@Override
 	public void whenWindowIsSwitchedOn(IExtendedWindow window) {
-		postWindowTitleAndUrl(window);			
+		postWindowUrl(window);			
 	}
 
 	@Override
 	public void beforeWindowIsMaximized(IExtendedWindow window) {
-		Log.message("Attempt to maximize browser window");	
-		postWindowTitleAndUrl(window);
+		Log.message("Attempt to maximize window");	
+		postWindowUrl(window);
 	}
 
 	@Override
 	public void whenWindowIsMaximized(IExtendedWindow window) {
-		Log.message("Browser window has been maximized");			
+		Log.message("Window has been maximized");			
 	}
 
 	@Override
 	public void beforeWindowIsRefreshed(IExtendedWindow window) {
-		Log.message("Attempt to refresh browser window");	
-		postWindowTitleAndUrl(window);
+		Log.message("Attempt to refresh window");	
+		postWindowUrl(window);
 	}
 
 	@Override
 	public void whenWindowIsRefreshed(IExtendedWindow window) {
-		Log.message("Current browser window has been refreshed");
-		postWindowTitleAndUrl(window);		
+		Log.message("Current window has been refreshed");
+		postWindowUrl(window);		
 	}
 
 	@Override
 	public void beforeWindowIsMoved(IExtendedWindow window, Point point) {
 		Log.message("Attempt to change window position. X " + Integer.toString(point.getX()) + 
 				" Y " + Integer.toString(point.getY()));	
-		postWindowTitleAndUrl(window);
+		postWindowUrl(window);
 	}
 
 	@Override
 	public void whenWindowIsMoved(IExtendedWindow window, Point point) {
 		Log.message("Window position has been changed to X " + Integer.toString(point.getX()) + 
 				" Y " + Integer.toString(point.getY()));
-		postWindowTitleAndUrl(window);
+		postWindowUrl(window);
 	}
 
 	@Override
 	public void beforeWindowIsResized(IExtendedWindow window, Dimension dimension) {
 		Log.message("Attempt to change window size. New height is " + Integer.toString(dimension.getHeight()) + 
 				" new width is " + Integer.toString(dimension.getWidth()));
-		postWindowTitleAndUrl(window);
+		postWindowUrl(window);
 	}
 
 	@Override
 	public void whenWindowIsResized(IExtendedWindow window, Dimension dimension) {
 		Log.message("Window size has been changed! New height is " + Integer.toString(dimension.getHeight()) + 
 				" new width is " + Integer.toString(dimension.getWidth()));
-		postWindowTitleAndUrl(window);			
+		postWindowUrl(window);			
 	}
 
 	@Override
