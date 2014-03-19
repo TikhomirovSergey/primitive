@@ -12,7 +12,7 @@ import apps.app.android.ApiDemos;
 public class TestExamples {
 	
 	/**
-	 * Original see here: @link{https://github.com/appium/appium/blob/master/sample-code/examples/java/testng/src/test/java/com/saucelabs/appium/AndroidTest.java}
+	 * For comparison see here: @link{https://github.com/appium/appium/blob/master/sample-code/examples/java/testng/src/test/java/com/saucelabs/appium/AndroidTest.java}
 	 */
 	
 	@Test
@@ -26,10 +26,10 @@ public class TestExamples {
 
 		try {
 			ApiDemos apiDemos = client.getPart(ApiDemos.class);
-	        Assert.assertEquals(apiDemos.getTextOfTheGraphicsElement(),"Graphics");
-	        Assert.assertEquals(apiDemos.getTextOfTheTextElement(), "API Demos");
-	        apiDemos.clickApp();
-	        Assert.assertEquals(apiDemos.getTextOfTheTextElement(2),"Activity");
+	        Assert.assertEquals("App", apiDemos.getViewTextByIndex(1));
+	        Assert.assertEquals("Content", apiDemos.getViewTextByIndex(2));
+	        Assert.assertEquals("Graphics", apiDemos.getViewTextByIndex(3));
+	        //TODO make it more complex
 		} finally {
 			client.quit();
 		}
