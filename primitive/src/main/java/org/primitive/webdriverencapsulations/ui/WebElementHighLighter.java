@@ -3,9 +3,9 @@ package org.primitive.webdriverencapsulations.ui;
 import java.awt.Color;
 
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.WrapsElement;
 import org.primitive.configuration.Configuration;
@@ -76,7 +76,7 @@ public class WebElementHighLighter implements IConfigurable,
 			}
 			setStyle((JavascriptExecutor) driver, webElement, originalStyle);
 		} //There is a problem with mobile applications. Not all locators are supported
-		catch (NoSuchElementException e){
+		catch (WebDriverException e){
 			Log.debug("Location by CSS is not supported...");
 			if (toDoScreenShots) {
 				Photographer.takeAPictureForLog(driver, LogLevel, Comment);

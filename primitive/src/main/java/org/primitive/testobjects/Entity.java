@@ -131,7 +131,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 
 	// - simple constructor
 	@Override
-	public <T extends IDecomposable> T getFromWinow(Class<T> partClass,
+	public <T extends IDecomposable> T getFromWindow(Class<T> partClass,
 			int windowIndex) throws ConcstructTestObjectException {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
@@ -140,7 +140,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 
 	// - with specified frame index
 	@Override
-	public <T extends IDecomposable> T getFromWinow(Class<T> partClass,
+	public <T extends IDecomposable> T getFromWindow(Class<T> partClass,
 			Integer frameIndex, int windowIndex)
 			throws ConcstructTestObjectException {
 		Class<?>[] params = new Class[] { Integer.class };
@@ -150,7 +150,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 
 	// - with specified path to any frame
 	@Override
-	public <T extends IDecomposable> T getFromWinow(String pathToFrame,
+	public <T extends IDecomposable> T getFromWindow(String pathToFrame,
 			Class<T> partClass, int windowIndex)
 			throws ConcstructTestObjectException {
 		Class<?>[] params = new Class[] { String.class };
@@ -160,7 +160,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 
 	// - with specified path to any frame and time out for switching to it
 	@Override
-	public <T extends IDecomposable> T getFromWinow(String pathToFrame,
+	public <T extends IDecomposable> T getFromWindow(String pathToFrame,
 			Long timeOutInSec, Class<T> partClass, int windowIndex)
 			throws ConcstructTestObjectException {
 		Class<?>[] params = new Class[] { String.class, Long.class };

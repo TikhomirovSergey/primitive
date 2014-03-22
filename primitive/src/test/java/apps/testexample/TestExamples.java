@@ -102,8 +102,10 @@ public class TestExamples {
 			
 			@SuppressWarnings("unused")
 			ErrorMsg errorMsg = authActivity.getErrorMsg();
-			//TODO I cann't get an element for now. I think there is a "frame"
+			//TODO I cann't get an element for now. I think there is a "frame" that
+			//should be defined some way.
 			//I'll fix this example later.
+			
 			//errorMsg.getText();
 		} finally {
 			client.quit();

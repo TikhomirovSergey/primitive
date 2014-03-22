@@ -57,13 +57,13 @@ public interface IHasManyWindows {
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame, Long timeOutInSec,  Class<T> partClass, URL url, long timeOutSec);
 
 	//From browser windows by their indexes
-	public <T extends IDecomposable> T getFromWinow(Class<T> partClass, int windowIndex);
+	public <T extends IDecomposable> T getFromWindow(Class<T> partClass, int windowIndex);
 
-	public <T extends IDecomposable> T getFromWinow(Class<T> partClass, Integer frameIndex, int windowIndex);
+	public <T extends IDecomposable> T getFromWindow(Class<T> partClass, Integer frameIndex, int windowIndex);
 
-	public <T extends IDecomposable> T getFromWinow(String pathToFrame, Class<T> partClass, int windowIndex);
+	public <T extends IDecomposable> T getFromWindow(String pathToFrame, Class<T> partClass, int windowIndex);
 	
-	public <T extends IDecomposable> T getFromWinow(String pathToFrame, Long timeOutInSec,  Class<T> partClass, int windowIndex);
+	public <T extends IDecomposable> T getFromWindow(String pathToFrame, Long timeOutInSec,  Class<T> partClass, int windowIndex);
 
 
 }
