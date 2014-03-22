@@ -12,7 +12,7 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
  * There is a presentation of mobile application client An instance will be
  * launched on Android, iOS and FireFox OS
  */
-public class MobileApplicationClient extends Entity {
+public class MobileApplicationClient extends Entity{
 
 	public MobileApplicationClient(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {

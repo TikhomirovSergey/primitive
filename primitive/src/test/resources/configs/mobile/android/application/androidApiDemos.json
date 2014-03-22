@@ -1,0 +1,56 @@
+  {
+	  "webdriver":
+	  {
+	      "driverName":{
+	          "type":"STRING",
+	          "value":"remote"
+	      },
+		      "remoteAdress":{
+	          "type":"STRING",
+	          "value":"http://127.0.0.1:4723/wd/hub"
+      	  }
+	  },
+	  
+	  "DesiredCapabilities":
+	  {
+	      "device":{
+	          "type":"STRING",
+	          "value":"Selendroid"    
+	      },  
+	      "version": {
+	          "type":"STRING",
+	          "value":"4.3"         
+	      },    
+	      "platform": {
+	          "type":"STRING",
+	          "value":"WINDOWS"         
+	      },	      
+	      "app-package": {
+	          "type":"STRING",
+	          "value":"com.example.android.apis"         
+	      },    
+	      "app-activity": {
+	          "type":"STRING",
+	          "value":".ApiDemos"         
+	      },	      
+	  },
+	  "webDriverTimeOuts":
+	  {
+	      "timeUnit":{
+	          "type":"STRING",
+	          "value":"SECONDS"           
+	      },
+	      "implicitlyWait":{
+	          "type":"LONG",
+	          "value":"10"     
+	      },
+	      "pageLoadTimeout":{
+	          "type":"LONG",
+	          "value":"10"     
+	      }, 
+	      "setScriptTimeout":{
+	          "type":"LONG",
+	          "value":"10"     
+	      }       
+	  }
+  }

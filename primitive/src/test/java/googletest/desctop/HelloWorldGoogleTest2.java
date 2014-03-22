@@ -38,7 +38,7 @@ public class HelloWorldGoogleTest2 {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-			return google.getFromWinow(AnyPage.class, 1);
+			return google.getFromWindow(AnyPage.class, 1);
 		}
 	}
 

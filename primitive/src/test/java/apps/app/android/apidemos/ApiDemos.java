@@ -1,4 +1,4 @@
-package apps.app.android;
+package apps.app.android.apidemos;
 
 import java.util.List;
 
@@ -28,5 +28,16 @@ public class ApiDemos extends FunctionalPart {
 		catch (IndexOutOfBoundsException e){
 			throw new NoSuchElementException("There is no view that is indexed " + String.valueOf(index), e);
 		}
+	}
+	
+	@InteractiveMethod
+	public void clickOnTextView(int index){
+		try{
+			textViews.get(index).click();;
+		}
+		catch (IndexOutOfBoundsException e){
+			throw new NoSuchElementException("There is no view that is indexed " + String.valueOf(index), e);
+		}
+		
 	}
 }

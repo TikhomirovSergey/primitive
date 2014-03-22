@@ -19,7 +19,7 @@
 	      },  
 	      "version": {
 	          "type":"STRING",
-	          "value":"4.2"         
+	          "value":"4.3"         
 	      },    
 	      "platform": {
 	          "type":"STRING",
@@ -27,11 +27,11 @@
 	      },	      
 	      "app-package": {
 	          "type":"STRING",
-	          "value":"com.example.android.apis"         
+	          "value":"com.vkontakte.android"         
 	      },    
 	      "app-activity": {
 	          "type":"STRING",
-	          "value":".ApiDemos"         
+	          "value":".AuthActivity"         
 	      },	      
 	  },
 	  "webDriverTimeOuts":

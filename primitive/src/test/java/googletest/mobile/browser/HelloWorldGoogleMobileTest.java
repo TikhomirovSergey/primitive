@@ -15,10 +15,10 @@ public class HelloWorldGoogleMobileTest {
 		try {
 			google.performSearch("Hello world Wikipedia");
 			google.clickOn(1);
-			AnyPage anyPage = google.getFromWinow(AnyPage.class, 1);
+			AnyPage anyPage = google.getFromWindow(AnyPage.class, 1);
 			anyPage.close();
 			google.clickOn(1);
-			anyPage = google.getFromWinow(AnyPage.class, 1);
+			anyPage = google.getFromWindow(AnyPage.class, 1);
 		} finally {
 			google.quit();
 		}
