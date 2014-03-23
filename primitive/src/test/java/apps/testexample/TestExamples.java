@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 import apps.app.MobileApplicationClient;
 import apps.app.android.apidemos.ApiDemos;
 import apps.app.android.vk.AndroidVKAuthActivity;
-import apps.app.android.vk.ErrorMsg;
 public class TestExamples {
 	
 	/**
@@ -76,7 +75,7 @@ public class TestExamples {
 	 * AVD parameters:
 	 * 				   - Device = Galaxy Nexus 4'65
 	 * 				   - Target = Android 4.3 API Level 18
-	 * 				   - CPU = ARM
+	 * 				   - CPU = Intel Atom(x86)
 	 * 				   - Skin = WXGA800
 	 * 				   - RAM = 1024M
 	 * 				   - VM Heap = 32
@@ -84,31 +83,26 @@ public class TestExamples {
 	 * 				   - Use Host GPU = true
 	 */	
 	@Test
-	@Parameters(value = { "config" })
-	public void testVKInvalidAuth(@Optional("androidVK.json") String config) {
-		Configuration configuration = Configuration
-				.get("src/test/resources/configs/mobile/android/application/"
-						+ config);
-		MobileApplicationClient client = MobileApplicationClient
-				.getNew(configuration);
-
+	public void testVKAuth() throws Exception {
+		String config = "androidVKAuth.json";
+		MobileApplicationClient client = null;
 		try {
+			Configuration configuration = Configuration
+					.get("src/test/resources/configs/mobile/android/application/"
+							+ config);
+			client = MobileApplicationClient
+					.getNew(configuration);
 			AndroidVKAuthActivity authActivity = client
 					.getPart(AndroidVKAuthActivity.class);
+			
 			authActivity.loginClick();
 			authActivity.setLogin("Fake login");
 			authActivity.setPassword("Fake password");
-			authActivity.authClick();
-			
-			@SuppressWarnings("unused")
-			ErrorMsg errorMsg = authActivity.getErrorMsg();
-			//TODO I cann't get an element for now. I think there is a "frame" that
-			//should be defined some way.
-			//I'll fix this example later.
-			
-			//errorMsg.getText();
+			authActivity.authClick();			
 		} finally {
-			client.quit();
+			if (client!=null){
+				client.quit();	
+			}
 		}
 	}
 }

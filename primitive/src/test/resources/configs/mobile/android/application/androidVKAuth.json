@@ -31,8 +31,8 @@
 	      },    
 	      "app-activity": {
 	          "type":"STRING",
-	          "value":".AuthActivity"         
-	      },	      
+	          "value":"com.vkontakte.android.AuthActivity"         
+	      }	      
 	  },
 	  "webDriverTimeOuts":
 	  {

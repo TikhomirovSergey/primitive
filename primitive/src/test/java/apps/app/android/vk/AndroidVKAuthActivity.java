@@ -43,8 +43,4 @@ public class AndroidVKAuthActivity extends FunctionalPart {
 	public void authClick(){
 		auth.click();
 	}
-	
-	public ErrorMsg getErrorMsg() {
-		return getPart(ErrorMsg.class);
-	}
 }
