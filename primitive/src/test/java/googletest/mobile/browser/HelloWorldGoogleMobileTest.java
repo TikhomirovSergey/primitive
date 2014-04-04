@@ -57,4 +57,12 @@ public class HelloWorldGoogleMobileTest {
 			@Optional("android_chrome.json") String config) throws Exception {
 		launchTest(mobileOS, config);
 	}
+	
+	@Test(description = "This is just a test of basic functionality on IOS Safari using Appium")
+	@Parameters(value = {"mobileOS",  "config" })
+	public void typeHelloWorldAndOpenTheFirstLinkOnIOSSafari(
+			@Optional("ios") String mobileOS,
+			@Optional("ios_safari.json") String config) throws Exception {
+		launchTest(mobileOS, config);
+	}
 }
