@@ -629,6 +629,12 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 			return driver;
 		}
 
+		@Override
+		public WebDriver parentFrame() {
+			targetLocator.parentFrame();
+			return driver;
+		}
+
 	}
 
 	/**

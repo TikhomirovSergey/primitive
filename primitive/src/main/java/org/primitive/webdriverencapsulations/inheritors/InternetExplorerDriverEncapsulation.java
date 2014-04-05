@@ -1,7 +1,6 @@
 package org.primitive.webdriverencapsulations.inheritors;
 
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.browserlaunchers.WindowsProxyManager;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
@@ -21,10 +20,5 @@ public final class InternetExplorerDriverEncapsulation extends WebDriverEncapsul
 	public InternetExplorerDriverEncapsulation(int port)	{
 		ESupportedDrivers.INTERNETEXPLORER.setSystemProperty();
 		createWebDriver(ESupportedDrivers.INTERNETEXPLORER.getUsingWebDriverClass(), new Class[] {int.class}, new Object[] {port});
-	}
-	
-	public InternetExplorerDriverEncapsulation(WindowsProxyManager proxy, InternetExplorerDriverService service, Capabilities capabilities, int port)	{
-		createWebDriver(ESupportedDrivers.INTERNETEXPLORER.getUsingWebDriverClass(), new Class[] {WindowsProxyManager.class, InternetExplorerDriverService.class, Capabilities.class, int.class}, new Object[] {proxy,  service, capabilities, port});
-	}
-	
+	}	
 }
