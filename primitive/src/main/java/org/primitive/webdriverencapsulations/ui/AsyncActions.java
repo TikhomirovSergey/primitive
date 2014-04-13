@@ -104,13 +104,13 @@ public class AsyncActions extends Actions {
 		averageSecsToWait = avaerageTimeForExecution;
 	}
 
-	public void performasynchronously() {
+	public void performAsynchronously() {
 
 		AsyncPerformer performer = new AsyncPerformer(this);
 		performer.perform();
 	}
 
-	public void performasynchronously(long secsToWait) {
+	public void performAsynchronously(long secsToWait) {
 		AsyncPerformer performer = new AsyncPerformer(this);
 		performer.perform(secsToWait);
 	}
