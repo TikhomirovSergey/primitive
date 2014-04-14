@@ -65,4 +65,13 @@ public class HelloWorldGoogleMobileTest {
 			@Optional("ios_safari.json") String config) throws Exception {
 		launchTest(mobileOS, config);
 	}
+
+	@Test(description = "This is just a test of basic functionality on IOS Safari using Appium. Test is run on a local Mac. "
+			+ "As for me it is a virtual machine with Mac OS X Mavericks as the guest.")
+	@Parameters(value = {"ios_safari_localMac.json",  "config" })
+	public void typeHelloWorldAndOpenTheFirstLinkOnIOSSafari_OnALocalMac(
+			@Optional("ios") String mobileOS,
+			@Optional("ios_safari_localMac.json") String config) throws Exception {
+		launchTest(mobileOS, config);
+	}
 }
