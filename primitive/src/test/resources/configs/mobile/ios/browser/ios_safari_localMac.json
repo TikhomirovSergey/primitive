@@ -7,7 +7,7 @@
 	      },
 		      "remoteAdress":{
 	          "type":"STRING",
-	          "value":"http://localhost:4723/wd/hub"
+	          "value":"http://0.0.0.0:4723/wd/hub"
       	  }
 	  },
 	  
