@@ -19,10 +19,10 @@ import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.commonhelpers.WindowsTimeOuts;
 import org.primitive.configuration.commonhelpers.CapabilitySettings;
-import org.primitive.configuration.commonhelpers.ChromeDriverExe;
-import org.primitive.configuration.commonhelpers.IEDriverExe;
+import org.primitive.configuration.commonhelpers.ChromeDriverServerBin;
+import org.primitive.configuration.commonhelpers.IEDriverServerBin;
 import org.primitive.configuration.commonhelpers.Logging;
-import org.primitive.configuration.commonhelpers.PhantomJSDriver;
+import org.primitive.configuration.commonhelpers.PhantomJSDriverBin;
 import org.primitive.configuration.commonhelpers.ScreenShots;
 import org.primitive.configuration.commonhelpers.WebDriverSettings;
 import org.primitive.configuration.commonhelpers.WebDriverTimeOuts;
@@ -188,16 +188,16 @@ public class Configuration {
 		return (Capabilities) getSection(CapabilitySettings.class);
 	}
 
-	public ChromeDriverExe getChromeDriverSettings() {
-		return getSection(ChromeDriverExe.class);
+	public ChromeDriverServerBin getChromeDriverSettings() {
+		return getSection(ChromeDriverServerBin.class);
 	}
 
-	public IEDriverExe getIEDriverSettings() {
-		return getSection(IEDriverExe.class);
+	public IEDriverServerBin getIEDriverSettings() {
+		return getSection(IEDriverServerBin.class);
 	}
 
-	public PhantomJSDriver getPhantomJSDriverSettings() {
-		return getSection(PhantomJSDriver.class);
+	public PhantomJSDriverBin getPhantomJSDriverSettings() {
+		return getSection(PhantomJSDriverBin.class);
 	}
 
 	public WebDriverTimeOuts getWebDriverTimeOuts() {

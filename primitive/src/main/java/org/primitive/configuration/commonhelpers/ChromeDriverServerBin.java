@@ -6,10 +6,10 @@ import org.primitive.configuration.Configuration;
  * @author s.tihomirov
  * settings of chromedriver.exe
  */
-public class ChromeDriverExe extends LocalWebDriverServiceSettings {
+public class ChromeDriverServerBin extends LocalWebDriverServiceSettings {
 	private static final String chromeDriverGroup = "ChromeDriver"; 
 	
-	public ChromeDriverExe(Configuration configuration) {
+	public ChromeDriverServerBin(Configuration configuration) {
 		super(configuration, chromeDriverGroup);
 	}
 

@@ -6,10 +6,10 @@ import org.primitive.configuration.Configuration;
  * @author s.tihomirov
  * settings of IEDriver.exe
  */
-public class IEDriverExe extends LocalWebDriverServiceSettings {
+public class IEDriverServerBin extends LocalWebDriverServiceSettings {
 	private static final String ieDriverGroup = "IEDriver";
 
-	public IEDriverExe(Configuration configuration) {
+	public IEDriverServerBin(Configuration configuration) {
 		super(configuration, ieDriverGroup);
 	}
 

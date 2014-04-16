@@ -2,10 +2,10 @@ package org.primitive.configuration.commonhelpers;
 
 import org.primitive.configuration.Configuration;
 
-public class PhantomJSDriver extends LocalWebDriverServiceSettings {
+public class PhantomJSDriverBin extends LocalWebDriverServiceSettings {
 	private static final String phantomJSDriverGroup = "PhantomJSDriver";
 
-	public PhantomJSDriver(Configuration configuration) {
+	public PhantomJSDriverBin(Configuration configuration) {
 		super(configuration, phantomJSDriverGroup);
 	}
 
