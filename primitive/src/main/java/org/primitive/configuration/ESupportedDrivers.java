@@ -56,9 +56,9 @@ public enum ESupportedDrivers {
 		return driverClazz;
 	}
 
-	public void setSystemProperty() {
+	public void setSystemProperty(Configuration configInstance) {
 		if (service != null) {
-			this.service.setSystemProperty();
+			this.service.setSystemProperty(configInstance);
 		}
 	}
 }

@@ -62,34 +62,34 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	private final ConfigurableElements configurableElements = new ConfigurableElements();
 
 	// methods that support constructors functionality:
-	protected void setSystemProprtyByCapabilities(Capabilities capabilities) {
+	protected void setSystemProprtyByCapabilities(Capabilities capabilities, Configuration config) {
 		String brofserName = capabilities.getBrowserName();
 
 		if (chromeBrowser.equals(brofserName)) {
-			ESupportedDrivers.CHROME.setSystemProperty();
+			ESupportedDrivers.CHROME.setSystemProperty(config);
 		}
 		if (internetExplorer.equals(brofserName)) {
-			ESupportedDrivers.INTERNETEXPLORER.setSystemProperty();
+			ESupportedDrivers.INTERNETEXPLORER.setSystemProperty(config);
 		}
 		if (phantomJS.equals(brofserName)) {
-			ESupportedDrivers.PHANTOMJS.setSystemProperty();
+			ESupportedDrivers.PHANTOMJS.setSystemProperty(config);
 		}
 	}
 
 	private void constructorBody(ESupportedDrivers supporteddriver,
-			Capabilities capabilities) {
+			Capabilities capabilities, Configuration config) {
 		if (supporteddriver.equals(ESupportedDrivers.REMOTE)) { 
 			// if there is RemoteWebDriver and capabilities that requires service
 			LocalRemoteServerInstance.startLocally();
-			setSystemProprtyByCapabilities(capabilities);
+			setSystemProprtyByCapabilities(capabilities, config);
 		} else {
-			supporteddriver.setSystemProperty();
+			supporteddriver.setSystemProperty(config);
 		}
 		createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
 	}
 
 	private void constructorBody(ESupportedDrivers supporteddriver,
-			Capabilities capabilities, URL remoteAddress) {
+			Capabilities capabilities, URL remoteAddress, Configuration config) {
 		if (supporteddriver.equals(ESupportedDrivers.REMOTE)) { 
 			// if there is RemoteWebDriver that uses remote service
 			createWebDriver(supporteddriver.getUsingWebDriverClass(),
@@ -98,7 +98,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		} else {
 			Log.message("Remote address " + String.valueOf(remoteAddress)
 					+ " has been ignored");
-			constructorBody(supporteddriver, capabilities);
+			constructorBody(supporteddriver, capabilities, config);
 		}
 	}
 
@@ -137,7 +137,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	/** creates instance by specified driver and capabilities */
 	public WebDriverEncapsulation(ESupportedDrivers supporteddriver,
 			Capabilities capabilities) {
-		constructorBody(supporteddriver, capabilities);
+		constructorBody(supporteddriver, capabilities, Configuration.byDefault);
 	}
 	
 	/**  creates instance by specified driver */
@@ -148,7 +148,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	/**  creates instance by specified driver, capabilities and remote address */
 	public WebDriverEncapsulation(ESupportedDrivers supporteddriver,
 			Capabilities capabilities, URL remoteAddress) {
-		constructorBody(supporteddriver, capabilities, remoteAddress);
+		constructorBody(supporteddriver, capabilities, remoteAddress, Configuration.byDefault);
 	}
 
 	/**  creates instance by specified driver and remote address using default capabilities */
@@ -179,13 +179,13 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		String remoteAdress = this.configuration.getWebDriverSettings()
 				.getRemoteAddress();
 		if (remoteAdress == null) {
-			constructorBody(supportedDriver, capabilities);
+			constructorBody(supportedDriver, capabilities, configuration);
 			return;
 		}
 
 		try {
 			URL remoteUrl = new URL(remoteAdress);
-			constructorBody(supportedDriver, capabilities, remoteUrl);
+			constructorBody(supportedDriver, capabilities, remoteUrl, configuration);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
