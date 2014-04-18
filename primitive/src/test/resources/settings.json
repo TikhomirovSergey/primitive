@@ -22,33 +22,21 @@
 	       "folder":{
 	          "type":"STRING",
 	          "value":"src/test/resources/binaries/"           
-	      },  
-	       "file":{
-	          "type":"STRING",
-	          "value":"chromedriver.exe"           
-	      }       
+	      }    
 	  },
 	  "IEDriver":
 	  {
 	       "folder":{
 	          "type":"STRING",
 	          "value":"src/test/resources/binaries/"           
-	      },  
-	       "file":{
-	          "type":"STRING",
-	          "value":"IEDriverServer.exe"           
-	      }       
+	      }      
 	  },
 	  "PhantomJSDriver":
 	  {
 	       "folder":{
 	          "type":"STRING",
 	          "value":"src/test/resources/binaries/"           
-	      },  
-	       "file":{
-	          "type":"STRING",
-	          "value":"phantomjs.exe"           
-	      }       
+	      }   
 	  },
 	  "windowsTimeOuts":  {
 	      "newWindowTimeOutSec":{

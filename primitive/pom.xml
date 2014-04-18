@@ -113,6 +113,7 @@
 						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatChecksServiceProviders.xml</suiteXmlFile>
 						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatChecksUnhandledWindowChecker.xml</suiteXmlFile>
 						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatChecksNewWindowsByTheirURLandTitle.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestWithDefinedServicesForEachOS.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>
