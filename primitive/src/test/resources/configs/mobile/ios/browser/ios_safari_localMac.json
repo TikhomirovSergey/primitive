@@ -5,10 +5,10 @@
 	          "type":"STRING",
 	          "value":"remote"
 	      },
-		      "remoteAdress":{
+	      "remoteAdress":{
 	          "type":"STRING",
 	          "value":"http://0.0.0.0:4723/wd/hub"
-      	  }
+      	      }
 	  },
 	  
 	  "DesiredCapabilities":
@@ -19,7 +19,7 @@
 	      },  
 	      "version": {
 	          "type":"STRING",
-	          "value":"7.1"         
+	          "value":"6.1"         
 	      },    
 	      "app":{
 	          "type":"STRING",
