@@ -59,7 +59,7 @@ enum EServices {
 
 		IHasPathToFile pathConfig = (IHasPathToFile) configInstance
 				.getSection(clazzOfSettings);
-		File folder = new File(pathConfig.getFolder());
+		File folder = new File(String.valueOf(pathConfig.getFolder()));
 		if (!folder.exists()) {
 			folder = new File(defaultFolder);
 		}
