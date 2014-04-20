@@ -59,13 +59,13 @@ enum EServices {
 
 		IHasPathToFile pathConfig = (IHasPathToFile) configInstance
 				.getSection(clazzOfSettings);
-		File folder = new File(String.valueOf(pathConfig.getFolder()));
-		if (!folder.exists()) {
-			folder = new File(defaultFolder);
+		String folder = String.valueOf(pathConfig.getFolder());
+		if (!new File(folder).exists()) {
+			folder = defaultFolder;
 		}
 
 		String fileName = String.valueOf(pathConfig.getFile());
-		File serverFile = new File(folder, fileName);
+		File serverFile = new File(folder + fileName);
 		if (serverFile.exists()) { // there is nothing to do is file exists
 			System.setProperty(propertyName, serverFile.getAbsolutePath());
 			return;
@@ -81,7 +81,7 @@ enum EServices {
 			if (accordance.getKey().is(currentOS)) {
 				fileName = accordance.getValue();
 
-				serverFile = new File(folder, fileName);
+				serverFile = new File(folder + fileName);
 				if (serverFile.exists()) {
 					System.setProperty(propertyName,
 							serverFile.getAbsolutePath());
