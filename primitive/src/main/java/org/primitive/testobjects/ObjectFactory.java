@@ -2,6 +2,8 @@ package org.primitive.testobjects;
 
 import java.net.URL;
 
+import net.sf.cglib.proxy.MethodInterceptor;
+
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.ESupportedDrivers;
@@ -12,7 +14,60 @@ import org.primitive.webdriverencapsulations.WindowSwitcher;
 
 //This class should be used for creation of a single page and application model instances
 public final class ObjectFactory extends TestObject {
+	/**
+	 * An interceptor for {@link Entity} inheritor defined by user. Defined for
+	 * each thread
+	 */
+	private final static ThreadLocal<Class<? extends MethodInterceptor>> definedInterceptorForEntities = 
+			new ThreadLocal<Class<? extends MethodInterceptor>>();
+	/**
+	 * An interceptor for {@link FunctionalPart} inheritor defined by user.
+	 * Defined for each thread
+	 */
+	private static ThreadLocal<Class<? extends MethodInterceptor>> definedInteractiveInterceptor = 
+			new ThreadLocal<Class<? extends MethodInterceptor>>();
+	
+	private static Class<? extends MethodInterceptor> getInterceptorFromThreadLocal(
+			ThreadLocal<Class<? extends MethodInterceptor>> from,
+			Class<? extends MethodInterceptor> defaultInterceptorClass) {
+		if (from.get() == null) {
+			return defaultInterceptorClass;
+		}
+		return (Class<? extends MethodInterceptor>) from.get();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static Class<? extends DefaultInterceptor> getEntityInterceptor() {
+		return (Class<? extends DefaultInterceptor>) getInterceptorFromThreadLocal(
+				definedInterceptorForEntities, DefaultInterceptor.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static Class<? extends InteractiveInterceptor> getInteractiveInterceptor(){
+		return (Class<? extends InteractiveInterceptor>) getInterceptorFromThreadLocal(
+				definedInteractiveInterceptor, InteractiveInterceptor.class);
+	}
+	
+	private static void resetInterceptor(
+			ThreadLocal<Class<? extends MethodInterceptor>> to,
+			Class<? extends MethodInterceptor> interceptorClass) {
+		to.set(interceptorClass);
+	}
 
+	/**
+	 * Resets iterceptor class for {@link Entity}
+	 */
+	public static void resetEntityInterceptor(Class<? extends DefaultInterceptor> interceptorClass){
+		resetInterceptor(definedInterceptorForEntities, interceptorClass);
+	}
+	
+	/**
+	 * Resets iterceptor class for {@link FunctionalPart}
+	 */
+	public static void resetInteractiveInterceptor(Class<? extends InteractiveInterceptor> interceptorClass){
+		resetInterceptor(definedInteractiveInterceptor, interceptorClass);
+	}
+	
 	private ObjectFactory(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {
 		super(browserWindow);
@@ -72,7 +127,7 @@ public final class ObjectFactory extends TestObject {
 				new WebDriverEncapsulation(supportedDriver), entityClass,
 				urlToBeLoaded);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -85,7 +140,7 @@ public final class ObjectFactory extends TestObject {
 		SingleWindow statrtWindow = getFirstBrowserWindow(
 				new WebDriverEncapsulation(supportedDriver), entityClass);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -120,7 +175,7 @@ public final class ObjectFactory extends TestObject {
 		SingleWindow statrtWindow = getFirstBrowserWindow(
 				new WebDriverEncapsulation(supportedDriver, capabilities),
 				entityClass, urlToBeLoaded);
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -135,7 +190,7 @@ public final class ObjectFactory extends TestObject {
 				new WebDriverEncapsulation(supportedDriver, capabilities),
 				entityClass);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -173,7 +228,7 @@ public final class ObjectFactory extends TestObject {
 				new WebDriverEncapsulation(supportedDriver, capabilities,
 						remoteAddress), entityClass, urlToBeLoaded);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -187,7 +242,7 @@ public final class ObjectFactory extends TestObject {
 				new WebDriverEncapsulation(supportedDriver, capabilities,
 						remoteAddress), entityClass);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -230,7 +285,7 @@ public final class ObjectFactory extends TestObject {
 				new WebDriverEncapsulation(Configuration.byDefault),
 				entityClass, url);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -243,7 +298,7 @@ public final class ObjectFactory extends TestObject {
 				new WebDriverEncapsulation(Configuration.byDefault),
 				entityClass);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -276,7 +331,7 @@ public final class ObjectFactory extends TestObject {
 		SingleWindow statrtWindow = getFirstBrowserWindow(
 				new WebDriverEncapsulation(config), entityClass, url);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -288,7 +343,7 @@ public final class ObjectFactory extends TestObject {
 		SingleWindow statrtWindow = getFirstBrowserWindow(
 				new WebDriverEncapsulation(config), entityClass);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -324,7 +379,7 @@ public final class ObjectFactory extends TestObject {
 		SingleWindow statrtWindow = getFirstBrowserWindow(driver, entityClass,
 				url);
 		
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -334,7 +389,7 @@ public final class ObjectFactory extends TestObject {
 			throws ConcstructTestObjectException {
 		
 		SingleWindow statrtWindow = getFirstBrowserWindow(driver, entityClass);
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -370,7 +425,7 @@ public final class ObjectFactory extends TestObject {
 		driver.resetAccordingTo(config);
 		SingleWindow statrtWindow = getFirstBrowserWindow(driver, entityClass,
 				url);
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -381,7 +436,7 @@ public final class ObjectFactory extends TestObject {
 		
 		driver.resetAccordingTo(config);
 		SingleWindow statrtWindow = getFirstBrowserWindow(driver, entityClass);
-		return getProxy(entityClass, EntityInterceptor.class,
+		return getProxy(entityClass, getEntityInterceptor(),
 				restructureParamArrayUsingWindow(params),
 				restructureValueArrayUsingWindow(statrtWindow, values));
 	}
@@ -425,10 +480,10 @@ public final class ObjectFactory extends TestObject {
 
 	// Creation of any Page instance:
 	// - using any accessible constructor:
-	protected static <T extends IDecomposable> T get(Class<T> partClass,
+	static <T extends IDecomposable> T get(Class<T> partClass,
 			Class<?>[] paramClasses, Object[] paramValues)
 			throws ConcstructTestObjectException {
-		T page = getProxy(partClass, InteractiveInterceptor.class,
+		T page = getProxy(partClass, getInteractiveInterceptor(),
 				paramClasses, paramValues);
 		return page;
 	}
