@@ -974,4 +974,14 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 		}
 		return result;
 	}
+	
+	/**
+	 * It seals wrapped driver forever
+	 */
+	@Deprecated
+	@Override
+	public WebDriver getWrappedDriver(){
+		return new SealedDriver(this);		
+	}
+	
 }
