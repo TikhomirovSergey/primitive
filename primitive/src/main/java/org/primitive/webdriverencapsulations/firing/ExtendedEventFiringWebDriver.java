@@ -29,13 +29,12 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.HasInputDevices;
-import org.openqa.selenium.interactions.HasTouchScreen;
 import org.openqa.selenium.interactions.Keyboard;
 import org.openqa.selenium.interactions.Mouse;
 import org.openqa.selenium.interactions.TouchScreen;
 import org.openqa.selenium.interactions.internal.Coordinates;
 import org.openqa.selenium.internal.Locatable;
+import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.internal.WrapsElement;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.Logs;
@@ -51,8 +50,7 @@ import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEv
  * @author s.tihomirov For some functions of EventFiringWebDriver
  */
 public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
-		implements WebDriver, HasCapabilities, HasInputDevices,
-		TakesScreenshot, HasTouchScreen {
+		implements HasCapabilities {
 
 	/**
 	 * @author s.tihomirov
@@ -981,7 +979,45 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	@Deprecated
 	@Override
 	public WebDriver getWrappedDriver(){
-		return new SealedDriver(this);		
+		//I exclude wrapsDriver from this and super class
+		Class<?>[] implemented = ExtendedEventFiringWebDriver.class.getInterfaces();
+		Class<?>[] implementedBySuper = EventFiringWebDriver.class
+				.getInterfaces();
+		
+		Class<?>[] editedInterfaceArray = new Class<?>[(implemented.length + implementedBySuper.length)-1];
+		
+		int index = 0;
+		for (int i=0; i<implemented.length; i++){
+			if (!implemented[i].equals(WrapsDriver.class)){
+				editedInterfaceArray[index] = implemented[i];	
+				index++;
+			}
+		}
+		
+		for (int i=0; i<implementedBySuper.length; i++){
+			if (!implementedBySuper[i].equals(WrapsDriver.class)){
+				editedInterfaceArray[index] = implementedBySuper[i];	
+				index++;
+			}
+		}
+
+		
+		// and create proxy object
+		final ExtendedEventFiringWebDriver proxyfied = this;
+		WebDriver sealedDriver = (WebDriver) Proxy.newProxyInstance(
+				WebDriver.class.getClassLoader(), editedInterfaceArray,
+				new InvocationHandler() {
+					public Object invoke(Object proxy, Method method,
+							Object[] args) throws Throwable {
+						try {
+							return method.invoke(proxyfied, args);
+						} catch (Exception e) {
+							throw e;
+						}
+					}
+				});
+
+		return sealedDriver;		
 	}
 	
 }
