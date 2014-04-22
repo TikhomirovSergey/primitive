@@ -10,6 +10,9 @@ import org.testng.annotations.Test;
 import apps.app.MobileApplicationClient;
 import apps.app.android.apidemos.ApiDemos;
 import apps.app.android.vk.AndroidVKAuthActivity;
+import apps.app.ios.ui_catalog_app.UICatalogItemList;
+import apps.app.ios.ui_catalog_app.UINavigationBar;
+import apps.app.ios.ui_catalog_app.UIWebView;
 public class TestExamples {
 	
 	/**
@@ -99,6 +102,32 @@ public class TestExamples {
 			authActivity.setLogin("Fake login");
 			authActivity.setPassword("Fake password");
 			authActivity.authClick();			
+		} finally {
+			if (client!=null){
+				client.quit();	
+			}
+		}
+	}
+	
+	@Test
+	public void testIOSUICatalog() throws Exception {
+		String config = "ios_app_local.json";
+		MobileApplicationClient client = null;
+		try {
+			Configuration configuration = Configuration
+					.get("src/test/resources/configs/mobile/ios/application/"
+							+ config);
+			client = MobileApplicationClient
+					.getNew(configuration);
+			UINavigationBar bar = client.getPart(UINavigationBar.class);
+			Assert.assertEquals("UICatalog", bar.getCaption());	
+			
+			client.getPart(UICatalogItemList.class).clickOnCell("Web");
+			Assert.assertEquals("Web", bar.getCaption());	
+			
+			client.getPart(UIWebView.class).enterUrl("https://www.google.com/");
+			bar.back();
+			
 		} finally {
 			if (client!=null){
 				client.quit();	
