@@ -109,6 +109,22 @@ public class TestExamples {
 		}
 	}
 	
+	/**
+	 * * JSON setting see here: /primitive/src/test/resources/configs/mobile/ios/application/ios_app_local.json
+	 *Appium settings: - IP Address = 0.0.0.0
+	 * 				   - Port = 4723
+	 * 				   - iOS - 	is switched on
+	 * 				   - Force Device = yes - iPhone Retina (4-inch)
+	 * 				   - Path to {@link}https://github.com/appium/appium/blob/master/assets/UICatalog6.1.app.zip is set
+	 * Environment:
+	 * 				   - Virtual machine that is made by VMWare.Net bridge
+	 * 				   - Mac OS 10.8.5 or newer as a guest OS.
+	 * 				   - xCode 4.6.3 or newer is installed
+	 * 				   - iPhone Simulator for iOS 6.1 is there
+	 *                 - ios-webkit-debug-proxy is installed and run
+	 * Test is launched and is run on Mac OS virtual machine (local starting).
+	 * I have some problems there. It needs to be run on a real Mac with xCode 5.x.   
+	 */
 	@Test
 	public void testIOSUICatalog() throws Exception {
 		String config = "ios_app_local.json";
