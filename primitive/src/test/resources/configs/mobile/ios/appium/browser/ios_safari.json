@@ -7,7 +7,7 @@
 	      },
 		      "remoteAdress":{
 	          "type":"STRING",
-	          "value":"http://192.168.0.109:4723/wd/hub"
+	          "value":"http://192.168.8.101:4723/wd/hub"
       	  }
 	  },
 	  

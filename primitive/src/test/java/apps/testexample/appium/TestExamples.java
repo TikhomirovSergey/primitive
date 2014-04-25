@@ -1,4 +1,4 @@
-package apps.testexample;
+package apps.testexample.appium;
 
 import junit.framework.Assert;
 
@@ -19,7 +19,7 @@ public class TestExamples {
 	 * For comparison see here: @link{https://github.com/appium/appium/blob/master/sample-code/examples/java/testng/src/test/java/com/saucelabs/appium/AndroidTest.java}
 	 */
 	/**
-	 * JSON setting see here: /primitive/src/test/resources/configs/mobile/android/application/androidApiDemos.json
+	 * JSON setting see here: /primitive/src/test/resources/configs/mobile/android/appium/application/androidApiDemos.json
 	 * Appium settings: - IP Address = 127.0.0.1
 	 * 			       - Application Path = path to apiDemos.apk
 	 * 				   - Port = 4723
@@ -43,7 +43,7 @@ public class TestExamples {
 	public void testOnAndroidApiDemos(
 			@Optional("androidApiDemos.json") String config) {
 		Configuration configuration = Configuration
-				.get("src/test/resources/configs/mobile/android/application/" + config);
+				.get("src/test/resources/configs/mobile/android/appium/application/" + config);
 		MobileApplicationClient client = MobileApplicationClient
 				.getNew(configuration);
 
@@ -65,7 +65,7 @@ public class TestExamples {
 	}
 	
 	/**
-	 * JSON setting see here: /primitive/src/test/resources/configs/mobile/android/application/androidVK.json
+	 * JSON setting see here: /primitive/src/test/resources/configs/mobile/android/appium/application/androidVK.json
 	 * Appium settings: - IP Address = 127.0.0.1
 	 * 			       - Application Path = path to com.vkontakte.android.apk 
 	 * 					{@link https://play.google.com/store/apps/details?id=com.vkontakte.android}
@@ -91,7 +91,7 @@ public class TestExamples {
 		MobileApplicationClient client = null;
 		try {
 			Configuration configuration = Configuration
-					.get("src/test/resources/configs/mobile/android/application/"
+					.get("src/test/resources/configs/mobile/android/appium/application/"
 							+ config);
 			client = MobileApplicationClient
 					.getNew(configuration);
@@ -110,7 +110,7 @@ public class TestExamples {
 	}
 	
 	/**
-	 * * JSON setting see here: /primitive/src/test/resources/configs/mobile/ios/application/ios_app_local.json
+	 * * JSON setting see here: /primitive/src/test/resources/configs/mobile/ios/appium/application/ios_app_local.json
 	 *Appium settings: - IP Address = 0.0.0.0
 	 * 				   - Port = 4723
 	 * 				   - iOS - 	is switched on
@@ -131,7 +131,7 @@ public class TestExamples {
 		MobileApplicationClient client = null;
 		try {
 			Configuration configuration = Configuration
-					.get("src/test/resources/configs/mobile/ios/application/"
+					.get("src/test/resources/configs/mobile/ios/appium/application/"
 							+ config);
 			client = MobileApplicationClient
 					.getNew(configuration);

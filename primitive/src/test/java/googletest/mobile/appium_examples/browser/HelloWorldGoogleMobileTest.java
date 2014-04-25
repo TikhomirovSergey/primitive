@@ -1,4 +1,4 @@
-package googletest.mobile.browser;
+package googletest.mobile.appium_examples.browser;
 
 import googledescripription.AnyPage;
 import googledescripription.Google;
@@ -26,12 +26,12 @@ public class HelloWorldGoogleMobileTest {
 	
 	private void launchTest(String mobileOS, String config) throws Exception{
 		Configuration configuration = Configuration
-				.get("src/test/resources/configs/mobile/" + mobileOS + "/browser/" + config);
+				.get("src/test/resources/configs/mobile/" + mobileOS + "/appium/browser/" + config);
 		test(Google.getNew(configuration));	
 	}
 
 	/**
-	 * JSON setting see here: /primitive/src/test/resources/configs/mobile/android/browser/android_chrome.json
+	 * JSON setting see here: /primitive/src/test/resources/configs/mobile/android/appium/browser/android_chrome.json
 	 * Appium settings: - IP Address = 127.0.0.1
 	 * 				   - Port = 4723
 	 * 				   - Use remote server = yes
@@ -59,7 +59,7 @@ public class HelloWorldGoogleMobileTest {
 	}
 	
 	/**
-	 * * JSON setting see here: /primitive/src/test/resources/configs/mobile/android/browser/ios_safari.json
+	 * * JSON setting see here: /primitive/src/test/resources/configs/mobile/ios/appium/browser/ios_safari.json
 	 *Appium settings: - IP Address = 0.0.0.0
 	 * 				   - Port = 4723
 	 * 				   - iOS - 	is switched on
@@ -86,7 +86,7 @@ public class HelloWorldGoogleMobileTest {
 	}
 
 	/**
-	 * * JSON setting see here: /primitive/src/test/resources/configs/mobile/android/browser/ios_safari_localMac.json
+	 * * JSON setting see here: /primitive/src/test/resources/configs/mobile/ios/appium/browser/ios_safari_localMac.json
 	 *Appium settings: - IP Address = 0.0.0.0
 	 * 				   - Port = 4723
 	 * 				   - iOS - 	is switched on
