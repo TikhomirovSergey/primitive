@@ -19,7 +19,7 @@ import org.openqa.selenium.remote.Augmenter;
 public final class Photographer
 {
 	private final static String pictureNameByDefault = "picture";
-	private static String pictureFolderNameByDefault = "Imgs/"; //in case if there is no customized settings for picture storing
+	private static String pictureFolderNameByDefault = "Imgs" + File.separator; //in case if there is no customized settings for picture storing
 	public static final String format = "png";
 	private static final ThreadLocal<Photographer> photographerThreadLocal = new ThreadLocal<Photographer>();
 	private String folder  = pictureFolderNameByDefault;
