@@ -106,14 +106,7 @@
 				<inherited>true</inherited>
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestWithoutConfig.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestWithConfig.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestWithExternalWebdriver.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatClosesGoogle.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatChecksServiceProviders.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatChecksUnhandledWindowChecker.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestThatChecksNewWindowsByTheirURLandTitle.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/desctop/HelloWorldTestWithDefinedServicesForEachOS.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/desctop/Scope.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>

@@ -1,16 +1,22 @@
 package googletest.desctop;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import googledescripription.AnyPage;
 import googledescripription.Google;
 import mocklistener.MockTestListener;
 
+import org.openqa.selenium.Platform;
 import org.primitive.configuration.Configuration;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FluentWindowConditions;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -69,6 +75,9 @@ public class HelloWorldGoogleTest2 {
 			}
 		}
 	}
+
+	// settings according to current OS
+	private final HashMap<Platform, List<String>> settings = new HashMap<Platform, List<String>>();
 	
 	private void test(Google google, HowToGetANewWindow howToGet) throws Exception {
 		WaitingThread waitingThread = new WaitingThread(google, howToGet);
@@ -84,17 +93,53 @@ public class HelloWorldGoogleTest2 {
 	
 	@Test(description = "This is just a test of basic functionality. It gets a new object by its partial title and url")
 	@Parameters(value = { "config" })
-	public void typeHelloWorldAndOpenTheFirstLink(
-			@Optional("chrome.json") String config) throws Exception {
-		Configuration configuration = Configuration
-				.get("src/test/resources/configs/desctop/" + config);
-		Google google = Google.getNew(configuration);
-		try {
-			google.performSearch("Hello world Wikipedia");
-			test(google, HowToGetANewWindow.BYPARTIALTITLE);
-			test(google, HowToGetANewWindow.BYPARTIALURL);
-		} finally {
-			google.quit();
+	public void typeHelloWorldAndOpenTheFirstLink() throws Exception {
+		List<String> configs = getConfigsByCurrentPlatform();
+		for (String config: configs){
+			Configuration configuration = Configuration
+					.get("src/test/resources/configs/desctop/" + config);
+			Google google = Google.getNew(configuration);
+			try {
+				google.performSearch("Hello world Wikipedia");
+				test(google, HowToGetANewWindow.BYPARTIALTITLE);
+				test(google, HowToGetANewWindow.BYPARTIALURL);
+			} finally {
+				google.quit();
+			}
 		}
+	}
+
+	@BeforeTest
+	public void beforeTest() {
+		//for Windows
+		settings.put(Platform.WINDOWS, new ArrayList<String>(){
+			private static final long serialVersionUID = -1718278594717074313L;
+			{
+				add("chrome_remote.json");
+				add("chrome.json");
+				
+				add("firefox_remote.json");
+				add("firefox.json");
+				
+				add("internetexplorer_remote.json");
+				add("internetexplorer.json");
+				
+				add("phantomjs_remote.json");
+				add("phantomjs.json");
+			}
+			
+		});
+		
+	}
+
+	List<String> getConfigsByCurrentPlatform(){
+		Set<Entry<Platform, List<String>>> entries = settings.entrySet();
+		for (Entry<Platform, List<String>> entry: entries){
+			if (entry.getKey().is(Platform.getCurrent())){
+				return entry.getValue();
+			}
+		}
+		
+		return new ArrayList<String>();
 	}
 }
