@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Suite without configuration" parallel="false">
+<suite name="Test scope" parallel="false">
 
   <test name="Hello world Google test without config">
     <classes>
