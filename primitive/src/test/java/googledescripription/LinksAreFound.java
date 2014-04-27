@@ -13,7 +13,6 @@ public class LinksAreFound extends FunctionalPart implements IPerformsClickOnALi
 	@FindBy(xpath = ".//*[@class='r']/a")
 	private List<WebElement> linksAreFound;
 	
-	//часть главной страницы google. такой объект знает о браузерном окне, на котором живет 
 	public LinksAreFound(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {
 		super(browserWindow);

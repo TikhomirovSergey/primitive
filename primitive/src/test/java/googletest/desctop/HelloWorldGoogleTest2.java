@@ -129,6 +129,24 @@ public class HelloWorldGoogleTest2 {
 			}
 			
 		});
+		//for MAC
+		settings.put(Platform.MAC, new ArrayList<String>(){
+			private static final long serialVersionUID = -1718278594717074313L;
+			{
+				add("chrome_remote.json");
+				add("chrome.json");
+				
+				add("firefox_remote.json");
+				add("firefox.json");
+				
+				add("safari_remote.json");
+				add("safari.json");
+				
+				add("phantomjs_remote.json");
+				add("phantomjs.json");
+			}
+			
+		});
 		
 	}
 
