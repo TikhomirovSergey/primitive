@@ -70,9 +70,4 @@ public class Google extends Entity implements IPerformsSearch, IPerformsClickOnA
 	public WebDriver getWrappedDriver() {
 		return driverEncapsulation.getWrappedDriver();
 	}
-
-	@Override
-	public void clickOnByMouse(int index) {
-		linksAreFound.clickOnByMouse(index);		
-	}
 }
