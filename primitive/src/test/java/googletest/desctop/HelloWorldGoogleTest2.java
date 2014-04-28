@@ -83,7 +83,7 @@ public class HelloWorldGoogleTest2 {
 		WaitingThread waitingThread = new WaitingThread(google, howToGet);
 		waitingThread.start();
 		Thread.sleep(1000);
-		google.clickOn(1);
+		google.clickOnByMouse(1);
 		while (waitingThread.isRunning){Log.message("Waiting for...");}
 		if (waitingThread.exception != null) {
 			throw new RuntimeException(waitingThread.exception);

@@ -45,7 +45,7 @@
 	      },
 	      "windowCountTimeOutSec":{
 	          "type":"LONG",
-	          "value":"1"
+	          "value":"3"     
 	      }, 
 	      "windowClosingTimeOutSec":{
 	          "type":"LONG",
