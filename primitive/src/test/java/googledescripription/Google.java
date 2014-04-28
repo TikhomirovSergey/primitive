@@ -10,24 +10,19 @@ import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
 
-//модель google как приложени€
 public class Google extends Entity implements IPerformsSearch, IPerformsClickOnALink, WrapsDriver{
 	
 	private final static String url = "http://www.google.com/";
 	private SearchBar searchBar;
 	private LinksAreFound linksAreFound;
 	
-    //да да, браузерное окно это тоже окно. Ћюбое вэб-приложение имеет окно 
-	//с открытой главной страницей
 	public Google(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {
 		super(browserWindow);
-		searchBar     = getPart(SearchBar.class);    //эти элементы €вл€ютс€ как бы частью приложени€
-		linksAreFound = getPart(LinksAreFound.class); //через них оно как бы выполн€ет свои функции
+		searchBar     = getPart(SearchBar.class);    
+		linksAreFound = getPart(LinksAreFound.class); 
 	}
 	
-	//так экземпл€р google уйдет в тест
-	//собираетс€ по некорой дефолтной конфигурации
 	public static Google getNew()
 	{
 		return ObjectFactory.getEntity(Google.class, url);
@@ -74,5 +69,10 @@ public class Google extends Entity implements IPerformsSearch, IPerformsClickOnA
 	@Override
 	public WebDriver getWrappedDriver() {
 		return driverEncapsulation.getWrappedDriver();
+	}
+
+	@Override
+	public void clickOnByMouse(int index) {
+		linksAreFound.clickOnByMouse(index);		
 	}
 }

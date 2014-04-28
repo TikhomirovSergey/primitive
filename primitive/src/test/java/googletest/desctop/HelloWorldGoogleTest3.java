@@ -66,10 +66,10 @@ public class HelloWorldGoogleTest3 {
 		try {
 			google.performSearch("Hello world Wikipedia");
 			Assert.assertEquals(10, google.getLinkCount());
-			google.clickOn(1);
+			google.clickOnByMouse(1);
 			AnyPage anyPage = google.getFromWindow(AnyPage.class, 1);
 			anyPage.close();
-			google.clickOn(1);
+			google.clickOnByMouse(1);
 			anyPage = google.getFromWindow(AnyPage.class, 1);
 		} finally {
 			google.quit();
