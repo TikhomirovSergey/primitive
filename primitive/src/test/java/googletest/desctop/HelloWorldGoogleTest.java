@@ -83,14 +83,15 @@ public class HelloWorldGoogleTest {
 		return new ArrayList<String>();
 	}
 	
-	private void test(Google google) {
+	private void test(Google google) throws Exception {
 		try {
 			google.performSearch("Hello world Wikipedia");
 			Assert.assertEquals(10, google.getLinkCount());
-			google.clickOn(1);
+			google.openLinkByIndex(1);
 			AnyPage anyPage = google.getFromWindow(AnyPage.class, 1);
+			Thread.sleep(5000);
 			anyPage.close();
-			google.clickOn(1);
+			google.openLinkByIndex(1);
 			anyPage = google.getFromWindow(AnyPage.class, 1);
 		} finally {
 			google.quit();
@@ -107,11 +108,12 @@ public class HelloWorldGoogleTest {
 		}
 	}
 
-	private void test3(Google google) {
+	private void test3(Google google) throws Exception{
 		try {
 			google.performSearch("Hello world Wikipedia");
 			Assert.assertEquals(10, google.getLinkCount());
-			google.clickOn(1);
+			google.openLinkByIndex(1);
+			Thread.sleep(5000);
 			UnhandledWindowChecker.getChecker(google.getSwitcher())
 					.killUnexpectedWindows();
 			Assert.assertEquals(true, MockUnhandledWindowEventListener.wasInvoked);
@@ -121,12 +123,12 @@ public class HelloWorldGoogleTest {
 	}
 	
 	@Test(description = "This is just a test of basic functionality without any configuration")
-	public void typeHelloWorldAndOpenTheFirstLink() {
+	public void typeHelloWorldAndOpenTheFirstLink() throws Exception{
 		test(Google.getNew());
 	}
 
 	@Test(description = "This is just a test of basic functionality with specified configurations")
-	public void typeHelloWorldAndOpenTheFirstLink2() {
+	public void typeHelloWorldAndOpenTheFirstLink2() throws Exception{
 		List<String> configs = getConfigsByCurrentPlatform();
 		for (String config: configs){
 			Configuration configuration = Configuration
@@ -136,7 +138,7 @@ public class HelloWorldGoogleTest {
 	}
 
 	@Test(description = "This is just a test of basic functionality with a webdriver instance that was created externally")
-	public void typeHelloWorldAndOpenTheFirstLink3() {
+	public void typeHelloWorldAndOpenTheFirstLink3() throws Exception{
 		Configuration configuration = Configuration
 				.get("src/test/resources/configs/desctop/firefox.json");
 		WebDriverEncapsulation encapsulation = new WebDriverEncapsulation(
@@ -172,7 +174,7 @@ public class HelloWorldGoogleTest {
 	}
 
 	@Test(description = "This is just a test of basic functionality. It watches how UnhandledWindowChecker kills windows that exist but weren't instantiated as objects of SingleWindow")
-	public void typeHelloWorldAndOpenTheFirstLink6() {
+	public void typeHelloWorldAndOpenTheFirstLink6() throws Exception{
 		List<String> configs = getConfigsByCurrentPlatform();
 		for (String config: configs){
 			Configuration configuration = Configuration

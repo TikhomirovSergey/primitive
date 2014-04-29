@@ -31,7 +31,7 @@ public class HelloWorldGoogleTest3 {
 	};
 
 	@Test(description = "A test with defined paths to WD service binary files. This files are defined for each operating system")
-	public void typeHelloWorldAndOpenTheFirstLink() {
+	public void typeHelloWorldAndOpenTheFirstLink() throws Exception{
 		for (Configuration config: configs){
 			Google google = Google.getNew(config);
 			test(google);
@@ -62,14 +62,15 @@ public class HelloWorldGoogleTest3 {
 		}
 	}
   
-	private void test(Google google) {
+	private void test(Google google) throws Exception{
 		try {
 			google.performSearch("Hello world Wikipedia");
 			Assert.assertEquals(10, google.getLinkCount());
-			google.clickOn(1);
+			google.openLinkByIndex(1);
 			AnyPage anyPage = google.getFromWindow(AnyPage.class, 1);
+			Thread.sleep(5000);
 			anyPage.close();
-			google.clickOn(1);
+			google.openLinkByIndex(1);
 			anyPage = google.getFromWindow(AnyPage.class, 1);
 		} finally {
 			google.quit();

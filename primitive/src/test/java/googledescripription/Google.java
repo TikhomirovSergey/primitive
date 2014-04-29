@@ -10,7 +10,7 @@ import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
 
-public class Google extends Entity implements IPerformsSearch, IPerformsClickOnALink, WrapsDriver{
+public class Google extends Entity implements IPerformsSearch, ILinkList, WrapsDriver{
 	
 	private final static String url = "http://www.google.com/";
 	private SearchBar searchBar;
@@ -42,13 +42,8 @@ public class Google extends Entity implements IPerformsSearch, IPerformsClickOnA
 		searchBar.performSearch(searchString);		
 	}
 
-	public void clickOn(int index) {
-		linksAreFound.clickOn(index);		
-	}
-
-	@Deprecated
-	public void clickOn(String text) {
-		//It does nothing		
+	public void openLinkByIndex(int index) {
+		linksAreFound.openLinkByIndex(index);		
 	}
 
 	public int getLinkCount() {

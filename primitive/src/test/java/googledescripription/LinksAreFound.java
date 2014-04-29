@@ -8,7 +8,7 @@ import org.primitive.testobjects.ConcstructTestObjectException;
 import org.primitive.testobjects.FunctionalPart;
 import org.primitive.webdriverencapsulations.SingleWindow;
 
-public class LinksAreFound extends FunctionalPart implements IPerformsClickOnALink {
+public class LinksAreFound extends FunctionalPart implements ILinkList {
 	
 	@FindBy(xpath = ".//*[@class='r']/a")
 	private List<WebElement> linksAreFound;
@@ -20,13 +20,9 @@ public class LinksAreFound extends FunctionalPart implements IPerformsClickOnALi
 	}
 
 	@InteractiveMethod
-	public void clickOn(int index) {
-		scriptExecutor.executeScript("arguments[0].click();", linksAreFound.get(index-1));	
-	}
-
-	@Deprecated
-	public void clickOn(String text) {
-		// It does nothing		
+	public void openLinkByIndex(int index) {
+		String reference = linksAreFound.get(index - 1).getAttribute("href");
+		scriptExecutor.executeScript("window.open('" + reference + "');");
 	}
 
 	@InteractiveMethod
