@@ -26,6 +26,7 @@ public class HelloWorldGoogleTest3 {
 		private static final long serialVersionUID = 3206882138088360263L;
 		{
 			put(Platform.WINDOWS, "_win.json");
+			put(Platform.MAC, "_mac.json");
 		}
 
 	};

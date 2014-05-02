@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -46,9 +47,14 @@ public final class FluentWindowConditions extends WebdriverComponent{
 			newHandles.removeAll(oldHandles);
 			for (String handle : newHandles) {
 				from.switchTo().window(handle);
-				if (from.getTitle().contains(title)) {
-					newHandle = handle;
-					return newHandle;
+				try{
+					if (from.getTitle().contains(title)) {
+						newHandle = handle;
+						return newHandle;
+					}
+				}
+				catch (TimeoutException e){
+					continue;
 				}
 			}
 		}
