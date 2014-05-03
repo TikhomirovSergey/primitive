@@ -3,7 +3,7 @@ package org.primitive.webdriverencapsulations.inheritors;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.service.DriverService;
 import org.primitive.configuration.Configuration;
-import org.primitive.configuration.ESupportedDrivers;
+import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 public final class PhantomJSDriverEncapsulation extends WebDriverEncapsulation {

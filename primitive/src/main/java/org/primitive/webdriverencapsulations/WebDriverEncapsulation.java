@@ -14,8 +14,8 @@ import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.primitive.configuration.Configuration;
-import org.primitive.configuration.ESupportedDrivers;
 import org.primitive.configuration.interfaces.IConfigurable;
+import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.eventlisteners.DefaultWebdriverListener;
@@ -78,6 +78,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 
 	private void constructorBody(ESupportedDrivers supporteddriver,
 			Capabilities capabilities, Configuration config) {
+		//TODO refactor this
 		if (supporteddriver.equals(ESupportedDrivers.REMOTE)) { 
 			// if there is RemoteWebDriver and capabilities that requires service
 			LocalRemoteServerInstance.startLocally();

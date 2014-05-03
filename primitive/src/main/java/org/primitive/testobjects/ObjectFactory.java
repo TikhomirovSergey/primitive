@@ -6,7 +6,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.Configuration;
-import org.primitive.configuration.ESupportedDrivers;
+import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.testobjects.interfaces.IDecomposable;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;

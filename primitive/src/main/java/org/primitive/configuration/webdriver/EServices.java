@@ -1,4 +1,4 @@
-package org.primitive.configuration;
+package org.primitive.configuration.webdriver;
 
 import java.io.File;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.primitive.configuration.AbstractConfigurationAccessHelper;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.commonhelpers.ChromeDriverServerBin;
 import org.primitive.configuration.commonhelpers.IEDriverServerBin;

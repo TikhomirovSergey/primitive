@@ -1,7 +1,7 @@
 package org.primitive.webdriverencapsulations.inheritors;
 
 import org.primitive.configuration.Configuration;
-import org.primitive.configuration.ESupportedDrivers;
+import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 import com.opera.core.systems.OperaProfile;

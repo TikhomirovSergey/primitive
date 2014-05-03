@@ -2,7 +2,7 @@ package org.primitive.configuration.commonhelpers;
 
 import org.primitive.configuration.AbstractConfigurationAccessHelper;
 import org.primitive.configuration.Configuration;
-import org.primitive.configuration.ESupportedDrivers;
+import org.primitive.configuration.webdriver.ESupportedDrivers;
 
 /**
  * @author s.tihomirov Parameters of a webdriver that will be created

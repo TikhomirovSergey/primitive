@@ -5,7 +5,7 @@ import java.net.URL;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.CommandExecutor;
 import org.primitive.configuration.Configuration;
-import org.primitive.configuration.ESupportedDrivers;
+import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.localserver.LocalRemoteServerInstance;
 

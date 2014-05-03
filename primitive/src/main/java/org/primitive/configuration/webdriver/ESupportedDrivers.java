@@ -1,4 +1,4 @@
-package org.primitive.configuration;
+package org.primitive.configuration.webdriver;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +10,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.primitive.configuration.Configuration;
 
 import com.opera.core.systems.OperaDriver;
 
