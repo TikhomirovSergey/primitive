@@ -17,6 +17,7 @@ import net.sf.cglib.proxy.Enhancer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.Capabilities;
+import org.primitive.configuration.commonhelpers.AndroidSettings;
 import org.primitive.configuration.commonhelpers.WindowsTimeOuts;
 import org.primitive.configuration.commonhelpers.CapabilitySettings;
 import org.primitive.configuration.commonhelpers.ChromeDriverServerBin;
@@ -220,6 +221,10 @@ public class Configuration {
 		return getSection(WindowsTimeOuts.class);
 	}
 
+	public AndroidSettings getAndroidSettings(){
+		return getSection(AndroidSettings.class);
+	}
+	
 	protected Configuration(String filePath) {
 		super();
 		parseSettings(String.valueOf(filePath));

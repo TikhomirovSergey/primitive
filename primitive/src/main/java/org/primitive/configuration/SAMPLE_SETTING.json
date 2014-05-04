@@ -118,5 +118,22 @@
           "type":"STRING",
           "value":"phantomjs.exe"           
       }       
+  },
+  "Android":
+  {
+      "addSupportedApp":{
+          "type":"STRING",
+          "value":"path to some .apk"           
+      },  
+      "setEmulatorPort":{
+          "type":"INT",
+          "value":"5554"           
+      },  
+      "setSessionTimeoutSeconds":{
+          "type":"INT",
+          "value":"10"           
+      }  
+      /* and more settings that correspond to the methods of io.selendroid.SelendroidConfiguration which set or add something */      
   }
+  
 }
