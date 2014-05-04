@@ -20,10 +20,25 @@ public enum ESupportedDrivers {
 	CHROME(DesiredCapabilities.chrome(), ChromeDriver.class, EServices.CHROMESERVICE), 
 	INTERNETEXPLORER(DesiredCapabilities.internetExplorer(), InternetExplorerDriver.class, EServices.IEXPLORERSERVICE), 
 	SAFARI(DesiredCapabilities.safari(), SafariDriver.class, null), 
-	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null), 
 	OPERA(DesiredCapabilities.opera(), OperaDriver.class, null),
 	HTMLUNIT(DesiredCapabilities.htmlUnitWithJs(), HtmlUnitDriver.class, null), 
-	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE);
+	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE),
+	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null){
+		@Override
+		public void setSystemProperty(Configuration configInstance, Capabilities capabilities) {
+			String brofserName = capabilities.getBrowserName();
+
+			if (DesiredCapabilities.chrome().getBrowserName().equals(brofserName)) {
+				CHROME.setSystemProperty(configInstance);
+			}
+			if (DesiredCapabilities.internetExplorer().getBrowserName().equals(brofserName)) {
+				INTERNETEXPLORER.setSystemProperty(configInstance);
+			}
+			if (DesiredCapabilities.phantomjs().getBrowserName().equals(brofserName)) {
+				PHANTOMJS.setSystemProperty(configInstance);
+			}
+		}	
+	};
 	
 	private Capabilities capabilities;
 	private Class<? extends WebDriver> driverClazz;
@@ -57,9 +72,17 @@ public enum ESupportedDrivers {
 		return driverClazz;
 	}
 
-	public void setSystemProperty(Configuration configInstance) {
+	private void setSystemProperty(Configuration configInstance) {
 		if (service != null) {
 			this.service.setSystemProperty(configInstance);
 		}
+	}
+	
+	/**
+	 * It is useful for {@link RemoteWebDriver} instantiation. Local services depend
+	 * on capabilities 
+	 */
+	public void setSystemProperty(Configuration configInstance, Capabilities ignored) {
+		setSystemProperty(configInstance);
 	}
 }

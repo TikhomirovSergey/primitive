@@ -13,13 +13,11 @@ public final class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	
 	public RemoteWebDriverEncapsulation(Capabilities capabilities, CommandExecutor executor) 	{
 		LocalRemoteServerInstance.startLocally();
-		setSystemProprtyByCapabilities(capabilities, Configuration.byDefault);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(), new Class[] {CommandExecutor.class, Capabilities.class}, new Object[] {executor, capabilities});	
 	}
 	
 	public RemoteWebDriverEncapsulation(Capabilities capabilities, CommandExecutor executor, Configuration config) 	{
 		LocalRemoteServerInstance.startLocally();
-		setSystemProprtyByCapabilities(capabilities, config);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(), new Class[] {CommandExecutor.class, Capabilities.class}, new Object[] {executor, capabilities});	
 		resetAccordingTo(config);
 	}
@@ -27,7 +25,6 @@ public final class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  CommandExecutor executor) 	{
 		LocalRemoteServerInstance.startLocally();
-		setSystemProprtyByCapabilities(desiredCapabilities, Configuration.byDefault);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(), new Class[] {CommandExecutor.class, Capabilities.class, Capabilities.class},
 				new Object[] {executor, desiredCapabilities, requiredCapabilities});
 	}
@@ -35,7 +32,6 @@ public final class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities, 
 			Capabilities requiredCapabilities,  CommandExecutor executor, Configuration config) 	{
 		LocalRemoteServerInstance.startLocally();
-		setSystemProprtyByCapabilities(desiredCapabilities, config);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(), new Class[] {CommandExecutor.class, Capabilities.class, Capabilities.class},
 				new Object[] {executor, desiredCapabilities, requiredCapabilities});
 		resetAccordingTo(config);

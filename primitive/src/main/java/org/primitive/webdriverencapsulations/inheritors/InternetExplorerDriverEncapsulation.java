@@ -2,6 +2,7 @@ package org.primitive.webdriverencapsulations.inheritors;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
@@ -29,12 +30,12 @@ public final class InternetExplorerDriverEncapsulation extends WebDriverEncapsul
 	}
 	
 	public InternetExplorerDriverEncapsulation(int port)	{
-		ESupportedDrivers.INTERNETEXPLORER.setSystemProperty(Configuration.byDefault);
+		ESupportedDrivers.INTERNETEXPLORER.setSystemProperty(Configuration.byDefault, DesiredCapabilities.internetExplorer());
 		createWebDriver(ESupportedDrivers.INTERNETEXPLORER.getUsingWebDriverClass(), new Class[] {int.class}, new Object[] {port}); 
 	}	
 	
 	public InternetExplorerDriverEncapsulation(int port, Configuration config)	{
-		ESupportedDrivers.INTERNETEXPLORER.setSystemProperty(config);
+		ESupportedDrivers.INTERNETEXPLORER.setSystemProperty(config, DesiredCapabilities.internetExplorer());
 		createWebDriver(ESupportedDrivers.INTERNETEXPLORER.getUsingWebDriverClass(), new Class[] {int.class}, new Object[] {port});
 		resetAccordingTo(config);
 	}	

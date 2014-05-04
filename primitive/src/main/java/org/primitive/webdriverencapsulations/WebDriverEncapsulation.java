@@ -11,7 +11,6 @@ import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.internal.WrapsDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.WebDriverEventListener;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.interfaces.IConfigurable;
@@ -38,13 +37,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		WrapsDriver, HasCapabilities {
 	// get tests started with FireFoxDriver by default.
 	private static ESupportedDrivers defaultSupportedDriver = ESupportedDrivers.FIREFOX;
-	private final String chromeBrowser = DesiredCapabilities.chrome()
-			.getBrowserName();
-	private final String internetExplorer = DesiredCapabilities
-			.internetExplorer().getBrowserName();
-	private final String phantomJS = DesiredCapabilities.phantomjs()
-			.getBrowserName();
-
 	private ExtendedEventFiringWebDriver firingDriver;
 	protected Configuration configuration = Configuration.byDefault;
 
@@ -61,31 +53,14 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	private WebElementHighLighter elementHighLighter;
 	private final ConfigurableElements configurableElements = new ConfigurableElements();
 
-	// methods that support constructors functionality:
-	protected void setSystemProprtyByCapabilities(Capabilities capabilities, Configuration config) {
-		String brofserName = capabilities.getBrowserName();
-
-		if (chromeBrowser.equals(brofserName)) {
-			ESupportedDrivers.CHROME.setSystemProperty(config);
-		}
-		if (internetExplorer.equals(brofserName)) {
-			ESupportedDrivers.INTERNETEXPLORER.setSystemProperty(config);
-		}
-		if (phantomJS.equals(brofserName)) {
-			ESupportedDrivers.PHANTOMJS.setSystemProperty(config);
-		}
-	}
-
 	private void constructorBody(ESupportedDrivers supporteddriver,
 			Capabilities capabilities, Configuration config) {
 		//TODO refactor this
 		if (supporteddriver.equals(ESupportedDrivers.REMOTE)) { 
 			// if there is RemoteWebDriver and capabilities that requires service
 			LocalRemoteServerInstance.startLocally();
-			setSystemProprtyByCapabilities(capabilities, config);
-		} else {
-			supporteddriver.setSystemProperty(config);
 		}
+		supporteddriver.setSystemProperty(config, capabilities);
 		createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
 	}
 
