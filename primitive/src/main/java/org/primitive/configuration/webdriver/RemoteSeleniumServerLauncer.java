@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.server.RemoteControlConfiguration;
 import org.openqa.selenium.server.SeleniumServer;
+import org.primitive.configuration.Configuration;
 
 /**
  * 
@@ -54,10 +55,18 @@ class RemoteSeleniumServerLauncer implements ILocalServerLauncher {
 	public void launch() throws Exception {
 		try {
 			server = new SeleniumServer(slowResources, rcc);
+			server.start();
 		} catch (Exception e) {
 			throw new WebDriverException(
 					"Cann't start server on localhost!", e);
 		}	
+	}
+
+
+	@Deprecated
+	@Override
+	public void resetAccordingTo(Configuration config) {
+		//Does nothing		
 	}
 
 }

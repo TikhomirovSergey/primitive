@@ -16,14 +16,14 @@ import com.opera.core.systems.OperaDriver;
 
 
 public enum ESupportedDrivers {
-	FIREFOX((org.openqa.selenium.Capabilities) DesiredCapabilities.firefox(), FirefoxDriver.class, null),
-	CHROME(DesiredCapabilities.chrome(), ChromeDriver.class, EServices.CHROMESERVICE), 
-	INTERNETEXPLORER(DesiredCapabilities.internetExplorer(), InternetExplorerDriver.class, EServices.IEXPLORERSERVICE), 
-	SAFARI(DesiredCapabilities.safari(), SafariDriver.class, null), 
-	OPERA(DesiredCapabilities.opera(), OperaDriver.class, null),
-	HTMLUNIT(DesiredCapabilities.htmlUnitWithJs(), HtmlUnitDriver.class, null), 
-	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE),
-	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null){
+	FIREFOX((org.openqa.selenium.Capabilities) DesiredCapabilities.firefox(), FirefoxDriver.class, null, null),
+	CHROME(DesiredCapabilities.chrome(), ChromeDriver.class, EServices.CHROMESERVICE, null), 
+	INTERNETEXPLORER(DesiredCapabilities.internetExplorer(), InternetExplorerDriver.class, EServices.IEXPLORERSERVICE, null), 
+	SAFARI(DesiredCapabilities.safari(), SafariDriver.class, null, null), 
+	OPERA(DesiredCapabilities.opera(), OperaDriver.class, null, null),
+	HTMLUNIT(DesiredCapabilities.htmlUnitWithJs(), HtmlUnitDriver.class, null, null), 
+	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE, null),
+	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null, new RemoteSeleniumServerLauncer()){
 		@Override
 		public void setSystemProperty(Configuration configInstance, Capabilities capabilities) {
 			String brofserName = capabilities.getBrowserName();
@@ -43,12 +43,14 @@ public enum ESupportedDrivers {
 	private Capabilities capabilities;
 	private Class<? extends WebDriver> driverClazz;
 	private EServices service;
+	private final ILocalServerLauncher serverLauncher;
 
 	private ESupportedDrivers(Capabilities capabilities,
-			Class<? extends WebDriver> driverClazz, EServices sevice) {
+			Class<? extends WebDriver> driverClazz, EServices sevice, ILocalServerLauncher serverLauncher) {
 		this.capabilities = capabilities;
 		this.driverClazz = driverClazz;
 		this.service = sevice;
+		this.serverLauncher = serverLauncher;
 	}
 
 	public static ESupportedDrivers parse(String original) {
@@ -84,5 +86,20 @@ public enum ESupportedDrivers {
 	 */
 	public void setSystemProperty(Configuration configInstance, Capabilities ignored) {
 		setSystemProperty(configInstance);
+	}
+	
+	public void launchRemoteServerLocallyIfWasDefined(Configuration configuration){
+		if (serverLauncher==null){
+			return;
+		}
+		if (serverLauncher.isLaunched()){
+			return;
+		}
+		try {
+			serverLauncher.resetAccordingTo(configuration);
+			serverLauncher.launch();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

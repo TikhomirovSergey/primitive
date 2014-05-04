@@ -21,7 +21,6 @@ import org.primitive.webdriverencapsulations.eventlisteners.DefaultWebdriverList
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
 import org.primitive.webdriverencapsulations.firing.ExtendedEventFiringWebDriver;
-import org.primitive.webdriverencapsulations.localserver.LocalRemoteServerInstance;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.DriverLogs;
@@ -55,11 +54,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 
 	private void constructorBody(ESupportedDrivers supporteddriver,
 			Capabilities capabilities, Configuration config) {
-		//TODO refactor this
-		if (supporteddriver.equals(ESupportedDrivers.REMOTE)) { 
-			// if there is RemoteWebDriver and capabilities that requires service
-			LocalRemoteServerInstance.startLocally();
-		}
+		supporteddriver.launchRemoteServerLocallyIfWasDefined(config);
 		supporteddriver.setSystemProperty(config, capabilities);
 		createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
 	}
