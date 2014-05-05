@@ -12,8 +12,8 @@ public final class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 
 	public RemoteWebDriverEncapsulation(Capabilities capabilities,
 			CommandExecutor executor) {
-		ESupportedDrivers.REMOTE
-				.launchRemoteServerLocallyIfWasDefined(Configuration.byDefault);
+		super();
+		prelaunch(ESupportedDrivers.REMOTE, this.configuration, capabilities);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(),
 				new Class[] { CommandExecutor.class, Capabilities.class },
 				new Object[] { executor, capabilities });
@@ -21,17 +21,18 @@ public final class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 
 	public RemoteWebDriverEncapsulation(Capabilities capabilities,
 			CommandExecutor executor, Configuration config) {
-		ESupportedDrivers.REMOTE.launchRemoteServerLocallyIfWasDefined(config);
+		super();
+		this.configuration = config;
+		prelaunch(ESupportedDrivers.REMOTE, this.configuration, capabilities);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(),
 				new Class[] { CommandExecutor.class, Capabilities.class },
 				new Object[] { executor, capabilities });
-		resetAccordingTo(config);
 	}
 
 	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities,
 			Capabilities requiredCapabilities, CommandExecutor executor) {
-		ESupportedDrivers.REMOTE
-				.launchRemoteServerLocallyIfWasDefined(Configuration.byDefault);
+		super();
+		prelaunch(ESupportedDrivers.REMOTE, this.configuration, desiredCapabilities);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(),
 				new Class[] { CommandExecutor.class, Capabilities.class,
 						Capabilities.class }, new Object[] { executor,
@@ -41,16 +42,18 @@ public final class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities,
 			Capabilities requiredCapabilities, CommandExecutor executor,
 			Configuration config) {
-		ESupportedDrivers.REMOTE.launchRemoteServerLocallyIfWasDefined(config);
+		super();
+		this.configuration = config;
+		prelaunch(ESupportedDrivers.REMOTE, this.configuration, desiredCapabilities);
 		createWebDriver(ESupportedDrivers.REMOTE.getUsingWebDriverClass(),
 				new Class[] { CommandExecutor.class, Capabilities.class,
 						Capabilities.class }, new Object[] { executor,
 						desiredCapabilities, requiredCapabilities });
-		resetAccordingTo(config);
 	}
 
 	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities,
 			Capabilities requiredCapabilities, URL remoteAddress) {
+		super();
 		createWebDriver(
 				ESupportedDrivers.REMOTE.getUsingWebDriverClass(),
 				new Class[] { URL.class, Capabilities.class, Capabilities.class },
@@ -61,11 +64,12 @@ public final class RemoteWebDriverEncapsulation extends WebDriverEncapsulation {
 	public RemoteWebDriverEncapsulation(Capabilities desiredCapabilities,
 			Capabilities requiredCapabilities, URL remoteAddress,
 			Configuration config) {
+		super();
+		this.configuration = config;
 		createWebDriver(
 				ESupportedDrivers.REMOTE.getUsingWebDriverClass(),
 				new Class[] { URL.class, Capabilities.class, Capabilities.class },
 				new Object[] { remoteAddress, desiredCapabilities,
 						requiredCapabilities });
-		resetAccordingTo(config);
 	}
 }

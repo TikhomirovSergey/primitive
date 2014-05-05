@@ -1,5 +1,7 @@
 package org.primitive.configuration.webdriver;
 
+import java.net.URL;
+
 import io.selendroid.SelendroidDriver;
 
 import org.openqa.selenium.Capabilities;
@@ -22,14 +24,14 @@ import com.opera.core.systems.OperaDriver;
 
 
 public enum ESupportedDrivers {
-	FIREFOX(DesiredCapabilities.firefox(), FirefoxDriver.class, null, null),
-	CHROME(DesiredCapabilities.chrome(), ChromeDriver.class, EServices.CHROMESERVICE, null), 
-	INTERNETEXPLORER(DesiredCapabilities.internetExplorer(), InternetExplorerDriver.class, EServices.IEXPLORERSERVICE, null), 
-	SAFARI(DesiredCapabilities.safari(), SafariDriver.class, null, null), 
-	OPERA(DesiredCapabilities.opera(), OperaDriver.class, null, null),
-	HTMLUNIT(DesiredCapabilities.htmlUnitWithJs(), HtmlUnitDriver.class, null, null), 
-	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE, null),
-	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null, new RemoteSeleniumServerLauncer()){
+	FIREFOX(DesiredCapabilities.firefox(), FirefoxDriver.class, null, null, false),
+	CHROME(DesiredCapabilities.chrome(), ChromeDriver.class, EServices.CHROMESERVICE, null, false), 
+	INTERNETEXPLORER(DesiredCapabilities.internetExplorer(), InternetExplorerDriver.class, EServices.IEXPLORERSERVICE, null, false), 
+	SAFARI(DesiredCapabilities.safari(), SafariDriver.class, null, null, false), 
+	OPERA(DesiredCapabilities.opera(), OperaDriver.class, null, null, false),
+	HTMLUNIT(DesiredCapabilities.htmlUnitWithJs(), HtmlUnitDriver.class, null, null, false), 
+	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE, null, false),
+	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null, new RemoteSeleniumServerLauncer(), true){
 		@Override
 		public void setSystemProperty(Configuration configInstance, Capabilities capabilities) {
 			String brofserName = capabilities.getBrowserName();
@@ -45,7 +47,7 @@ public enum ESupportedDrivers {
 			}
 		}	
 	},
-	ANDROID(DesiredCapabilities.android(), SelendroidDriver.class, null, new AndroidServerLauncher()){
+	ANDROID(DesiredCapabilities.android(), SelendroidDriver.class, null, new AndroidServerLauncher(), true){
 		@Override
 		public synchronized void launchRemoteServerLocallyIfWasDefined(Configuration configuration){
 			if (serverLauncher.isLaunched()){
@@ -64,13 +66,15 @@ public enum ESupportedDrivers {
 	private Class<? extends WebDriver> driverClazz;
 	private EServices service;
 	final ILocalServerLauncher serverLauncher;
+	private final boolean startsRemotely; 
 
 	private ESupportedDrivers(Capabilities capabilities,
-			Class<? extends WebDriver> driverClazz, EServices sevice, ILocalServerLauncher serverLauncher) {
+			Class<? extends WebDriver> driverClazz, EServices sevice, ILocalServerLauncher serverLauncher, boolean startsRemotely) {
 		this.capabilities = capabilities;
 		this.driverClazz = driverClazz;
 		this.service = sevice;
 		this.serverLauncher = serverLauncher;
+		this.startsRemotely = startsRemotely;
 	}
 
 	public static ESupportedDrivers parse(String original) {
@@ -121,5 +125,20 @@ public enum ESupportedDrivers {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	/**
+	 * If {@link WebDriver} is started with local server 
+	 * it needs to know local host with the correct port
+	 */
+	public URL getLocalHostForStarting(){
+		if (serverLauncher == null){
+			return null;
+		}
+		return serverLauncher.getLocalHost();
+	}
+	
+	public boolean startsRemotely(){
+		return startsRemotely;
 	}
 }

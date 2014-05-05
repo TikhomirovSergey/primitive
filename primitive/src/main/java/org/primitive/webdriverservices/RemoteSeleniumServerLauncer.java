@@ -1,5 +1,8 @@
 package org.primitive.webdriverservices;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.server.RemoteControlConfiguration;
@@ -74,6 +77,19 @@ public class RemoteSeleniumServerLauncer implements ILocalServerLauncher {
 	@Override
 	public void resetAccordingTo(Configuration config) {
 		//Does nothing		
+	}
+
+
+	@Override
+	public URL getLocalHost() {
+		URL localHost = null;
+		try {
+			localHost = new URL(defaultLocalHost.replace(
+					Integer.toString(defaulPort),
+					Integer.toString(rcc.getPort())));
+		} catch (MalformedURLException ignored) {
+		}
+		return localHost;
 	}
 
 }

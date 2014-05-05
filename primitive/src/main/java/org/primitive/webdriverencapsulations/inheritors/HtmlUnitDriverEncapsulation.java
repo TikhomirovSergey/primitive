@@ -12,6 +12,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
  */
 public final class HtmlUnitDriverEncapsulation extends WebDriverEncapsulation {
 	public HtmlUnitDriverEncapsulation(boolean enableJavascript) {
+		super();
 		createWebDriver(ESupportedDrivers.HTMLUNIT.getUsingWebDriverClass(),
 				new Class<?>[] { boolean.class },
 				new Object[] { enableJavascript });
@@ -19,13 +20,15 @@ public final class HtmlUnitDriverEncapsulation extends WebDriverEncapsulation {
 
 	public HtmlUnitDriverEncapsulation(boolean enableJavascript,
 			Configuration config) {
+		super();
+		this.configuration = config;
 		createWebDriver(ESupportedDrivers.HTMLUNIT.getUsingWebDriverClass(),
 				new Class<?>[] { boolean.class },
 				new Object[] { enableJavascript });
-		resetAccordingTo(config);
 	}
 
 	public HtmlUnitDriverEncapsulation(BrowserVersion version) {
+		super();
 		createWebDriver(ESupportedDrivers.HTMLUNIT.getUsingWebDriverClass(),
 				new Class<?>[] { BrowserVersion.class },
 				new Object[] { version });
@@ -33,9 +36,10 @@ public final class HtmlUnitDriverEncapsulation extends WebDriverEncapsulation {
 
 	public HtmlUnitDriverEncapsulation(BrowserVersion version,
 			Configuration config) {
+		super();
+		this.configuration = config;
 		createWebDriver(ESupportedDrivers.HTMLUNIT.getUsingWebDriverClass(),
 				new Class<?>[] { BrowserVersion.class },
 				new Object[] { version });
-		resetAccordingTo(config);
 	}
 }

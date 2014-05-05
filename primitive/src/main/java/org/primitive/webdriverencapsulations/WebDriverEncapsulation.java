@@ -52,16 +52,15 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	private WebElementHighLighter elementHighLighter;
 	private final ConfigurableElements configurableElements = new ConfigurableElements();
 
-	private void constructorBody(ESupportedDrivers supporteddriver,
-			Capabilities capabilities, Configuration config) {
+	protected static void prelaunch(ESupportedDrivers supporteddriver,
+			Configuration config, Capabilities capabilities) {
 		supporteddriver.launchRemoteServerLocallyIfWasDefined(config);
 		supporteddriver.setSystemProperty(config, capabilities);
-		createWebDriver(supporteddriver.getUsingWebDriverClass(), capabilities);
 	}
 
 	private void constructorBody(ESupportedDrivers supporteddriver,
-			Capabilities capabilities, URL remoteAddress, Configuration config) {
-		if (supporteddriver.equals(ESupportedDrivers.REMOTE)) { 
+			Capabilities capabilities, URL remoteAddress) {
+		if (supporteddriver.startsRemotely()) {
 			// if there is RemoteWebDriver that uses remote service
 			createWebDriver(supporteddriver.getUsingWebDriverClass(),
 					new Class[] { URL.class, Capabilities.class },
@@ -69,7 +68,9 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		} else {
 			Log.message("Remote address " + String.valueOf(remoteAddress)
 					+ " has been ignored");
-			constructorBody(supporteddriver, capabilities, config);
+			createWebDriver(supporteddriver.getUsingWebDriverClass(),
+					new Class[] { Capabilities.class },
+					new Object[] { capabilities });
 		}
 	}
 
@@ -98,38 +99,40 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		}
 	}
 
-	protected void createWebDriver(Class<? extends WebDriver> driverClass,
-			Capabilities capabilities) {
-		createWebDriver(driverClass, new Class<?>[] { Capabilities.class },
-				new Object[] { capabilities });
-	}
-
 	// constructors are below:
 	/** creates instance by specified driver and capabilities */
 	public WebDriverEncapsulation(ESupportedDrivers supporteddriver,
 			Capabilities capabilities) {
-		constructorBody(supporteddriver, capabilities, Configuration.byDefault);
+		prelaunch(supporteddriver, this.configuration, capabilities);
+		constructorBody(supporteddriver, capabilities,
+				(URL) supporteddriver.getLocalHostForStarting());
 	}
-	
-	/**  creates instance by specified driver */
+
+	/** creates instance by specified driver */
 	public WebDriverEncapsulation(ESupportedDrivers supporteddriver) {
 		this(supporteddriver, supporteddriver.getDefaultCapabilities());
 	}
 
-	/**  creates instance by specified driver, capabilities and remote address */
+	/** creates instance by specified driver, capabilities and remote address */
 	public WebDriverEncapsulation(ESupportedDrivers supporteddriver,
 			Capabilities capabilities, URL remoteAddress) {
-		constructorBody(supporteddriver, capabilities, remoteAddress, Configuration.byDefault);
+		constructorBody(supporteddriver, capabilities, remoteAddress);
 	}
 
-	/**  creates instance by specified driver and remote address using default capabilities */
+	/**
+	 * creates instance by specified driver and remote address using default
+	 * capabilities
+	 */
 	public WebDriverEncapsulation(ESupportedDrivers supporteddriver,
 			URL remoteAddress) {
-		this(supporteddriver, supporteddriver.getDefaultCapabilities(), remoteAddress);
+		this(supporteddriver, supporteddriver.getDefaultCapabilities(),
+				remoteAddress);
 	}
 
-	/**  creates instance by specified driver and remote address using specified
-	*configuration */
+	/**
+	 * creates instance by specified driver and remote address using specified
+	 * configuration
+	 */
 	public WebDriverEncapsulation(Configuration configuration) {
 		this.configuration = configuration;
 		ESupportedDrivers supportedDriver = this.configuration
@@ -149,25 +152,27 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 
 		String remoteAdress = this.configuration.getWebDriverSettings()
 				.getRemoteAddress();
-		if (remoteAdress == null) {
-			constructorBody(supportedDriver, capabilities, configuration);
+		if (remoteAdress == null) {//local starting
+			prelaunch(supportedDriver, this.configuration, capabilities);
+			constructorBody(supportedDriver, capabilities,
+					(URL) supportedDriver.getLocalHostForStarting());
 			return;
 		}
 
 		try {
 			URL remoteUrl = new URL(remoteAdress);
-			constructorBody(supportedDriver, capabilities, remoteUrl, configuration);
+			constructorBody(supportedDriver, capabilities, remoteUrl);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 
-	/**  creates instance using externally initiated webdriver **/
+	/** creates instance using externally initiated webdriver **/
 	public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver) {
 		actoinsAfterWebDriverCreation(externallyInitiatedWebDriver);
 	}
 
-	/**  creates instance using externally initiated webdriver **/
+	/** creates instance using externally initiated webdriver **/
 	public WebDriverEncapsulation(WebDriver externallyInitiatedWebDriver,
 			Configuration configuration) {
 		this.configuration = configuration;

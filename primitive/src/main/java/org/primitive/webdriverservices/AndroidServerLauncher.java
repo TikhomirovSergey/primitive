@@ -1,5 +1,8 @@
 package org.primitive.webdriverservices;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import io.selendroid.SelendroidConfiguration;
 import io.selendroid.SelendroidDriver;
 import io.selendroid.SelendroidLauncher;
@@ -57,6 +60,18 @@ public class AndroidServerLauncher implements ILocalServerLauncher {
 			PortBinder.releasePort(this);
 		}
 
+	}
+
+	@Override
+	public URL getLocalHost() {
+		URL localHost = null;
+		try {
+			localHost = new URL(defaultLocalHost.replace(
+					Integer.toString(defaulPort),
+					Integer.toString(configuration.getPort())));
+		} catch (MalformedURLException ignored) {
+		}
+		return localHost;
 	}
 
 }
