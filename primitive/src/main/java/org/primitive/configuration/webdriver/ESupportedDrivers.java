@@ -1,5 +1,7 @@
 package org.primitive.configuration.webdriver;
 
+import io.selendroid.SelendroidDriver;
+
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,12 +13,16 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.primitive.configuration.Configuration;
+import org.primitive.webdriverservices.AndroidServerLauncher;
+import org.primitive.webdriverservices.EServices;
+import org.primitive.webdriverservices.RemoteSeleniumServerLauncer;
+import org.primitive.webdriverservices.interfaces.ILocalServerLauncher;
 
 import com.opera.core.systems.OperaDriver;
 
 
 public enum ESupportedDrivers {
-	FIREFOX((org.openqa.selenium.Capabilities) DesiredCapabilities.firefox(), FirefoxDriver.class, null, null),
+	FIREFOX(DesiredCapabilities.firefox(), FirefoxDriver.class, null, null),
 	CHROME(DesiredCapabilities.chrome(), ChromeDriver.class, EServices.CHROMESERVICE, null), 
 	INTERNETEXPLORER(DesiredCapabilities.internetExplorer(), InternetExplorerDriver.class, EServices.IEXPLORERSERVICE, null), 
 	SAFARI(DesiredCapabilities.safari(), SafariDriver.class, null, null), 
@@ -38,12 +44,26 @@ public enum ESupportedDrivers {
 				PHANTOMJS.setSystemProperty(configInstance);
 			}
 		}	
+	},
+	ANDROID(DesiredCapabilities.android(), SelendroidDriver.class, null, new AndroidServerLauncher()){
+		@Override
+		public synchronized void launchRemoteServerLocallyIfWasDefined(Configuration configuration){
+			if (serverLauncher.isLaunched()){
+				serverLauncher.stop();
+			}
+			try {
+				serverLauncher.resetAccordingTo(configuration);
+				serverLauncher.launch();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
 	};
 	
 	private Capabilities capabilities;
 	private Class<? extends WebDriver> driverClazz;
 	private EServices service;
-	private final ILocalServerLauncher serverLauncher;
+	final ILocalServerLauncher serverLauncher;
 
 	private ESupportedDrivers(Capabilities capabilities,
 			Class<? extends WebDriver> driverClazz, EServices sevice, ILocalServerLauncher serverLauncher) {
@@ -88,7 +108,7 @@ public enum ESupportedDrivers {
 		setSystemProperty(configInstance);
 	}
 	
-	public void launchRemoteServerLocallyIfWasDefined(Configuration configuration){
+	public synchronized void launchRemoteServerLocallyIfWasDefined(Configuration configuration){
 		if (serverLauncher==null){
 			return;
 		}

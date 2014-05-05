@@ -1,17 +1,18 @@
-package org.primitive.configuration.webdriver;
+package org.primitive.webdriverservices;
 
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.server.RemoteControlConfiguration;
 import org.openqa.selenium.server.SeleniumServer;
 import org.primitive.configuration.Configuration;
+import org.primitive.webdriverservices.interfaces.ILocalServerLauncher;
 
 /**
  * 
  * Launches {@link RemoteWebDriver} server locally 
  *
  */
-class RemoteSeleniumServerLauncer implements ILocalServerLauncher {
+public class RemoteSeleniumServerLauncer implements ILocalServerLauncher {
 
 	private SeleniumServer server;
 	private final RemoteControlConfiguration rcc;
@@ -48,14 +49,20 @@ class RemoteSeleniumServerLauncer implements ILocalServerLauncher {
 			return;
 		}
 		server.stop();
+		PortBinder.releasePort(this);
 	}
 
 
 	@Override
 	public void launch() throws Exception {
+		if (PortBinder.isBusy(rcc.getPort())){
+			rcc.setPort(PortBinder.getMaxBusyPort()+1);
+		}
+		
 		try {
 			server = new SeleniumServer(slowResources, rcc);
 			server.start();
+			PortBinder.setBusyPort(this, rcc.getPort());
 		} catch (Exception e) {
 			throw new WebDriverException(
 					"Cann't start server on localhost!", e);

@@ -1,4 +1,4 @@
-package org.primitive.configuration.webdriver;
+package org.primitive.webdriverservices;
 
 import java.io.File;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import org.primitive.configuration.commonhelpers.IEDriverServerBin;
 import org.primitive.configuration.commonhelpers.PhantomJSDriverBin;
 import org.primitive.configuration.interfaces.IHasPathToFile;
 
-enum EServices {
+public enum EServices {
 	CHROMESERVICE(ChromeDriverServerBin.class,
 			ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY,
 			new HashMap<Platform, String>() {
@@ -53,7 +53,7 @@ enum EServices {
 	private final HashMap<Platform, String> defaultServerFileAccordance;
 
 	// system properties should be set
-	void setSystemProperty(Configuration configInstance) {
+	public void setSystemProperty(Configuration configInstance) {
 		if (System.getProperty(propertyName) != null) {
 			return; // if property is already set up
 		}
