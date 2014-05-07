@@ -1,6 +1,8 @@
 package org.primitive.webdriverservices;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.ServerSocket;
 import java.net.URL;
 
 import org.openqa.selenium.WebDriverException;
@@ -22,7 +24,12 @@ public class RemoteSeleniumServerLauncer implements ILocalServerLauncher {
 	final boolean slowResources = false;
 	
 	public RemoteSeleniumServerLauncer() {
-		int port = RemoteControlConfiguration.DEFAULT_PORT;
+		int port;
+		try {
+			port = new ServerSocket(0).getLocalPort();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		rcc = new RemoteControlConfiguration();
 		rcc.setPort(port);
 	}
@@ -52,20 +59,14 @@ public class RemoteSeleniumServerLauncer implements ILocalServerLauncher {
 			return;
 		}
 		server.stop();
-		PortBinder.releasePort(this);
 	}
 
 
 	@Override
-	public void launch() throws Exception {
-		if (PortBinder.isBusy(rcc.getPort())){
-			rcc.setPort(PortBinder.getMaxBusyPort()+1);
-		}
-		
+	public void launch() throws Exception {		
 		try {
 			server = new SeleniumServer(slowResources, rcc);
 			server.start();
-			PortBinder.setBusyPort(this, rcc.getPort());
 		} catch (Exception e) {
 			throw new WebDriverException(
 					"Cann't start server on localhost!", e);

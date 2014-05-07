@@ -2,8 +2,6 @@ package org.primitive.configuration.webdriver;
 
 import java.net.URL;
 
-import io.selendroid.SelendroidDriver;
-
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,7 +13,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.primitive.configuration.Configuration;
-import org.primitive.webdriverservices.AndroidServerLauncher;
 import org.primitive.webdriverservices.EServices;
 import org.primitive.webdriverservices.RemoteSeleniumServerLauncer;
 import org.primitive.webdriverservices.interfaces.ILocalServerLauncher;
@@ -46,20 +43,6 @@ public enum ESupportedDrivers {
 				PHANTOMJS.setSystemProperty(configInstance);
 			}
 		}	
-	},
-	ANDROID(DesiredCapabilities.android(), SelendroidDriver.class, null, new AndroidServerLauncher(), true){
-		@Override
-		public synchronized void launchRemoteServerLocallyIfWasDefined(Configuration configuration){
-			if (serverLauncher.isLaunched()){
-				serverLauncher.stop();
-			}
-			try {
-				serverLauncher.resetAccordingTo(configuration);
-				serverLauncher.launch();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
 	};
 	
 	private Capabilities capabilities;
