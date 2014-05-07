@@ -9,8 +9,6 @@ import org.primitive.configuration.interfaces.IConfigurable;
  *
  */
 public interface ILocalServerLauncher extends IConfigurable {
-	final String defaultLocalHost = "http://localhost:4444/wd/hub";
-	final int defaulPort = 4444;
 	public void launch() throws Exception;
 	public boolean isLaunched();
 	public int getPort();

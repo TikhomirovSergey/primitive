@@ -20,7 +20,6 @@ import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.eventlisteners.DefaultWebdriverListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
-import org.primitive.webdriverencapsulations.firing.ExtendedEventFiringWebDriver;
 import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.DriverLogs;
@@ -36,7 +35,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		WrapsDriver, HasCapabilities {
 	// get tests started with FireFoxDriver by default.
 	private static ESupportedDrivers defaultSupportedDriver = ESupportedDrivers.FIREFOX;
-	private ExtendedEventFiringWebDriver firingDriver;
+	private ClosedFiringWebDriver closedDriver;
 	protected Configuration configuration = Configuration.byDefault;
 
 	private Awaiting awaiting;
@@ -60,14 +59,22 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 
 	private void constructorBody(ESupportedDrivers supporteddriver,
 			Capabilities capabilities, URL remoteAddress) {
-		if (supporteddriver.startsRemotely()) {
-			// if there is RemoteWebDriver that uses remote service
+		if ((supporteddriver.startsRemotely())&(remoteAddress!=null)) {
 			createWebDriver(supporteddriver.getUsingWebDriverClass(),
 					new Class[] { URL.class, Capabilities.class },
 					new Object[] { remoteAddress, capabilities });
 		} else {
-			Log.message("Remote address " + String.valueOf(remoteAddress)
-					+ " has been ignored");
+			if ((remoteAddress==null)&(supporteddriver.requiresRemoteURL())){
+				throw new RuntimeException(
+						"Defined driver '"
+								+ supporteddriver.toString()
+								+ "' requires remote address (URL)! Please, define it in settings.json "
+								+ "or use suitable constructor");
+			}
+			if (remoteAddress!=null){
+				Log.message("Remote address " + String.valueOf(remoteAddress)
+						+ " has been ignored");
+			}
 			createWebDriver(supporteddriver.getUsingWebDriverClass(),
 					new Class[] { Capabilities.class },
 					new Object[] { capabilities });
@@ -105,7 +112,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 			Capabilities capabilities) {
 		prelaunch(supporteddriver, this.configuration, capabilities);
 		constructorBody(supporteddriver, capabilities,
-				(URL) supporteddriver.getLocalHostForStarting());
+				(URL) null);
 	}
 
 	/** creates instance by specified driver */
@@ -155,7 +162,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		if (remoteAdress == null) {//local starting
 			prelaunch(supportedDriver, this.configuration, capabilities);
 			constructorBody(supportedDriver, capabilities,
-					(URL) supportedDriver.getLocalHostForStarting());
+					(URL) null);
 			return;
 		}
 
@@ -187,12 +194,12 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 
 	public void destroy() {
 		InnerSPIServises.removeBy(this);
-		if (firingDriver == null) {
+		if (closedDriver == null) {
 			return;
 		}
 		try {
 			unregisterAll();
-			firingDriver.quit();
+			closedDriver.quit();
 		} catch (WebDriverException e) // it may be already dead
 		{
 			return;
@@ -200,7 +207,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	}
 
 	public WebDriver getWrappedDriver() {
-		return (firingDriver);
+		return (closedDriver);
 	}
 
 	WindowTimeOuts getWindowTimeOuts() {
@@ -248,7 +255,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	}
 
 	public Capabilities getCapabilities() {
-		return firingDriver.getCapabilities();
+		return closedDriver.getCapabilities();
 	}
 
 	private void registerAll() {
@@ -256,13 +263,13 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		List<IExtendedWebDriverEventListener> listeners = servises
 				.getServices(IExtendedWebDriverEventListener.class);
 		for (IExtendedWebDriverEventListener listener : listeners) {
-			firingDriver.register(listener);
+			closedDriver.register(listener);
 		}
 
 		List<WebDriverEventListener> listeners2 = servises
 				.getServices(WebDriverEventListener.class);
 		for (WebDriverEventListener listener : listeners2) {
-			firingDriver.register(listener);
+			closedDriver.register(listener);
 		}
 	}
 
@@ -273,19 +280,19 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 				+ ((HasCapabilities) createdDriver).getCapabilities().asMap()
 						.toString());
 
-		firingDriver = ExtendedEventFiringWebDriver.newInstance(createdDriver);
+		closedDriver = ClosedFiringWebDriver.newInstance(createdDriver);
 
 		elementHighLighter = new WebElementHighLighter();
 
-		awaiting = new Awaiting(firingDriver);
-		pageFactoryWorker = new PageFactoryWorker(firingDriver);
-		scriptExecutor = new ScriptExecutor(firingDriver);
-		frameSupport = new FrameSupport(firingDriver);
-		cookies = new Cookies(firingDriver);
-		timeout = new TimeOut(firingDriver, configuration);
-		logs = new DriverLogs(firingDriver);
-		ime = new Ime(firingDriver);
-		interaction = new Interaction(firingDriver);
+		awaiting = new Awaiting(closedDriver);
+		pageFactoryWorker = new PageFactoryWorker(closedDriver);
+		scriptExecutor = new ScriptExecutor(closedDriver);
+		frameSupport = new FrameSupport(closedDriver);
+		cookies = new Cookies(closedDriver);
+		timeout = new TimeOut(closedDriver, configuration);
+		logs = new DriverLogs(closedDriver);
+		ime = new Ime(closedDriver);
+		interaction = new Interaction(closedDriver);
 		windowTimeOuts = new WindowTimeOuts(configuration);
 
 		configurableElements.addConfigurable(timeout);
@@ -315,19 +322,19 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	}
 
 	public void registerListener(WebDriverEventListener listener) {
-		firingDriver.register(listener);
+		closedDriver.register(listener);
 	}
 
 	public void registerListener(IExtendedWebDriverEventListener listener) {
-		firingDriver.register(listener);
+		closedDriver.register(listener);
 	}
 
 	public void unregisterListener(WebDriverEventListener listener) {
-		firingDriver.unregister(listener);
+		closedDriver.unregister(listener);
 	}
 
 	public void unregisterListener(IExtendedWebDriverEventListener listener) {
-		firingDriver.unregister(listener);
+		closedDriver.unregister(listener);
 	}
 
 	private void unregisterAll() {
@@ -352,6 +359,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 
 	// it goes to another URL
 	public void getTo(String url) {
-		firingDriver.get(url);
+		closedDriver.get(url);
 	}
 }

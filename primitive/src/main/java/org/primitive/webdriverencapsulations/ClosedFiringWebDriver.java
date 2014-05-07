@@ -1,7 +1,14 @@
 /**
  * 
  */
-package org.primitive.webdriverencapsulations.firing;
+package org.primitive.webdriverencapsulations;
+
+import io.appium.java_client.FindsByAccessibilityId;
+import io.appium.java_client.FindsByAndroidUIAutomator;
+import io.appium.java_client.FindsByIosUIAutomation;
+import io.appium.java_client.MobileDriver;
+import io.appium.java_client.MultiTouchAction;
+import io.appium.java_client.TouchAction;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -10,6 +17,7 @@ import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +34,8 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Rotatable;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,6 +49,7 @@ import org.openqa.selenium.internal.WrapsElement;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.Logs;
 import org.openqa.selenium.remote.Augmenter;
+import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.events.internal.EventFiringKeyboard;
@@ -49,30 +60,32 @@ import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEv
 /**
  * @author s.tihomirov For some functions of EventFiringWebDriver
  */
-public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
-		implements HasCapabilities {
+public class ClosedFiringWebDriver extends EventFiringWebDriver
+		implements HasCapabilities, MobileDriver, Rotatable, FindsByIosUIAutomation,
+		FindsByAndroidUIAutomator, FindsByAccessibilityId
+		{
 
 	/**
 	 * @author s.tihomirov
 	 * 
 	 */
-	protected static class ExtendedEventFiringTouch implements TouchScreen {
+	static class ExtendedEventFiringTouch implements TouchScreen {
 		private EventFiringTouch touch;
-		private ExtendedEventFiringWebDriver driver;
+		private ClosedFiringWebDriver driver;
 
 		public ExtendedEventFiringTouch(TouchScreen touch,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			this.driver = driver;
 			touch = new EventFiringTouch(this.driver.driverForExtension,
 					this.driver.extendedDispatcher);
 		}
 
 		private static ExtendedEventFiringTouch newInstance(TouchScreen touch,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			return (ExtendedEventFiringTouch) getProxifiedInnerObject(driver,
 					ExtendedEventFiringTouch.class, new Class[] {
 							TouchScreen.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							touch, driver });
 		}
 
@@ -137,12 +150,12 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov
 	 * 
 	 */
-	protected static class ExtendedEventFiringKeyboard implements Keyboard {
+	static class ExtendedEventFiringKeyboard implements Keyboard {
 		private EventFiringKeyboard keyBoard;
-		private ExtendedEventFiringWebDriver driver;
+		private ClosedFiringWebDriver driver;
 
 		protected ExtendedEventFiringKeyboard(Keyboard keyboard,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			this.driver = driver;
 			this.keyBoard = new EventFiringKeyboard(
 					this.driver.driverForExtension,
@@ -150,11 +163,11 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 		}
 
 		private static ExtendedEventFiringKeyboard newInstance(
-				Keyboard keyboard, ExtendedEventFiringWebDriver driver) {
+				Keyboard keyboard, ClosedFiringWebDriver driver) {
 			return (ExtendedEventFiringKeyboard) getProxifiedInnerObject(
 					driver, ExtendedEventFiringKeyboard.class,
 					new Class[] { Keyboard.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							keyboard, driver });
 		}
 
@@ -179,25 +192,25 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov
 	 * 
 	 */
-	protected static class ExtendedEventFiringMouse implements Mouse {
+	static class ExtendedEventFiringMouse implements Mouse {
 		private EventFiringMouse mouse;
-		private ExtendedEventFiringWebDriver driver;
+		private ClosedFiringWebDriver driver;
 
 		/**
 		 * 
 		 */
 		protected ExtendedEventFiringMouse(Mouse mouse,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			this.driver = driver;
 			this.mouse = new EventFiringMouse(this.driver.driverForExtension,
 					this.driver.extendedDispatcher);
 		}
 
 		private static ExtendedEventFiringMouse newInstance(Mouse mouse,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			return (ExtendedEventFiringMouse) getProxifiedInnerObject(driver,
 					ExtendedEventFiringMouse.class, new Class[] { Mouse.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							mouse, driver });
 		}
 
@@ -245,9 +258,9 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov It is useful for multithread working
 	 */
 	private static class WebDriverInterceptor implements MethodInterceptor {
-		private ExtendedEventFiringWebDriver driver;
+		private ClosedFiringWebDriver driver;
 
-		private void setDriver(ExtendedEventFiringWebDriver driver) {
+		private void setDriver(ClosedFiringWebDriver driver) {
 			this.driver = driver;
 		}
 
@@ -264,7 +277,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 
 	}
 
-	protected static class EventFiringLogs implements Logs {
+	static class EventFiringLogs implements Logs {
 		private Logs browserLogs;
 
 		protected EventFiringLogs(Logs browserLogs) {
@@ -272,7 +285,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 		}
 
 		private static EventFiringLogs newInstance(
-				ExtendedEventFiringWebDriver driver, Logs browserLogs) {
+				ClosedFiringWebDriver driver, Logs browserLogs) {
 			return (EventFiringLogs) getProxifiedInnerObject(driver,
 					EventFiringLogs.class, new Class[] { Logs.class },
 					new Object[] { browserLogs });
@@ -294,7 +307,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov
 	 * 
 	 */
-	protected static class EventFiringIme implements ImeHandler {
+	static class EventFiringIme implements ImeHandler {
 		private ImeHandler ime;
 
 		protected EventFiringIme(ImeHandler ime) {
@@ -302,7 +315,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 		}
 
 		private static EventFiringIme newInstance(
-				ExtendedEventFiringWebDriver driver, ImeHandler ime) {
+				ClosedFiringWebDriver driver, ImeHandler ime) {
 			return (EventFiringIme) getProxifiedInnerObject(driver,
 					EventFiringIme.class, new Class[] { ImeHandler.class },
 					new Object[] { ime });
@@ -335,22 +348,22 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 
 	}
 
-	protected static class ExtendedEventFiringTimeouts implements Timeouts {
+	static class ExtendedEventFiringTimeouts implements Timeouts {
 		private Timeouts timeouts;
-		private ExtendedEventFiringWebDriver driver;
+		private ClosedFiringWebDriver driver;
 
 		protected ExtendedEventFiringTimeouts(Timeouts timeouts,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			this.timeouts = timeouts;
 			this.driver = driver;
 		}
 
 		private static ExtendedEventFiringTimeouts newInstance(
-				Timeouts timeouts, ExtendedEventFiringWebDriver driver) {
+				Timeouts timeouts, ClosedFiringWebDriver driver) {
 			return (ExtendedEventFiringTimeouts) getProxifiedInnerObject(
 					driver, ExtendedEventFiringTimeouts.class,
 					new Class[] { Timeouts.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							timeouts, driver });
 		}
 
@@ -390,21 +403,21 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov
 	 * 
 	 */
-	protected static class ExtendedFiringNavigation implements Navigation {
+	static class ExtendedFiringNavigation implements Navigation {
 
 		private Navigation naviagation;
 
 		protected ExtendedFiringNavigation(Navigation naviagation,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			this.naviagation = naviagation;
 		}
 
 		private static ExtendedFiringNavigation newInstance(
-				Navigation naviagation, ExtendedEventFiringWebDriver driver) {
+				Navigation naviagation, ClosedFiringWebDriver driver) {
 			return (ExtendedFiringNavigation) getProxifiedInnerObject(driver,
 					ExtendedFiringNavigation.class, new Class[] {
 							Navigation.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							naviagation, driver });
 		}
 
@@ -440,19 +453,19 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov
 	 * 
 	 */
-	protected static class EventFiringWindow implements Window {
+	static class EventFiringWindow implements Window {
 		private Window window;
 
 		public EventFiringWindow(Window window,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			this.window = window;
 		}
 
 		private static EventFiringWindow newInstance(Window window,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			return (EventFiringWindow) getProxifiedInnerObject(driver,
 					EventFiringWindow.class, new Class[] { Window.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							window, driver });
 		}
 
@@ -487,22 +500,22 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov
 	 * 
 	 */
-	protected static class ExtendedEventFiringOptions implements Options {
+	static class ExtendedEventFiringOptions implements Options {
 		private Options option;
-		private ExtendedEventFiringWebDriver driver;
+		private ClosedFiringWebDriver driver;
 
 		protected ExtendedEventFiringOptions(Options option,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			this.option = option;
 			this.driver = driver;
 		}
 
 		private static ExtendedEventFiringOptions newInstance(Options option,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			return (ExtendedEventFiringOptions) getProxifiedInnerObject(driver,
 					ExtendedEventFiringOptions.class,
 					new Class[] { Options.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							option, driver });
 		}
 
@@ -566,23 +579,23 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov
 	 * 
 	 */
-	protected static class ExtendedEventFiringTargetLocator implements
+	static class ExtendedEventFiringTargetLocator implements
 			TargetLocator {
 		private TargetLocator targetLocator;
-		private ExtendedEventFiringWebDriver driver;
+		private ClosedFiringWebDriver driver;
 
 		protected ExtendedEventFiringTargetLocator(TargetLocator targetLocator,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			this.targetLocator = targetLocator;
 			this.driver = driver;
 		}
 
 		private static ExtendedEventFiringTargetLocator newInstance(
-				TargetLocator targetLocator, ExtendedEventFiringWebDriver driver) {
+				TargetLocator targetLocator, ClosedFiringWebDriver driver) {
 			return (ExtendedEventFiringTargetLocator) getProxifiedInnerObject(
 					driver, ExtendedEventFiringTargetLocator.class,
 					new Class[] { TargetLocator.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							targetLocator, driver });
 		}
 
@@ -638,14 +651,14 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	/**
 	 * @author s.tihomirov For some functions of EventFiringWebEvement
 	 */
-	protected static class ExtendedEventFiringWebElement implements WebElement,
+	static class ExtendedEventFiringWebElement implements WebElement,
 			Locatable, WrapsElement {
 		private final WebElement element;
 		private WebElement wrapped;
-		private ExtendedEventFiringWebDriver extendedDriver;
+		private ClosedFiringWebDriver extendedDriver;
 
 		protected ExtendedEventFiringWebElement(final WebElement element,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			wrapped = element;
 			this.extendedDriver = driver;
 			
@@ -668,11 +681,11 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 		}
 
 		private static ExtendedEventFiringWebElement newInstance(
-				WebElement element, ExtendedEventFiringWebDriver driver) {
+				WebElement element, ClosedFiringWebDriver driver) {
 			return (ExtendedEventFiringWebElement) getProxifiedInnerObject(
 					driver, ExtendedEventFiringWebElement.class, new Class[] {
 							WebElement.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							element, driver });
 		}
 
@@ -776,21 +789,21 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov
 	 * 
 	 */
-	protected static class EventFiringAlert implements Alert {
+	static class EventFiringAlert implements Alert {
 		private Alert alert;
-		private ExtendedEventFiringWebDriver driver;
+		private ClosedFiringWebDriver driver;
 
 		protected EventFiringAlert(Alert alert,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			this.alert = alert;
 			this.driver = driver;
 		}
 
 		private static EventFiringAlert newInstance(Alert alert,
-				ExtendedEventFiringWebDriver driver) {
+				ClosedFiringWebDriver driver) {
 			return (EventFiringAlert) getProxifiedInnerObject(driver,
 					EventFiringAlert.class, new Class[] { Alert.class,
-							ExtendedEventFiringWebDriver.class }, new Object[] {
+							ClosedFiringWebDriver.class }, new Object[] {
 							alert, driver });
 		}
 
@@ -853,12 +866,12 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 						}
 					});
 
-	public static ExtendedEventFiringWebDriver newInstance(WebDriver driver) {
+	public static ClosedFiringWebDriver newInstance(WebDriver driver) {
 		WebDriverInterceptor webDriverCallBack = new WebDriverInterceptor();
 		Enhancer enhancerForWebDriver = new Enhancer();
 		enhancerForWebDriver.setCallback(webDriverCallBack);
-		enhancerForWebDriver.setSuperclass(ExtendedEventFiringWebDriver.class);
-		ExtendedEventFiringWebDriver proxy = (ExtendedEventFiringWebDriver) enhancerForWebDriver
+		enhancerForWebDriver.setSuperclass(ClosedFiringWebDriver.class);
+		ClosedFiringWebDriver proxy = (ClosedFiringWebDriver) enhancerForWebDriver
 				.create(new Class[] { WebDriver.class },
 						new Object[] { driver });
 		webDriverCallBack.setDriver(proxy);
@@ -868,7 +881,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 
 	// creates proxy objects of nested classes
 	private static Object getProxifiedInnerObject(
-			ExtendedEventFiringWebDriver driver, Class<?> clazz,
+			ClosedFiringWebDriver driver, Class<?> clazz,
 			Class<?>[] paramClasses, Object[] paramValues) {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setCallback(driver.interceptor);
@@ -876,7 +889,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 		return enhancer.create(paramClasses, paramValues);
 	}
 
-	protected ExtendedEventFiringWebDriver(WebDriver driver) {
+	protected ClosedFiringWebDriver(WebDriver driver) {
 		super(driver);
 		driverForExtension = driver;
 	}
@@ -980,7 +993,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 	@Override
 	public WebDriver getWrappedDriver(){
 		//I exclude wrapsDriver from this and super class
-		Class<?>[] implemented = ExtendedEventFiringWebDriver.class.getInterfaces();
+		Class<?>[] implemented = ClosedFiringWebDriver.class.getInterfaces();
 		Class<?>[] implementedBySuper = EventFiringWebDriver.class
 				.getInterfaces();
 		
@@ -1003,7 +1016,7 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 
 		
 		// and create proxy object
-		final ExtendedEventFiringWebDriver proxyfied = this;
+		final ClosedFiringWebDriver proxyfied = this;
 		WebDriver sealedDriver = (WebDriver) Proxy.newProxyInstance(
 				WebDriver.class.getClassLoader(), editedInterfaceArray,
 				new InvocationHandler() {
@@ -1018,6 +1031,85 @@ public class ExtendedEventFiringWebDriver extends EventFiringWebDriver
 				});
 
 		return sealedDriver;		
+	}
+
+	@Override
+	public WebDriver context(String name) {
+		return ((MobileDriver) driverForExtension).context(name);
+	}
+
+	@Override
+	public Set<String> getContextHandles() {
+		return ((MobileDriver) driverForExtension).getContextHandles();
+	}
+
+	@Override
+	public String getContext() {
+		return ((MobileDriver) driverForExtension).getContext();
+	}
+
+	@Override
+	public Response execute(String driverCommand, Map<String, ?> parameters) {
+		return ((MobileDriver) driverForExtension).execute(driverCommand,
+				parameters);
+	}
+
+	@Override
+	public TouchAction performTouchAction(TouchAction touchAction) {
+		return ((MobileDriver) driverForExtension)
+				.performTouchAction(touchAction);
+	}
+
+	@Override
+	public void performMultiTouchAction(MultiTouchAction multiAction) {
+		((MobileDriver) driverForExtension)
+				.performMultiTouchAction(multiAction);
+	}
+
+	@Override
+	public void rotate(ScreenOrientation orientation) {
+		((Rotatable) driverForExtension).rotate(orientation);		
+	}
+
+	@Override
+	public ScreenOrientation getOrientation() {
+		return ((Rotatable) driverForExtension).getOrientation();
+	}
+
+	@Override
+	public WebElement findElementByIosUIAutomation(String using) {
+		return ((FindsByIosUIAutomation) driverForExtension)
+				.findElementByIosUIAutomation(using);
+	}
+
+	@Override
+	public List<WebElement> findElementsByIosUIAutomation(String using) {
+		return ((FindsByIosUIAutomation) driverForExtension)
+				.findElementsByIosUIAutomation(using);
+	}
+
+	@Override
+	public WebElement findElementByAndroidUIAutomator(String using) {
+		return ((FindsByAndroidUIAutomator) driverForExtension)
+				.findElementByAndroidUIAutomator(using);
+	}
+
+	@Override
+	public List<WebElement> findElementsByAndroidUIAutomator(String using) {
+		return ((FindsByAndroidUIAutomator) driverForExtension)
+				.findElementsByAndroidUIAutomator(using);
+	}
+
+	@Override
+	public WebElement findElementByAccessibilityId(String using) {
+		return ((FindsByAccessibilityId) driverForExtension)
+				.findElementByAccessibilityId(using);
+	}
+
+	@Override
+	public List<WebElement> findElementsByAccessibilityId(String using) {
+		return ((FindsByAccessibilityId) driverForExtension)
+				.findElementsByAccessibilityId(using);
 	}
 	
 }

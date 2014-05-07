@@ -1,6 +1,6 @@
 package org.primitive.configuration.webdriver;
 
-import java.net.URL;
+import io.appium.java_client.AppiumDriver;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -21,14 +21,14 @@ import com.opera.core.systems.OperaDriver;
 
 
 public enum ESupportedDrivers {
-	FIREFOX(DesiredCapabilities.firefox(), FirefoxDriver.class, null, null, false),
-	CHROME(DesiredCapabilities.chrome(), ChromeDriver.class, EServices.CHROMESERVICE, null, false), 
-	INTERNETEXPLORER(DesiredCapabilities.internetExplorer(), InternetExplorerDriver.class, EServices.IEXPLORERSERVICE, null, false), 
-	SAFARI(DesiredCapabilities.safari(), SafariDriver.class, null, null, false), 
-	OPERA(DesiredCapabilities.opera(), OperaDriver.class, null, null, false),
-	HTMLUNIT(DesiredCapabilities.htmlUnitWithJs(), HtmlUnitDriver.class, null, null, false), 
-	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE, null, false),
-	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null, new RemoteSeleniumServerLauncer(), true){
+	FIREFOX(DesiredCapabilities.firefox(), FirefoxDriver.class, null, null, false, false),
+	CHROME(DesiredCapabilities.chrome(), ChromeDriver.class, EServices.CHROMESERVICE, null, false, false), 
+	INTERNETEXPLORER(DesiredCapabilities.internetExplorer(), InternetExplorerDriver.class, EServices.IEXPLORERSERVICE, null, false, false), 
+	SAFARI(DesiredCapabilities.safari(), SafariDriver.class, null, null, false, false), 
+	OPERA(DesiredCapabilities.opera(), OperaDriver.class, null, null, false, false),
+	HTMLUNIT(DesiredCapabilities.htmlUnitWithJs(), HtmlUnitDriver.class, null, null, false, false), 
+	PHANTOMJS(DesiredCapabilities.phantomjs(), PhantomJSDriver.class, EServices.PHANTOMJSSERVICE, null, false, false),
+	REMOTE(DesiredCapabilities.firefox(), RemoteWebDriver.class, null, new RemoteSeleniumServerLauncer(), true, false){
 		@Override
 		public void setSystemProperty(Configuration configInstance, Capabilities capabilities) {
 			String brofserName = capabilities.getBrowserName();
@@ -43,21 +43,24 @@ public enum ESupportedDrivers {
 				PHANTOMJS.setSystemProperty(configInstance);
 			}
 		}	
-	};
+	},
+	MOBILE(new DesiredCapabilities(), AppiumDriver.class, null, null, false, true);
 	
 	private Capabilities capabilities;
 	private Class<? extends WebDriver> driverClazz;
 	private EServices service;
 	final ILocalServerLauncher serverLauncher;
 	private final boolean startsRemotely; 
+	private final boolean requiresRemoteURL; 
 
 	private ESupportedDrivers(Capabilities capabilities,
-			Class<? extends WebDriver> driverClazz, EServices sevice, ILocalServerLauncher serverLauncher, boolean startsRemotely) {
+			Class<? extends WebDriver> driverClazz, EServices sevice, ILocalServerLauncher serverLauncher, boolean startsRemotely, boolean requiresRemoteURL) {
 		this.capabilities = capabilities;
 		this.driverClazz = driverClazz;
 		this.service = sevice;
 		this.serverLauncher = serverLauncher;
 		this.startsRemotely = startsRemotely;
+		this.requiresRemoteURL = requiresRemoteURL;
 	}
 
 	public static ESupportedDrivers parse(String original) {
@@ -110,18 +113,11 @@ public enum ESupportedDrivers {
 		}
 	}
 	
-	/**
-	 * If {@link WebDriver} is started with local server 
-	 * it needs to know local host with the correct port
-	 */
-	public URL getLocalHostForStarting(){
-		if (serverLauncher == null){
-			return null;
-		}
-		return serverLauncher.getLocalHost();
-	}
-	
 	public boolean startsRemotely(){
 		return startsRemotely;
+	}
+	
+	public boolean requiresRemoteURL(){
+		return requiresRemoteURL;
 	}
 }
