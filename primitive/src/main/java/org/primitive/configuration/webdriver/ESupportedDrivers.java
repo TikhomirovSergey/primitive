@@ -44,7 +44,7 @@ public enum ESupportedDrivers {
 			}
 		}	
 	},
-	MOBILE(new DesiredCapabilities(), AppiumDriver.class, null, null, false, true);
+	MOBILE(new DesiredCapabilities(), AppiumDriver.class, null, null, true, true);
 	
 	private Capabilities capabilities;
 	private Class<? extends WebDriver> driverClazz;

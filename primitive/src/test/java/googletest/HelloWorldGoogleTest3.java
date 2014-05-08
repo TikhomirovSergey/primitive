@@ -1,4 +1,4 @@
-package googletest.desctop;
+package googletest;
 
 import googledescripription.AnyPage;
 import googledescripription.Google;

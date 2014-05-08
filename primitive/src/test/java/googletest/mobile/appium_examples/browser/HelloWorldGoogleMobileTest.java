@@ -14,10 +14,10 @@ public class HelloWorldGoogleMobileTest {
 	private void test(Google google) throws Exception {
 		try {
 			google.performSearch("Hello world Wikipedia");
-			google.openLinkByIndex(1);
+			google.clickOnLinkByIndex(1);
 			AnyPage anyPage = google.getFromWindow(AnyPage.class, 1);
 			anyPage.close();
-			google.openLinkByIndex(1);
+			google.clickOnLinkByIndex(1);
 			anyPage = google.getFromWindow(AnyPage.class, 1);
 		} finally {
 			google.quit();

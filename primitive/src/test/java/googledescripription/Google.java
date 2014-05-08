@@ -65,4 +65,9 @@ public class Google extends Entity implements IPerformsSearch, ILinkList, WrapsD
 	public WebDriver getWrappedDriver() {
 		return driverEncapsulation.getWrappedDriver();
 	}
+
+	@Override
+	public void clickOnLinkByIndex(int index) {
+		linksAreFound.clickOnLinkByIndex(index);		
+	}
 }

@@ -1,4 +1,4 @@
-package googletest.desctop;
+package googletest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +18,8 @@ import org.primitive.webdriverencapsulations.UnhandledWindowChecker;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import services.MockUnhandledWindowEventListener;
@@ -48,6 +50,9 @@ public class HelloWorldGoogleTest {
 				
 				add("phantomjs_remote.json");
 				add("phantomjs.json");
+				
+				add("android_chrome.json");
+				add("android_chrome_mobile.json");
 			}
 			
 		});
@@ -83,15 +88,25 @@ public class HelloWorldGoogleTest {
 		return new ArrayList<String>();
 	}
 	
-	private void test(Google google) throws Exception {
+	private void test(Google google, boolean toClickOnALinkWhichWasFound) throws Exception {
 		try {
 			google.performSearch("Hello world Wikipedia");
 			Assert.assertEquals(10, google.getLinkCount());
-			google.openLinkByIndex(1);
+			if (!toClickOnALinkWhichWasFound){
+				google.openLinkByIndex(1);
+			}
+			else{
+				google.clickOnLinkByIndex(1);
+			}
 			AnyPage anyPage = google.getFromWindow(AnyPage.class, 1);
 			Thread.sleep(5000);
 			anyPage.close();
-			google.openLinkByIndex(1);
+			if (!toClickOnALinkWhichWasFound){
+				google.openLinkByIndex(1);
+			}
+			else{
+				google.clickOnLinkByIndex(1);
+			}
 			anyPage = google.getFromWindow(AnyPage.class, 1);
 		} finally {
 			google.quit();
@@ -108,11 +123,16 @@ public class HelloWorldGoogleTest {
 		}
 	}
 
-	private void test3(Google google) throws Exception{
+	private void test3(Google google, boolean toClickOnALinkWhichWasFound) throws Exception{
 		try {
 			google.performSearch("Hello world Wikipedia");
 			Assert.assertEquals(10, google.getLinkCount());
-			google.openLinkByIndex(1);
+			if (!toClickOnALinkWhichWasFound){
+				google.openLinkByIndex(1);
+			}
+			else{
+				google.clickOnLinkByIndex(1);
+			}
 			Thread.sleep(5000);
 			UnhandledWindowChecker.getChecker(google.getSwitcher())
 					.killUnexpectedWindows();
@@ -124,40 +144,63 @@ public class HelloWorldGoogleTest {
 	
 	@Test(description = "This is just a test of basic functionality without any configuration")
 	public void typeHelloWorldAndOpenTheFirstLink() throws Exception{
-		test(Google.getNew());
+		test(Google.getNew(), false);
 	}
 
 	@Test(description = "This is just a test of basic functionality with specified configurations")
-	public void typeHelloWorldAndOpenTheFirstLink2() throws Exception{
+	@Parameters(value={"path", "toClick","configList"})
+	public void typeHelloWorldAndOpenTheFirstLink2(
+			@Optional("src/test/resources/configs/desctop/") String path,
+			@Optional("false") String toClick,
+			@Optional("") String configList)
+			throws Exception {
+		
 		List<String> configs = getConfigsByCurrentPlatform();
-		for (String config: configs){
+		String[] configNames = configList.split(",");
+		
+		for (String config: configNames){
+			if (!configs.contains(config)){
+				continue;
+			}
 			Configuration configuration = Configuration
-					.get("src/test/resources/configs/desctop/" + config);
-			test(Google.getNew(configuration));		
+					.get(path + config);
+			test(Google.getNew(configuration), new Boolean(toClick));		
 		}
 	}
 
 	@Test(description = "This is just a test of basic functionality with a webdriver instance that was created externally")
-	public void typeHelloWorldAndOpenTheFirstLink3() throws Exception{
+	@Parameters(value={"path"})
+	public void typeHelloWorldAndOpenTheFirstLink3(
+			@Optional("src/test/resources/configs/desctop/") String path) 
+					throws Exception{
 		Configuration configuration = Configuration
-				.get("src/test/resources/configs/desctop/firefox.json");
+				.get(path + "firefox.json");
 		WebDriverEncapsulation encapsulation = new WebDriverEncapsulation(
 				new FirefoxDriver(), configuration);
-		test(Google.getNew(encapsulation));
+		test(Google.getNew(encapsulation), false);
 	}
 
 	@Test(description = "This is just a test of basic functionality. It performs search and closes google as visible browser window")
-	public void typeHelloWorldAndOpenTheFirstLink4() {
+	@Parameters(value={"path","configList"})
+	public void typeHelloWorldAndOpenTheFirstLink4(
+			@Optional("src/test/resources/configs/desctop/") String path,
+			@Optional("") String configList) throws Exception {
+		
+		String[] configNames = configList.split(",");
 		List<String> configs = getConfigsByCurrentPlatform();
-		for (String config: configs){
+		
+		for (String config: configNames){
+			if (!configs.contains(config)){
+				continue;
+			}
 			Configuration configuration = Configuration
-					.get("src/test/resources/configs/desctop/" + config);
+					.get(path + config);
 			test2(Google.getNew(configuration));
 		}
 	}
 
 	@Test(description = "This is just a test of basic functionality. Checks possibility of service provider working")
-	public void typeHelloWorldAndOpenTheFirstLink5() {
+	public void typeHelloWorldAndOpenTheFirstLink5() throws Exception{
 		MockWebDriverListener.listener = null;
 		MockWindowListener.listener = null;
 		MockWebDriverListener.wasInvoked = false;
@@ -165,7 +208,7 @@ public class HelloWorldGoogleTest {
 		MockWebDriverEventListener2.wasInvoked = false;
 		MockWebDriverEventListener2.wasInvoked = false;
 		try {
-			test(Google.getNew());
+			test(Google.getNew(),false);
 		} catch (Exception e) {
 		}
 		Assert.assertEquals(true, MockWebDriverListener.wasInvoked);
@@ -174,12 +217,23 @@ public class HelloWorldGoogleTest {
 	}
 
 	@Test(description = "This is just a test of basic functionality. It watches how UnhandledWindowChecker kills windows that exist but weren't instantiated as objects of SingleWindow")
-	public void typeHelloWorldAndOpenTheFirstLink6() throws Exception{
+	@Parameters(value={"path", "toClick","configList"})
+	public void typeHelloWorldAndOpenTheFirstLink6(
+			@Optional("src/test/resources/configs/desctop/") String path,
+			@Optional("false") String toClick,
+			@Optional("") String configList) 
+					throws Exception{
+		
+		String[] configNames = configList.split(",");
 		List<String> configs = getConfigsByCurrentPlatform();
-		for (String config: configs){
+		
+		for (String config: configNames){
+			if (!configs.contains(config)){
+				continue;
+			}
 			Configuration configuration = Configuration
-					.get("src/test/resources/configs/desctop/" + config);
-			test3(Google.getNew(configuration));
+					.get(path + config);
+			test3(Google.getNew(configuration), new Boolean(toClick));
 		}
 	}
 

@@ -111,7 +111,8 @@
 				<inherited>true</inherited>
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>src/test/resources/suits/desctop/Scope.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/DesctopBrowserScope.xml</suiteXmlFile>
+						<!---<suiteXmlFile>src/test/resources/suits/MobileBrowserScope.xml</suiteXmlFile> -->
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>

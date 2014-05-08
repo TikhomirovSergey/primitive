@@ -30,4 +30,9 @@ public class LinksAreFound extends FunctionalPart implements ILinkList {
 		return linksAreFound.size();
 	}
 
+	@InteractiveMethod
+	public void clickOnLinkByIndex(int index) {
+		linksAreFound.get(index - 1).click();		
+	}
+
 }

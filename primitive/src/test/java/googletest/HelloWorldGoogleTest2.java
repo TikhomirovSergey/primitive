@@ -1,4 +1,4 @@
-package googletest.desctop;
+package googletest;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +17,7 @@ import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FluentWindowConditions;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -79,11 +80,16 @@ public class HelloWorldGoogleTest2 {
 	// settings according to current OS
 	private final HashMap<Platform, List<String>> settings = new HashMap<Platform, List<String>>();
 	
-	private void test(Google google, HowToGetANewWindow howToGet) throws Exception {
+	private void test(Google google, HowToGetANewWindow howToGet, boolean toClickOnALinkWhichWasFound) throws Exception {
 		WaitingThread waitingThread = new WaitingThread(google, howToGet);
 		waitingThread.start();
 		Thread.sleep(1000);
-		google.openLinkByIndex(1);
+		if (!toClickOnALinkWhichWasFound){
+			google.openLinkByIndex(1);
+		}
+		else{
+			google.clickOnLinkByIndex(1);
+		}
 		while (waitingThread.isRunning){Log.message("Waiting for...");}
 		if (waitingThread.exception != null) {
 			throw new RuntimeException(waitingThread.exception);
@@ -93,17 +99,27 @@ public class HelloWorldGoogleTest2 {
 	}
 	
 	@Test(description = "This is just a test of basic functionality. It gets a new object by its partial title and url")
-	@Parameters(value = { "config" })
-	public void typeHelloWorldAndOpenTheFirstLink() throws Exception {
+	@Parameters(value={"path", "toClick","configList"})
+	public void typeHelloWorldAndOpenTheFirstLink(
+			@Optional("src/test/resources/configs/desctop/") String path,
+			@Optional("false") String toClick,
+			@Optional("") String configList)
+			throws Exception {
+		
 		List<String> configs = getConfigsByCurrentPlatform();
-		for (String config: configs){
+		String[] configNames = configList.split(",");
+		
+		for (String config: configNames){
+			if (!configs.contains(config)){
+				continue;
+			}
 			Configuration configuration = Configuration
-					.get("src/test/resources/configs/desctop/" + config);
+					.get(path + config);
 			Google google = Google.getNew(configuration);
 			try {
 				google.performSearch("Hello world Wikipedia");
-				test(google, HowToGetANewWindow.BYPARTIALTITLE);
-				test(google, HowToGetANewWindow.BYPARTIALURL);
+				test(google, HowToGetANewWindow.BYPARTIALTITLE, new Boolean(toClick));
+				test(google, HowToGetANewWindow.BYPARTIALURL, new Boolean(toClick));
 			} finally {
 				google.quit();
 			}
@@ -127,6 +143,9 @@ public class HelloWorldGoogleTest2 {
 				
 				add("phantomjs_remote.json");
 				add("phantomjs.json");
+				
+				add("android_chrome.json");
+				add("android_chrome_mobile.json");
 			}
 			
 		});
