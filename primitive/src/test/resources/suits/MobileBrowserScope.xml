@@ -23,6 +23,7 @@
 	 * Path to chromedriver.exe should be set to PATH environment variable 
 	 * com.android.chrome.apk is installed on the emulator before test is run
 	 * test is run on WIN 8  
+	 * Appium application is launched before test is started.  
   -->
   
   <test name="This is just a test of basic functionality with specified configurations">
