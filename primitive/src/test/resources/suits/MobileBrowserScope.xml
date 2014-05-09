@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Test scope" parallel="false">
 
+  <!---
+  Prerequsites for Android:
+  	 Appium settings: - IP Address = 127.0.0.1
+	 * 				   - Port = 4723
+	 * 				   - Use remote server = yes
+	 * 				   - Launch AVD = {avd name}
+	 * 				   - Device ready timeout = 40 sec
+	 * 				   - Perform full reset = yes
+	 
+	 AVD parameters:
+	 * 				   - Device = Galaxy Nexus 4'65
+	 * 				   - Target = Android 4.3 API Level 18
+	 * 				   - CPU = ARM
+	 * 				   - Skin = WXGA800
+	 * 				   - RAM = 1024M
+	 * 				   - VM Heap = 32
+	 * 				   - Internal Starage = 200
+	 * 				   - Use Host GPU = true
+	 
+	 * Path to chromedriver.exe should be set to PATH environment variable 
+	 * com.android.chrome.apk is installed on the emulator before test is run
+	 * test is run on WIN 8  
+  -->
   
   <test name="This is just a test of basic functionality with specified configurations">
     <parameter name="path" value="src/test/resources/configs/mobile/browser/"/>
