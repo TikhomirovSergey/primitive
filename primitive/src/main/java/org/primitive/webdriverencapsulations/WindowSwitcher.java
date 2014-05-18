@@ -1,6 +1,5 @@
 package org.primitive.webdriverencapsulations;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -123,6 +122,7 @@ public final class WindowSwitcher implements IDestroyable {
 	/**
 	 * returns handle of a new window that we have been waiting for specified
 	 * time. new window should has defined title. We can specify title partially
+	 * as a regular expression
 	 */
 	public synchronized String switchToNewWindow(long timeOutInSeconds, String title)
 			throws NoSuchWindowException {
@@ -146,6 +146,7 @@ public final class WindowSwitcher implements IDestroyable {
 	 * returns handle of a new window that we have been waiting for time that
 	 * specified in configuration. new window should has defined title. We can
 	 * specify title partially
+	 * as a regular expression
 	 */
 	public String switchToNewWindow(String title) throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
@@ -157,23 +158,23 @@ public final class WindowSwitcher implements IDestroyable {
 
 	/**
 	 * returns handle of a new window that we have been waiting for specified
-	 * time. new window should has page that loads by specified URL. We can specify the beginning of required URL
+	 * time. new window should has page that loads by specified URLs. We can specify it as regular expression list
 	 */
-	public synchronized String switchToNewWindow(long timeOutInSeconds, URL url)
+	public synchronized String switchToNewWindow(long timeOutInSeconds, List<String> urls)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
 					+ Long.toString(timeOutInSeconds)
 					+ " seconds. New window should have page "
-					+ " that is loaded by specified URL. Url is "
-					+ url.toString());
+					+ " that is loaded by specified URLs. Urls are "
+					+ urls.toString());
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100,
-					fluent.newWindowIsAppeared(url));
+					fluent.newWindowIsAppeared(urls));
 			changeActiveWindow(newHandle);
 			return newHandle;
 		} catch (TimeoutException e) {
 			throw new NoSuchWindowException(
-					"There is no new window that loads by " + url.toString()
+					"There is no new window that loads by " + urls.toString()
 							+ " ! We have been waiting for "
 							+ Long.toString(timeOutInSeconds) + " seconds", e);
 		}
@@ -182,14 +183,14 @@ public final class WindowSwitcher implements IDestroyable {
 	/**
 	 * returns handle of a new window that we have been waiting for time that
 	 * specified in configuration. new window should has page that loads by
-	 * specified URL. We can specify the beginning of required URL
+	 * specified URL. We can specify it as regular expression list
 	 */
-	public String switchToNewWindow(URL url) throws NoSuchWindowException {
+	public String switchToNewWindow(List<String> urls) throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 		long timeOut = windowTimeOuts.getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
 				windowTimeOuts.defaultTimeForNewWindow);
-		return switchToNewWindow(timeOut, url);
+		return switchToNewWindow(timeOut, urls);
 	}
 
 	synchronized void switchTo(String Handle)

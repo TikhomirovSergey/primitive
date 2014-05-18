@@ -1,8 +1,10 @@
 package org.primitive.webdriverencapsulations.webdrivercomponents;
 
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -37,24 +39,31 @@ public final class FluentWindowConditions extends WebdriverComponent{
 	/*** is here new browser window?
 	* returns handle of a new browser window that we have been waiting for
 	* specified time
-	* new browser window should have defined title. We can specify part of a title**/
+	* new browser window should have defined title. We can specify part of a title
+	* as a regular expression
+	* **/
 	private String getNewHandle(final WebDriver from,
 			final Set<String> oldHandles, String title) {
 		String newHandle = null;
 		Set<String> newHandles = from.getWindowHandles();
 		if (newHandles.size() > oldHandles.size()) {
-
 			newHandles.removeAll(oldHandles);
+			
 			for (String handle : newHandles) {
-				from.switchTo().window(handle);
+				String winTitle = null;			
 				try{
-					if (from.getTitle().contains(title)) {
-						newHandle = handle;
-						return newHandle;
-					}
+					from.switchTo().window(handle);
+					winTitle = from.getTitle();
 				}
 				catch (TimeoutException e){
 					continue;
+				}
+				
+				Pattern p = Pattern.compile("^[" + title + "]");
+				Matcher m = p.matcher(winTitle);
+				if (m.find()){
+					newHandle = handle;
+					return newHandle;
 				}
 			}
 		}
@@ -64,19 +73,26 @@ public final class FluentWindowConditions extends WebdriverComponent{
 	/***is here new browser window?
 	* returns handle of a new browser window that we have been waiting for
 	* specified time
-	* new browser window should have page that is loaded by specified URL
-	* URL can be defined partially (begins with)**/
+	* new browser window should have page that is loaded by specified URLs
+	* URLs can be defined partially as regular expressions*/
 	private String getNewHandle(final WebDriver from,
-			final Set<String> oldHandles, URL url) {
+			final Set<String> oldHandles, List<String> urls) {
 		String newHandle = null;
 		Set<String> newHandles = from.getWindowHandles();
 		if (newHandles.size() > oldHandles.size()) {
 			newHandles.removeAll(oldHandles);
 			for (String handle : newHandles) {
 				from.switchTo().window(handle);
-				if (from.getCurrentUrl().startsWith(url.toString())) {
-					newHandle = handle;
-					return newHandle;
+				String currentUrl = from.getCurrentUrl();
+				
+				for (String url: urls){
+					Pattern p = Pattern.compile("^[" + url + "]");
+					Matcher m = p.matcher(currentUrl);
+					
+					if (m.find()) {
+						newHandle = handle;
+						return newHandle;
+					}					
 				}
 			}
 		}
@@ -142,12 +158,12 @@ public final class FluentWindowConditions extends WebdriverComponent{
 	}
 
 	// fluent waiting of the result. See above
-	public ExpectedCondition<String> newWindowIsAppeared(final URL url) {
+	public ExpectedCondition<String> newWindowIsAppeared(final List<String> urls) {
 		return new ExpectedCondition<String>() {
 			Set<String> oldHandles = driver.getWindowHandles();
 
 			public String apply(final WebDriver from) {
-				return getNewHandle(from, oldHandles, url);
+				return getNewHandle(from, oldHandles, urls);
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Test scope" parallel="false">
+<suite name="Mobile browser test scope" parallel="false">
 
   <!---
   Prerequsites for Android:
@@ -12,7 +12,7 @@
 	 
 	 AVD parameters:
 	 * 				   - Device = Galaxy Nexus 4'65
-	 * 				   - Target = Android 4.3 API Level 18
+	 * 				   - Target = Android 4.4.2 API Level 19
 	 * 				   - CPU = ARM
 	 * 				   - Skin = WXGA800
 	 * 				   - RAM = 1024M
@@ -37,17 +37,6 @@
       </methods>
     </classes>
   </test>  
-  
-  <test name="This is just a test of basic functionality. It performs search and closes google as visible browser window">
-    <parameter name="path" value="src/test/resources/configs/mobile/browser/"/>
-    <parameter name="configList" value="android_chrome_mobile.json,android_chrome.json"/>
-    <classes>
-      <class name="googletest.HelloWorldGoogleTest"/>
-      <methods>
-      	<include name="typeHelloWorldAndOpenTheFirstLink4" />
-      </methods>
-    </classes>
-  </test> <!-- Test -->
   
   <test name="This is just a test of basic functionality. It watches how UnhandledWindowChecker kills windows that exist but weren't instantiated as objects of SingleWindow">
     <parameter name="path" value="src/test/resources/configs/mobile/browser/"/>

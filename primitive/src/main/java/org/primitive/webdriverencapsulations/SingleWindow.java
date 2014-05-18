@@ -42,7 +42,9 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 			return null;
 		}
 	};
-	// It listens to window events and invokes listener methods
+	/**
+	* It listens to window events and invokes listener methods
+	*/
 	private final IWindowListener windowListenerProxy = (IWindowListener) Proxy
 			.newProxyInstance(IWindowListener.class.getClassLoader(),
 					new Class[] { IWindowListener.class },
@@ -64,51 +66,57 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 		windowListenerProxy.whenNewWindewIsAppeared(this);
 	}
 
-	// Static constructor ¹1 - initialization of new window that will appear.
+	/** Static constructor ¹1 - initialization of new window that will appear.
+	 */
 	public static SingleWindow initNewWindow(WindowSwitcher switcher)
 			throws NoSuchWindowException {
 		return (new SingleWindow(switcher, switcher.switchToNewWindow()));
 	}
 
-	// Static constructor ¹1.1
+	/** Static constructor ¹1.1
+	 */
 	public static SingleWindow initNewWindow(WindowSwitcher switcher,
 			long secondsTimeOut) throws NoSuchWindowException {
 		return (new SingleWindow(switcher,
 				switcher.switchToNewWindow(secondsTimeOut)));
 	}
 
-	// Static constructor ¹2 - initialization of new window that will appear.
-	// We use either title of a window or piece of its title. Fragment is
-	// formatted as:
-	// title*, *title, *title*
+	/** Static constructor ¹2 - initialization of new window that will appear.
+	* We use either title of a window or piece of its title. Fragment is
+	* a regular expression
+	*/
 	public static SingleWindow initNewWindow(WindowSwitcher switcher,
 			String title) throws NoSuchWindowException {
 		return (new SingleWindow(switcher, switcher.switchToNewWindow(title)));
 	}
 
-	// Static constructor ¹2.1
+	/** Static constructor ¹2.1
+	 */
 	public static SingleWindow initNewWindow(WindowSwitcher switcher,
 			String title, long secondsTimeOut) throws NoSuchWindowException {
 		return (new SingleWindow(switcher, switcher.switchToNewWindow(
 				secondsTimeOut, title)));
 	}
 
-	// Static constructor ¹3 - initialization of new window that will appear.
-	// We use url of a loaded page.
-	public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url)
+	/** Static constructor ¹3 - initialization of new window that will appear.
+	* We use possible URLs of a loaded page. They can be defined as RegExp
+	*/
+	public static SingleWindow initNewWindow(WindowSwitcher switcher, List<String> urls)
 			throws NoSuchWindowException {
-		return (new SingleWindow(switcher, switcher.switchToNewWindow(url)));
+		return (new SingleWindow(switcher, switcher.switchToNewWindow(urls)));
 	}
 
-	// Static constructor ¹3.1
-	public static SingleWindow initNewWindow(WindowSwitcher switcher, URL url,
+	/** Static constructor ¹3.1
+	 */
+	public static SingleWindow initNewWindow(WindowSwitcher switcher, List<String> urls,
 			long secondsTimeOut) throws NoSuchWindowException {
 		return (new SingleWindow(switcher, switcher.switchToNewWindow(
-				secondsTimeOut, url)));
+				secondsTimeOut, urls)));
 	}
 
-	// Static constructor ¹4 - initialization of new window object by its index.
-	// It is known that window is present
+	/** Static constructor ¹4 - initialization of new window object by its index.
+	* It is known that window is present
+	*/
 	public static SingleWindow initWindowByIndex(WindowSwitcher switcher,
 			int index) throws NoSuchWindowException {
 		String handle = switcher.getWindowHandleByInex(index);

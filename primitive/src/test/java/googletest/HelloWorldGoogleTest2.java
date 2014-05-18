@@ -1,13 +1,13 @@
 package googletest;
-import java.net.URL;
+import googledescripription.AnyPage;
+import googledescripription.Google;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import googledescripription.AnyPage;
-import googledescripription.Google;
 import mocklistener.MockTestListener;
 
 import org.openqa.selenium.Platform;
@@ -34,13 +34,18 @@ public class HelloWorldGoogleTest2 {
 			Awaiting awaiting = new Awaiting(google.getWrappedDriver());
 			FluentWindowConditions fluentWindowConditions = new FluentWindowConditions(google.getWrappedDriver());
 			try {
-				URL url = new URL("http://ru.wikipedia.org/wiki");
+				ArrayList<String> expectedURLs = new ArrayList<String>(){
+					private static final long serialVersionUID = 1L;
+					{
+						add("http://*wikipedia.org/wiki/?(\\?.*)?");
+					}
+				};
 				switch (this) {
 				case BYPARTIALTITLE:
-					awaiting.awaitCondition(4, fluentWindowConditions.newWindowIsAppeared("Hello, world"));
+					awaiting.awaitCondition(4, fluentWindowConditions.newWindowIsAppeared("Hello, world*"));
 					break;
 				default:
-					awaiting.awaitCondition(4, new FluentWindowConditions(google.getWrappedDriver()).newWindowIsAppeared(url));
+					awaiting.awaitCondition(4, new FluentWindowConditions(google.getWrappedDriver()).newWindowIsAppeared(expectedURLs));
 				}
 			} catch (Exception e) {
 				throw new RuntimeException(e);
