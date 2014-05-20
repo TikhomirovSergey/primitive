@@ -26,30 +26,45 @@ public class HelloWorldGoogleTest2 {
 	
 	
 	private enum HowToGetANewWindow {
-		BYPARTIALTITLE,
-		BYPARTIALURL;
-		
-		private AnyPage get(Google google){
-			
-			Awaiting awaiting = new Awaiting(google.getWrappedDriver());
-			FluentWindowConditions fluentWindowConditions = new FluentWindowConditions(google.getWrappedDriver());
-			try {
-				ArrayList<String> expectedURLs = new ArrayList<String>(){
+		BYPARTIALTITLE {
+			@Override
+			AnyPage get(Google google) {
+				Awaiting awaiting = new Awaiting(google.getWrappedDriver());
+				FluentWindowConditions fluentWindowConditions = new FluentWindowConditions(
+						google.getWrappedDriver());
+				try {
+					awaiting.awaitCondition(4, fluentWindowConditions
+							.newWindowIsAppeared("Hello, world*"));
+					return super.get(google);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		},
+		BYPARTIALURL{
+			@Override
+			AnyPage get(Google google) {
+				Awaiting awaiting = new Awaiting(google.getWrappedDriver());
+				ArrayList<String> expectedURLs = new ArrayList<String>() {
 					private static final long serialVersionUID = 1L;
 					{
-						add("http://*wikipedia.org/wiki/?(\\?.*)?");
+						add("wikipedia.org/wiki/?(\\?.*)?");
 					}
 				};
-				switch (this) {
-				case BYPARTIALTITLE:
-					awaiting.awaitCondition(4, fluentWindowConditions.newWindowIsAppeared("Hello, world*"));
-					break;
-				default:
-					awaiting.awaitCondition(4, new FluentWindowConditions(google.getWrappedDriver()).newWindowIsAppeared(expectedURLs));
+
+				try {
+					awaiting.awaitCondition(4, new FluentWindowConditions(
+							google.getWrappedDriver())
+							.newWindowIsAppeared(expectedURLs));
+					return super.get(google);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
 				}
-			} catch (Exception e) {
-				throw new RuntimeException(e);
 			}
+			
+		};
+		
+		AnyPage get(Google google){
 			return google.getFromWindow(AnyPage.class, 1);
 		}
 	}
@@ -104,11 +119,12 @@ public class HelloWorldGoogleTest2 {
 	}
 	
 	@Test(description = "This is just a test of basic functionality. It gets a new object by its partial title and url")
-	@Parameters(value={"path", "toClick","configList"})
+	@Parameters(value={"path", "toClick","configList","howToGetANewWindow"})
 	public void typeHelloWorldAndOpenTheFirstLink(
 			@Optional("src/test/resources/configs/desctop/") String path,
 			@Optional("false") String toClick,
-			@Optional("") String configList)
+			@Optional("") String configList,
+			@Optional("BYPARTIALURL") String howToGetANewWindow)
 			throws Exception {
 		
 		List<String> configs = getConfigsByCurrentPlatform();
@@ -122,9 +138,11 @@ public class HelloWorldGoogleTest2 {
 					.get(path + config);
 			Google google = Google.getNew(configuration);
 			try {
+				String[] howToVars = howToGetANewWindow.split(",");
 				google.performSearch("Hello world Wikipedia");
-				test(google, HowToGetANewWindow.BYPARTIALTITLE, new Boolean(toClick));
-				test(google, HowToGetANewWindow.BYPARTIALURL, new Boolean(toClick));
+				for (String howTo: howToVars){
+					test(google, HowToGetANewWindow.valueOf(howTo), new Boolean(toClick));
+				}
 			} finally {
 				google.quit();
 			}
@@ -149,8 +167,7 @@ public class HelloWorldGoogleTest2 {
 				add("phantomjs_remote.json");
 				add("phantomjs.json");
 				
-				add("android_chrome.json");
-				add("android_chrome_mobile.json");
+				add("android_emulator_chrome.json");
 			}
 			
 		});

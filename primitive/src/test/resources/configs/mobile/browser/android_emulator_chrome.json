@@ -3,7 +3,7 @@
 	  {
 	      "driverName":{
 	          "type":"STRING",
-	          "value":"remote"
+	          "value":"mobile"
 	      },
 		      "remoteAdress":{
 	          "type":"STRING",
@@ -19,12 +19,8 @@
 	      },  
 	      "version": {
 	          "type":"STRING",
-	          "value":"4.3"         
+	          "value":"4.4"         
 	      },    
-	      "platform": {
-	          "type":"STRING",
-	          "value":"WINDOWS"         
-	      },
 	      "app":{
 	          "type":"STRING",
 	          "value":"Chrome"           

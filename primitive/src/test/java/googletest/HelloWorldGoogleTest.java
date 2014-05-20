@@ -51,8 +51,7 @@ public class HelloWorldGoogleTest {
 				add("phantomjs_remote.json");
 				add("phantomjs.json");
 				
-				add("android_chrome.json");
-				add("android_chrome_mobile.json");
+				add("android_emulator_chrome.json");
 			}
 			
 		});
