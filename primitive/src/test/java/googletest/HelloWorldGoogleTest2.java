@@ -28,14 +28,14 @@ public class HelloWorldGoogleTest2 {
 	private enum HowToGetANewWindow {
 		BYPARTIALTITLE {
 			@Override
-			AnyPage get(Google google) {
+			AnyPage get(Google google, long timeOut) {
 				Awaiting awaiting = new Awaiting(google.getWrappedDriver());
 				FluentWindowConditions fluentWindowConditions = new FluentWindowConditions(
 						google.getWrappedDriver());
 				try {
-					awaiting.awaitCondition(4, fluentWindowConditions
+					awaiting.awaitCondition(timeOut, 100, fluentWindowConditions
 							.newWindowIsAppeared("Hello, world*"));
-					return super.get(google);
+					return super.get(google, timeOut);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -43,20 +43,20 @@ public class HelloWorldGoogleTest2 {
 		},
 		BYPARTIALURL{
 			@Override
-			AnyPage get(Google google) {
+			AnyPage get(Google google, long timeOut) {
 				Awaiting awaiting = new Awaiting(google.getWrappedDriver());
 				ArrayList<String> expectedURLs = new ArrayList<String>() {
 					private static final long serialVersionUID = 1L;
 					{
-						add("wikipedia.org/wiki/?(\\?.*)?");
+						add("wikipedia*org/wiki/");
 					}
 				};
 
 				try {
-					awaiting.awaitCondition(4, new FluentWindowConditions(
+					awaiting.awaitCondition(timeOut, 100, new FluentWindowConditions(
 							google.getWrappedDriver())
 							.newWindowIsAppeared(expectedURLs));
-					return super.get(google);
+					return super.get(google, timeOut);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -64,7 +64,7 @@ public class HelloWorldGoogleTest2 {
 			
 		};
 		
-		AnyPage get(Google google){
+		AnyPage get(Google google, long timeOut){
 			return google.getFromWindow(AnyPage.class, 1);
 		}
 	}
@@ -75,17 +75,19 @@ public class HelloWorldGoogleTest2 {
         private Exception exception;
         private AnyPage anyPage;
         private boolean isRunning = false;
+        private final long timeOut;
         
-		private WaitingThread(Google google, HowToGetANewWindow howToGet){
+		private WaitingThread(Google google, HowToGetANewWindow howToGet, long timeOut){
 			this.google = google;
 			this.howToGet = howToGet; 
+			this.timeOut = timeOut;
 		}
 		
 		@Override
 		public void run(){
 			isRunning = true;
 			try	{
-				anyPage = howToGet.get(google);
+				anyPage = howToGet.get(google, timeOut);
 			}
 			catch (Exception e){
 				exception = e;
@@ -100,8 +102,8 @@ public class HelloWorldGoogleTest2 {
 	// settings according to current OS
 	private final HashMap<Platform, List<String>> settings = new HashMap<Platform, List<String>>();
 	
-	private void test(Google google, HowToGetANewWindow howToGet, boolean toClickOnALinkWhichWasFound) throws Exception {
-		WaitingThread waitingThread = new WaitingThread(google, howToGet);
+	private void test(Google google, HowToGetANewWindow howToGet, boolean toClickOnALinkWhichWasFound, long timeOut) throws Exception {
+		WaitingThread waitingThread = new WaitingThread(google, howToGet, timeOut);
 		waitingThread.start();
 		Thread.sleep(1000);
 		if (!toClickOnALinkWhichWasFound){
@@ -119,12 +121,13 @@ public class HelloWorldGoogleTest2 {
 	}
 	
 	@Test(description = "This is just a test of basic functionality. It gets a new object by its partial title and url")
-	@Parameters(value={"path", "toClick","configList","howToGetANewWindow"})
+	@Parameters(value={"path", "toClick","configList","howToGetANewWindow","timeOut"})
 	public void typeHelloWorldAndOpenTheFirstLink(
 			@Optional("src/test/resources/configs/desctop/") String path,
 			@Optional("false") String toClick,
 			@Optional("") String configList,
-			@Optional("BYPARTIALURL") String howToGetANewWindow)
+			@Optional("BYPARTIALURL") String howToGetANewWindow,
+			@Optional("4") String timeOut)
 			throws Exception {
 		
 		List<String> configs = getConfigsByCurrentPlatform();
@@ -141,7 +144,7 @@ public class HelloWorldGoogleTest2 {
 				String[] howToVars = howToGetANewWindow.split(",");
 				google.performSearch("Hello world Wikipedia");
 				for (String howTo: howToVars){
-					test(google, HowToGetANewWindow.valueOf(howTo), new Boolean(toClick));
+					test(google, HowToGetANewWindow.valueOf(howTo), new Boolean(toClick), new Long(timeOut));
 				}
 			} finally {
 				google.quit();

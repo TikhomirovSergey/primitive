@@ -86,7 +86,7 @@ public final class FluentWindowConditions extends WebdriverComponent{
 				String currentUrl = from.getCurrentUrl();
 				
 				for (String url: urls){
-					Pattern p = Pattern.compile("^[" + url + "]");
+					Pattern p = Pattern.compile("^[" + url + "]?(\\?.*)?");
 					Matcher m = p.matcher(currentUrl);
 					
 					if (m.find()) {

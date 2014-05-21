@@ -22,8 +22,6 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	protected final Ime ime;
 	protected final TimeOut timeOuts;
 	protected final WindowSwitcher nativeSwitcher;
-	private static final String URL_OPTIONAL_PATTERN = "/?(\\?.*)?";
-
 	protected Entity(SingleWindow browserWindow)
 			throws ConcstructTestObjectException {
 		super(browserWindow);
@@ -468,7 +466,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
 			private static final long serialVersionUID = -1L;
 			{
-				add(url.toString() + URL_OPTIONAL_PATTERN);
+				add(url.toString());
 			}
 		});
 	}
@@ -490,7 +488,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
 			private static final long serialVersionUID = 1L;
 			{
-				add(url.toString() + URL_OPTIONAL_PATTERN);
+				add(url.toString());
 			}
 		});
 	}
@@ -512,7 +510,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
 			private static final long serialVersionUID = 1L;
 			{
-				add(url.toString() + URL_OPTIONAL_PATTERN);
+				add(url.toString());
 			}
 		});
 	}
@@ -536,7 +534,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
 			private static final long serialVersionUID = 1L;
 			{
-				add(url.toString() + URL_OPTIONAL_PATTERN);
+				add(url.toString());
 			}
 		});
 	}
@@ -583,7 +581,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
 			private static final long serialVersionUID = 1L;
 			{
-				add(url.toString() + URL_OPTIONAL_PATTERN);
+				add(url.toString());
 			}
 			
 		}, timeOutSec);
@@ -608,7 +606,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
 			private static final long serialVersionUID = 1L;
 			{
-				add(url.toString() + URL_OPTIONAL_PATTERN);
+				add(url.toString());
 			}
 			
 		}, timeOutSec);
@@ -633,7 +631,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
 			private static final long serialVersionUID = 1L;
 			{
-				add(url.toString() + URL_OPTIONAL_PATTERN);
+				add(url.toString());
 			}
 			
 		}, timeOutSec);
@@ -658,7 +656,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
 			private static final long serialVersionUID = 1L;
 			{
-				add(url.toString() + URL_OPTIONAL_PATTERN);
+				add(url.toString());
 			}
 			
 		}, timeOutSec);

@@ -16,10 +16,6 @@
 	      "device":{
 	          "type":"STRING",
 	          "value":"Selendroid"    
-	      },  
-	      "version": {
-	          "type":"STRING",
-	          "value":"4.4"         
 	      },    
 	      "app":{
 	          "type":"STRING",
@@ -38,7 +34,7 @@
 	      },
 	      "pageLoadTimeout":{
 	          "type":"LONG",
-	          "value":"60"     
+	          "value":"70"     
 	      }, 
 	      "setScriptTimeout":{
 	          "type":"LONG",
