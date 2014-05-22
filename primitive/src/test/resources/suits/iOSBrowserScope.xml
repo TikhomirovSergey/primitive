@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Mobile browser test scope" parallel="false">
+<suite name="iOS browser test scope" parallel="false">
 
   <!---
-  Prerequsites for Android:
-  	 Appium settings: - IP Address = 127.0.0.1
+  Prerequsites for iOS:
+	 *Appium settings: - IP Address = 0.0.0.0
 	 * 				   - Port = 4723
-	 * 				   - Use remote server = yes
-	 * 				   - Launch AVD = false, no AVD
-	 
-	 emulator parameters:
-	 *                 - Use Genymotion, file http://click.xda-developers.com/api/click?format=go&jsonp=vglnk_jsonp_14007060699877&key=f0a7f91912ae2b52e0700f73990eb321&libId=c92adc0b-b400-42f6-b827-535ae9f0a76b&loc=http%3A%2F%2Fforum.xda-developers.com%2Fshowthread.php%3Ft%3D2528952&v=1&out=http%3A%2F%2Fgoo.gl%2FtfjjMt&ref=https%3A%2F%2Fwww.google.ru%2F&title=%5BGUIDE%5D%20Genymotion%20%7C%20Installing%20ARM%20Translation%20and%20GApps%5BUpdated%20Nov.16%5D%20-%20xda-developers&txt=%3Cu%3E%3Cb%3EARM%20Translation%20Installer%20v1.1%20%3Ci%3E%3Cfont%20size%3D%221%22%3EHosted%20by%20FILETRIP%3C%2Ffont%3E%3C%2Fi%3E%3C%2Fb%3E%3C%2Fu%3E
-	 *                 is downloaded and emulator is patched 
-	 * 				   - API Level 18
-	 
-	 * Path to chromedriver.exe should be set to PATH environment variable 
-	 * com.android.chrome.apk is installed on the emulator before test is run
-	 * emulator if launched firstly. 
-	 * test is run on WIN 8  
-	 * Appium application is launched before test is started.  
+	 * 				   - iOS - 	is switched on
+	 * 				   - Force Device = yes - iPhone Retina (4-inch) or iPad (4-inch)
+	 * 				   - Use mobile Safari = yes
+	 * Environment:
+	 * 				   - Virtual machine that is made by VMWare.Net bridge
+	 * 				   - Mac OS 10.9.
+	 * 				   - xCode 5.0.2 or newer is installed
+	 * 				   - iPhone Simulator for iOS 7.0 is there
+	 * Test is launched and is run on Mac OS virtual machine (local starting).   
   -->
   
   <test name="This is just a test of basic functionality with specified configurations">
     <parameter name="path" value="src/test/resources/configs/mobile/browser/"/>
     <parameter name="toClick" value="true"/>
-    <parameter name="configList" value="android_emulator_chrome.json,android_emulator_chrome_remoteWebDriver.json"/>
+    <parameter name="configList" value="iOS_emulator_safari.json,iOS_emulator_safari_remoteWebDriver.json"/>
     <classes>
       <class name="googletest.HelloWorldGoogleTest"/>
       <methods>
@@ -34,7 +30,7 @@
   
   <test name="This is just a test of basic functionality. It performs search and closes google as visible browser window">
     <parameter name="path" value="src/test/resources/configs/mobile/browser/"/>
-    <parameter name="configList" value="android_emulator_chrome.json,android_emulator_chrome_remoteWebDriver.json"/>
+    <parameter name="configList" value="iOS_emulator_safari.json,iOS_emulator_safari_remoteWebDriver.json"/>
     <classes>
       <class name="googletest.HelloWorldGoogleTest"/>
       <methods>
@@ -46,7 +42,7 @@
   <test name="This is just a test of basic functionality. It watches how UnhandledWindowChecker kills windows that exist but weren't instantiated as objects of SingleWindow">
     <parameter name="path" value="src/test/resources/configs/mobile/browser/"/>
     <parameter name="toClick" value="true"/>
-    <parameter name="configList" value="android_emulator_chrome.json,android_emulator_chrome_remoteWebDriver.json"/>
+    <parameter name="configList" value="iOS_emulator_safari.json,iOS_emulator_safari_remoteWebDriver.json"/>
     <classes>
       <class name="googletest.HelloWorldGoogleTest"/>
       <methods>
@@ -58,7 +54,7 @@
   <test name="This is just a test of basic functionality. It gets a new object by its partial title and url">
     <parameter name="path" value="src/test/resources/configs/mobile/browser/"/>
     <parameter name="toClick" value="true"/>
-    <parameter name="configList" value="android_emulator_chrome.json,android_emulator_chrome_remoteWebDriver.json"/>
+    <parameter name="configList" value="iOS_emulator_safari.json,iOS_emulator_safari_remoteWebDriver.json"/>
     <parameter name="howToGetANewWindow" value="BYPARTIALURL"/>
     <parameter name="timeOut" value="20"/>
     <classes>
