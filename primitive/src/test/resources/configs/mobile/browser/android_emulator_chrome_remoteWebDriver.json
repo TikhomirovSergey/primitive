@@ -5,25 +5,21 @@
 	          "type":"STRING",
 	          "value":"remote"
 	      },
-	      "remoteAdress":{
+		      "remoteAdress":{
 	          "type":"STRING",
-	          "value":"http://0.0.0.0:4723/wd/hub"
-      	      }
+	          "value":"http://127.0.0.1:4723/wd/hub"
+      	  }
 	  },
 	  
 	  "DesiredCapabilities":
 	  {
 	      "device":{
 	          "type":"STRING",
-	          "value":"iPhone Simulator"    
-	      },  
-	      "version": {
-	          "type":"STRING",
-	          "value":"6.1"         
+	          "value":"Selendroid"    
 	      },    
 	      "app":{
 	          "type":"STRING",
-	          "value":"safari"           
+	          "value":"Chrome"           
 	      }
 	  },
 	  "webDriverTimeOuts":
@@ -38,7 +34,7 @@
 	      },
 	      "pageLoadTimeout":{
 	          "type":"LONG",
-	          "value":"60"     
+	          "value":"25"     
 	      }, 
 	      "setScriptTimeout":{
 	          "type":"LONG",

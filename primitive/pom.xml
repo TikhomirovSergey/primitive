@@ -118,7 +118,7 @@
 				<configuration>
 					<suiteXmlFiles>
 						<suiteXmlFile>src/test/resources/suits/DesctopBrowserScope.xml</suiteXmlFile>
-						<suiteXmlFile>src/test/resources/suits/MobileBrowserScope_AndroidEmulator.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/suits/AndroidBrowserScope.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>

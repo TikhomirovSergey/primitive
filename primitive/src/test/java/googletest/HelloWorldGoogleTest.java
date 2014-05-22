@@ -52,6 +52,7 @@ public class HelloWorldGoogleTest {
 				add("phantomjs.json");
 				
 				add("android_emulator_chrome.json");
+				add("android_emulator_chrome_remoteWebDriver.json");
 			}
 			
 		});
@@ -70,6 +71,9 @@ public class HelloWorldGoogleTest {
 				
 				add("phantomjs_remote.json");
 				add("phantomjs.json");
+				
+				add("iOS_emulator_safari.json");
+				add("iOS_emulator_safari_remoteWebDriver.json");
 			}
 			
 		});
