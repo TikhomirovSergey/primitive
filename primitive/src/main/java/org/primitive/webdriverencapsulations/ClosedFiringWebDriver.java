@@ -692,6 +692,14 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 							element, driver });
 		}
 
+		private RemoteWebElement unpackOriginalElement(){
+			WebElement original = wrapped;
+			while (original instanceof WrapsElement) {
+				original = ((WrapsElement) original).getWrappedElement();				
+			}
+			return (RemoteWebElement) original;
+		}
+		
 		@Override
 		public void clear() {
 			element.clear();
@@ -788,44 +796,68 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 
 		@Override
 		public WebElement findElementByAccessibilityId(String arg0) {
-			return new MobileElement((RemoteWebElement) wrapped,
-					(MobileDriver) extendedDriver.originalDriver)
-					.findElementByAccessibilityId(arg0);
+			return newInstance(
+					new MobileElement(unpackOriginalElement(),
+							(MobileDriver) extendedDriver
+									.unpackOriginalDriver())
+							.findElementByAccessibilityId(arg0),
+					extendedDriver);
 		}
 
 		@Override
 		public List<WebElement> findElementsByAccessibilityId(String arg0) {
-			return new MobileElement((RemoteWebElement) wrapped,
-					(MobileDriver) extendedDriver.originalDriver)
+			List<WebElement> found = new MobileElement(unpackOriginalElement(),
+					(MobileDriver) extendedDriver.unpackOriginalDriver())
 					.findElementsByAccessibilityId(arg0);
+			List<WebElement> result = new ArrayList<WebElement>();
+			for (WebElement e : found) {
+				result.add(newInstance(e, extendedDriver));
+			}
+			return result;
 		}
 
 		@Override
 		public WebElement findElementByAndroidUIAutomator(String arg0) {
-			return new MobileElement((RemoteWebElement) wrapped,
-					(MobileDriver) extendedDriver.originalDriver)
-					.findElementByAndroidUIAutomator(arg0);
+			return newInstance(
+					new MobileElement(unpackOriginalElement(),
+							(MobileDriver) extendedDriver
+									.unpackOriginalDriver())
+							.findElementByAndroidUIAutomator(arg0),
+					extendedDriver);
 		}
 
 		@Override
 		public List<WebElement> findElementsByAndroidUIAutomator(String arg0) {
-			return new MobileElement((RemoteWebElement) wrapped,
-					(MobileDriver) extendedDriver.originalDriver)
+			List<WebElement> found = new MobileElement(unpackOriginalElement(),
+					(MobileDriver) extendedDriver.unpackOriginalDriver())
 					.findElementsByAndroidUIAutomator(arg0);
+			List<WebElement> result = new ArrayList<WebElement>();
+			for (WebElement e : found) {
+				result.add(newInstance(e, extendedDriver));
+			}
+			return result;
 		}
 
 		@Override
 		public WebElement findElementByIosUIAutomation(String arg0) {
-			return new MobileElement((RemoteWebElement) wrapped,
-					(MobileDriver) extendedDriver.originalDriver)
-					.findElementByIosUIAutomation(arg0);
+			return newInstance(
+					new MobileElement(unpackOriginalElement(),
+							(MobileDriver) extendedDriver
+									.unpackOriginalDriver())
+							.findElementByIosUIAutomation(arg0),
+					extendedDriver);
 		}
 
 		@Override
 		public List<WebElement> findElementsByIosUIAutomation(String arg0) {
-			return new MobileElement((RemoteWebElement) wrapped,
-					(MobileDriver) extendedDriver.originalDriver)
+			List<WebElement> found = new MobileElement(unpackOriginalElement(),
+					(MobileDriver) extendedDriver.unpackOriginalDriver())
 					.findElementsByIosUIAutomation(arg0);
+			List<WebElement> result = new ArrayList<WebElement>();
+			for (WebElement e : found) {
+				result.add(newInstance(e, extendedDriver));
+			}
+			return result;
 		}
 
 	}
@@ -1080,7 +1112,8 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 
 	@Override
 	public WebDriver context(String name) {
-		return ((MobileDriver) originalDriver).context(name);
+		((MobileDriver) originalDriver).context(name);
+		return this;
 	}
 
 	@Override
@@ -1155,6 +1188,14 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	public List<WebElement> findElementsByAccessibilityId(String using) {
 		return ((FindsByAccessibilityId) originalDriver)
 				.findElementsByAccessibilityId(using);
+	}
+	
+	private WebDriver unpackOriginalDriver(){
+		WebDriver original = originalDriver;
+		while (original instanceof WrapsDriver) {
+			original = ((WrapsDriver) original).getWrappedDriver();				
+		}
+		return original;
 	}
 	
 }
