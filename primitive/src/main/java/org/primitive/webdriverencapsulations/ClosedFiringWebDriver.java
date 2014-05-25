@@ -58,6 +58,7 @@ import org.openqa.selenium.support.events.internal.EventFiringKeyboard;
 import org.openqa.selenium.support.events.internal.EventFiringMouse;
 import org.openqa.selenium.support.events.internal.EventFiringTouch;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
+import org.primitive.webdriverencapsulations.interfaces.IUnpacksRemoteWebElement;
 
 /**
  * @author s.tihomirov For some functions of EventFiringWebDriver
@@ -655,7 +656,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	 */
 	static class DefaultWebElement implements WebElement,
 			Locatable, WrapsElement, FindsByIosUIAutomation,
-			FindsByAndroidUIAutomator, FindsByAccessibilityId {
+			FindsByAndroidUIAutomator, FindsByAccessibilityId, IUnpacksRemoteWebElement {
 		private final WebElement element;
 		private WebElement wrapped;
 		private ClosedFiringWebDriver extendedDriver;
@@ -858,6 +859,11 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 				result.add(newInstance(e, extendedDriver));
 			}
 			return result;
+		}
+
+		@Override
+		public RemoteWebElement unpackRemoteWebElement() {
+			return unpackOriginalElement();
 		}
 
 	}
