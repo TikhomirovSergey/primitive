@@ -3,8 +3,6 @@ package org.primitive.testobjects.interfaces;
 import java.net.URL;
 import java.util.List;
 
-import org.primitive.webdriverencapsulations.WindowSwitcher;
-
 //For objects that can exist in namy browser windows
 public interface IHasManyWindows {
 
@@ -23,7 +21,7 @@ public interface IHasManyWindows {
 
 	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, URL url, long timeOutSec);
 
-	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, WindowSwitcher switcher, String title, long timeOutSec);
+	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass, String title, long timeOutSec);
 
 	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex, Class<T> partClass);
 

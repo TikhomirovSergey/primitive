@@ -15,16 +15,11 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.Beta;
@@ -40,23 +35,16 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Keyboard;
-import org.openqa.selenium.interactions.Mouse;
-import org.openqa.selenium.interactions.TouchScreen;
 import org.openqa.selenium.interactions.internal.Coordinates;
 import org.openqa.selenium.internal.Locatable;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.internal.WrapsElement;
-import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.Logs;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import org.openqa.selenium.support.events.internal.EventFiringKeyboard;
-import org.openqa.selenium.support.events.internal.EventFiringMouse;
-import org.openqa.selenium.support.events.internal.EventFiringTouch;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.interfaces.IUnpacksRemoteWebElement;
 
@@ -68,306 +56,14 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 		FindsByAndroidUIAutomator, FindsByAccessibilityId
 		{
 
-	/**
-	 * @author s.tihomirov
-	 * 
-	 */
-	static class DefaultTouch implements TouchScreen {
-		private EventFiringTouch touch;
-		private ClosedFiringWebDriver driver;
-
-		public DefaultTouch(TouchScreen touch,
-				ClosedFiringWebDriver driver) {
-			this.driver = driver;
-			touch = new EventFiringTouch(this.driver.originalDriver,
-					this.driver.extendedDispatcher);
-		}
-
-		private static DefaultTouch newInstance(TouchScreen touch,
-				ClosedFiringWebDriver driver) {
-			return (DefaultTouch) getProxifiedInnerObject(driver,
-					DefaultTouch.class, new Class[] {
-							TouchScreen.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							touch, driver });
-		}
-
-		@Override
-		public void doubleTap(Coordinates arg0) {
-			touch.doubleTap(arg0);
-		}
-
-		@Override
-		public void down(int arg0, int arg1) {
-			touch.down(arg0, arg1);
-
-		}
-
-		@Override
-		public void flick(int arg0, int arg1) {
-			touch.flick(arg0, arg1);
-		}
-
-		@Override
-		public void flick(Coordinates arg0, int arg1, int arg2, int arg3) {
-			touch.flick(arg0, arg1, arg2, arg3);
-
-		}
-
-		@Override
-		public void longPress(Coordinates arg0) {
-			touch.longPress(arg0);
-		}
-
-		@Override
-		public void move(int arg0, int arg1) {
-			touch.move(arg0, arg1);
-
-		}
-
-		@Override
-		public void scroll(int arg0, int arg1) {
-			touch.scroll(arg0, arg1);
-
-		}
-
-		@Override
-		public void scroll(Coordinates arg0, int arg1, int arg2) {
-			touch.scroll(arg0, arg1, arg2);
-
-		}
-
-		@Override
-		public void singleTap(Coordinates arg0) {
-			touch.singleTap(arg0);
-		}
-
-		@Override
-		public void up(int arg0, int arg1) {
-			touch.up(arg0, arg1);
-		}
-
-	}
-
-	/**
-	 * @author s.tihomirov
-	 * 
-	 */
-	static class DefaultKeyboard implements Keyboard {
-		private EventFiringKeyboard keyBoard;
-		private ClosedFiringWebDriver driver;
-
-		protected DefaultKeyboard(Keyboard keyboard,
-				ClosedFiringWebDriver driver) {
-			this.driver = driver;
-			this.keyBoard = new EventFiringKeyboard(
-					this.driver.originalDriver,
-					this.driver.extendedDispatcher);
-		}
-
-		private static DefaultKeyboard newInstance(
-				Keyboard keyboard, ClosedFiringWebDriver driver) {
-			return (DefaultKeyboard) getProxifiedInnerObject(
-					driver, DefaultKeyboard.class,
-					new Class[] { Keyboard.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							keyboard, driver });
-		}
-
-		@Override
-		public void sendKeys(CharSequence... arg0) {
-			keyBoard.sendKeys(arg0);
-		}
-
-		@Override
-		public void pressKey(CharSequence arg0) {
-			keyBoard.pressKey(arg0);
-		}
-
-		@Override
-		public void releaseKey(CharSequence arg0) {
-			keyBoard.pressKey(arg0);
-		}
-
-	}
-
-	/**
-	 * @author s.tihomirov
-	 * 
-	 */
-	static class DefaultMouse implements Mouse {
-		private EventFiringMouse mouse;
-		private ClosedFiringWebDriver driver;
-
-		/**
-		 * 
-		 */
-		protected DefaultMouse(Mouse mouse,
-				ClosedFiringWebDriver driver) {
-			this.driver = driver;
-			this.mouse = new EventFiringMouse(this.driver.originalDriver,
-					this.driver.extendedDispatcher);
-		}
-
-		private static DefaultMouse newInstance(Mouse mouse,
-				ClosedFiringWebDriver driver) {
-			return (DefaultMouse) getProxifiedInnerObject(driver,
-					DefaultMouse.class, new Class[] { Mouse.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							mouse, driver });
-		}
-
-		@Override
-		public void click(Coordinates arg0) {
-			mouse.click(arg0);
-		}
-
-		@Override
-		public void contextClick(Coordinates arg0) {
-			mouse.contextClick(arg0);
-
-		}
-
-		@Override
-		public void doubleClick(Coordinates arg0) {
-			mouse.doubleClick(arg0);
-		}
-
-		@Override
-		public void mouseDown(Coordinates arg0) {
-			mouse.mouseDown(arg0);
-		}
-
-		@Override
-		public void mouseMove(Coordinates arg0) {
-			mouse.mouseMove(arg0);
-
-		}
-
-		@Override
-		public void mouseMove(Coordinates arg0, long arg1, long arg2) {
-			mouse.mouseMove(arg0, arg1, arg2);
-
-		}
-
-		@Override
-		public void mouseUp(Coordinates arg0) {
-			mouse.mouseUp(arg0);
-		}
-
-	}
-
-	/**
-	 * @author s.tihomirov It is useful for multithread working
-	 */
-	private static class WebDriverInterceptor implements MethodInterceptor {
-		private ClosedFiringWebDriver driver;
-
-		private void setDriver(ClosedFiringWebDriver driver) {
-			this.driver = driver;
-		}
-
-		@Override
-		public synchronized Object intercept(Object proxy, Method method,
-				Object[] args, MethodProxy methodProxy) throws Throwable {
-			try {
-				return methodProxy.invokeSuper(proxy, args);
-			} catch (Exception e) {
-				driver.extendedDispatcher.onException(e, driver);
-				throw e;
-			}
-		}
-
-	}
-
-	static class DefaultLogs implements Logs {
-		private Logs browserLogs;
-
-		protected DefaultLogs(Logs browserLogs) {
-			this.browserLogs = browserLogs;
-		}
-
-		private static DefaultLogs newInstance(
-				ClosedFiringWebDriver driver, Logs browserLogs) {
-			return (DefaultLogs) getProxifiedInnerObject(driver,
-					DefaultLogs.class, new Class[] { Logs.class },
-					new Object[] { browserLogs });
-		}
-
-		@Override
-		public LogEntries get(String arg0) {
-			return browserLogs.get(arg0);
-		}
-
-		@Override
-		public Set<String> getAvailableLogTypes() {
-			return browserLogs.getAvailableLogTypes();
-		}
-
-	}
-
-	/**
-	 * @author s.tihomirov
-	 * 
-	 */
-	static class DefaultIme implements ImeHandler {
-		private ImeHandler ime;
-
-		protected DefaultIme(ImeHandler ime) {
-			this.ime = ime;
-		}
-
-		private static DefaultIme newInstance(
-				ClosedFiringWebDriver driver, ImeHandler ime) {
-			return (DefaultIme) getProxifiedInnerObject(driver,
-					DefaultIme.class, new Class[] { ImeHandler.class },
-					new Object[] { ime });
-		}
-
-		@Override
-		public void activateEngine(String arg0) {
-			ime.activateEngine(arg0);
-		}
-
-		@Override
-		public void deactivate() {
-			ime.deactivate();
-		}
-
-		@Override
-		public String getActiveEngine() {
-			return ime.getActiveEngine();
-		}
-
-		@Override
-		public List<String> getAvailableEngines() {
-			return ime.getAvailableEngines();
-		}
-
-		@Override
-		public boolean isActivated() {
-			return ime.isActivated();
-		}
-
-	}
-
 	static class DefaultTimeouts implements Timeouts {
 		private Timeouts timeouts;
 		private ClosedFiringWebDriver driver;
 
-		protected DefaultTimeouts(Timeouts timeouts,
+		private DefaultTimeouts(Timeouts timeouts,
 				ClosedFiringWebDriver driver) {
 			this.timeouts = timeouts;
 			this.driver = driver;
-		}
-
-		private static DefaultTimeouts newInstance(
-				Timeouts timeouts, ClosedFiringWebDriver driver) {
-			return (DefaultTimeouts) getProxifiedInnerObject(
-					driver, DefaultTimeouts.class,
-					new Class[] { Timeouts.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							timeouts, driver });
 		}
 
 		@Override
@@ -406,120 +102,14 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov
 	 * 
 	 */
-	static class DefaultNavigation implements Navigation {
-
-		private Navigation naviagation;
-
-		protected DefaultNavigation(Navigation naviagation,
-				ClosedFiringWebDriver driver) {
-			this.naviagation = naviagation;
-		}
-
-		private static DefaultNavigation newInstance(
-				Navigation naviagation, ClosedFiringWebDriver driver) {
-			return (DefaultNavigation) getProxifiedInnerObject(driver,
-					DefaultNavigation.class, new Class[] {
-							Navigation.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							naviagation, driver });
-		}
-
-		@Override
-		public void back() {
-			naviagation.back();
-		}
-
-		@Override
-		public void forward() {
-			naviagation.forward();
-		}
-
-		@Override
-		public void refresh() {
-			naviagation.refresh();
-		}
-
-		@Override
-		public void to(String arg0) {
-			naviagation.to(arg0);
-
-		}
-
-		@Override
-		public void to(URL arg0) {
-			naviagation.to(arg0);
-		}
-
-	}
-
-	/**
-	 * @author s.tihomirov
-	 * 
-	 */
-	static class DefaultWindow implements Window {
-		private Window window;
-
-		public DefaultWindow(Window window,
-				ClosedFiringWebDriver driver) {
-			this.window = window;
-		}
-
-		private static DefaultWindow newInstance(Window window,
-				ClosedFiringWebDriver driver) {
-			return (DefaultWindow) getProxifiedInnerObject(driver,
-					DefaultWindow.class, new Class[] { Window.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							window, driver });
-		}
-
-		@Override
-		public Point getPosition() {
-			return window.getPosition();
-		}
-
-		@Override
-		public Dimension getSize() {
-			return window.getSize();
-		}
-
-		@Override
-		public void maximize() {
-			window.maximize();
-		}
-
-		@Override
-		public void setPosition(Point arg0) {
-			window.setPosition(arg0);
-		}
-
-		@Override
-		public void setSize(Dimension arg0) {
-			window.setSize(arg0);
-		}
-
-	}
-
-	/**
-	 * @author s.tihomirov
-	 * 
-	 */
 	static class DefaultOptions implements Options {
 		private Options option;
 		private ClosedFiringWebDriver driver;
 
-		protected DefaultOptions(Options option,
+		private DefaultOptions(Options option,
 				ClosedFiringWebDriver driver) {
 			this.option = option;
 			this.driver = driver;
-		}
-
-		private static DefaultOptions newInstance(Options option,
-				ClosedFiringWebDriver driver) {
-			return (DefaultOptions) getProxifiedInnerObject(driver,
-					DefaultOptions.class,
-					new Class[] { Options.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							option, driver });
 		}
 
 		@Override
@@ -554,26 +144,25 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 
 		@Override
 		public ImeHandler ime() {
-			ImeHandler ime = option.ime();
-			return DefaultIme.newInstance(driver, ime);
+			return option.ime();
 		}
 
 		@Override
 		@Beta
 		public Logs logs() {
-			return DefaultLogs.newInstance(driver, option.logs());
+			return option.logs();
 		}
 
 		@Override
 		public Timeouts timeouts() {
-			return DefaultTimeouts.newInstance(option.timeouts(),
+			return new DefaultTimeouts(option.timeouts(),
 					driver);
 		}
 
 		@Override
 		@Beta
 		public Window window() {
-			return DefaultWindow.newInstance(option.window(), driver);
+			return option.window();
 		}
 
 	}
@@ -587,30 +176,21 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 		private TargetLocator targetLocator;
 		private ClosedFiringWebDriver driver;
 
-		protected DefaultTargetLocator(TargetLocator targetLocator,
+		private DefaultTargetLocator(TargetLocator targetLocator,
 				ClosedFiringWebDriver driver) {
 			this.targetLocator = targetLocator;
 			this.driver = driver;
 		}
 
-		private static DefaultTargetLocator newInstance(
-				TargetLocator targetLocator, ClosedFiringWebDriver driver) {
-			return (DefaultTargetLocator) getProxifiedInnerObject(
-					driver, DefaultTargetLocator.class,
-					new Class[] { TargetLocator.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							targetLocator, driver });
-		}
-
 		@Override
 		public WebElement activeElement() {
-			return DefaultWebElement.newInstance(
+			return new DefaultWebElement(
 					targetLocator.activeElement(), driver);
 		}
 
 		@Override
 		public Alert alert() {
-			return DefaultAlert.newInstance(targetLocator.alert(), driver);
+			return new DefaultAlert(targetLocator.alert(), driver);
 		}
 
 		@Override
@@ -661,7 +241,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 		private WebElement wrapped;
 		private ClosedFiringWebDriver extendedDriver;
 
-		protected DefaultWebElement(final WebElement element,
+		private DefaultWebElement(final WebElement element,
 				ClosedFiringWebDriver driver) {
 			wrapped = element;
 			this.extendedDriver = driver;
@@ -684,15 +264,6 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 					});
 		}
 
-		private static DefaultWebElement newInstance(
-				WebElement element, ClosedFiringWebDriver driver) {
-			return (DefaultWebElement) getProxifiedInnerObject(
-					driver, DefaultWebElement.class, new Class[] {
-							WebElement.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							element, driver });
-		}
-
 		private RemoteWebElement unpackOriginalElement(){
 			WebElement original = wrapped;
 			while (original instanceof WrapsElement) {
@@ -713,7 +284,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 
 		@Override
 		public WebElement findElement(By by) {
-			return newInstance(element.findElement(by), extendedDriver);
+			return new DefaultWebElement(element.findElement(by), extendedDriver);
 		}
 
 		@Override
@@ -721,7 +292,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 			List<WebElement> temp = element.findElements(by);
 			List<WebElement> result = new ArrayList<WebElement>(temp.size());
 			for (WebElement element : temp) {
-				result.add(newInstance(element, extendedDriver));
+				result.add(new DefaultWebElement(element, extendedDriver));
 			}
 			return result;
 		}
@@ -797,7 +368,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 
 		@Override
 		public WebElement findElementByAccessibilityId(String arg0) {
-			return newInstance(
+			return new DefaultWebElement(
 					new MobileElement(unpackOriginalElement(),
 							(MobileDriver) extendedDriver
 									.unpackOriginalDriver())
@@ -812,14 +383,14 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 					.findElementsByAccessibilityId(arg0);
 			List<WebElement> result = new ArrayList<WebElement>();
 			for (WebElement e : found) {
-				result.add(newInstance(e, extendedDriver));
+				result.add(new DefaultWebElement(e, extendedDriver));
 			}
 			return result;
 		}
 
 		@Override
 		public WebElement findElementByAndroidUIAutomator(String arg0) {
-			return newInstance(
+			return new DefaultWebElement(
 					new MobileElement(unpackOriginalElement(),
 							(MobileDriver) extendedDriver
 									.unpackOriginalDriver())
@@ -834,14 +405,14 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 					.findElementsByAndroidUIAutomator(arg0);
 			List<WebElement> result = new ArrayList<WebElement>();
 			for (WebElement e : found) {
-				result.add(newInstance(e, extendedDriver));
+				result.add(new DefaultWebElement(e, extendedDriver));
 			}
 			return result;
 		}
 
 		@Override
 		public WebElement findElementByIosUIAutomation(String arg0) {
-			return newInstance(
+			return new DefaultWebElement(
 					new MobileElement(unpackOriginalElement(),
 							(MobileDriver) extendedDriver
 									.unpackOriginalDriver())
@@ -856,7 +427,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 					.findElementsByIosUIAutomation(arg0);
 			List<WebElement> result = new ArrayList<WebElement>();
 			for (WebElement e : found) {
-				result.add(newInstance(e, extendedDriver));
+				result.add(new DefaultWebElement(e, extendedDriver));
 			}
 			return result;
 		}
@@ -876,18 +447,10 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 		private Alert alert;
 		private ClosedFiringWebDriver driver;
 
-		protected DefaultAlert(Alert alert,
+		private DefaultAlert(Alert alert,
 				ClosedFiringWebDriver driver) {
 			this.alert = alert;
 			this.driver = driver;
-		}
-
-		private static DefaultAlert newInstance(Alert alert,
-				ClosedFiringWebDriver driver) {
-			return (DefaultAlert) getProxifiedInnerObject(driver,
-					DefaultAlert.class, new Class[] { Alert.class,
-							ClosedFiringWebDriver.class }, new Object[] {
-							alert, driver });
 		}
 
 		@Override
@@ -933,8 +496,6 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	private final List<IExtendedWebDriverEventListener> extendedEventListeners = new ArrayList<IExtendedWebDriverEventListener>();
 
 	private final WebDriver originalDriver;
-	private WebDriverInterceptor interceptor;
-
 	private final IExtendedWebDriverEventListener extendedDispatcher = (IExtendedWebDriverEventListener) Proxy
 			.newProxyInstance(
 					IExtendedWebDriverEventListener.class.getClassLoader(),
@@ -949,30 +510,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 						}
 					});
 
-	public static ClosedFiringWebDriver newInstance(WebDriver driver) {
-		WebDriverInterceptor webDriverCallBack = new WebDriverInterceptor();
-		Enhancer enhancerForWebDriver = new Enhancer();
-		enhancerForWebDriver.setCallback(webDriverCallBack);
-		enhancerForWebDriver.setSuperclass(ClosedFiringWebDriver.class);
-		ClosedFiringWebDriver proxy = (ClosedFiringWebDriver) enhancerForWebDriver
-				.create(new Class[] { WebDriver.class },
-						new Object[] { driver });
-		webDriverCallBack.setDriver(proxy);
-		proxy.interceptor = webDriverCallBack;
-		return proxy;
-	}
-
-	// creates proxy objects of nested classes
-	private static Object getProxifiedInnerObject(
-			ClosedFiringWebDriver driver, Class<?> clazz,
-			Class<?>[] paramClasses, Object[] paramValues) {
-		Enhancer enhancer = new Enhancer();
-		enhancer.setCallback(driver.interceptor);
-		enhancer.setSuperclass(clazz);
-		return enhancer.create(paramClasses, paramValues);
-	}
-
-	protected ClosedFiringWebDriver(WebDriver driver) {
+	ClosedFiringWebDriver(WebDriver driver) {
 		super(driver);
 		originalDriver = driver;
 	}
@@ -987,75 +525,32 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 		extendedEventListeners.remove(eventListener);
 	}
 
-	public Set<String> getWindowHandles() {
-		return super.getWindowHandles();
-	}
-
-	public String getWindowHandle() {
-		return super.getWindowHandle();
-	}
-
-	public String getCurrentUrl() {
-		return super.getCurrentUrl();
-	}
-
-	public String getTitle() {
-		return super.getTitle();
-	}
-
-	public String getPageSource() {
-		return super.getPageSource();
-	}
-
-	public Keyboard getKeyboard() {
-		return DefaultKeyboard.newInstance(super.getKeyboard(),
-				this);
-	}
-
-	public Mouse getMouse() {
-		return DefaultMouse.newInstance(super.getMouse(), this);
-	}
-
-	@Override
-	public TouchScreen getTouch() {
-		return DefaultTouch.newInstance(super.getTouch(), this);
-	}
-
-	// סמגלוסעטלמסעü
 	public Capabilities getCapabilities() {
 		return ((HasCapabilities) originalDriver).getCapabilities();
 	}
 
 	public WebDriver.TargetLocator switchTo() {
 		WebDriver.TargetLocator target = super.switchTo();
-		return DefaultTargetLocator.newInstance(target, this);
-	}
-
-	public void close() {
-		super.close();
+		return new DefaultTargetLocator(target, this);
 	}
 
 	public List<WebElement> findElements(By by) {
 		List<WebElement> temp = super.findElements(by);
 		List<WebElement> result = new ArrayList<WebElement>(temp.size());
 		for (WebElement element : temp) {
-			result.add(DefaultWebElement.newInstance(element, this));
+			result.add(new DefaultWebElement(element, this));
 		}
 		return result;
 	}
 
 	public WebElement findElement(By by) {
 		WebElement temp = super.findElement(by);
-		return DefaultWebElement.newInstance(temp, this);
+		return new DefaultWebElement(temp, this);
 	}
 
 	public Options manage() {
 		Options option = super.manage();
-		return DefaultOptions.newInstance(option, this);
-	}
-
-	public Navigation navigate() {
-		return DefaultNavigation.newInstance(super.navigate(), this);
+		return new DefaultOptions(option, this);
 	}
 
 	public <X> X getScreenshotAs(OutputType<X> target) {

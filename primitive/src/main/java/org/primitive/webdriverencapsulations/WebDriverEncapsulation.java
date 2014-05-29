@@ -280,7 +280,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 				+ ((HasCapabilities) createdDriver).getCapabilities().asMap()
 						.toString());
 
-		closedDriver = ClosedFiringWebDriver.newInstance(createdDriver);
+		closedDriver = new ClosedFiringWebDriver(createdDriver);
 
 		elementHighLighter = new WebElementHighLighter();
 

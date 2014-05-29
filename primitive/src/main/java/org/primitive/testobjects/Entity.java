@@ -388,7 +388,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - simple constructor
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			WindowSwitcher switcher, String title, long timeOutSec)
+			String title, long timeOutSec)
 			throws ConcstructTestObjectException {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
