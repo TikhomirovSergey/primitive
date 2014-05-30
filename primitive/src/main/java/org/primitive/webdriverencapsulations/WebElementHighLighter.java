@@ -1,4 +1,4 @@
-package org.primitive.webdriverencapsulations.ui;
+package org.primitive.webdriverencapsulations;
 
 import java.awt.Color;
 
@@ -19,7 +19,7 @@ import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
 /**
  * @author s.tihomirov it can highlight elements and do screenshots
  */
-public class WebElementHighLighter implements IConfigurable,
+class WebElementHighLighter implements IConfigurable,
 		IWebElementHighlighter {
 
 	// is this doing screenshots

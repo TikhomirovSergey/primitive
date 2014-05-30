@@ -8,18 +8,27 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.WebElement;
 import org.primitive.logging.Log;
-import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
+import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
 
 public final class DefaultWebdriverListener implements
 		IExtendedWebDriverEventListener {
 
-	private WebElementHighLighter highLighter = new WebElementHighLighter();
+	private IWebElementHighlighter highLighter;
 
+	private void highlightElementAndLogAction(WebElement arg0, WebDriver arg1, String logMessage){
+		String elementDescription = elementDescription(arg0);
+		if (highLighter!=null){
+			highLighter.highlightAsInfo(arg1, arg0,
+					logMessage
+							+ elementDescription);
+			return;
+		}
+		Log.message(logMessage + elementDescription);
+	}
+	
 	@Override
 	public void afterChangeValueOf(WebElement arg0, WebDriver arg1) {
-		highLighter.highlightAsInfo(arg1, arg0,
-				"State after element value was changed. "
-						+ elementDescription(arg0));
+		highlightElementAndLogAction(arg0, arg1,"State after element value was changed.");
 	}
 
 	@Override
@@ -55,16 +64,12 @@ public final class DefaultWebdriverListener implements
 
 	@Override
 	public void beforeChangeValueOf(WebElement arg0, WebDriver arg1) {
-		highLighter.highlightAsInfo(arg1, arg0,
-				"State before element value will be changed. "
-						+ elementDescription(arg0));
+		highlightElementAndLogAction(arg0, arg1,"State before element value will be changed.");
 	}
 
 	@Override
 	public void beforeClickOn(WebElement arg0, WebDriver arg1) {
-		highLighter.highlightAsInfo(arg1, arg0,
-				"State before element will be clicked on. "
-						+ elementDescription(arg0));
+		highlightElementAndLogAction(arg0, arg1,"State before element will be clicked on.");
 	}
 
 	@Override
@@ -103,9 +108,7 @@ public final class DefaultWebdriverListener implements
 
 	@Override
 	public void beforeSubmit(WebDriver driver, WebElement element) {
-		highLighter.highlightAsInfo(driver, element,
-				"State before submit will be performed by element: "
-						+ elementDescription(element));
+		highlightElementAndLogAction(element, driver,"State before submit will be performed by element: ");
 	}
 
 	@Override
@@ -192,13 +195,13 @@ public final class DefaultWebdriverListener implements
 			description += " ('" + element.getText() + "')";
 		}
 		if (!description.equals("")) {
-			description = "Element is: " + description;
+			description = " Element is: " + description;
 		}
 		
 		return description;
 	}
 
-	public void setHighLighter(WebElementHighLighter highLighter) {
+	public void setHighLighter(IWebElementHighlighter highLighter) {
 		this.highLighter = highLighter;
 	}
 

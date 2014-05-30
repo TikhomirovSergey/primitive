@@ -20,7 +20,7 @@ import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.eventlisteners.DefaultWebdriverListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
-import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
+import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
 import org.primitive.webdriverencapsulations.webdrivercomponents.DriverLogs;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;
@@ -218,7 +218,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		return (awaiting);
 	}
 
-	public WebElementHighLighter getHighlighter() {
+	public IWebElementHighlighter getHighlighter() {
 		return (elementHighLighter);
 	}
 

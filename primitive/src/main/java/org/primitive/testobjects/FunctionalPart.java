@@ -23,7 +23,7 @@ import org.primitive.testobjects.interfaces.IHasWebElementFrames;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.UnclosedWindowException;
 import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
-import org.primitive.webdriverencapsulations.ui.WebElementHighLighter;
+import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
 import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
 import org.primitive.webdriverencapsulations.webdrivercomponents.Interaction;
 import org.primitive.webdriverencapsulations.webdrivercomponents.PageFactoryWorker;
@@ -55,7 +55,7 @@ public abstract class FunctionalPart extends TestObject implements
 	private Object frameToSwitchOnElem = null;
 	// page object is created by specified entity
 	protected Entity originalEntity;
-	private WebElementHighLighter highLighter;
+	private IWebElementHighlighter highLighter;
 	protected final Interaction interaction;
 
 	// switches to object
