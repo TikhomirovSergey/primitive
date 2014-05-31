@@ -46,7 +46,6 @@ import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
-import org.primitive.webdriverencapsulations.interfaces.IUnpacksRemoteWebElement;
 
 /**
  * @author s.tihomirov For some functions of EventFiringWebDriver
@@ -236,7 +235,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	 */
 	static class DefaultWebElement implements WebElement,
 			Locatable, WrapsElement, FindsByIosUIAutomation,
-			FindsByAndroidUIAutomator, FindsByAccessibilityId, IUnpacksRemoteWebElement {
+			FindsByAndroidUIAutomator, FindsByAccessibilityId{
 		private final WebElement element;
 		private WebElement wrapped;
 		private ClosedFiringWebDriver extendedDriver;
@@ -363,7 +362,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 		}
 
 		public WebElement getWrappedElement() {
-			return wrapped;
+			return unpackOriginalElement();
 		}
 
 		@Override
@@ -430,11 +429,6 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 				result.add(new DefaultWebElement(e, extendedDriver));
 			}
 			return result;
-		}
-
-		@Override
-		public RemoteWebElement unpackRemoteWebElement() {
-			return unpackOriginalElement();
 		}
 
 	}
