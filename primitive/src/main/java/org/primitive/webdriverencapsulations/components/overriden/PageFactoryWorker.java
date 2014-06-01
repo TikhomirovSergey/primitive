@@ -1,9 +1,10 @@
-package org.primitive.webdriverencapsulations.webdrivercomponents;
+package org.primitive.webdriverencapsulations.components.overriden;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
+import org.primitive.webdriverencapsulations.components.WebdriverComponent;
 
 public final class PageFactoryWorker extends WebdriverComponent {
 

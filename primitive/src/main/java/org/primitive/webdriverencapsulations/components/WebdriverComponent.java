@@ -1,4 +1,4 @@
-package org.primitive.webdriverencapsulations.webdrivercomponents;
+package org.primitive.webdriverencapsulations.components;
 
 import org.openqa.selenium.WebDriver;
 

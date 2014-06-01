@@ -16,9 +16,11 @@ import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.interfaces.IDestroyable;
+import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
+import org.primitive.webdriverencapsulations.components.bydefault.NavigationTool;
+import org.primitive.webdriverencapsulations.components.bydefault.WindowTool;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
 import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
-import org.primitive.webdriverencapsulations.webdrivercomponents.WindowTool;
 
 /**
  * @author s.tihomirov It is performs actions on a single window
@@ -29,6 +31,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 	private final String objectWindow;
 	private final WebDriverEncapsulation driverEncapsulation;
 	private final WindowTool windowTool;
+	private final NavigationTool navigationTool;
 	private final WindowReceptionist receptionist;
 	
 
@@ -58,7 +61,10 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 		this.nativeSwitcher = switcher;
 		this.driverEncapsulation = switcher.getWebDriverEncapsulation();
 		this.objectWindow = handle;
-		this.windowTool = new WindowTool(driverEncapsulation.getWrappedDriver());
+		this.windowTool = ComponentFactory.getComponent(WindowTool.class,
+				driverEncapsulation.getWrappedDriver());
+		this.navigationTool = ComponentFactory.getComponent(NavigationTool.class,
+				driverEncapsulation.getWrappedDriver());
 		this.receptionist = nativeSwitcher.getWindowReceptionist();
 		receptionist.addKnownWindow(this);
 		windowEventListeners.addAll(InnerSPIServises.getBy(driverEncapsulation)
@@ -181,33 +187,33 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 	@Override
 	public synchronized void to(String link) {
 		requestToMe();
-		windowTool.to(link);
+		navigationTool.to(link);
 	}
 
 	@Override
 	public synchronized void forward() {
 		requestToMe();
-		windowTool.forward();
+		navigationTool.forward();
 	}
 
 	@Override
 	public synchronized void back() {
 		requestToMe();
-		windowTool.back();
+		navigationTool.back();
 	}
 
 	@Override
 	public synchronized void refresh() {
 		requestToMe();
 		windowListenerProxy.beforeWindowIsRefreshed(this);
-		windowTool.refresh();
+		navigationTool.refresh();
 		windowListenerProxy.whenWindowIsRefreshed(this);
 	}
 
 	@Override
 	public synchronized void to(URL url) {
 		requestToMe();
-		windowTool.to(url);
+		navigationTool.to(url);
 
 	}
 

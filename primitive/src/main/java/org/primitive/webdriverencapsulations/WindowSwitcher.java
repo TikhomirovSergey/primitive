@@ -17,10 +17,11 @@ import org.primitive.configuration.commonhelpers.WindowsTimeOuts;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.logging.Photographer;
+import org.primitive.webdriverencapsulations.components.bydefault.AlertHandler;
+import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
+import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
+import org.primitive.webdriverencapsulations.components.overriden.FluentWindowConditions;
 import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
-import org.primitive.webdriverencapsulations.webdrivercomponents.AlertHandler;
-import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
-import org.primitive.webdriverencapsulations.webdrivercomponents.FluentWindowConditions;
 
 public final class WindowSwitcher implements IDestroyable {
 	private final WebDriverEncapsulation driverEncapsulation;
@@ -289,12 +290,18 @@ public final class WindowSwitcher implements IDestroyable {
 
 	public synchronized Alert getAlert() throws NoAlertPresentException {
 		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-		return (new AlertHandler(driverEncapsulation.getWrappedDriver(), 
-				windowTimeOuts.getTimeOut(timeOuts.getSecsForAwaitinAlertPresent(), windowTimeOuts.defaultTime)));
+		return ComponentFactory.getComponent(AlertHandler.class,
+				driverEncapsulation.getWrappedDriver(),
+				new Class[] {long.class}, new Object[] { windowTimeOuts
+						.getTimeOut(timeOuts.getSecsForAwaitinAlertPresent(),
+								windowTimeOuts.defaultTime) });
+
 	}
 	
 	public synchronized Alert getAlert(long timeOut) throws NoAlertPresentException {
-		return (new AlertHandler(driverEncapsulation.getWrappedDriver(), timeOut));
+		return  ComponentFactory.getComponent(AlertHandler.class,
+				driverEncapsulation.getWrappedDriver(),
+				new Class[] {long.class}, new Object[] {timeOut});
 	}
 
 	boolean isAlive() {

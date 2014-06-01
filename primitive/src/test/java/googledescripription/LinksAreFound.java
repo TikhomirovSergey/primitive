@@ -5,7 +5,6 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.primitive.testobjects.ConcstructTestObjectException;
 import org.primitive.testobjects.FunctionalPart;
 import org.primitive.webdriverencapsulations.SingleWindow;
 
@@ -14,8 +13,7 @@ public class LinksAreFound extends FunctionalPart implements ILinkList {
 	@FindBy(xpath = ".//*[@class='r']/a")
 	private List<WebElement> linksAreFound;
 	
-	public LinksAreFound(SingleWindow browserWindow)
-			throws ConcstructTestObjectException {
+	public LinksAreFound(SingleWindow browserWindow) {
 		super(browserWindow);
 		load();
 	}

@@ -1,9 +1,10 @@
-package org.primitive.webdriverencapsulations.webdrivercomponents;
+package org.primitive.webdriverencapsulations.components.overriden;
 
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.primitive.webdriverencapsulations.components.WebdriverComponent;
 
 /**
  * @author s.tihomirov This is a class for comfort working with frames

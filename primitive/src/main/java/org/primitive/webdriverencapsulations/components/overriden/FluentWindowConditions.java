@@ -1,4 +1,4 @@
-package org.primitive.webdriverencapsulations.webdrivercomponents;
+package org.primitive.webdriverencapsulations.components.overriden;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.primitive.webdriverencapsulations.components.WebdriverComponent;
 
 /**
  * @author s.tihomirov Fluent waiting for some window conditions

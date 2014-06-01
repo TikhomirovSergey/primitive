@@ -1,7 +1,6 @@
 package apps.app;
 
 import org.primitive.configuration.Configuration;
-import org.primitive.testobjects.ConcstructTestObjectException;
 import org.primitive.testobjects.Entity;
 import org.primitive.testobjects.ObjectFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
@@ -14,8 +13,7 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
  */
 public class MobileApplicationClient extends Entity{
 
-	public MobileApplicationClient(SingleWindow browserWindow)
-			throws ConcstructTestObjectException {
+	public MobileApplicationClient(SingleWindow browserWindow){
 		super(browserWindow);
 	}
 

@@ -17,19 +17,20 @@ import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
+import org.primitive.webdriverencapsulations.components.bydefault.DriverLogs;
+import org.primitive.webdriverencapsulations.components.bydefault.Interaction;
+import org.primitive.webdriverencapsulations.components.bydefault.ScriptExecutor;
+import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
+import org.primitive.webdriverencapsulations.components.overriden.Cookies;
+import org.primitive.webdriverencapsulations.components.overriden.FrameSupport;
+import org.primitive.webdriverencapsulations.components.overriden.Ime;
+import org.primitive.webdriverencapsulations.components.overriden.PageFactoryWorker;
+import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
 import org.primitive.webdriverencapsulations.eventlisteners.DefaultWebdriverListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
 import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
-import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
-import org.primitive.webdriverencapsulations.webdrivercomponents.DriverLogs;
-import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;
-import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
-import org.primitive.webdriverencapsulations.webdrivercomponents.Ime;
-import org.primitive.webdriverencapsulations.webdrivercomponents.Interaction;
-import org.primitive.webdriverencapsulations.webdrivercomponents.PageFactoryWorker;
-import org.primitive.webdriverencapsulations.webdrivercomponents.ScriptExecutor;
-import org.primitive.webdriverencapsulations.webdrivercomponents.TimeOut;
 
 public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		WrapsDriver, HasCapabilities {
@@ -286,13 +287,13 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 
 		awaiting = new Awaiting(closedDriver);
 		pageFactoryWorker = new PageFactoryWorker(closedDriver);
-		scriptExecutor = new ScriptExecutor(closedDriver);
+		scriptExecutor = ComponentFactory.getComponent(ScriptExecutor.class, closedDriver);
 		frameSupport = new FrameSupport(closedDriver);
 		cookies = new Cookies(closedDriver);
 		timeout = new TimeOut(closedDriver, configuration);
-		logs = new DriverLogs(closedDriver);
+		logs = ComponentFactory.getComponent(DriverLogs.class, closedDriver);
 		ime = new Ime(closedDriver);
-		interaction = new Interaction(closedDriver);
+		interaction = ComponentFactory.getComponent(Interaction.class, closedDriver);
 		windowTimeOuts = new WindowTimeOuts(configuration);
 
 		configurableElements.addConfigurable(timeout);

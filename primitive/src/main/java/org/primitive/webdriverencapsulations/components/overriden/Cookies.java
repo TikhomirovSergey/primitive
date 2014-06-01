@@ -1,9 +1,10 @@
-package org.primitive.webdriverencapsulations.webdrivercomponents;
+package org.primitive.webdriverencapsulations.components.overriden;
 
 import java.util.Set;
 
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
+import org.primitive.webdriverencapsulations.components.WebdriverComponent;
 
 public final class Cookies extends WebdriverComponent {
 

@@ -8,9 +8,9 @@ import org.primitive.testobjects.interfaces.IDecomposable;
 import org.primitive.testobjects.interfaces.IHasManyWindows;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
-import org.primitive.webdriverencapsulations.webdrivercomponents.Cookies;
-import org.primitive.webdriverencapsulations.webdrivercomponents.Ime;
-import org.primitive.webdriverencapsulations.webdrivercomponents.TimeOut;
+import org.primitive.webdriverencapsulations.components.overriden.Cookies;
+import org.primitive.webdriverencapsulations.components.overriden.Ime;
+import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
 
 /**
  * Using it you can model your testing application as a complex aggregated
@@ -22,8 +22,8 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	protected final Ime ime;
 	protected final TimeOut timeOuts;
 	protected final WindowSwitcher nativeSwitcher;
-	protected Entity(SingleWindow browserWindow)
-			throws ConcstructTestObjectException {
+
+	protected Entity(SingleWindow browserWindow) {
 		super(browserWindow);
 		cookies = driverEncapsulation.getCookies();
 		ime = driverEncapsulation.getIme();
@@ -61,8 +61,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	 * application
 	 */
 	protected <T extends IDecomposable> T get(Class<T> partClass,
-			Class<?>[] params, Object[] values)
-			throws ConcstructTestObjectException {
+			Class<?>[] params, Object[] values) {
 		T part = ObjectFactory.get(partClass, restructureParamArray(params),
 				restructureValueArray(nativeWindow, values));
 		((FunctionalPart) part).originalEntity = this;
@@ -72,8 +71,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 
 	// - simple constructor
 	@Override
-	public <T extends IDecomposable> T getPart(Class<T> partClass)
-			throws ConcstructTestObjectException {
+	public <T extends IDecomposable> T getPart(Class<T> partClass) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
 		return get(partClass, params, values);
@@ -82,7 +80,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
-			Integer frameIndex) throws ConcstructTestObjectException {
+			Integer frameIndex) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
 		return get(partClass, params, values);
@@ -91,7 +89,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
-			String pathToFrame) throws ConcstructTestObjectException {
+			String pathToFrame) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
 		return get(partClass, params, values);
@@ -100,8 +98,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame and time out for switching to it
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
-			String pathToFrame, Long timeOutInSec)
-			throws ConcstructTestObjectException {
+			String pathToFrame, Long timeOutInSec) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
 		return get(partClass, params, values);
@@ -118,8 +115,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	 * added by this method We use any opened window that specified by index
 	 */
 	protected <T extends IDecomposable> T get(Class<T> partClass,
-			Class<?>[] params, Object[] values, int windowIndex)
-			throws ConcstructTestObjectException {
+			Class<?>[] params, Object[] values, int windowIndex) {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
@@ -133,7 +129,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - simple constructor
 	@Override
 	public <T extends IDecomposable> T getFromWindow(Class<T> partClass,
-			int windowIndex) throws ConcstructTestObjectException {
+			int windowIndex) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
 		return get(partClass, params, values, windowIndex);
@@ -142,8 +138,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getFromWindow(Class<T> partClass,
-			Integer frameIndex, int windowIndex)
-			throws ConcstructTestObjectException {
+			Integer frameIndex, int windowIndex) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
 		return get(partClass, params, values, windowIndex);
@@ -152,8 +147,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getFromWindow(String pathToFrame,
-			Class<T> partClass, int windowIndex)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, int windowIndex) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
 		return get(partClass, params, values, windowIndex);
@@ -162,8 +156,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame and time out for switching to it
 	@Override
 	public <T extends IDecomposable> T getFromWindow(String pathToFrame,
-			Long timeOutInSec, Class<T> partClass, int windowIndex)
-			throws ConcstructTestObjectException {
+			Long timeOutInSec, Class<T> partClass, int windowIndex) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
 		return get(partClass, params, values, windowIndex);
@@ -181,12 +174,12 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	 * time was passing
 	 */
 	protected <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			Class<?>[] params, Object[] values)
-			throws ConcstructTestObjectException {
+			Class<?>[] params, Object[] values) {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
-				restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher), values));
+				restructureValueArray(
+						SingleWindow.initNewWindow(nativeSwitcher), values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);
 		return part;
@@ -194,8 +187,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 
 	// - simple constructor
 	@Override
-	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass)
-			throws ConcstructTestObjectException {
+	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
 		return getFromNewWindow(partClass, params, values);
@@ -204,7 +196,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex,
-			Class<T> partClass) throws ConcstructTestObjectException {
+			Class<T> partClass) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
 		return getFromNewWindow(partClass, params, values);
@@ -213,7 +205,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Class<T> partClass) throws ConcstructTestObjectException {
+			Class<T> partClass) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
 		return getFromNewWindow(partClass, params, values);
@@ -222,8 +214,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame and time out for switching to it
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Long timeOutInSec, Class<T> partClass)
-			throws ConcstructTestObjectException {
+			Long timeOutInSec, Class<T> partClass) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
 		return getFromNewWindow(partClass, params, values);
@@ -241,12 +232,12 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	 * time was passing
 	 */
 	protected <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			Class<?>[] params, Object[] values, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<?>[] params, Object[] values, long timeOutSec) {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
-				restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, timeOutSec),
+				restructureValueArray(
+						SingleWindow.initNewWindow(nativeSwitcher, timeOutSec),
 						values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);
@@ -256,7 +247,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - simple constructor
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			long timeOutSec) throws ConcstructTestObjectException {
+			long timeOutSec) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
 		return getFromNewWindow(partClass, params, values, timeOutSec);
@@ -265,8 +256,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex,
-			Class<T> partClass, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, long timeOutSec) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
 		return getFromNewWindow(partClass, params, values, timeOutSec);
@@ -275,8 +265,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Class<T> partClass, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, long timeOutSec) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
 		return getFromNewWindow(partClass, params, values, timeOutSec);
@@ -285,8 +274,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame and time out for switching to it
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Long timeOutInSec, Class<T> partClass, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Long timeOutInSec, Class<T> partClass, long timeOutSec) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
 		return getFromNewWindow(partClass, params, values, timeOutSec);
@@ -307,12 +295,12 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	 * time was passing this window should has the matching title
 	 */
 	protected <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			Class<?>[] params, Object[] values, String title)
-			throws ConcstructTestObjectException {
+			Class<?>[] params, Object[] values, String title) {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
-				restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, title),
+				restructureValueArray(
+						SingleWindow.initNewWindow(nativeSwitcher, title),
 						values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);
@@ -322,7 +310,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - simple constructor
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			String title) throws ConcstructTestObjectException {
+			String title) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
 		return getFromNewWindow(partClass, params, values, title);
@@ -331,8 +319,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex,
-			Class<T> partClass, String title)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, String title) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
 		return getFromNewWindow(partClass, params, values, title);
@@ -341,8 +328,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Class<T> partClass, String title)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, String title) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
 		return getFromNewWindow(partClass, params, values, title);
@@ -351,8 +337,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame and time out for switching to it
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Long timeOutInSec, Class<T> partClass, String title)
-			throws ConcstructTestObjectException {
+			Long timeOutInSec, Class<T> partClass, String title) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
 		return getFromNewWindow(partClass, params, values, title);
@@ -374,10 +359,10 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	 * time was passing this window should has the matching title
 	 */
 	protected <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			Class<?>[] params, Object[] values, String title, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<?>[] params, Object[] values, String title, long timeOutSec) {
 		T part = ObjectFactory.get(
-				partClass, restructureParamArray(params),
+				partClass,
+				restructureParamArray(params),
 				restructureValueArray(SingleWindow.initNewWindow(
 						nativeSwitcher, title, timeOutSec), values));
 		((FunctionalPart) part).originalEntity = this;
@@ -388,8 +373,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - simple constructor
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			String title, long timeOutSec)
-			throws ConcstructTestObjectException {
+			String title, long timeOutSec) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
 		return getFromNewWindow(partClass, params, values, title, timeOutSec);
@@ -398,8 +382,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex,
-			Class<T> partClass, String title, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, String title, long timeOutSec) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
 		return getFromNewWindow(partClass, params, values, title, timeOutSec);
@@ -408,8 +391,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Class<T> partClass, String title, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, String title, long timeOutSec) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
 		return getFromNewWindow(partClass, params, values, title, timeOutSec);
@@ -418,8 +400,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - with specified path to any frame and time out for switching to it
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Long timeOutInSec, Class<T> partClass, String title, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Long timeOutInSec, Class<T> partClass, String title, long timeOutSec) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
 		return getFromNewWindow(partClass, params, values, title, timeOutSec);
@@ -435,15 +416,17 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	 * objects Class "SingleWindow" should be first in the list of constructor
 	 * parameters "params" we specify without "SingleWindow" because it will be
 	 * added by this method We use some window that has appeared while default
-	 * time was passing this window should has page that loaded by possible URLs specified partially (RegExp)
+	 * time was passing this window should has page that loaded by possible URLs
+	 * specified partially (RegExp)
 	 */
 	protected <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			Class<?>[] params, Object[] values, List<String> urls)
-			throws ConcstructTestObjectException {
-		T part = ObjectFactory
-				.get(partClass,	restructureParamArray(params),
-						restructureValueArray(SingleWindow.initNewWindow(nativeSwitcher, urls),
-								values));
+			Class<?>[] params, Object[] values, List<String> urls) {
+		T part = ObjectFactory.get(
+				partClass,
+				restructureParamArray(params),
+				restructureValueArray(
+						SingleWindow.initNewWindow(nativeSwitcher, urls),
+						values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);
 		return part;
@@ -452,91 +435,93 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - simple constructor
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			List<String> urls) throws ConcstructTestObjectException {
+			List<String> urls) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
 		return getFromNewWindow(partClass, params, values, urls);
 	}
-	
+
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			final URL url) throws ConcstructTestObjectException {
+			final URL url) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
-		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
-			private static final long serialVersionUID = -1L;
-			{
-				add(url.toString());
-			}
-		});
+		return getFromNewWindow(partClass, params, values,
+				new ArrayList<String>() {
+					private static final long serialVersionUID = -1L;
+					{
+						add(url.toString());
+					}
+				});
 	}
 
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex,
-			Class<T> partClass, List<String> urls) throws ConcstructTestObjectException {
+			Class<T> partClass, List<String> urls) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
 		return getFromNewWindow(partClass, params, values, urls);
 	}
-	
+
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex,
-			Class<T> partClass, final URL url) throws ConcstructTestObjectException {
+			Class<T> partClass, final URL url) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
-		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
-			private static final long serialVersionUID = 1L;
-			{
-				add(url.toString());
-			}
-		});
+		return getFromNewWindow(partClass, params, values,
+				new ArrayList<String>() {
+					private static final long serialVersionUID = 1L;
+					{
+						add(url.toString());
+					}
+				});
 	}
 
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Class<T> partClass, List<String> urls) throws ConcstructTestObjectException {
+			Class<T> partClass, List<String> urls) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
 		return getFromNewWindow(partClass, params, values, urls);
 	}
-	
+
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Class<T> partClass, final URL url) throws ConcstructTestObjectException {
+			Class<T> partClass, final URL url) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
-		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
-			private static final long serialVersionUID = 1L;
-			{
-				add(url.toString());
-			}
-		});
+		return getFromNewWindow(partClass, params, values,
+				new ArrayList<String>() {
+					private static final long serialVersionUID = 1L;
+					{
+						add(url.toString());
+					}
+				});
 	}
 
 	// - with specified path to any frame and time out for switching to it
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Long timeOutInSec, Class<T> partClass, List<String> urls)
-			throws ConcstructTestObjectException {
+			Long timeOutInSec, Class<T> partClass, List<String> urls) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
 		return getFromNewWindow(partClass, params, values, urls);
 	}
-	
+
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Long timeOutInSec, Class<T> partClass, final URL url)
-			throws ConcstructTestObjectException {
+			Long timeOutInSec, Class<T> partClass, final URL url) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
-		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
-			private static final long serialVersionUID = 1L;
-			{
-				add(url.toString());
-			}
-		});
+		return getFromNewWindow(partClass, params, values,
+				new ArrayList<String>() {
+					private static final long serialVersionUID = 1L;
+					{
+						add(url.toString());
+					}
+				});
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -549,11 +534,12 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	 * objects Class "SingleWindow" should be first in the list of constructor
 	 * parameters "params" we specify without "SingleWindow" because it will be
 	 * added by this method We use some window that has appeared while specified
-	 * time was passing this window should has page that loaded by possible URLs specified partially (RegExp)
+	 * time was passing this window should has page that loaded by possible URLs
+	 * specified partially (RegExp)
 	 */
 	protected <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			Class<?>[] params, Object[] values, List<String> urls, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<?>[] params, Object[] values, List<String> urls,
+			long timeOutSec) {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
@@ -567,99 +553,99 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 	// - simple constructor
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			List<String> urls, long timeOutSec) throws ConcstructTestObjectException {
+			List<String> urls, long timeOutSec) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
 		return getFromNewWindow(partClass, params, values, urls, timeOutSec);
 	}
-	
+
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Class<T> partClass,
-			final URL url, long timeOutSec) throws ConcstructTestObjectException {
+			final URL url, long timeOutSec) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
-		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
-			private static final long serialVersionUID = 1L;
-			{
-				add(url.toString());
-			}
-			
-		}, timeOutSec);
+		return getFromNewWindow(partClass, params, values,
+				new ArrayList<String>() {
+					private static final long serialVersionUID = 1L;
+					{
+						add(url.toString());
+					}
+
+				}, timeOutSec);
 	}
 
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex,
-			Class<T> partClass, List<String> urls, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, List<String> urls, long timeOutSec) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
 		return getFromNewWindow(partClass, params, values, urls, timeOutSec);
 	}
-	
+
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(Integer frameIndex,
-			Class<T> partClass, final URL url, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, final URL url, long timeOutSec) {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
-		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
-			private static final long serialVersionUID = 1L;
-			{
-				add(url.toString());
-			}
-			
-		}, timeOutSec);
+		return getFromNewWindow(partClass, params, values,
+				new ArrayList<String>() {
+					private static final long serialVersionUID = 1L;
+					{
+						add(url.toString());
+					}
+
+				}, timeOutSec);
 	}
 
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Class<T> partClass, List<String> urls, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, List<String> urls, long timeOutSec) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
 		return getFromNewWindow(partClass, params, values, urls, timeOutSec);
 	}
-	
+
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Class<T> partClass, final URL url, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Class<T> partClass, final URL url, long timeOutSec) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
-		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
-			private static final long serialVersionUID = 1L;
-			{
-				add(url.toString());
-			}
-			
-		}, timeOutSec);
+		return getFromNewWindow(partClass, params, values,
+				new ArrayList<String>() {
+					private static final long serialVersionUID = 1L;
+					{
+						add(url.toString());
+					}
+
+				}, timeOutSec);
 	}
 
 	// - with specified path to any frame and time out for switching to it
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Long timeOutInSec, Class<T> partClass, List<String> urls, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Long timeOutInSec, Class<T> partClass, List<String> urls,
+			long timeOutSec) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
 		return getFromNewWindow(partClass, params, values, urls, timeOutSec);
 	}
-	
+
 	@Override
 	public <T extends IDecomposable> T getFromNewWindow(String pathToFrame,
-			Long timeOutInSec, Class<T> partClass, final URL url, long timeOutSec)
-			throws ConcstructTestObjectException {
+			Long timeOutInSec, Class<T> partClass, final URL url,
+			long timeOutSec) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
-		return getFromNewWindow(partClass, params, values, new ArrayList<String>(){
-			private static final long serialVersionUID = 1L;
-			{
-				add(url.toString());
-			}
-			
-		}, timeOutSec);
+		return getFromNewWindow(partClass, params, values,
+				new ArrayList<String>() {
+					private static final long serialVersionUID = 1L;
+					{
+						add(url.toString());
+					}
+
+				}, timeOutSec);
 	}
 
 	// destroys an Entity instance and makes WebDriver quit

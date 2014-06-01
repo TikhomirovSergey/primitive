@@ -1,4 +1,4 @@
-package org.primitive.webdriverencapsulations.webdrivercomponents;
+package org.primitive.webdriverencapsulations.components.overriden;
 
 import java.util.concurrent.TimeUnit;
 
@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriverException;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.components.WebdriverComponent;
 import org.primitive.webdriverencapsulations.interfaces.ITimeOutsGetter;
 
 public final class TimeOut extends WebdriverComponent implements Timeouts, ITimeOutsGetter,

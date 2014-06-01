@@ -22,11 +22,11 @@ import org.primitive.testobjects.interfaces.IDecomposable;
 import org.primitive.testobjects.interfaces.IHasWebElementFrames;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.UnclosedWindowException;
+import org.primitive.webdriverencapsulations.components.bydefault.Interaction;
+import org.primitive.webdriverencapsulations.components.overriden.FrameSupport;
+import org.primitive.webdriverencapsulations.components.overriden.PageFactoryWorker;
 import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
 import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
-import org.primitive.webdriverencapsulations.webdrivercomponents.FrameSupport;
-import org.primitive.webdriverencapsulations.webdrivercomponents.Interaction;
-import org.primitive.webdriverencapsulations.webdrivercomponents.PageFactoryWorker;
 
 /**
  * @author s.tihomirov It describes simple web page or its fragment
@@ -91,8 +91,7 @@ public abstract class FunctionalPart extends TestObject implements
 		childPart.originalEntity = this.originalEntity;
 	}
 
-	protected FunctionalPart(SingleWindow browserWindow)
-			throws ConcstructTestObjectException {
+	protected FunctionalPart(SingleWindow browserWindow){
 		super(browserWindow);
 		pageFactoryWorker = driverEncapsulation.getPageFactoryWorker();
 		frameSupport = driverEncapsulation.getFrameSupport();
@@ -101,51 +100,44 @@ public abstract class FunctionalPart extends TestObject implements
 	}
 
 	// constructs from another page object
-	protected FunctionalPart(FunctionalPart parent)
-			throws ConcstructTestObjectException {
+	protected FunctionalPart(FunctionalPart parent){
 		this(parent.nativeWindow);
 		parent.addChild(this);
 	}
 
 	// constructor with specified integer frame value
-	protected FunctionalPart(SingleWindow browserWindow, Integer frameIndex)
-			throws ConcstructTestObjectException {
+	protected FunctionalPart(SingleWindow browserWindow, Integer frameIndex) {
 		this(browserWindow);
 		frameToSwitchOnInt = frameIndex;
 	}
 
 	// constructs from another page object
-	protected FunctionalPart(FunctionalPart parent, Integer frameIndex)
-			throws ConcstructTestObjectException {
+	protected FunctionalPart(FunctionalPart parent, Integer frameIndex){
 		this(parent.nativeWindow, frameIndex);
 		parent.addChild(this);
 	}
 
 	// constructor with specified string frame value. pathToFrame can be
 	// relative to another frame
-	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame)
-			throws ConcstructTestObjectException {
+	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame) {
 		this(browserWindow);
 		frameToSwitchOnStr = pathToFrame;
 	}
 
 	// constructs from another page object
-	protected FunctionalPart(FunctionalPart parent, String pathToFrame)
-			throws ConcstructTestObjectException {
+	protected FunctionalPart(FunctionalPart parent, String pathToFrame){
 		this(parent.nativeWindow, pathToFrame);
 		parent.addChild(this);
 	}
 
 	// constructor with specified WebElement frame value.
-	protected FunctionalPart(SingleWindow browserWindow, WebElement frameElement)
-			throws ConcstructTestObjectException {
+	protected FunctionalPart(SingleWindow browserWindow, WebElement frameElement) {
 		this(browserWindow);
 		frameToSwitchOnElem = frameElement;
 	}
 
 	// constructs from another page object
-	protected FunctionalPart(FunctionalPart parent, WebElement frameElement)
-			throws ConcstructTestObjectException {
+	protected FunctionalPart(FunctionalPart parent, WebElement frameElement){
 		this(parent.nativeWindow, frameElement);
 		parent.addChild(this);
 	}
@@ -155,7 +147,7 @@ public abstract class FunctionalPart extends TestObject implements
 	// timeOutInSec is specified for situations when frame can't be switched on
 	// instantly
 	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame,
-			Long timeOutInSec) throws ConcstructTestObjectException {
+			Long timeOutInSec)  {
 		this(browserWindow);
 		nativeWindow.switchToMe();
 		frameSupport.switchTo(pathToFrame, timeOutInSec);
@@ -164,7 +156,7 @@ public abstract class FunctionalPart extends TestObject implements
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, String pathToFrame,
-			Long timeOutInSec) throws ConcstructTestObjectException {
+			Long timeOutInSec)  {
 		this(parent.nativeWindow, pathToFrame, timeOutInSec);
 		parent.addChild(this);
 	}
@@ -221,16 +213,14 @@ public abstract class FunctionalPart extends TestObject implements
 	// method
 	// So, this way we build hierarchy of page objects
 	protected <T extends IDecomposable> T get(Class<T> partClass,
-			Class<?>[] params, Object[] values)
-			throws ConcstructTestObjectException {
+			Class<?>[] params, Object[] values) {
 		return ObjectFactory.get(partClass, restructureParamArray(params),
 				restructureValueArray(values));
 	}
 
 	// - simple constructor
 	@Override
-	public <T extends IDecomposable> T getPart(Class<T> partClass)
-			throws ConcstructTestObjectException {
+	public <T extends IDecomposable> T getPart(Class<T> partClass) {
 		Class<?>[] params = new Class[] {};
 		Object[] values = new Object[] {};
 		return get(partClass, params, values);
@@ -239,7 +229,7 @@ public abstract class FunctionalPart extends TestObject implements
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
-			Integer frameIndex) throws ConcstructTestObjectException {
+			Integer frameIndex)  {
 		Class<?>[] params = new Class[] { Integer.class };
 		Object[] values = new Object[] { frameIndex };
 		return get(partClass, params, values);
@@ -248,7 +238,7 @@ public abstract class FunctionalPart extends TestObject implements
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
-			String pathToFrame) throws ConcstructTestObjectException {
+			String pathToFrame) {
 		Class<?>[] params = new Class[] { String.class };
 		Object[] values = new Object[] { pathToFrame };
 		return get(partClass, params, values);
@@ -257,8 +247,7 @@ public abstract class FunctionalPart extends TestObject implements
 	// - with specified path to any frame and time out for switching to it
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
-			String pathToFrame, Long timeOutInSec)
-			throws ConcstructTestObjectException {
+			String pathToFrame, Long timeOutInSec) {
 		Class<?>[] params = new Class[] { String.class, Long.class };
 		Object[] values = new Object[] { pathToFrame, timeOutInSec };
 		return get(partClass, params, values);
@@ -267,7 +256,7 @@ public abstract class FunctionalPart extends TestObject implements
 	// - with frame that specified as web element
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
-			WebElement frameElement) throws ConcstructTestObjectException {
+			WebElement frameElement)  {
 		Class<?>[] params = new Class[] { WebElement.class };
 		Object[] values = new Object[] { frameElement };
 		return get(partClass, params, values);

@@ -2,7 +2,6 @@ package apps.app.android.vk;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primitive.testobjects.ConcstructTestObjectException;
 import org.primitive.testobjects.FunctionalPart;
 import org.primitive.webdriverencapsulations.SingleWindow;
 
@@ -18,8 +17,7 @@ public class AndroidVKAuthActivity extends FunctionalPart {
 	private WebElement auth;
 	
 
-	protected AndroidVKAuthActivity(SingleWindow window)
-			throws ConcstructTestObjectException {
+	protected AndroidVKAuthActivity(SingleWindow window) {
 		super(window);
 		load();
 	}

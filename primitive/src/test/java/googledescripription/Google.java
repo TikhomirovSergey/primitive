@@ -3,7 +3,6 @@ package googledescripription;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.primitive.configuration.Configuration;
-import org.primitive.testobjects.ConcstructTestObjectException;
 import org.primitive.testobjects.Entity;
 import org.primitive.testobjects.ObjectFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
@@ -16,8 +15,7 @@ public class Google extends Entity implements IPerformsSearch, ILinkList, WrapsD
 	private SearchBar searchBar;
 	private LinksAreFound linksAreFound;
 	
-	public Google(SingleWindow browserWindow)
-			throws ConcstructTestObjectException {
+	public Google(SingleWindow browserWindow){
 		super(browserWindow);
 		searchBar     = getPart(SearchBar.class);    
 		linksAreFound = getPart(LinksAreFound.class); 

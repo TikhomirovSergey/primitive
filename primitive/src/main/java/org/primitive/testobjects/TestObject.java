@@ -8,17 +8,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.testobjects.interfaces.IDecomposable;
 import org.primitive.testobjects.interfaces.ITestObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.webdrivercomponents.Awaiting;
-import org.primitive.webdriverencapsulations.webdrivercomponents.DriverLogs;
-import org.primitive.webdriverencapsulations.webdrivercomponents.ScriptExecutor;
+import org.primitive.webdriverencapsulations.components.bydefault.DriverLogs;
+import org.primitive.webdriverencapsulations.components.bydefault.ScriptExecutor;
+import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
 
 public abstract class TestObject implements IDestroyable, IDecomposable {
 	protected final SingleWindow nativeWindow; // browser window that object placed on
@@ -61,39 +58,12 @@ public abstract class TestObject implements IDestroyable, IDecomposable {
 	final List<TestObject> children = Collections
 			.synchronizedList(new ArrayList<TestObject>());
 
-	protected TestObject(SingleWindow browserWindow)
-			throws ConcstructTestObjectException {
-		try {
+	protected TestObject(SingleWindow browserWindow){
 			nativeWindow = browserWindow;
 			driverEncapsulation = nativeWindow.getDriverEncapsulation();
 			awaiting = driverEncapsulation.getAwaiting();
 			scriptExecutor = driverEncapsulation.getScriptExecutor();
 			logs = driverEncapsulation.getLogs();
-		} catch (Exception e) {
-			throw new ConcstructTestObjectException(
-					"Test object form hasn't been constructed. You can get the reason of the error "
-							+ " for situation analysis", e);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	static <T extends IDecomposable> T getProxy(Class<T> clazz,
-			Class<? extends MethodInterceptor> interceptorClass,
-			Class<?>[] paramClasses, Object[] paramValues)
-			throws ConcstructTestObjectException { // should be closed by child
-													// class method
-		Enhancer enhancer = new Enhancer();
-		MethodInterceptor interceptor = null;
-		try {
-			interceptor = interceptorClass.newInstance();
-			enhancer.setCallback(interceptor);
-			enhancer.setSuperclass(clazz);
-		} catch (Exception e) {
-			throw new ConcstructTestObjectException(e.getMessage(), e);
-		}
-
-		T objectToBeTested = (T) enhancer.create(paramClasses, paramValues);
-		return objectToBeTested;
 	}
 
 	public void destroy() {

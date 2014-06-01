@@ -5,7 +5,6 @@ import java.util.List;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primitive.testobjects.ConcstructTestObjectException;
 import org.primitive.testobjects.FunctionalPart;
 import org.primitive.webdriverencapsulations.SingleWindow;
 
@@ -14,8 +13,7 @@ public class UICatalogItemList extends FunctionalPart {
 	@FindBy(tagName = "cell")
 	private List<WebElement> cells;
 	
-	public UICatalogItemList(SingleWindow browserWindow)
-			throws ConcstructTestObjectException {
+	public UICatalogItemList(SingleWindow browserWindow){
 		super(browserWindow);
 		load();
 	}
