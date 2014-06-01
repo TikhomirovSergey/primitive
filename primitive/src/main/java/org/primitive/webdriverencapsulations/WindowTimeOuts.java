@@ -16,7 +16,7 @@ class WindowTimeOuts implements IConfigurable {
 		resetAccordingTo(config);
 	}
 
-	Long getTimeOut(Long possibleTimeOut, long defaultValue) {
+	long getTimeOut(Long possibleTimeOut, long defaultValue) {
 		if (possibleTimeOut == null) {
 			return defaultValue;
 		} else {
