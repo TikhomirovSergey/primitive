@@ -30,6 +30,7 @@ public final class ComponentFactory {
 				add(driver);
 			}
 		};
+		valueList.addAll(Arrays.asList(args));
 		return EnhancedProxyFactory.getProxy(required,
 				typeList.toArray(new Class<?>[] {}),
 				valueList.toArray(new Object[] {}), new ComponentInterceptor());
