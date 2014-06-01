@@ -17,9 +17,13 @@ import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.components.bydefault.ByAccessibilityId;
+import org.primitive.webdriverencapsulations.components.bydefault.ByAndroidUIAutomator;
+import org.primitive.webdriverencapsulations.components.bydefault.ByIosUIAutomation;
 import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
 import org.primitive.webdriverencapsulations.components.bydefault.DriverLogs;
 import org.primitive.webdriverencapsulations.components.bydefault.Interaction;
+import org.primitive.webdriverencapsulations.components.bydefault.Rotator;
 import org.primitive.webdriverencapsulations.components.bydefault.ScriptExecutor;
 import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
 import org.primitive.webdriverencapsulations.components.overriden.Cookies;
@@ -50,6 +54,11 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	private Ime ime;
 	private Interaction interaction;
 	private WebElementHighLighter elementHighLighter;
+	private ByAccessibilityId byAccessibilityId;
+	private ByAndroidUIAutomator byAndroidUIAutomator;
+	private ByIosUIAutomation byIosUIAutomation;
+	private Rotator rotator;
+	
 	private final ConfigurableElements configurableElements = new ConfigurableElements();
 
 	protected static void prelaunch(ESupportedDrivers supporteddriver,
@@ -258,6 +267,22 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	public Capabilities getCapabilities() {
 		return closedDriver.getCapabilities();
 	}
+	
+	public ByAccessibilityId getByAccessibilityId(){
+		return byAccessibilityId;
+	}
+	
+	public ByAndroidUIAutomator getByAndroidUIAutomator(){
+		return byAndroidUIAutomator;
+	}
+	
+	public ByIosUIAutomation getByIosUIAutomation(){
+		return byIosUIAutomation;
+	}
+	
+	public Rotator getRotator(){
+		return rotator;
+	}
 
 	private void registerAll() {
 		InnerSPIServises servises = InnerSPIServises.getBy(this);
@@ -295,6 +320,10 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		ime = new Ime(closedDriver);
 		interaction = ComponentFactory.getComponent(Interaction.class, closedDriver);
 		windowTimeOuts = new WindowTimeOuts(configuration);
+		byAccessibilityId = ComponentFactory.getComponent(ByAccessibilityId.class, closedDriver);
+		byAndroidUIAutomator = ComponentFactory.getComponent(ByAndroidUIAutomator.class, closedDriver);
+		byIosUIAutomation    = ComponentFactory.getComponent(ByIosUIAutomation.class, closedDriver);
+		rotator              = ComponentFactory.getComponent(Rotator.class, closedDriver);
 
 		configurableElements.addConfigurable(timeout);
 		configurableElements.addConfigurable(windowTimeOuts);
