@@ -137,7 +137,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		}
 	}
 	
-	//getting of browser window handles that probably unexpected
+	//getting window handles that probably unexpected
 	private List<String> getUnexpectedWindows() {
 		List<String> handles = new ArrayList<String>();
 		try { //attempt to get window handles

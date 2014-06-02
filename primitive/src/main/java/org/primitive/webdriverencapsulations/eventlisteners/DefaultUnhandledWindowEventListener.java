@@ -14,7 +14,7 @@ public class DefaultUnhandledWindowEventListener implements
 
 	@Override
 	public void whenUnhandledWindowIsFound(WebDriver webdriver) {
-		Photographer.takeAPictureOfAWarning(webdriver,  "There is an unhandled browser window!");
+		Photographer.takeAPictureOfAWarning(webdriver,  "There is an unhandled window!");
 	}
 
 	@Override
@@ -29,12 +29,12 @@ public class DefaultUnhandledWindowEventListener implements
 
 	@Override
 	public void whenUnhandledWindowIsNotClosed(WebDriver webdriver) {
-		Log.warning("Unhandled browser window hasn't been closed!");	
+		Log.warning("Unhandled window hasn't been closed!");	
 	}
 
 	@Override
 	public void whenUnhandledWindowIsAlreadyClosed(WebDriver weddriver) {
-		Log.debug("Browser window is already closed. Window handle is ");
+		Log.debug("Window is already closed. Window handle is ");
 	}
 
 	@Override

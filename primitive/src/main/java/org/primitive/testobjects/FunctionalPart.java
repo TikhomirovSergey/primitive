@@ -25,6 +25,7 @@ import org.primitive.webdriverencapsulations.UnclosedWindowException;
 import org.primitive.webdriverencapsulations.components.bydefault.Interaction;
 import org.primitive.webdriverencapsulations.components.overriden.FrameSupport;
 import org.primitive.webdriverencapsulations.components.overriden.PageFactoryWorker;
+import org.primitive.webdriverencapsulations.interfaces.ISwitchesToItself;
 import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
 import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
 
@@ -32,7 +33,7 @@ import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
  * @author s.tihomirov It describes simple web page or its fragment
  */
 public abstract class FunctionalPart extends TestObject implements
-		IHasWebElementFrames, ITakesPictureOfItSelf {
+		IHasWebElementFrames, ITakesPictureOfItSelf, ISwitchesToItself {
 
 	/**
 	 * @author s.tihomirov
@@ -58,9 +59,11 @@ public abstract class FunctionalPart extends TestObject implements
 	private IWebElementHighlighter highLighter;
 	protected final Interaction interaction;
 
-	// switches to object
-	// this method can be overridden
-	protected synchronized void switchToMe() {
+	/** switches to object
+	* this method can be overridden
+	*/
+	@Override
+	public synchronized void switchToMe() {
 		// firstly we should switch parent browser window on
 		if (parent != null) {
 			parent.switchToMe();

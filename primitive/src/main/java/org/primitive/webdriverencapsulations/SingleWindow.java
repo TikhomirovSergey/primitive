@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.openqa.selenium.ContextAware;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.Point;
@@ -21,18 +22,20 @@ import org.primitive.webdriverencapsulations.components.bydefault.NavigationTool
 import org.primitive.webdriverencapsulations.components.bydefault.WindowTool;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
 import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
+import org.primitive.webdriverencapsulations.interfaces.ISwitchesToItself;
 
 /**
  * @author s.tihomirov It is performs actions on a single window
  */
 public final class SingleWindow implements Navigation, IExtendedWindow,
-		IDestroyable {
+		IDestroyable, ISwitchesToItself {
 	private final WindowSwitcher nativeSwitcher;
 	private final String objectWindow;
 	private final WebDriverEncapsulation driverEncapsulation;
 	private final WindowTool windowTool;
 	private final NavigationTool navigationTool;
 	private final WindowReceptionist receptionist;
+	private final ContextSwitcher contextSwitcher;
 	
 
 	private final List<IWindowListener> windowEventListeners = new ArrayList<IWindowListener>();
@@ -66,6 +69,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 		this.navigationTool = ComponentFactory.getComponent(NavigationTool.class,
 				driverEncapsulation.getWrappedDriver());
 		this.receptionist = nativeSwitcher.getWindowReceptionist();
+		this.contextSwitcher = new ContextSwitcher(this);
 		receptionist.addKnownWindow(this);
 		windowEventListeners.addAll(InnerSPIServises.getBy(driverEncapsulation)
 				.getServices(IWindowListener.class));
@@ -161,6 +165,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 		}
 	}
 
+	@Override
 	public synchronized void switchToMe() throws NoSuchWindowException {
 		requestToMe();
 	}
@@ -280,7 +285,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 		try {
 			Set<String> handles = nativeSwitcher.getWindowHandles();
 			return handles.contains(objectWindow);
-		} catch (WebDriverException e) { // if there is no browser window
+		} catch (WebDriverException e) { // if there is no window
 			return false;
 		}
 	}
@@ -299,5 +304,9 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 
 	public void removeAllListeners() {
 		windowEventListeners.clear();
+	}
+	
+	public ContextAware gContextAware(){
+		return contextSwitcher;
 	}
 }
