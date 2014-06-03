@@ -17,6 +17,7 @@ import net.sf.cglib.proxy.Enhancer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.Capabilities;
+import org.primitive.configuration.commonhelpers.ContextTimeOuts;
 import org.primitive.configuration.commonhelpers.WindowsTimeOuts;
 import org.primitive.configuration.commonhelpers.CapabilitySettings;
 import org.primitive.configuration.commonhelpers.ChromeDriverServerBin;
@@ -218,6 +219,10 @@ public class Configuration {
 
 	public WindowsTimeOuts getBrowserWindowsTimeOuts() {
 		return getSection(WindowsTimeOuts.class);
+	}
+	
+	public ContextTimeOuts getContextTimeOuts() {
+		return getSection(ContextTimeOuts.class);
 	}
 
 	protected Configuration(String filePath) {
