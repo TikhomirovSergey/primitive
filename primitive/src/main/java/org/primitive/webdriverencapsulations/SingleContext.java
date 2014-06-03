@@ -40,5 +40,10 @@ public class SingleContext implements ISwitchesToItself {
 		}
 		contextAware.context(context);
 	}
+	
+	@Override
+	public String toString(){
+		return context;
+	}
 
 }

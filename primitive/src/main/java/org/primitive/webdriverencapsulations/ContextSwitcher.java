@@ -10,7 +10,7 @@ import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
 import org.primitive.webdriverencapsulations.components.bydefault.ContextTool;
 
-final class ContextSwitcher implements ContextAware {
+public final class ContextSwitcher implements ContextAware {
 	private final SingleWindow window;
 	private final ContextTool  contextTool;
 	
