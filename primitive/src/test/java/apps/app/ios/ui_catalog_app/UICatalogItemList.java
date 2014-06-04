@@ -5,7 +5,7 @@ import java.util.List;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primitive.testobjects.FunctionalPart;
+import org.primitive.model.FunctionalPart;
 import org.primitive.webdriverencapsulations.SingleWindow;
 
 public class UICatalogItemList extends FunctionalPart {

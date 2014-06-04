@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.primitive.testobjects;
+package org.primitive.model;
 
 import java.awt.Color;
 import java.lang.annotation.ElementType;
@@ -24,6 +24,7 @@ import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.UnclosedWindowException;
 import org.primitive.webdriverencapsulations.components.bydefault.Interaction;
 import org.primitive.webdriverencapsulations.components.overriden.FrameSupport;
+import org.primitive.webdriverencapsulations.components.overriden.Ime;
 import org.primitive.webdriverencapsulations.components.overriden.PageFactoryWorker;
 import org.primitive.webdriverencapsulations.interfaces.ISwitchesToItself;
 import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
@@ -58,6 +59,7 @@ public abstract class FunctionalPart extends TestObject implements
 	protected Entity originalEntity;
 	private IWebElementHighlighter highLighter;
 	protected final Interaction interaction;
+	protected final Ime ime;
 
 	/** switches to object
 	* this method can be overridden
@@ -100,6 +102,7 @@ public abstract class FunctionalPart extends TestObject implements
 		frameSupport = driverEncapsulation.getFrameSupport();
 		highLighter = driverEncapsulation.getHighlighter();
 		interaction = driverEncapsulation.getInteraction();
+		ime = driverEncapsulation.getIme();
 	}
 
 	// constructs from another page object

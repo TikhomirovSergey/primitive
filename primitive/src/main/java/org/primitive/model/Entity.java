@@ -1,4 +1,4 @@
-package org.primitive.testobjects;
+package org.primitive.model;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import org.primitive.testobjects.interfaces.IHasManyWindows;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
 import org.primitive.webdriverencapsulations.components.overriden.Cookies;
-import org.primitive.webdriverencapsulations.components.overriden.Ime;
 import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
 
 /**
@@ -19,14 +18,12 @@ import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
 public abstract class Entity extends TestObject implements IHasManyWindows {
 
 	protected final Cookies cookies;
-	protected final Ime ime;
 	protected final TimeOut timeOuts;
 	protected final WindowSwitcher nativeSwitcher;
 
 	protected Entity(SingleWindow browserWindow) {
 		super(browserWindow);
 		cookies = driverEncapsulation.getCookies();
-		ime = driverEncapsulation.getIme();
 		timeOuts = driverEncapsulation.getTimeOut();
 		nativeSwitcher = browserWindow.getSwitcher();
 	}

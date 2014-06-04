@@ -1,7 +1,10 @@
 package org.primitive.webdriverencapsulations;
 
 import java.util.Set;
+
 import org.openqa.selenium.ContextAware;
+import org.openqa.selenium.NoSuchContextException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.primitive.configuration.commonhelpers.ContextTimeOuts;
 import org.primitive.logging.Log;
@@ -30,7 +33,13 @@ public final class ContextSwitcher implements ContextAware {
 	
 	private WebDriver getContextIfPresents(String name, long timeOut){
 		window.switchToMe();
-		awaiting.awaitCondition(timeOut, fluentConditions.isContextPresent(name));
+		try{
+			awaiting.awaitCondition(timeOut, fluentConditions.isContextPresent(name));
+		}
+		catch (TimeoutException e){
+			throw new NoSuchContextException("There is no context " + name + "! We have been waiting for "
+					+ timeOut + " seconds",  e);
+		}
 		WebDriver result = contextTool.context(name);
 		Log.message("Current context is " + name);
 		return result;

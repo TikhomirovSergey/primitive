@@ -1,6 +1,6 @@
 package googledescripription;
 
-import org.primitive.testobjects.FunctionalPart;
+import org.primitive.model.FunctionalPart;
 import org.primitive.webdriverencapsulations.SingleWindow;
 
 //любая найденная страница, открытая через google

@@ -1,4 +1,4 @@
-package org.primitive.testobjects;
+package org.primitive.model;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

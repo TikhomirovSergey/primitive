@@ -1,8 +1,8 @@
 package apps.app;
 
 import org.primitive.configuration.Configuration;
-import org.primitive.testobjects.Entity;
-import org.primitive.testobjects.ObjectFactory;
+import org.primitive.model.Entity;
+import org.primitive.model.ObjectFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
