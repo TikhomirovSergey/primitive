@@ -21,7 +21,7 @@
 	          "type":"STRING",
 	          "value":"7.0"         
 	      },    
-	      "app":{
+	      "browserName":{
 	          "type":"STRING",
 	          "value":"safari"           
 	      }
