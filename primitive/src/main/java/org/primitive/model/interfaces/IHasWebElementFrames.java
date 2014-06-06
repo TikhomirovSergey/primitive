@@ -1,4 +1,4 @@
-package org.primitive.testobjects.interfaces;
+package org.primitive.model.interfaces;
 
 import org.openqa.selenium.WebElement;
 

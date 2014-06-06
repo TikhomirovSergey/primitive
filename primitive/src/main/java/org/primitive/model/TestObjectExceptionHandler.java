@@ -3,9 +3,10 @@ package org.primitive.model;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.primitive.testobjects.interfaces.ITestObjectExceptionHandler;
+import org.primitive.model.interfaces.ITestObjectExceptionHandler;
 
 /**
  * @author s.tihomirov this is an abstract class. It's inheritors should handle

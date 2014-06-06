@@ -4,8 +4,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.primitive.testobjects.interfaces.IDecomposable;
-import org.primitive.testobjects.interfaces.IHasManyWindows;
+import org.primitive.model.interfaces.IDecomposable;
+import org.primitive.model.interfaces.IHasManyWindows;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowSwitcher;
 import org.primitive.webdriverencapsulations.components.overriden.Cookies;

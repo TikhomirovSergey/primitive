@@ -1,4 +1,4 @@
-package org.primitive.testobjects.interfaces;
+package org.primitive.model.interfaces;
 
 import java.net.URL;
 import java.util.List;

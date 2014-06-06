@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.primitive.interfaces.IDestroyable;
-import org.primitive.testobjects.interfaces.IDecomposable;
-import org.primitive.testobjects.interfaces.ITestObjectExceptionHandler;
+import org.primitive.model.interfaces.IDecomposable;
+import org.primitive.model.interfaces.ITestObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.components.bydefault.DriverLogs;
