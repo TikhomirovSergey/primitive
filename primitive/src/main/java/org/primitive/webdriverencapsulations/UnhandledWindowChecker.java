@@ -141,10 +141,10 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 	private List<String> getUnexpectedWindows() {
 		List<String> handles = new ArrayList<String>();
 		try { //attempt to get window handles
-			handles.addAll(switcher.getWindowHandles());
+			handles.addAll(switcher.getHandles());
 		} catch (UnhandledAlertException e) { //if there is an unhandled alert we try to
 			EActionsOnUnhandledAlert.DISMISS.handle(switcher.getAlert());
-			handles.addAll(switcher.getWindowHandles()); // and do the same
+			handles.addAll(switcher.getHandles()); // and do the same
 		}
 
 		List<String> unexpectedList = new ArrayList<String>(handles);

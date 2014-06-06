@@ -16,26 +16,21 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.configuration.commonhelpers.WindowsTimeOuts;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
-import org.primitive.logging.Photographer;
 import org.primitive.webdriverencapsulations.components.bydefault.AlertHandler;
 import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
-import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
 import org.primitive.webdriverencapsulations.components.overriden.FluentWindowConditions;
 import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
 
-public final class WindowSwitcher implements IDestroyable {
-	private final WebDriverEncapsulation driverEncapsulation;
+public final class WindowSwitcher extends AbstractSwitcher {
 	private final static List<WindowSwitcher> swithcerList = Collections
 			.synchronizedList(new ArrayList<WindowSwitcher>());
-	private WindowTimeOuts windowTimeOuts;
-	private Awaiting awaiting;
-	private FluentWindowConditions fluent;
-	private boolean isAlive = true;
+	private final WindowTimeOuts windowTimeOuts;
+	private final FluentWindowConditions fluent;
 	private final WindowReceptionist windowReceptionist = new WindowReceptionist();
 
-	private void changeActiveWindow(String handle)
+	void changeActive(String handle)
 			throws NoSuchWindowException, UnhandledAlertException {
-		Set<String> handles = getWindowHandles();
+		Set<String> handles = getHandles();
 		if (!handles.contains(handle)) {
 			throw new NoSuchWindowException("There is no window with handle "
 					+ handle + "!");
@@ -60,18 +55,18 @@ public final class WindowSwitcher implements IDestroyable {
 		return new WindowSwitcher(driver);
 	}
 
-	private WindowSwitcher(WebDriverEncapsulation InitialDriverPerformance) {
-		driverEncapsulation = InitialDriverPerformance;
+	private WindowSwitcher(WebDriverEncapsulation initialDriverEncapsulation) {
+		super(initialDriverEncapsulation);
 		windowTimeOuts = driverEncapsulation.getWindowTimeOuts();
-		awaiting = driverEncapsulation.getAwaiting();
 		fluent = new FluentWindowConditions(driverEncapsulation.getWrappedDriver());
 		swithcerList.add(this);
 	}
 
+	@Override
 	/**
 	 * returns window handle by it's index
 	 */
-	public String getWindowHandleByInex(int windowIndex)
+	public String getHandleByInex(int windowIndex)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Attempt to get window that is specified by index "
@@ -88,18 +83,19 @@ public final class WindowSwitcher implements IDestroyable {
 		}
 	}
 
+	@Override
 	/**
 	 * returns handle of a new window that we have been waiting for specified
 	 * time
 	 */
-	public synchronized String switchToNewWindow(long timeOutInSeconds)
+	public synchronized String switchToNew(long timeOutInSeconds)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
 					+ Long.toString(timeOutInSeconds) + " seconds.");
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100,
 					fluent.newWindowIsAppeared());
-			changeActiveWindow(newHandle);
+			changeActive(newHandle);
 			return newHandle;
 		} catch (TimeoutException e) {
 			throw new NoSuchWindowException(
@@ -108,24 +104,26 @@ public final class WindowSwitcher implements IDestroyable {
 		}
 	}
 
+	@Override
 	/**
 	 * returns handle of a new window that we have been waiting for time that
 	 * specified in configuration
 	 */
-	public String switchToNewWindow() throws NoSuchWindowException {
+	public String switchToNew() throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 		long timeOut = windowTimeOuts.getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
 				windowTimeOuts.defaultTimeForNewWindow);
-		return switchToNewWindow(timeOut);
+		return switchToNew(timeOut);
 	}
 
+	@Override
 	/**
 	 * returns handle of a new window that we have been waiting for specified
 	 * time. new window should has defined title. We can specify title partially
 	 * as a regular expression
 	 */
-	public synchronized String switchToNewWindow(long timeOutInSeconds, String title)
+	public synchronized String switchToNew(long timeOutInSeconds, String title)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
@@ -133,7 +131,7 @@ public final class WindowSwitcher implements IDestroyable {
 					+ " seconds. New window should have title " + title);
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100,
 					fluent.newWindowIsAppeared(title));
-			changeActiveWindow(newHandle);
+			changeActive(newHandle);
 			return newHandle;
 		} catch (TimeoutException e) {
 			throw new NoSuchWindowException(
@@ -143,25 +141,26 @@ public final class WindowSwitcher implements IDestroyable {
 		}
 	}
 
+	@Override
 	/**
 	 * returns handle of a new window that we have been waiting for time that
 	 * specified in configuration. new window should has defined title. We can
 	 * specify title partially
 	 * as a regular expression
 	 */
-	public String switchToNewWindow(String title) throws NoSuchWindowException {
+	public String switchToNew(String title) throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 		long timeOut = windowTimeOuts.getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
 				windowTimeOuts.defaultTimeForNewWindow);
-		return switchToNewWindow(timeOut, title);
+		return switchToNew(timeOut, title);
 	}
 
 	/**
 	 * returns handle of a new window that we have been waiting for specified
 	 * time. new window should has page that loads by specified URLs. We can specify it as regular expression list
 	 */
-	public synchronized String switchToNewWindow(long timeOutInSeconds, List<String> urls)
+	public synchronized String switchToNew(long timeOutInSeconds, List<String> urls)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
@@ -171,7 +170,7 @@ public final class WindowSwitcher implements IDestroyable {
 					+ urls.toString());
 			String newHandle = awaiting.awaitCondition(timeOutInSeconds, 100,
 					fluent.newWindowIsAppeared(urls));
-			changeActiveWindow(newHandle);
+			changeActive(newHandle);
 			return newHandle;
 		} catch (TimeoutException e) {
 			throw new NoSuchWindowException(
@@ -186,28 +185,23 @@ public final class WindowSwitcher implements IDestroyable {
 	 * specified in configuration. new window should has page that loads by
 	 * specified URL. We can specify it as regular expression list
 	 */
-	public String switchToNewWindow(List<String> urls) throws NoSuchWindowException {
+	public String switchToNew(List<String> urls) throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
 		long timeOut = windowTimeOuts.getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
 				windowTimeOuts.defaultTimeForNewWindow);
-		return switchToNewWindow(timeOut, urls);
-	}
-
-	synchronized void switchTo(String Handle)
-			throws NoSuchWindowException {
-		changeActiveWindow(Handle);
+		return switchToNew(timeOut, urls);
 	}
 
 	public synchronized String getWindowURLbyHandle(String handle)
 			throws NoSuchWindowException {
-		changeActiveWindow(handle);
+		changeActive(handle);
 		return (driverEncapsulation.getWrappedDriver().getCurrentUrl());
 	}
 
 	public synchronized String getTitleByHandle(String handle)
 			throws NoSuchWindowException {
-		changeActiveWindow(handle);
+		changeActive(handle);
 		return (driverEncapsulation.getWrappedDriver().getTitle());
 	}
 
@@ -230,7 +224,7 @@ public final class WindowSwitcher implements IDestroyable {
 				windowTimeOuts.defaultTime);
 
 		try {
-			changeActiveWindow(handle);
+			changeActive(handle);
 			WebDriver driver = driverEncapsulation.getWrappedDriver();
 			driver.switchTo().window(handle).close();
 		} catch (UnhandledAlertException | NoSuchWindowException e) {
@@ -245,7 +239,7 @@ public final class WindowSwitcher implements IDestroyable {
 
 		int actualWinCount = 0;
 		try {
-			actualWinCount = getWindowHandles().size();
+			actualWinCount = getHandles().size();
 		} catch (WebDriverException e) { // if all windows are closed
 			actualWinCount = 0;
 		} finally {
@@ -256,36 +250,8 @@ public final class WindowSwitcher implements IDestroyable {
 		}
 	}
 
-	public Set<String> getWindowHandles() {
+	public Set<String> getHandles() {
 		return (driverEncapsulation.getWrappedDriver().getWindowHandles());
-	}
-
-	protected synchronized void takeAPictureOfASevere(String handle,
-			String Comment) {
-		changeActiveWindow(handle);
-		Photographer.takeAPictureOfASevere(
-				driverEncapsulation.getWrappedDriver(), Comment);
-	}
-
-	protected synchronized void takeAPictureOfAWarning(String handle,
-			String Comment) {
-		changeActiveWindow(handle);
-		Photographer.takeAPictureOfAWarning(
-				driverEncapsulation.getWrappedDriver(), Comment);
-	}
-
-	protected synchronized void takeAPictureOfAnInfo(String handle,
-			String Comment) {
-		changeActiveWindow(handle);
-		Photographer.takeAPictureOfAnInfo(
-				driverEncapsulation.getWrappedDriver(), Comment);
-	}
-
-	protected synchronized void takeAPictureOfAFine(String handle,
-			String Comment) {
-		changeActiveWindow(handle);
-		Photographer.takeAPictureOfAFine(
-				driverEncapsulation.getWrappedDriver(), Comment);
 	}
 
 	public synchronized Alert getAlert() throws NoAlertPresentException {
@@ -304,19 +270,7 @@ public final class WindowSwitcher implements IDestroyable {
 				new Class[] {long.class}, new Object[] {timeOut});
 	}
 
-	boolean isAlive() {
-		return isAlive;
-	}
-	
 	WindowReceptionist getWindowReceptionist(){
 		return windowReceptionist;
-	}
-	
-	WebDriver getWrappedDriver() {
-		return driverEncapsulation.getWrappedDriver();
-	}
-	
-	WebDriverEncapsulation getWebDriverEncapsulation(){
-		return driverEncapsulation;
 	}
 }

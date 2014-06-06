@@ -80,7 +80,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 	 */
 	public static SingleWindow initNewWindow(WindowSwitcher switcher)
 			throws NoSuchWindowException {
-		return (new SingleWindow(switcher, switcher.switchToNewWindow()));
+		return (new SingleWindow(switcher, switcher.switchToNew()));
 	}
 
 	/** Static constructor ¹1.1
@@ -88,7 +88,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 	public static SingleWindow initNewWindow(WindowSwitcher switcher,
 			long secondsTimeOut) throws NoSuchWindowException {
 		return (new SingleWindow(switcher,
-				switcher.switchToNewWindow(secondsTimeOut)));
+				switcher.switchToNew(secondsTimeOut)));
 	}
 
 	/** Static constructor ¹2 - initialization of new window that will appear.
@@ -97,14 +97,14 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 	*/
 	public static SingleWindow initNewWindow(WindowSwitcher switcher,
 			String title) throws NoSuchWindowException {
-		return (new SingleWindow(switcher, switcher.switchToNewWindow(title)));
+		return (new SingleWindow(switcher, switcher.switchToNew(title)));
 	}
 
 	/** Static constructor ¹2.1
 	 */
 	public static SingleWindow initNewWindow(WindowSwitcher switcher,
 			String title, long secondsTimeOut) throws NoSuchWindowException {
-		return (new SingleWindow(switcher, switcher.switchToNewWindow(
+		return (new SingleWindow(switcher, switcher.switchToNew(
 				secondsTimeOut, title)));
 	}
 
@@ -113,14 +113,14 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 	*/
 	public static SingleWindow initNewWindow(WindowSwitcher switcher, List<String> urls)
 			throws NoSuchWindowException {
-		return (new SingleWindow(switcher, switcher.switchToNewWindow(urls)));
+		return (new SingleWindow(switcher, switcher.switchToNew(urls)));
 	}
 
 	/** Static constructor ¹3.1
 	 */
 	public static SingleWindow initNewWindow(WindowSwitcher switcher, List<String> urls,
 			long secondsTimeOut) throws NoSuchWindowException {
-		return (new SingleWindow(switcher, switcher.switchToNewWindow(
+		return (new SingleWindow(switcher, switcher.switchToNew(
 				secondsTimeOut, urls)));
 	}
 
@@ -129,7 +129,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 	*/
 	public static SingleWindow initWindowByIndex(WindowSwitcher switcher,
 			int index) throws NoSuchWindowException {
-		String handle = switcher.getWindowHandleByInex(index);
+		String handle = switcher.getHandleByInex(index);
 		SingleWindow InitedWindow = isInitiated(handle, switcher);
 		if (InitedWindow != null) {
 			return (InitedWindow);
@@ -283,7 +283,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 			return false;
 		}
 		try {
-			Set<String> handles = nativeSwitcher.getWindowHandles();
+			Set<String> handles = nativeSwitcher.getHandles();
 			return handles.contains(objectWindow);
 		} catch (WebDriverException e) { // if there is no window
 			return false;
