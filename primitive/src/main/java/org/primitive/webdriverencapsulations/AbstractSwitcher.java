@@ -51,12 +51,6 @@ public abstract class AbstractSwitcher implements IDestroyable {
 				driverEncapsulation.getWrappedDriver(), Comment);
 	}
 
-	/**
-	 * returns handle by it's index
-	 */
-	public abstract String getHandleByInex(int windowIndex);
-	public abstract  Set<String> getHandles();
-
 	WebDriverEncapsulation getWebDriverEncapsulation(){
 		return driverEncapsulation;
 	}
@@ -73,31 +67,10 @@ public abstract class AbstractSwitcher implements IDestroyable {
 			throws NoSuchWindowException {
 		changeActive(Handle);
 	}
-
-	/**
-	 * returns handle of a new window that we have been waiting for time that
-	 * specified in configuration
-	 */
+	public abstract String getHandleByInex(int windowIndex);
+	public abstract  Set<String> getHandles();
 	public abstract String switchToNew();
-
-	/**
-	 * returns handle of a new window that we have been waiting for specified
-	 * time
-	 */
 	public abstract String switchToNew(long timeOutInSeconds);
-
-	/**
-	 * returns handle of a new window that we have been waiting for specified
-	 * time. new window should has defined title. We can specify title partially
-	 * as a regular expression
-	 */
 	public abstract String switchToNew(long timeOutInSeconds, String stringIdentifier);
-
-	/**
-	 * returns handle of a new window that we have been waiting for time that
-	 * specified in configuration. new window should has defined title. We can
-	 * specify title partially
-	 * as a regular expression
-	 */
 	public abstract String switchToNew(String stringIdentifier);
 }

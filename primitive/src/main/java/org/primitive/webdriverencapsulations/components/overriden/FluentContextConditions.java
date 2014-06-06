@@ -1,5 +1,6 @@
 package org.primitive.webdriverencapsulations.components.overriden;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.openqa.selenium.ContextAware;
@@ -25,6 +26,20 @@ public class FluentContextConditions extends WebdriverComponent {
 		return null;
 	}
 	
+	private String getNewContext(final WebDriver from, final Set<String> oldContexts){
+		String newContext = null;
+		Set<String> newContexts = ((ContextAware) from).getContextHandles();
+		if (newContexts.size() > oldContexts.size()) {
+			newContexts.removeAll(oldContexts);
+			newContext = (String) newContexts.toArray()[0];
+			return newContext;
+		}
+		return newContext;
+	}
+	
+	/**
+	 * Waiting for the context is present
+	 */
 	public ExpectedCondition<Boolean> isContextPresent(final String conext){
 		return new ExpectedCondition<Boolean>(){
 			@Override
@@ -33,5 +48,40 @@ public class FluentContextConditions extends WebdriverComponent {
 			}			
 		};
 	}
+
+	/**
+	 * Waiting for a new context is appeared
+	 */
+	public ExpectedCondition<String> newContextIsAppeared() {
+		return new ExpectedCondition<String>() {
+			Set<String> oldContexts= ((ContextAware) driver).getContextHandles();
+	
+			public String apply(final WebDriver from) {
+				return getNewContext(from, oldContexts);
+			}
+		};
+	}
+	
+	private String getContextByIndex(final WebDriver from, int contextIndex) {
+		Set<String> contexts = ((ContextAware) from).getContextHandles();
+		if ((contexts.size() - 1) >= contextIndex) {
+			return new ArrayList<String>(contextIndex).get(contextIndex);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Waiting for context is present. Context is defined by index
+	 */
+	public ExpectedCondition<String> suchWindowWithIndexIsPresent(final int windowIndex) {
+		return new ExpectedCondition<String>() {
+			public String apply(final WebDriver from) {
+				return getContextByIndex(from, windowIndex);
+			}
+		};
+	}
+	
+	
 
 }
