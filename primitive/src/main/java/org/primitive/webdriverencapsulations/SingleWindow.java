@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.openqa.selenium.ContextAware;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.Point;
@@ -35,7 +34,6 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 	private final WindowTool windowTool;
 	private final NavigationTool navigationTool;
 	private final WindowReceptionist receptionist;
-	private final ContextSwitcher contextSwitcher;
 	
 
 	private final List<IWindowListener> windowEventListeners = new ArrayList<IWindowListener>();
@@ -69,7 +67,6 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 		this.navigationTool = ComponentFactory.getComponent(NavigationTool.class,
 				driverEncapsulation.getWrappedDriver());
 		this.receptionist = nativeSwitcher.getWindowReceptionist();
-		this.contextSwitcher = new ContextSwitcher(this);
 		receptionist.addKnownWindow(this);
 		windowEventListeners.addAll(InnerSPIServises.getBy(driverEncapsulation)
 				.getServices(IWindowListener.class));
@@ -304,9 +301,5 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 
 	public void removeAllListeners() {
 		windowEventListeners.clear();
-	}
-	
-	public ContextAware gContextAware(){
-		return contextSwitcher;
 	}
 }
