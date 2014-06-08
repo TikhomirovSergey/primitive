@@ -11,7 +11,7 @@ import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.proxy.EnhancedProxyFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.WindowSwitcher;
+import org.primitive.webdriverencapsulations.WindowManager;
 
 //This class should be used for creation of a single page and application model instances
 public final class ObjectFactory {
@@ -78,7 +78,7 @@ public final class ObjectFactory {
 	private static SingleWindow getFirstBrowserWindow(
 			WebDriverEncapsulation driver, Class<?> requiredClass){
 		try {
-			WindowSwitcher switcher = WindowSwitcher.get(driver);
+			WindowManager switcher = new WindowManager(driver);
 			SingleWindow result = SingleWindow.initWindowByIndex(switcher, 0);
 			result.switchToMe();
 			return result;

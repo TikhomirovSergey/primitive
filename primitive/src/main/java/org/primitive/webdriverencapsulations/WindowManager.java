@@ -1,7 +1,5 @@
 package org.primitive.webdriverencapsulations;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -14,20 +12,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.primitive.configuration.commonhelpers.WindowsTimeOuts;
-import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.components.bydefault.AlertHandler;
 import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
 import org.primitive.webdriverencapsulations.components.overriden.FluentWindowConditions;
-import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
 
-public final class WindowSwitcher extends AbstractSwitcher {
-	private final static List<WindowSwitcher> swithcerList = Collections
-			.synchronizedList(new ArrayList<WindowSwitcher>());
-	private final WindowTimeOuts windowTimeOuts;
+public final class WindowManager extends AbstractManager {
 	private final FluentWindowConditions fluent;
-	private final WindowReceptionist windowReceptionist = new WindowReceptionist();
-
 	void changeActive(String handle)
 			throws NoSuchWindowException, UnhandledAlertException {
 		Set<String> handles = getHandles();
@@ -41,25 +32,14 @@ public final class WindowSwitcher extends AbstractSwitcher {
 			throw e;
 		}
 	}
-
-	/**
-	 * returns WindowSwither instance that exists or creates a new instance
-	 */
-	public static WindowSwitcher get(WebDriverEncapsulation driver) {
-		for (WindowSwitcher switcher : swithcerList) {
-			if (switcher.driverEncapsulation == driver) {
-				return switcher;
-			}
-		}
-
-		return new WindowSwitcher(driver);
+	
+	private WindowsTimeOuts getWindowTimeOuts() {
+		return driverEncapsulation.configuration.getBrowserWindowsTimeOuts();
 	}
 
-	private WindowSwitcher(WebDriverEncapsulation initialDriverEncapsulation) {
+	public WindowManager(WebDriverEncapsulation initialDriverEncapsulation) {
 		super(initialDriverEncapsulation);
-		windowTimeOuts = driverEncapsulation.getWindowTimeOuts();
 		fluent = new FluentWindowConditions(driverEncapsulation.getWrappedDriver());
-		swithcerList.add(this);
 	}
 
 	@Override
@@ -71,9 +51,9 @@ public final class WindowSwitcher extends AbstractSwitcher {
 		try {
 			Log.debug("Attempt to get window that is specified by index "
 					+ Integer.toString(windowIndex) + "...");
-			WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-			long timeOut = windowTimeOuts.getTimeOut(timeOuts.getWindowCountTimeOutSec(),
-					windowTimeOuts.defaultTime);
+			WindowsTimeOuts timeOuts = getWindowTimeOuts();
+			long timeOut = getTimeOut(timeOuts.getWindowCountTimeOutSec(),
+					defaultTime);
 			return awaiting.awaitCondition(timeOut, 100, 
 					fluent.suchWindowWithIndexIsPresent(windowIndex));
 		} catch (TimeoutException e) {
@@ -110,10 +90,10 @@ public final class WindowSwitcher extends AbstractSwitcher {
 	 * specified in configuration
 	 */
 	public String switchToNew() throws NoSuchWindowException {
-		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-		long timeOut = windowTimeOuts.getTimeOut(
+		WindowsTimeOuts timeOuts = getWindowTimeOuts();
+		long timeOut = getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
-				windowTimeOuts.defaultTimeForNewWindow);
+				defaultTimeForNew);
 		return switchToNew(timeOut);
 	}
 
@@ -149,10 +129,10 @@ public final class WindowSwitcher extends AbstractSwitcher {
 	 * as a regular expression
 	 */
 	public String switchToNew(String title) throws NoSuchWindowException {
-		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-		long timeOut = windowTimeOuts.getTimeOut(
+		WindowsTimeOuts timeOuts = getWindowTimeOuts();
+		long timeOut = getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
-				windowTimeOuts.defaultTimeForNewWindow);
+				defaultTimeForNew);
 		return switchToNew(timeOut, title);
 	}
 
@@ -186,10 +166,10 @@ public final class WindowSwitcher extends AbstractSwitcher {
 	 * specified URL. We can specify it as regular expression list
 	 */
 	public String switchToNew(List<String> urls) throws NoSuchWindowException {
-		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-		long timeOut = windowTimeOuts.getTimeOut(
+		WindowsTimeOuts timeOuts = getWindowTimeOuts();
+		long timeOut = getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
-				windowTimeOuts.defaultTimeForNewWindow);
+				defaultTimeForNew);
 		return switchToNew(timeOut, urls);
 	}
 
@@ -205,23 +185,13 @@ public final class WindowSwitcher extends AbstractSwitcher {
 		return (driverEncapsulation.getWrappedDriver().getTitle());
 	}
 
-	public synchronized void destroy() {
-		swithcerList.remove(this);
-		isAlive = false;
-
-		List<IExtendedWindow> windowsToBeDestroyed = windowReceptionist.getInstantiatedWindows();
-		for (IExtendedWindow window : windowsToBeDestroyed) {
-			((IDestroyable) window).destroy();
-		}
-	}
-
 	public synchronized void close(String handle)
 			throws UnclosedWindowException, NoSuchWindowException,
 			UnhandledAlertException, UnreachableBrowserException {
-		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
-		long timeOut = windowTimeOuts.getTimeOut(
+		WindowsTimeOuts timeOuts = getWindowTimeOuts();
+		long timeOut = getTimeOut(
 				timeOuts.getWindowClosingTimeOutSec(),
-				windowTimeOuts.defaultTime);
+				defaultTime);
 
 		try {
 			changeActive(handle);
@@ -255,12 +225,12 @@ public final class WindowSwitcher extends AbstractSwitcher {
 	}
 
 	public synchronized Alert getAlert() throws NoAlertPresentException {
-		WindowsTimeOuts timeOuts = windowTimeOuts.getTimeOuts();
+		WindowsTimeOuts timeOuts = getWindowTimeOuts();
 		return ComponentFactory.getComponent(AlertHandler.class,
 				driverEncapsulation.getWrappedDriver(),
-				new Class[] {long.class}, new Object[] { windowTimeOuts
-						.getTimeOut(timeOuts.getSecsForAwaitinAlertPresent(),
-								windowTimeOuts.defaultTime) });
+				new Class[] {long.class}, new Object[] {getTimeOut(timeOuts.
+						getSecsForAwaitinAlertPresent(),
+								defaultTime) });
 
 	}
 	
@@ -268,9 +238,5 @@ public final class WindowSwitcher extends AbstractSwitcher {
 		return  ComponentFactory.getComponent(AlertHandler.class,
 				driverEncapsulation.getWrappedDriver(),
 				new Class[] {long.class}, new Object[] {timeOut});
-	}
-
-	WindowReceptionist getWindowReceptionist(){
-		return windowReceptionist;
 	}
 }

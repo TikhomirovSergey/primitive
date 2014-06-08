@@ -60,7 +60,7 @@
     <parameter name="toClick" value="true"/>
     <parameter name="configList" value="android_emulator_chrome.json,android_emulator_chrome_remoteWebDriver.json"/>
     <parameter name="howToGetANewWindow" value="BYPARTIALURL"/>
-    <parameter name="timeOut" value="35"/>
+    <parameter name="timeOut" value="60"/>
     <classes>
       <class name="googletest.HelloWorldGoogleTest2"/>
       <methods>

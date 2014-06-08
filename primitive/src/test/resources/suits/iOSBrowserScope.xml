@@ -56,7 +56,7 @@
     <parameter name="toClick" value="true"/>
     <parameter name="configList" value="iOS_emulator_safari.json,iOS_emulator_safari_remoteWebDriver.json"/>
     <parameter name="howToGetANewWindow" value="BYPARTIALURL"/>
-    <parameter name="timeOut" value="20"/>
+    <parameter name="timeOut" value="30"/>
     <classes>
       <class name="googletest.HelloWorldGoogleTest2"/>
       <methods>

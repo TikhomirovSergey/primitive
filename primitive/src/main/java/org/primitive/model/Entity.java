@@ -7,7 +7,7 @@ import java.util.List;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IHasManyWindows;
 import org.primitive.webdriverencapsulations.SingleWindow;
-import org.primitive.webdriverencapsulations.WindowSwitcher;
+import org.primitive.webdriverencapsulations.WindowManager;
 import org.primitive.webdriverencapsulations.components.overriden.Cookies;
 import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
 
@@ -19,7 +19,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 
 	protected final Cookies cookies;
 	protected final TimeOut timeOuts;
-	protected final WindowSwitcher nativeSwitcher;
+	protected final WindowManager nativeSwitcher;
 
 	protected Entity(SingleWindow browserWindow) {
 		super(browserWindow);

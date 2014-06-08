@@ -7,7 +7,7 @@ import org.primitive.model.Entity;
 import org.primitive.model.ObjectFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.WindowSwitcher;
+import org.primitive.webdriverencapsulations.WindowManager;
 
 public class Google extends Entity implements IPerformsSearch, ILinkList, WrapsDriver{
 	
@@ -55,7 +55,7 @@ public class Google extends Entity implements IPerformsSearch, ILinkList, WrapsD
 		destroy();
 	}
 	
-	public WindowSwitcher getSwitcher(){
+	public WindowManager getSwitcher(){
 		return nativeSwitcher;
 	}
 

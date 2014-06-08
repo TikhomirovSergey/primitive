@@ -44,7 +44,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	protected Configuration configuration = Configuration.byDefault;
 
 	private Awaiting awaiting;
-	private WindowTimeOuts windowTimeOuts;
 	private PageFactoryWorker pageFactoryWorker;
 	private ScriptExecutor scriptExecutor;
 	private FrameSupport frameSupport;
@@ -220,10 +219,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		return (closedDriver);
 	}
 
-	WindowTimeOuts getWindowTimeOuts() {
-		return (windowTimeOuts);
-	}
-
 	public Awaiting getAwaiting() {
 		return (awaiting);
 	}
@@ -319,14 +314,12 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		logs = ComponentFactory.getComponent(DriverLogs.class, closedDriver);
 		ime = new Ime(closedDriver);
 		interaction = ComponentFactory.getComponent(Interaction.class, closedDriver);
-		windowTimeOuts = new WindowTimeOuts(configuration);
 		byAccessibilityId = ComponentFactory.getComponent(ByAccessibilityId.class, closedDriver);
 		byAndroidUIAutomator = ComponentFactory.getComponent(ByAndroidUIAutomator.class, closedDriver);
 		byIosUIAutomation    = ComponentFactory.getComponent(ByIosUIAutomation.class, closedDriver);
 		rotator              = ComponentFactory.getComponent(Rotator.class, closedDriver);
 
 		configurableElements.addConfigurable(timeout);
-		configurableElements.addConfigurable(windowTimeOuts);
 		configurableElements.addConfigurable(elementHighLighter);
 
 		// some services are implemented. They have their special logic

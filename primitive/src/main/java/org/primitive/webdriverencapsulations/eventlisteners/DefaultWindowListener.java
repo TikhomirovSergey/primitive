@@ -45,7 +45,7 @@ public class DefaultWindowListener implements IWindowListener, IConfigurable{
 
 	@Override
 	public void beforeWindowIsSwitchedOn(IExtendedWindow window) {
-		Log.debug("Attempt to switch window on by handle "+ window.getWindowHandle());
+		Log.debug("Attempt to switch window on by handle "+ window.getHandle());
 	}
 
 	@Override

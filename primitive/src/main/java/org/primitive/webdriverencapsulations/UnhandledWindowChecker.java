@@ -52,16 +52,16 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 					new Class[] {IUnhandledWindowEventListener.class },
 					unhandledInvocationHandler);	
 
-	private WindowSwitcher switcher = null;
-	private final static HashMap<WindowSwitcher, UnhandledWindowChecker> checkers = new HashMap<>();
+	private WindowManager switcher = null;
+	private final static HashMap<WindowManager, UnhandledWindowChecker> checkers = new HashMap<>();
 	
-	private UnhandledWindowChecker(WindowSwitcher switcher)	{
+	private UnhandledWindowChecker(WindowManager switcher)	{
 		this.switcher = switcher;
 		InnerSPIServises servises = InnerSPIServises.getBy(this.switcher.getWebDriverEncapsulation());
 		addListeners(servises.getServices(IUnhandledWindowEventListener.class));
 	}
 	
-	public static UnhandledWindowChecker getChecker(WindowSwitcher switcher) {
+	public static UnhandledWindowChecker getChecker(WindowManager switcher) {
 		UnhandledWindowChecker checker = checkers.get(switcher);
 		if (checker != null) {
 			return (checker);
@@ -148,7 +148,7 @@ public final class UnhandledWindowChecker extends Thread implements IDestroyable
 		}
 
 		List<String> unexpectedList = new ArrayList<String>(handles);
-		unexpectedList.removeAll(switcher.getWindowReceptionist()
+		unexpectedList.removeAll(switcher.getHandleReceptionist()
 				.getKnownHandles());
 		return (unexpectedList);
 	}
