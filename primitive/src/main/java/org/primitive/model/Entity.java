@@ -25,7 +25,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		super(browserWindow);
 		cookies = driverEncapsulation.getCookies();
 		timeOuts = driverEncapsulation.getTimeOut();
-		nativeSwitcher = browserWindow.getSwitcher();
+		nativeSwitcher = (WindowManager) browserWindow.getManager();
 	}
 
 	private static Class<?>[] restructureParamArray(Class<?>[] original) {

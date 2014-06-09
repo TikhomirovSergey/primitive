@@ -10,7 +10,7 @@ import org.primitive.configuration.commonhelpers.ContextTimeOuts;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.components.overriden.FluentContextConditions;
 
-public class ContextManager extends AbstractManager {
+public class ContextManager extends Manager {
 	private final FluentContextConditions fluent;
 
 	public ContextManager(WebDriverEncapsulation initialDriverEncapsulation) {

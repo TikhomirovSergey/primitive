@@ -17,7 +17,7 @@ import org.primitive.webdriverencapsulations.components.bydefault.AlertHandler;
 import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
 import org.primitive.webdriverencapsulations.components.overriden.FluentWindowConditions;
 
-public final class WindowManager extends AbstractManager {
+public final class WindowManager extends Manager {
 	private final FluentWindowConditions fluent;
 	void changeActive(String handle)
 			throws NoSuchWindowException, UnhandledAlertException {

@@ -83,8 +83,14 @@ public final class FluentWindowConditions extends WebdriverComponent{
 		if (newHandles.size() > oldHandles.size()) {
 			newHandles.removeAll(oldHandles);
 			for (String handle : newHandles) {
-				from.switchTo().window(handle);
-				String currentUrl = from.getCurrentUrl();
+				String currentUrl = null;				
+				try{
+					from.switchTo().window(handle);
+					currentUrl = from.getCurrentUrl();
+				}
+				catch (TimeoutException e){
+					continue;
+				}
 				
 				for (String url: urls){
 					Pattern p = Pattern.compile("^[" + url + "]?(\\?.*)?");

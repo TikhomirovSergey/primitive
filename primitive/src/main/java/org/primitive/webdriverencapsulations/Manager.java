@@ -11,14 +11,14 @@ import org.primitive.logging.Photographer;
 import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
 import org.primitive.webdriverencapsulations.interfaces.IHasHandle;
 
-public abstract class AbstractManager implements IDestroyable {
+public abstract class Manager implements IDestroyable {
 
 	final Awaiting awaiting;
 	final WebDriverEncapsulation driverEncapsulation;
 	boolean isAlive = true;
 	private final HandleReceptionist handleReceptionist = new HandleReceptionist();
-	private final static List<AbstractManager> managerList = Collections
-	.synchronizedList(new ArrayList<AbstractManager>());
+	private final static List<Manager> managerList = Collections
+	.synchronizedList(new ArrayList<Manager>());
 	
 	final static long defaultTime = 1; // default time we waiting for anything
     final static long defaultTimeForNew = 30; // we will wait
@@ -32,7 +32,7 @@ public abstract class AbstractManager implements IDestroyable {
 		}
 	}
     
-	AbstractManager(WebDriverEncapsulation initialDriverEncapsulation) {
+	Manager(WebDriverEncapsulation initialDriverEncapsulation) {
 		driverEncapsulation = initialDriverEncapsulation;
 		awaiting = driverEncapsulation.getAwaiting();
 		managerList.add(this);
@@ -51,28 +51,28 @@ public abstract class AbstractManager implements IDestroyable {
 	
 	abstract void changeActive(String handle);
 	
-	protected synchronized void takeAPictureOfAFine(String handle,
+	synchronized void takeAPictureOfAFine(String handle,
 			String Comment) {
 		changeActive(handle);
 		Photographer.takeAPictureOfAFine(
 				driverEncapsulation.getWrappedDriver(), Comment);
 	}
 
-	protected synchronized void takeAPictureOfAnInfo(String handle,
+	synchronized void takeAPictureOfAnInfo(String handle,
 			String Comment) {
 		changeActive(handle);
 		Photographer.takeAPictureOfAnInfo(
 				driverEncapsulation.getWrappedDriver(), Comment);
 	}
 
-	protected synchronized void takeAPictureOfASevere(String handle,
+	synchronized void takeAPictureOfASevere(String handle,
 			String Comment) {
 		changeActive(handle);
 		Photographer.takeAPictureOfASevere(
 				driverEncapsulation.getWrappedDriver(), Comment);
 	}
 
-	protected synchronized void takeAPictureOfAWarning(String handle,
+	synchronized void takeAPictureOfAWarning(String handle,
 			String Comment) {
 		changeActive(handle);
 		Photographer.takeAPictureOfAWarning(

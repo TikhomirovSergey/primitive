@@ -6,36 +6,25 @@ import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver.Navigation;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.UnreachableBrowserException;
-import org.primitive.interfaces.IDestroyable;
 import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
 import org.primitive.webdriverencapsulations.components.bydefault.NavigationTool;
 import org.primitive.webdriverencapsulations.components.bydefault.WindowTool;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
 import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
-import org.primitive.webdriverencapsulations.interfaces.ISwitchesToItself;
 
 /**
  * @author s.tihomirov It is performs actions on a single window
  */
-public final class SingleWindow implements Navigation, IExtendedWindow,
-		IDestroyable, ISwitchesToItself {
-	private final WindowManager nativeManager;
-	private final String objectWindow;
-	private final WebDriverEncapsulation driverEncapsulation;
+public final class SingleWindow extends Handle implements Navigation, IExtendedWindow {
 	private final WindowTool windowTool;
 	private final NavigationTool navigationTool;
-	private final HandleReceptionist receptionist;
-	
-
 	private final List<IWindowListener> windowEventListeners = new ArrayList<IWindowListener>();
 	private final InvocationHandler windowListenerInvocationHandler = new InvocationHandler() {
 		public Object invoke(Object proxy, Method method, Object[] args)
@@ -58,16 +47,12 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 		return (SingleWindow) manager.getHandleReceptionist().isInstantiated(handle);
 	}
 
-	private SingleWindow(WindowManager switcher, String handle) {
-		this.nativeManager = switcher;
-		this.driverEncapsulation = switcher.getWebDriverEncapsulation();
-		this.objectWindow = handle;
+	private SingleWindow(WindowManager windowManager, String handle) {
+		super(windowManager, handle);
 		this.windowTool = ComponentFactory.getComponent(WindowTool.class,
 				driverEncapsulation.getWrappedDriver());
 		this.navigationTool = ComponentFactory.getComponent(NavigationTool.class,
-				driverEncapsulation.getWrappedDriver());
-		this.receptionist = nativeManager.getHandleReceptionist();
-		receptionist.addKnown(this);
+				driverEncapsulation.getWrappedDriver());;
 		windowEventListeners.addAll(InnerSPIServises.getBy(driverEncapsulation)
 				.getServices(IWindowListener.class));
 		windowListenerProxy.whenNewWindewIsAppeared(this);
@@ -136,13 +121,13 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 
 	private void requestToMe() {
 		windowListenerProxy.beforeWindowIsSwitchedOn(this);
-		nativeManager.switchTo(objectWindow);
+		nativeManager.switchTo(handle);
 		windowListenerProxy.whenWindowIsSwitchedOn(this);
 	}
 
 	@Override
 	public void destroy() {
-		receptionist.remove(this);
+		super.destroy();
 		removeAllListeners();
 	}
 
@@ -151,7 +136,7 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 			UnreachableBrowserException {
 		try {
 			windowListenerProxy.beforeWindowIsClosed(this);
-			nativeManager.close(objectWindow);
+			((WindowManager) nativeManager).close(handle);
 			windowListenerProxy.whenWindowIsClosed(this);
 			destroy();
 		} catch (UnhandledAlertException | UnclosedWindowException e) {
@@ -168,18 +153,13 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 	}
 
 	@Override
-	public synchronized String getHandle() {
-		return (objectWindow);
-	}
-
-	@Override
 	public synchronized String getCurrentUrl() throws NoSuchWindowException {
-		return (nativeManager.getWindowURLbyHandle(objectWindow));
+		return ((WindowManager) nativeManager).getWindowURLbyHandle(handle);
 	}
 
 	@Override
 	public synchronized String getTitle() {
-		return nativeManager.getTitleByHandle(objectWindow);
+		return ((WindowManager) nativeManager).getTitleByHandle(handle);
 	}
 
 	public WebDriverEncapsulation getDriverEncapsulation() {
@@ -253,42 +233,6 @@ public final class SingleWindow implements Navigation, IExtendedWindow,
 		windowListenerProxy.beforeWindowIsResized(this, size);
 		windowTool.setSize(size);
 		windowListenerProxy.whenWindowIsResized(this, size);
-	}
-
-	@Override
-	public synchronized void takeAPictureOfAnInfo(String Comment) {
-		nativeManager.takeAPictureOfAnInfo(objectWindow, Comment);
-	}
-
-	@Override
-	public synchronized void takeAPictureOfAFine(String Comment) {
-		nativeManager.takeAPictureOfAFine(objectWindow, Comment);
-	}
-
-	@Override
-	public synchronized void takeAPictureOfAWarning(String Comment) {
-		nativeManager.takeAPictureOfAWarning(objectWindow, Comment);
-	}
-
-	@Override
-	public synchronized void takeAPictureOfASevere(String Comment) {
-		nativeManager.takeAPictureOfASevere(objectWindow, Comment);
-	}
-
-	public synchronized boolean exists() {
-		if (!nativeManager.isAlive()) {
-			return false;
-		}
-		try {
-			Set<String> handles = nativeManager.getHandles();
-			return handles.contains(objectWindow);
-		} catch (WebDriverException e) { // if there is no window
-			return false;
-		}
-	}
-
-	public WindowManager getSwitcher() {
-		return nativeManager;
 	}
 
 	public void addListener(IWindowListener listener) {
