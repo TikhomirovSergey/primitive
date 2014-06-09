@@ -10,8 +10,10 @@ public class ContextTimeOuts extends AbstractConfigurationAccessHelper{
 	}
 
 	// screenshot group
-	private final String contextGroup = "contexts";
-	private final String contextPresenceTimeOut = "isContextPresentTimeOut";
+	private final String contextGroup = "Contexts";
+	private final String contextCountTimeOutSetting = "contextCountTimeOutSec";
+	private final String newContextTimeOutSetting   = "newContextTimeOutSec";
+	private final String isContextPresentTimeOutSetting  = "isContextPresentTimeOut";
 
 	
 	@Override
@@ -19,8 +21,15 @@ public class ContextTimeOuts extends AbstractConfigurationAccessHelper{
 		return getSettingValue(contextGroup, name);
 	}
 	
-	public Long getContextPresenceTimeOut(){
-		return (Long) getSetting(contextPresenceTimeOut); 
+	public Long getContextCountTimeOutSec(){
+		return (Long) getSetting(contextCountTimeOutSetting); 
 	}
 
+	public Long getNewContextTimeOutSec() {
+		return (Long) getSetting(newContextTimeOutSetting);
+	}
+	
+	public Long getIsContextPresentTimeOut() {
+		return (Long) getSetting(isContextPresentTimeOutSetting);
+	}
 }

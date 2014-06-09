@@ -27,7 +27,7 @@ public final class WindowManager extends AbstractManager {
 					+ handle + "!");
 		}
 		try {
-			driverEncapsulation.getWrappedDriver().switchTo().window(handle);
+			getWrappedDriver().switchTo().window(handle);
 		} catch (UnhandledAlertException | NoSuchWindowException e) {
 			throw e;
 		}
@@ -39,7 +39,7 @@ public final class WindowManager extends AbstractManager {
 
 	public WindowManager(WebDriverEncapsulation initialDriverEncapsulation) {
 		super(initialDriverEncapsulation);
-		fluent = new FluentWindowConditions(driverEncapsulation.getWrappedDriver());
+		fluent = new FluentWindowConditions(getWrappedDriver());
 	}
 
 	@Override
@@ -176,13 +176,13 @@ public final class WindowManager extends AbstractManager {
 	public synchronized String getWindowURLbyHandle(String handle)
 			throws NoSuchWindowException {
 		changeActive(handle);
-		return (driverEncapsulation.getWrappedDriver().getCurrentUrl());
+		return (getWrappedDriver().getCurrentUrl());
 	}
 
 	public synchronized String getTitleByHandle(String handle)
 			throws NoSuchWindowException {
 		changeActive(handle);
-		return (driverEncapsulation.getWrappedDriver().getTitle());
+		return (getWrappedDriver().getTitle());
 	}
 
 	public synchronized void close(String handle)
@@ -195,7 +195,7 @@ public final class WindowManager extends AbstractManager {
 
 		try {
 			changeActive(handle);
-			WebDriver driver = driverEncapsulation.getWrappedDriver();
+			WebDriver driver = getWrappedDriver();
 			driver.switchTo().window(handle).close();
 		} catch (UnhandledAlertException | NoSuchWindowException e) {
 			throw e;
@@ -221,14 +221,13 @@ public final class WindowManager extends AbstractManager {
 	}
 
 	public Set<String> getHandles() {
-		return (driverEncapsulation.getWrappedDriver().getWindowHandles());
+		return (getWrappedDriver().getWindowHandles());
 	}
 
 	public synchronized Alert getAlert() throws NoAlertPresentException {
 		WindowsTimeOuts timeOuts = getWindowTimeOuts();
 		return ComponentFactory.getComponent(AlertHandler.class,
-				driverEncapsulation.getWrappedDriver(),
-				new Class[] {long.class}, new Object[] {getTimeOut(timeOuts.
+				getWrappedDriver(), new Class[] {long.class}, new Object[] {getTimeOut(timeOuts.
 						getSecsForAwaitinAlertPresent(),
 								defaultTime) });
 
@@ -236,7 +235,6 @@ public final class WindowManager extends AbstractManager {
 	
 	public synchronized Alert getAlert(long timeOut) throws NoAlertPresentException {
 		return  ComponentFactory.getComponent(AlertHandler.class,
-				driverEncapsulation.getWrappedDriver(),
-				new Class[] {long.class}, new Object[] {timeOut});
+				getWrappedDriver(), new Class[] {long.class}, new Object[] {timeOut});
 	}
 }

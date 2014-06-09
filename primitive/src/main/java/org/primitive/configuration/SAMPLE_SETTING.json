@@ -68,6 +68,21 @@
           "value":"2"     
       }      
   },
+  "Contexts":
+  {
+      "contextCountTimeOutSec":{
+          "type":"LONG",
+          "value":"1"           
+      },  
+      "newContextTimeOutSec":{
+          "type":"LONG",
+          "value":"20"            
+      },  
+      "isContextPresentTimeOut":{
+          "type":"LONG",
+          "value":"2"            
+      } 
+  },
   "Log":
   {
       "Level":{
@@ -118,22 +133,5 @@
           "type":"STRING",
           "value":"phantomjs.exe"           
       }       
-  },
-  "Android":
-  {
-      "addSupportedApp":{
-          "type":"STRING",
-          "value":"path to some .apk"           
-      },  
-      "setEmulatorPort":{
-          "type":"INT",
-          "value":"5554"           
-      },  
-      "setSessionTimeoutSeconds":{
-          "type":"INT",
-          "value":"10"           
-      }  
-      /* and more settings that correspond to the methods of io.selendroid.SelendroidConfiguration which set or add something */      
-  }
-  
+  }  
 }

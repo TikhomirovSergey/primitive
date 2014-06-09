@@ -18,9 +18,9 @@ public class FluentContextConditions extends WebdriverComponent {
 		super(driver);
 	}
 	
-	private Boolean isContextPresent(final WebDriver from, String conext){
-		Set<String> conexts = ((ContextAware) from).getContextHandles();
-		if (conexts.contains(conext)){
+	private Boolean isContextPresent(final WebDriver from, String context){
+		Set<String> contexts = ((ContextAware) from).getContextHandles();
+		if (contexts.contains(context)){
 			return true;
 		}
 		return null;
@@ -40,11 +40,11 @@ public class FluentContextConditions extends WebdriverComponent {
 	/**
 	 * Waiting for the context is present
 	 */
-	public ExpectedCondition<Boolean> isContextPresent(final String conext){
+	public ExpectedCondition<Boolean> isContextPresent(final String context){
 		return new ExpectedCondition<Boolean>(){
 			@Override
 			public Boolean apply(WebDriver input) {
-				return isContextPresent(input, conext);
+				return isContextPresent(input, context);
 			}			
 		};
 	}
@@ -74,7 +74,7 @@ public class FluentContextConditions extends WebdriverComponent {
 	/**
 	 * Waiting for context is present. Context is defined by index
 	 */
-	public ExpectedCondition<String> suchWindowWithIndexIsPresent(final int windowIndex) {
+	public ExpectedCondition<String> suchContextWithIndexIsPresent(final int windowIndex) {
 		return new ExpectedCondition<String>() {
 			public String apply(final WebDriver from) {
 				return getContextByIndex(from, windowIndex);
