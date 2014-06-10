@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import org.primitive.webdriverencapsulations.eventlisteners.DefaultContextListener;
 import org.primitive.webdriverencapsulations.eventlisteners.DefaultUnhandledWindowEventListener;
 import org.primitive.webdriverencapsulations.eventlisteners.DefaultWebdriverListener;
 import org.primitive.webdriverencapsulations.eventlisteners.DefaultWindowListener;
+import org.primitive.webdriverencapsulations.eventlisteners.IContextListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IUnhandledWindowEventListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
@@ -32,6 +34,7 @@ class InnerSPIServises {
 	private final Class<?> webdriverExtendedListener    = IExtendedWebDriverEventListener.class;
 	private final Class<?> windowEventListener          = IWindowListener.class;
 	private final Class<?> unhandledWindowEventListener = IUnhandledWindowEventListener.class;
+	private final Class<?> contextListener              = IContextListener.class;
 
 	private InnerSPIServises() {
 		defaultProvidedServices.put(webdriverExtendedListener,
@@ -40,6 +43,8 @@ class InnerSPIServises {
 				new DefaultWindowListener());
 		defaultProvidedServices.put(unhandledWindowEventListener, 
 				new  DefaultUnhandledWindowEventListener());
+		defaultProvidedServices.put(contextListener, 
+				new  DefaultContextListener());		
 	}
 	
 	/**

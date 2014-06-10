@@ -96,7 +96,7 @@
           "type":"BOOL",
           "value":"true"           
       },
-      "toDoScreenShotsOfNewWindows":{
+      "toDoScreenShotsOfNewHandles":{
           "type":"BOOL",
           "value":"true"           
       }              

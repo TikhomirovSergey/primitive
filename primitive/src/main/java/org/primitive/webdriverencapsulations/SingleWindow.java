@@ -43,67 +43,55 @@ public final class SingleWindow extends Handle implements Navigation, IExtendedW
 					new Class[] { IWindowListener.class },
 					windowListenerInvocationHandler);
 
-	static SingleWindow isInitiated(String handle, WindowManager manager) {
-		return (SingleWindow) manager.getHandleReceptionist().isInstantiated(handle);
-	}
-
-	private SingleWindow(WindowManager windowManager, String handle) {
-		super(windowManager, handle);
+	SingleWindow(String handle, WindowManager windowManager) {
+		super(handle, windowManager);
 		this.windowTool = ComponentFactory.getComponent(WindowTool.class,
 				driverEncapsulation.getWrappedDriver());
 		this.navigationTool = ComponentFactory.getComponent(NavigationTool.class,
 				driverEncapsulation.getWrappedDriver());;
 		windowEventListeners.addAll(InnerSPIServises.getBy(driverEncapsulation)
 				.getServices(IWindowListener.class));
-		windowListenerProxy.whenNewWindewIsAppeared(this);
+		windowListenerProxy.whenNewHandleIsAppeared(this);
 	}
 
 	/** Static constructor ¹1 - initialization of new window that will appear.
 	 */
-	public static SingleWindow initNewWindow(WindowManager manager)
-			throws NoSuchWindowException {
-		return (new SingleWindow(manager, manager.switchToNew()));
+	public SingleWindow(WindowManager manager) throws NoSuchWindowException {
+		this(manager.switchToNew(), manager);
 	}
 
-	/** Static constructor ¹1.1
+	/** constructor ¹1.1
 	 */
-	public static SingleWindow initNewWindow(WindowManager manager,
-			long secondsTimeOut) throws NoSuchWindowException {
-		return (new SingleWindow(manager,
-				manager.switchToNew(secondsTimeOut)));
+	public SingleWindow(WindowManager manager, long secondsTimeOut) throws NoSuchWindowException {
+		this(manager.switchToNew(secondsTimeOut), manager);
 	}
 
-	/** Static constructor ¹2 - initialization of new window that will appear.
+	/**constructor ¹2 - initialization of new window that will appear.
 	* We use either title of a window or piece of its title. Fragment is
 	* a regular expression
 	*/
-	public static SingleWindow initNewWindow(WindowManager manager,
-			String title) throws NoSuchWindowException {
-		return (new SingleWindow(manager, manager.switchToNew(title)));
+	public SingleWindow (WindowManager manager, String title) throws NoSuchWindowException {
+		this( manager.switchToNew(title), manager);
 	}
 
-	/** Static constructor ¹2.1
+	/**constructor ¹2.1
 	 */
-	public static SingleWindow initNewWindow(WindowManager manager,
-			String title, long secondsTimeOut) throws NoSuchWindowException {
-		return (new SingleWindow(manager, manager.switchToNew(
-				secondsTimeOut, title)));
+	public SingleWindow(WindowManager manager, String title, long secondsTimeOut) throws NoSuchWindowException {
+		this(manager.switchToNew(secondsTimeOut, title), manager);
 	}
 
-	/** Static constructor ¹3 - initialization of new window that will appear.
+	/** constructor ¹3 - initialization of new window that will appear.
 	* We use possible URLs of a loaded page. They can be defined as RegExp
 	*/
-	public static SingleWindow initNewWindow(WindowManager manager, List<String> urls)
-			throws NoSuchWindowException {
-		return (new SingleWindow(manager, manager.switchToNew(urls)));
+	public SingleWindow (WindowManager manager, List<String> urls) throws NoSuchWindowException {
+		this(manager.switchToNew(urls), manager);
 	}
 
-	/** Static constructor ¹3.1
+	/** constructor ¹3.1
 	 */
-	public static SingleWindow initNewWindow(WindowManager manager, List<String> urls,
+	public SingleWindow(WindowManager manager, List<String> urls,
 			long secondsTimeOut) throws NoSuchWindowException {
-		return (new SingleWindow(manager, manager.switchToNew(
-				secondsTimeOut, urls)));
+		this(manager.switchToNew(secondsTimeOut, urls), manager);
 	}
 
 	/** Static constructor ¹4 - initialization of new window object by its index.
@@ -112,17 +100,17 @@ public final class SingleWindow extends Handle implements Navigation, IExtendedW
 	public static SingleWindow initWindowByIndex(WindowManager manager,
 			int index) throws NoSuchWindowException {
 		String handle = manager.getHandleByInex(index);
-		SingleWindow InitedWindow = isInitiated(handle, manager);
+		SingleWindow InitedWindow = (SingleWindow) isInitiated(handle, manager);
 		if (InitedWindow != null) {
 			return (InitedWindow);
 		}
-		return (new SingleWindow(manager, handle));
+		return (new SingleWindow(handle, manager));
 	}
 
 	private void requestToMe() {
-		windowListenerProxy.beforeWindowIsSwitchedOn(this);
+		windowListenerProxy.beforeIsSwitchedOn(this);
 		nativeManager.switchTo(handle);
-		windowListenerProxy.whenWindowIsSwitchedOn(this);
+		windowListenerProxy.whenIsSwitchedOn(this);
 	}
 
 	@Override
@@ -160,10 +148,6 @@ public final class SingleWindow extends Handle implements Navigation, IExtendedW
 	@Override
 	public synchronized String getTitle() {
 		return ((WindowManager) nativeManager).getTitleByHandle(handle);
-	}
-
-	public WebDriverEncapsulation getDriverEncapsulation() {
-		return (driverEncapsulation);
 	}
 
 	@Override

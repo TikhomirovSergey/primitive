@@ -8,14 +8,9 @@ import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
 * @author s.tihomirov
 *Objects of classes that will implement this listens to window events
 */
-public interface IWindowListener {
-	public void whenNewWindewIsAppeared(IExtendedWindow window);
-	
+public interface IWindowListener extends IHandletListener {
 	public void beforeWindowIsClosed(IExtendedWindow window);
 	public void whenWindowIsClosed(IExtendedWindow window);
-	
-	public void beforeWindowIsSwitchedOn(IExtendedWindow window);
-	public void whenWindowIsSwitchedOn(IExtendedWindow window);
 	
 	public void beforeWindowIsMaximized(IExtendedWindow window);
 	public void whenWindowIsMaximized(IExtendedWindow window);

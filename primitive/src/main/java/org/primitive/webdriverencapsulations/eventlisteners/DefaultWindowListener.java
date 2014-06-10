@@ -2,19 +2,18 @@ package org.primitive.webdriverencapsulations.eventlisteners;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.primitive.configuration.Configuration;
 import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
+import org.primitive.webdriverencapsulations.interfaces.IHasHandle;
+import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
 
 /**
 * @author s.tihomirov
 *Implementation of @link{IWindowListener} by default
 */
-public class DefaultWindowListener implements IWindowListener, IConfigurable{
+public class DefaultWindowListener extends DefaultHandleListener implements IWindowListener, IConfigurable{
 
-	private boolean toDoScreenShotsOfNewWindows = true;
-	
 	public DefaultWindowListener() {
 		super();
 	}
@@ -24,10 +23,10 @@ public class DefaultWindowListener implements IWindowListener, IConfigurable{
 	}
 
 	@Override
-	public void whenNewWindewIsAppeared(IExtendedWindow window) {
+	public void whenNewHandleIsAppeared(IHasHandle handle) {
 		if (toDoScreenShotsOfNewWindows)
 		{
-			window.takeAPictureOfAnInfo("The new window");
+			((ITakesPictureOfItSelf) handle).takeAPictureOfAnInfo("The new window");
 		}
 		
 	}
@@ -44,13 +43,13 @@ public class DefaultWindowListener implements IWindowListener, IConfigurable{
 	}
 
 	@Override
-	public void beforeWindowIsSwitchedOn(IExtendedWindow window) {
-		Log.debug("Attempt to switch window on by handle "+ window.getHandle());
+	public void beforeIsSwitchedOn(IHasHandle handle) {
+		Log.debug("Attempt to switch window on by handle "+ handle.getHandle());
 	}
 
 	@Override
-	public void whenWindowIsSwitchedOn(IExtendedWindow window) {
-		postWindowUrl(window);			
+	public void whenIsSwitchedOn(IHasHandle handle) {
+		postWindowUrl((IExtendedWindow) handle);			
 	}
 
 	@Override
@@ -102,15 +101,6 @@ public class DefaultWindowListener implements IWindowListener, IConfigurable{
 		Log.message("Window size has been changed! New height is " + Integer.toString(dimension.getHeight()) + 
 				" new width is " + Integer.toString(dimension.getWidth()));
 		postWindowUrl(window);			
-	}
-
-	@Override
-	public void resetAccordingTo(Configuration config) {
-		Boolean toDoScreenshots = config.getScreenShots().getToDoScreenShotsOfNewWindows();
-		if (toDoScreenshots!=null)
-		{
-			toDoScreenShotsOfNewWindows = toDoScreenshots;
-		}
 	}
 
 }

@@ -1,7 +1,6 @@
 package org.primitive.webdriverencapsulations;
 
 import java.util.Set;
-
 import org.openqa.selenium.WebDriverException;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.webdriverencapsulations.interfaces.IHasHandle;
@@ -19,7 +18,7 @@ public abstract class Handle implements IHasHandle, ISwitchesToItself,
 	final Manager nativeManager;
 	private final HandleReceptionist receptionist;
 
-	Handle(Manager switcher, String handle) {
+	Handle(String handle, Manager switcher) {
 		this.nativeManager = switcher;
 		this.driverEncapsulation = switcher.getWebDriverEncapsulation();
 		this.handle = handle;
@@ -74,6 +73,14 @@ public abstract class Handle implements IHasHandle, ISwitchesToItself,
 	@Override
 	public void destroy() {
 		receptionist.remove(this);
+	}
+
+	public WebDriverEncapsulation getDriverEncapsulation() {
+		return (driverEncapsulation);
+	}
+
+	static Handle isInitiated(String handle, Manager manager) {
+		return (SingleWindow) manager.getHandleReceptionist().isInstantiated(handle);
 	}
 
 }

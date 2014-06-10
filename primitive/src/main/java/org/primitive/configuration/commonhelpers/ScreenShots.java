@@ -5,7 +5,7 @@ import org.primitive.configuration.Configuration;
 
 public class ScreenShots extends AbstractConfigurationAccessHelper {
 
-	private final String toDoScreenShotsOfNewWindows = "toDoScreenShotsOfNewWindows";
+	private final String toDoScreenShotsOfNewHandles = "toDoScreenShotsOfNewHandles";
 	private final String toDoScreenShotsOnElementHighLighting = "toDoScreenShotsOnElementHighLighting";
 	// screenshot group
 	private final String screenShotssGroup = "screenShots";
@@ -14,8 +14,8 @@ public class ScreenShots extends AbstractConfigurationAccessHelper {
 		super(configuration);
 	}
 
-	public Boolean getToDoScreenShotsOfNewWindows() {
-		return (Boolean) getSetting(toDoScreenShotsOfNewWindows);
+	public Boolean getToDoScreenShotsOfNewHandles() {
+		return (Boolean) getSetting(toDoScreenShotsOfNewHandles);
 	}
 
 	public Boolean getToDoScreenShotsOnElementHighLighting() {

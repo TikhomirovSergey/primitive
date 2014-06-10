@@ -175,8 +175,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
-				restructureValueArray(
-						SingleWindow.initNewWindow(nativeSwitcher), values));
+				restructureValueArray(new SingleWindow(nativeSwitcher), values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);
 		return part;
@@ -233,8 +232,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
-				restructureValueArray(
-						SingleWindow.initNewWindow(nativeSwitcher, timeOutSec),
+				restructureValueArray(new SingleWindow(nativeSwitcher, timeOutSec),
 						values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);
@@ -296,8 +294,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
-				restructureValueArray(
-						SingleWindow.initNewWindow(nativeSwitcher, title),
+				restructureValueArray(new SingleWindow(nativeSwitcher, title),
 						values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);
@@ -360,7 +357,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
-				restructureValueArray(SingleWindow.initNewWindow(
+				restructureValueArray(new SingleWindow(
 						nativeSwitcher, title, timeOutSec), values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);
@@ -421,8 +418,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
-				restructureValueArray(
-						SingleWindow.initNewWindow(nativeSwitcher, urls),
+				restructureValueArray(new SingleWindow(nativeSwitcher, urls),
 						values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);
@@ -540,7 +536,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		T part = ObjectFactory.get(
 				partClass,
 				restructureParamArray(params),
-				restructureValueArray(SingleWindow.initNewWindow(
+				restructureValueArray(new SingleWindow(
 						nativeSwitcher, urls, timeOutSec), values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((TestObject) part);

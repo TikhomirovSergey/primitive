@@ -4,6 +4,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
 import org.primitive.webdriverencapsulations.interfaces.IExtendedWindow;
+import org.primitive.webdriverencapsulations.interfaces.IHasHandle;
 
 public class MockWindowListener implements IWindowListener {
 	public static MockWindowListener listener;
@@ -15,7 +16,7 @@ public class MockWindowListener implements IWindowListener {
 	}
 
 	@Override
-	public void whenNewWindewIsAppeared(IExtendedWindow window) {
+	public void whenNewHandleIsAppeared(IHasHandle handle) {
 		wasInvoked = true;
 	}
 
@@ -30,12 +31,12 @@ public class MockWindowListener implements IWindowListener {
 	}
 
 	@Override
-	public void beforeWindowIsSwitchedOn(IExtendedWindow window) {
+	public void beforeIsSwitchedOn(IHasHandle handle) {
 		wasInvoked = true;
 	}
 
 	@Override
-	public void whenWindowIsSwitchedOn(IExtendedWindow window) {
+	public void whenIsSwitchedOn(IHasHandle handle) {
 		wasInvoked = true;
 	}
 

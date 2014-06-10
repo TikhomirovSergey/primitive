@@ -12,7 +12,7 @@
 	          "type":"BOOL",
 	          "value":"false"           
 	      }, 
-	      "toDoScreenShotsOfNewWindows":{
+	      "toDoScreenShotsOfNewHandles":{
 	          "type":"BOOL",
 	          "value":"false"           
 	      }   	            
