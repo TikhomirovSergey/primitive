@@ -7,6 +7,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.webdriver.ESupportedDrivers;
+import org.primitive.model.abstraction.ModelObjectInterceptor;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.proxy.EnhancedProxyFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
@@ -44,7 +45,7 @@ public final class ObjectFactory {
 	
 	private static <T extends MethodInterceptor> T getEntityInterceptor() {
 		return  getInterceptorFromThreadLocal(
-				definedInterceptorForEntities, TestObjectInterceptor.class);
+				definedInterceptorForEntities, ModelObjectInterceptor.class);
 	}
 	
 	private static <T extends MethodInterceptor> T getInteractiveInterceptor(){
@@ -61,7 +62,7 @@ public final class ObjectFactory {
 	/**
 	 * Resets iterceptor class for {@link Entity}
 	 */
-	public static void resetEntityInterceptor(Class<? extends TestObjectInterceptor> interceptorClass){
+	public static void resetEntityInterceptor(Class<? extends ModelObjectInterceptor> interceptorClass){
 		resetInterceptor(definedInterceptorForEntities, interceptorClass);
 	}
 	

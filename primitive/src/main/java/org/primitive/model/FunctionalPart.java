@@ -18,6 +18,7 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.primitive.logging.Photographer;
+import org.primitive.model.abstraction.ModelObject;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IHasWebElementFrames;
 import org.primitive.webdriverencapsulations.SingleWindow;
@@ -33,7 +34,7 @@ import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
 /**
  * @author s.tihomirov It describes simple web page or its fragment
  */
-public abstract class FunctionalPart extends TestObject implements
+public abstract class FunctionalPart extends ModelObject implements
 		IHasWebElementFrames, ITakesPictureOfItSelf, ISwitchesToItself {
 
 	/**
@@ -89,7 +90,7 @@ public abstract class FunctionalPart extends TestObject implements
 	}
 
 	@Override
-	void addChild(TestObject child) {
+	protected final void addChild(ModelObject child) {
 		super.addChild(child);
 		FunctionalPart childPart = (FunctionalPart) child;
 		childPart.parent = this;

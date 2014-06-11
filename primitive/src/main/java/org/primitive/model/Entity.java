@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.primitive.model.abstraction.ModelObject;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IHasManyWindows;
 import org.primitive.webdriverencapsulations.SingleWindow;
@@ -15,7 +16,7 @@ import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
  * Using it you can model your testing application as a complex aggregated
  * object it should only generate new objects in general
  */
-public abstract class Entity extends TestObject implements IHasManyWindows {
+public abstract class Entity extends ModelObject implements IHasManyWindows {
 
 	protected final Cookies cookies;
 	protected final TimeOut timeOuts;
@@ -62,7 +63,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 		T part = ObjectFactory.get(partClass, restructureParamArray(params),
 				restructureValueArray(nativeWindow, values));
 		((FunctionalPart) part).originalEntity = this;
-		addChild((TestObject) part);
+		addChild((ModelObject) part);
 		return part;
 	}
 
@@ -119,7 +120,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 				restructureValueArray(SingleWindow.initWindowByIndex(
 						nativeSwitcher, windowIndex), values));
 		((FunctionalPart) part).originalEntity = this;
-		addChild((TestObject) part);
+		addChild((ModelObject) part);
 		return part;
 	}
 
@@ -177,7 +178,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 				restructureParamArray(params),
 				restructureValueArray(new SingleWindow(nativeSwitcher), values));
 		((FunctionalPart) part).originalEntity = this;
-		addChild((TestObject) part);
+		addChild((ModelObject) part);
 		return part;
 	}
 
@@ -235,7 +236,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 				restructureValueArray(new SingleWindow(nativeSwitcher, timeOutSec),
 						values));
 		((FunctionalPart) part).originalEntity = this;
-		addChild((TestObject) part);
+		addChild((ModelObject) part);
 		return part;
 	}
 
@@ -297,7 +298,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 				restructureValueArray(new SingleWindow(nativeSwitcher, title),
 						values));
 		((FunctionalPart) part).originalEntity = this;
-		addChild((TestObject) part);
+		addChild((ModelObject) part);
 		return part;
 	}
 
@@ -360,7 +361,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 				restructureValueArray(new SingleWindow(
 						nativeSwitcher, title, timeOutSec), values));
 		((FunctionalPart) part).originalEntity = this;
-		addChild((TestObject) part);
+		addChild((ModelObject) part);
 		return part;
 	}
 
@@ -421,7 +422,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 				restructureValueArray(new SingleWindow(nativeSwitcher, urls),
 						values));
 		((FunctionalPart) part).originalEntity = this;
-		addChild((TestObject) part);
+		addChild((ModelObject) part);
 		return part;
 	}
 
@@ -539,7 +540,7 @@ public abstract class Entity extends TestObject implements IHasManyWindows {
 				restructureValueArray(new SingleWindow(
 						nativeSwitcher, urls, timeOutSec), values));
 		((FunctionalPart) part).originalEntity = this;
-		addChild((TestObject) part);
+		addChild((ModelObject) part);
 		return part;
 	}
 

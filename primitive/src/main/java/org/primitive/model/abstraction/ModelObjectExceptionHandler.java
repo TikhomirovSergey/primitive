@@ -1,4 +1,4 @@
-package org.primitive.model;
+package org.primitive.model.abstraction;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -6,25 +6,25 @@ import java.util.List;
 
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.primitive.model.interfaces.ITestObjectExceptionHandler;
+import org.primitive.model.interfaces.IModelObjectExceptionHandler;
 
 /**
  * @author s.tihomirov this is an abstract class. It's inheritors should handle
  *         exceptions of defined types
  */
-public abstract class TestObjectExceptionHandler implements
-		ITestObjectExceptionHandler {
+public abstract class ModelObjectExceptionHandler implements
+		IModelObjectExceptionHandler {
 	private List<Class<? extends Throwable>> throwableList = new ArrayList<Class<? extends Throwable>>();
 
 	public boolean isThrowableInList(Class<? extends Throwable> tClass) {
 		return throwableList.contains(tClass);
 	}
 
-	public TestObjectExceptionHandler(Class<? extends Throwable> tClass) {
+	public ModelObjectExceptionHandler(Class<? extends Throwable> tClass) {
 		throwableList.add(tClass);
 	}
 
-	public TestObjectExceptionHandler(
+	public ModelObjectExceptionHandler(
 			List<Class<? extends Throwable>> tClassList) {
 		throwableList.addAll(tClassList);
 	}

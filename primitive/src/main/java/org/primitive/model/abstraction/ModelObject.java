@@ -1,4 +1,4 @@
-package org.primitive.model;
+package org.primitive.model.abstraction;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -10,14 +10,14 @@ import java.util.List;
 
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.model.interfaces.IDecomposable;
-import org.primitive.model.interfaces.ITestObjectExceptionHandler;
+import org.primitive.model.interfaces.IModelObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.components.bydefault.DriverLogs;
 import org.primitive.webdriverencapsulations.components.bydefault.ScriptExecutor;
 import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
 
-public abstract class TestObject implements IDestroyable, IDecomposable {
+public abstract class ModelObject implements IDestroyable, IDecomposable {
 	protected final SingleWindow nativeWindow; // browser window that object placed on
 	protected final WebDriverEncapsulation driverEncapsulation; // wrapped web driver
 															// for situations
@@ -27,19 +27,19 @@ public abstract class TestObject implements IDestroyable, IDecomposable {
 	protected final Awaiting awaiting;
 	protected final ScriptExecutor scriptExecutor;
 	protected final DriverLogs logs;
-	protected final HashSet<TestObjectExceptionHandler> checkedInExceptionHandlers = new HashSet<TestObjectExceptionHandler>();
+	protected final HashSet<ModelObjectExceptionHandler> checkedInExceptionHandlers = new HashSet<ModelObjectExceptionHandler>();
 
 	// this will be invoked when some exception is caught out
-	ITestObjectExceptionHandler exceptionHandler = (ITestObjectExceptionHandler) Proxy
+	IModelObjectExceptionHandler exceptionHandler = (IModelObjectExceptionHandler) Proxy
 			.newProxyInstance(
-					ITestObjectExceptionHandler.class.getClassLoader(),
-					new Class[] { ITestObjectExceptionHandler.class },
+					IModelObjectExceptionHandler.class.getClassLoader(),
+					new Class[] { IModelObjectExceptionHandler.class },
 					new InvocationHandler() {
 						public Object invoke(Object proxy, Method method,
 								Object[] args) throws Throwable {
 							// it needs to know exception
 							Throwable t = (Throwable) args[4];
-							for (TestObjectExceptionHandler handler : checkedInExceptionHandlers) {
+							for (ModelObjectExceptionHandler handler : checkedInExceptionHandlers) {
 								// it looks for the suitable handler
 								if (handler.isThrowableInList(t.getClass())) {
 									try {
@@ -55,10 +55,10 @@ public abstract class TestObject implements IDestroyable, IDecomposable {
 						}
 					});
 
-	final List<TestObject> children = Collections
-			.synchronizedList(new ArrayList<TestObject>());
+	final List<ModelObject> children = Collections
+			.synchronizedList(new ArrayList<ModelObject>());
 
-	protected TestObject(SingleWindow browserWindow){
+	protected ModelObject(SingleWindow browserWindow){
 			nativeWindow = browserWindow;
 			driverEncapsulation = nativeWindow.getDriverEncapsulation();
 			awaiting = driverEncapsulation.getAwaiting();
@@ -67,19 +67,19 @@ public abstract class TestObject implements IDestroyable, IDecomposable {
 	}
 
 	public void destroy() {
-		for (TestObject child : children) {
+		for (ModelObject child : children) {
 			child.destroy();
 		}
 		children.clear();
 	}
 
 	public void checkInExceptionHandler(
-			TestObjectExceptionHandler exceptionHandler) {
+			ModelObjectExceptionHandler exceptionHandler) {
 		checkedInExceptionHandlers.add(exceptionHandler);
 	}
 
 	public void checkOutExceptionHandler(
-			TestObjectExceptionHandler exceptionHandler) {
+			ModelObjectExceptionHandler exceptionHandler) {
 		checkedInExceptionHandlers.remove(exceptionHandler);
 	}
 
@@ -94,7 +94,7 @@ public abstract class TestObject implements IDestroyable, IDecomposable {
 	public abstract <T extends IDecomposable> T getPart(Class<T> partClass,
 			String pathToFrame);
 
-	void addChild(TestObject child) {
+	protected void addChild(ModelObject child) {
 		children.add(child);
 	}
 

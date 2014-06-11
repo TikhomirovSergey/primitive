@@ -2,9 +2,11 @@ package org.primitive.model;
 
 import java.lang.reflect.Method;
 
+import org.primitive.model.abstraction.ModelObjectInterceptor;
+
 import net.sf.cglib.proxy.MethodProxy;
 
-public class InteractiveInterceptor extends TestObjectInterceptor {
+public class InteractiveInterceptor extends ModelObjectInterceptor {
 
 	public InteractiveInterceptor() {
 		super();

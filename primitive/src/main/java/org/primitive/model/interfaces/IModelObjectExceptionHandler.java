@@ -7,7 +7,7 @@ import net.sf.cglib.proxy.MethodProxy;
  * @author s.tihomirov
  *
  */
-public interface ITestObjectExceptionHandler 
+public interface IModelObjectExceptionHandler 
 {
 	public Object handleException(Object object, Method originalMethod, MethodProxy methodProxy, Object[] args, Throwable t) throws Throwable;
 }
