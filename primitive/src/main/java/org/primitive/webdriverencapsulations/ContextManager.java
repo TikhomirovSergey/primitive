@@ -5,10 +5,12 @@ import java.util.Set;
 
 import org.openqa.selenium.ContextAware;
 import org.openqa.selenium.NoSuchContextException;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.TimeoutException;
 import org.primitive.configuration.commonhelpers.ContextTimeOuts;
 import org.primitive.logging.Log;
 import org.primitive.webdriverencapsulations.components.overriden.FluentContextConditions;
+import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 
 public final class ContextManager extends Manager {
 	private final FluentContextConditions fluent;
@@ -128,5 +130,12 @@ public final class ContextManager extends Manager {
 				defaultTimeForNew);
 		return switchToNew(timeOut, context);
 	}
+
+	public synchronized String getActivityByHandle(String handle)
+			throws NoSuchWindowException {
+		changeActive(handle);
+		return (((IHasActivity) getWrappedDriver()).currentActivity());
+	}
+	
 
 }

@@ -3,6 +3,7 @@
  */
 package org.primitive.webdriverencapsulations;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.FindsByAccessibilityId;
 import io.appium.java_client.FindsByAndroidUIAutomator;
 import io.appium.java_client.FindsByIosUIAutomation;
@@ -46,13 +47,14 @@ import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
+import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 
 /**
  * @author s.tihomirov For some functions of EventFiringWebDriver
  */
 public class ClosedFiringWebDriver extends EventFiringWebDriver
 		implements HasCapabilities, MobileDriver, Rotatable, FindsByIosUIAutomation,
-		FindsByAndroidUIAutomator, FindsByAccessibilityId
+		FindsByAndroidUIAutomator, FindsByAccessibilityId, IHasActivity
 		{
 
 	static class DefaultTimeouts implements Timeouts {
@@ -691,6 +693,16 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 			original = ((WrapsDriver) original).getWrappedDriver();				
 		}
 		return original;
+	}
+
+	@Override
+	public String currentActivity() {
+		try{
+			return ((AppiumDriver) originalDriver).currentActivity();
+		}
+		catch (Exception e){
+			return null;
+		}
 	}
 	
 }

@@ -8,7 +8,8 @@ import java.util.List;
 
 import org.openqa.selenium.NoSuchContextException;
 import org.primitive.webdriverencapsulations.eventlisteners.IContextListener;
-public final class SingleContext extends Handle {
+import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
+public final class SingleContext extends Handle implements IHasActivity{
 
 	private final List<IContextListener> contextEventListeners = new ArrayList<IContextListener>();
 	
@@ -62,13 +63,6 @@ public final class SingleContext extends Handle {
 		this(manager.switchToNew(secondsTimeOut, name), manager);
 	}
 
-	@Override
-	public synchronized void switchToMe() {
-		contextListenerProxy.beforeIsSwitchedOn(this);
-		nativeManager.switchTo(handle);
-		contextListenerProxy.whenIsSwitchedOn(this);
-	}
-
 	public void addListener(IContextListener listener) {
 		contextEventListeners.add(listener);
 	}
@@ -91,6 +85,18 @@ public final class SingleContext extends Handle {
 			return (initedContext);
 		}
 		return (new SingleContext(handle, manager));
+	}
+	
+	@Override
+	void requestToMe() {
+		contextListenerProxy.beforeIsSwitchedOn(this);
+		super.requestToMe();
+		contextListenerProxy.whenIsSwitchedOn(this);
+	}
+
+	@Override
+	public String currentActivity() {
+		return ((ContextManager) nativeManager).getActivityByHandle(handle);
 	}
 
 }

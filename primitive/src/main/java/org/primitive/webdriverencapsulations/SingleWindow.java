@@ -107,9 +107,10 @@ public final class SingleWindow extends Handle implements Navigation, IExtendedW
 		return (new SingleWindow(handle, manager));
 	}
 
-	private void requestToMe() {
+	@Override
+	void requestToMe() {
 		windowListenerProxy.beforeIsSwitchedOn(this);
-		nativeManager.switchTo(handle);
+		super.requestToMe();
 		windowListenerProxy.whenIsSwitchedOn(this);
 	}
 
@@ -133,11 +134,6 @@ public final class SingleWindow extends Handle implements Navigation, IExtendedW
 			destroy();
 			throw e;
 		}
-	}
-
-	@Override
-	public synchronized void switchToMe() throws NoSuchWindowException {
-		requestToMe();
 	}
 
 	@Override

@@ -48,7 +48,9 @@ public abstract class Handle implements IHasHandle, ISwitchesToItself,
 	}
 
 	@Override
-	public abstract void switchToMe();
+	public synchronized void switchToMe(){
+		requestToMe();
+	}
 
 	@Override
 	public synchronized void takeAPictureOfAnInfo(String Comment) {
@@ -81,6 +83,10 @@ public abstract class Handle implements IHasHandle, ISwitchesToItself,
 
 	static Handle isInitiated(String handle, Manager manager) {
 		return (SingleWindow) manager.getHandleReceptionist().isInstantiated(handle);
+	}
+	
+	void requestToMe() {
+		nativeManager.switchTo(handle);
 	}
 
 }

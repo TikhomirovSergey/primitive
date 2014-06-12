@@ -1,6 +1,7 @@
 package org.primitive.webdriverencapsulations.eventlisteners;
 
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 import org.primitive.webdriverencapsulations.interfaces.IHasHandle;
 import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
 
@@ -17,21 +18,25 @@ public class DefaultContextListener extends DefaultHandleListener implements ICo
 
 	@Override
 	public void whenNewHandleIsAppeared(IHasHandle handle) {
-		if (toDoScreenShotsOfNewWindows)
-		{
-			((ITakesPictureOfItSelf) handle).takeAPictureOfAnInfo("Current context is " + handle.getHandle());
+		String activity = String.valueOf(((IHasActivity) handle).currentActivity());
+		String message = "Current context is "
+				+ handle.getHandle() + ". Activity is " + activity;
+		if (toDoScreenShotsOfNewWindows) {
+			((ITakesPictureOfItSelf) handle)
+					.takeAPictureOfAnInfo(message);
 			return;
 		}
-		Log.message("Current context is " + handle.getHandle());
+		Log.message(message);
 	}
 
 	@Override
 	public void whenIsSwitchedOn(IHasHandle handle) {
+		String activity = String.valueOf(((IHasActivity) handle).currentActivity());
 		if (toDoScreenShotsOfNewWindows)
 		{
 			((ITakesPictureOfItSelf) handle).takeAPictureOfAnInfo("The new context");
 		}
-		Log.message("A new context '" + handle.getHandle() + "' is here");
+		Log.message("A new context '" + handle.getHandle() + "' is here. Activity is " + activity);
 	}
 
 }
