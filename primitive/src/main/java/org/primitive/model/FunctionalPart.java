@@ -71,7 +71,7 @@ public abstract class FunctionalPart extends ModelObject implements
 		if (parent != null) {
 			parent.switchToMe();
 		} else {
-			nativeWindow.switchToMe();
+			handle.switchToMe();
 		}
 		// if this object is placed on some frame
 		if (frameToSwitchOnInt != null) { // we should switch to it
@@ -108,7 +108,7 @@ public abstract class FunctionalPart extends ModelObject implements
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent){
-		this(parent.nativeWindow);
+		this((SingleWindow) parent.handle);
 		parent.addChild(this);
 	}
 
@@ -120,7 +120,7 @@ public abstract class FunctionalPart extends ModelObject implements
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, Integer frameIndex){
-		this(parent.nativeWindow, frameIndex);
+		this((SingleWindow) parent.handle, frameIndex);
 		parent.addChild(this);
 	}
 
@@ -133,7 +133,7 @@ public abstract class FunctionalPart extends ModelObject implements
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, String pathToFrame){
-		this(parent.nativeWindow, pathToFrame);
+		this((SingleWindow) parent.handle, pathToFrame);
 		parent.addChild(this);
 	}
 
@@ -145,7 +145,7 @@ public abstract class FunctionalPart extends ModelObject implements
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, WebElement frameElement){
-		this(parent.nativeWindow, frameElement);
+		this((SingleWindow) parent.handle, frameElement);
 		parent.addChild(this);
 	}
 
@@ -156,7 +156,7 @@ public abstract class FunctionalPart extends ModelObject implements
 	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame,
 			Long timeOutInSec)  {
 		this(browserWindow);
-		nativeWindow.switchToMe();
+		handle.switchToMe();
 		frameSupport.switchTo(pathToFrame, timeOutInSec);
 		frameToSwitchOnStr = pathToFrame;
 	}
@@ -164,7 +164,7 @@ public abstract class FunctionalPart extends ModelObject implements
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, String pathToFrame,
 			Long timeOutInSec)  {
-		this(parent.nativeWindow, pathToFrame, timeOutInSec);
+		this((SingleWindow) parent.handle, pathToFrame, timeOutInSec);
 		parent.addChild(this);
 	}
 
@@ -269,14 +269,15 @@ public abstract class FunctionalPart extends ModelObject implements
 		return get(partClass, params, values);
 	}
 
+	/**
+	if handle disappeared
+	all objects that are placed on this will be destroyed. I think it
+	should work this way
+	 */
 	@Override
 	public void destroy() {
-		// if browser window disappeared
-		// all objects that are placed on this will be destroyed. I think it
-		// should work this way
-		// if window was closed or it disappeared
-		if (!nativeWindow.exists()) {
-			nativeWindow.destroy();
+		if (!handle.exists()) {
+			handle.destroy();
 		}
 		super.destroy();
 		return;
@@ -286,7 +287,7 @@ public abstract class FunctionalPart extends ModelObject implements
 	public void close() throws UnclosedWindowException, NoSuchWindowException,
 			UnhandledAlertException, UnreachableBrowserException {
 		try {
-			nativeWindow.close();
+			((SingleWindow) handle).close();
 			destroy();
 		} catch (UnclosedWindowException e) {
 			throw e;

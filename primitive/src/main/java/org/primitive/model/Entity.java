@@ -61,7 +61,7 @@ public abstract class Entity extends ModelObject implements IHasManyWindows {
 	protected <T extends IDecomposable> T get(Class<T> partClass,
 			Class<?>[] params, Object[] values) {
 		T part = ObjectFactory.get(partClass, restructureParamArray(params),
-				restructureValueArray(nativeWindow, values));
+				restructureValueArray((SingleWindow) handle, values));
 		((FunctionalPart) part).originalEntity = this;
 		addChild((ModelObject) part);
 		return part;

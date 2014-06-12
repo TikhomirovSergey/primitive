@@ -51,7 +51,8 @@ public class Google extends Entity implements IPerformsSearch, ILinkList, WrapsD
 	//closes google main page
 	public void close()
 	{
-		nativeWindow.close();
+		//TODO workaround
+		((SingleWindow) handle).close();
 		destroy();
 	}
 	

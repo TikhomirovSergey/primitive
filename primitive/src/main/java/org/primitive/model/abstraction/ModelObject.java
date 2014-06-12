@@ -11,14 +11,14 @@ import java.util.List;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IModelObjectExceptionHandler;
-import org.primitive.webdriverencapsulations.SingleWindow;
+import org.primitive.webdriverencapsulations.Handle;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.components.bydefault.DriverLogs;
 import org.primitive.webdriverencapsulations.components.bydefault.ScriptExecutor;
 import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
 
 public abstract class ModelObject implements IDestroyable, IDecomposable {
-	protected final SingleWindow nativeWindow; // browser window that object placed on
+	protected final Handle handle; // handle that object is placed on
 	protected final WebDriverEncapsulation driverEncapsulation; // wrapped web driver
 															// for situations
 															// when it needs to
@@ -58,9 +58,9 @@ public abstract class ModelObject implements IDestroyable, IDecomposable {
 	final List<ModelObject> children = Collections
 			.synchronizedList(new ArrayList<ModelObject>());
 
-	protected ModelObject(SingleWindow browserWindow){
-			nativeWindow = browserWindow;
-			driverEncapsulation = nativeWindow.getDriverEncapsulation();
+	protected ModelObject(Handle handle){
+			this.handle = handle;
+			driverEncapsulation = handle.getDriverEncapsulation();
 			awaiting = driverEncapsulation.getAwaiting();
 			scriptExecutor = driverEncapsulation.getScriptExecutor();
 			logs = driverEncapsulation.getLogs();
