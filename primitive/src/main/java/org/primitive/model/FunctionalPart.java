@@ -11,18 +11,14 @@ import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openqa.selenium.NoSuchWindowException;
-import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.primitive.logging.Photographer;
 import org.primitive.model.abstraction.ModelObject;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IHasWebElementFrames;
-import org.primitive.webdriverencapsulations.SingleWindow;
-import org.primitive.webdriverencapsulations.UnclosedWindowException;
+import org.primitive.webdriverencapsulations.Handle;
 import org.primitive.webdriverencapsulations.components.bydefault.Interaction;
 import org.primitive.webdriverencapsulations.components.overriden.FrameSupport;
 import org.primitive.webdriverencapsulations.components.overriden.Ime;
@@ -57,7 +53,7 @@ public abstract class FunctionalPart extends ModelObject implements
 	// WebElement specification of a frame that object is placed on
 	private Object frameToSwitchOnElem = null;
 	// page object is created by specified entity
-	protected Entity originalEntity;
+	protected Application application;
 	private IWebElementHighlighter highLighter;
 	protected final Interaction interaction;
 	protected final Ime ime;
@@ -94,11 +90,11 @@ public abstract class FunctionalPart extends ModelObject implements
 		super.addChild(child);
 		FunctionalPart childPart = (FunctionalPart) child;
 		childPart.parent = this;
-		childPart.originalEntity = this.originalEntity;
+		childPart.application = this.application;
 	}
 
-	protected FunctionalPart(SingleWindow browserWindow){
-		super(browserWindow);
+	protected FunctionalPart(Handle handle){
+		super(handle);
 		pageFactoryWorker = driverEncapsulation.getPageFactoryWorker();
 		frameSupport = driverEncapsulation.getFrameSupport();
 		highLighter = driverEncapsulation.getHighlighter();
@@ -108,63 +104,44 @@ public abstract class FunctionalPart extends ModelObject implements
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent){
-		this((SingleWindow) parent.handle);
+		this(parent.handle);
 		parent.addChild(this);
 	}
 
 	// constructor with specified integer frame value
-	protected FunctionalPart(SingleWindow browserWindow, Integer frameIndex) {
-		this(browserWindow);
+	protected FunctionalPart(Handle handle, Integer frameIndex) {
+		this(handle);
 		frameToSwitchOnInt = frameIndex;
 	}
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, Integer frameIndex){
-		this((SingleWindow) parent.handle, frameIndex);
+		this(parent.handle, frameIndex);
 		parent.addChild(this);
 	}
 
 	// constructor with specified string frame value. pathToFrame can be
 	// relative to another frame
-	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame) {
-		this(browserWindow);
+	protected FunctionalPart(Handle handle, String pathToFrame) {
+		this(handle);
 		frameToSwitchOnStr = pathToFrame;
 	}
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, String pathToFrame){
-		this((SingleWindow) parent.handle, pathToFrame);
+		this(parent.handle, pathToFrame);
 		parent.addChild(this);
 	}
 
 	// constructor with specified WebElement frame value.
-	protected FunctionalPart(SingleWindow browserWindow, WebElement frameElement) {
-		this(browserWindow);
+	protected FunctionalPart(Handle handle, WebElement frameElement) {
+		this(handle);
 		frameToSwitchOnElem = frameElement;
 	}
 
 	// constructs from another page object
 	protected FunctionalPart(FunctionalPart parent, WebElement frameElement){
-		this((SingleWindow) parent.handle, frameElement);
-		parent.addChild(this);
-	}
-
-	// constructor with specified string frame value. pathToFrame can be
-	// relative to another frame
-	// timeOutInSec is specified for situations when frame can't be switched on
-	// instantly
-	protected FunctionalPart(SingleWindow browserWindow, String pathToFrame,
-			Long timeOutInSec)  {
-		this(browserWindow);
-		handle.switchToMe();
-		frameSupport.switchTo(pathToFrame, timeOutInSec);
-		frameToSwitchOnStr = pathToFrame;
-	}
-
-	// constructs from another page object
-	protected FunctionalPart(FunctionalPart parent, String pathToFrame,
-			Long timeOutInSec)  {
-		this((SingleWindow) parent.handle, pathToFrame, timeOutInSec);
+		this(parent.handle, frameElement);
 		parent.addChild(this);
 	}
 
@@ -251,15 +228,6 @@ public abstract class FunctionalPart extends ModelObject implements
 		return get(partClass, params, values);
 	}
 
-	// - with specified path to any frame and time out for switching to it
-	@Override
-	public <T extends IDecomposable> T getPart(Class<T> partClass,
-			String pathToFrame, Long timeOutInSec) {
-		Class<?>[] params = new Class[] { String.class, Long.class };
-		Object[] values = new Object[] { pathToFrame, timeOutInSec };
-		return get(partClass, params, values);
-	}
-
 	// - with frame that specified as web element
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
@@ -281,23 +249,6 @@ public abstract class FunctionalPart extends ModelObject implements
 		}
 		super.destroy();
 		return;
-	}
-
-	// Closes browser window and destroys all page objects that are placed on it
-	public void close() throws UnclosedWindowException, NoSuchWindowException,
-			UnhandledAlertException, UnreachableBrowserException {
-		try {
-			((SingleWindow) handle).close();
-			destroy();
-		} catch (UnclosedWindowException e) {
-			throw e;
-		} catch (NoSuchWindowException e) {
-			destroy();
-			throw e;
-		} catch (UnreachableBrowserException e) {
-			destroy();
-			throw e;
-		}
 	}
 
 	// takes screenshots for log messages with SEVERE level

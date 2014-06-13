@@ -101,7 +101,7 @@ public class HelloWorldGoogleTest {
 			else{
 				google.clickOnLinkByIndex(1);
 			}
-			AnyPage anyPage = google.getFromWindow(AnyPage.class, 1);
+			AnyPage anyPage = google.getFromHandle(AnyPage.class, 1);
 			Thread.sleep(5000);
 			anyPage.close();
 			if (!toClickOnALinkWhichWasFound){
@@ -110,7 +110,7 @@ public class HelloWorldGoogleTest {
 			else{
 				google.clickOnLinkByIndex(1);
 			}
-			anyPage = google.getFromWindow(AnyPage.class, 1);
+			anyPage = google.getFromHandle(AnyPage.class, 1);
 		} finally {
 			google.quit();
 		}
@@ -137,7 +137,7 @@ public class HelloWorldGoogleTest {
 				google.clickOnLinkByIndex(1);
 			}
 			Thread.sleep(5000);
-			UnhandledWindowChecker.getChecker(google.getSwitcher())
+			UnhandledWindowChecker.getChecker(google.getWindowManager())
 					.killUnexpectedWindows();
 			Assert.assertEquals(true, MockUnhandledWindowEventListener.wasInvoked);
 		} finally {

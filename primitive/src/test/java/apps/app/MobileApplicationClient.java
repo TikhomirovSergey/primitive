@@ -1,7 +1,7 @@
 package apps.app;
 
 import org.primitive.configuration.Configuration;
-import org.primitive.model.Entity;
+import org.primitive.model.BrowserApplication;
 import org.primitive.model.ObjectFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
@@ -11,7 +11,7 @@ import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
  * There is a presentation of mobile application client An instance will be
  * launched on Android, iOS and FireFox OS
  */
-public class MobileApplicationClient extends Entity{
+public class MobileApplicationClient extends BrowserApplication{
 
 	public MobileApplicationClient(SingleWindow browserWindow){
 		super(browserWindow);

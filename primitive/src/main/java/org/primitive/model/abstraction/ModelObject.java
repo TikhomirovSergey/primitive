@@ -97,8 +97,4 @@ public abstract class ModelObject implements IDestroyable, IDecomposable {
 	protected void addChild(ModelObject child) {
 		children.add(child);
 	}
-
-	@Override
-	public abstract <T extends IDecomposable> T getPart(Class<T> partClass,
-			String pathToFrame, Long timeOutInSec);
 }

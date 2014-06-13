@@ -3,13 +3,12 @@ package googledescripription;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.primitive.configuration.Configuration;
-import org.primitive.model.Entity;
+import org.primitive.model.BrowserApplication;
 import org.primitive.model.ObjectFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.WindowManager;
 
-public class Google extends Entity implements IPerformsSearch, ILinkList, WrapsDriver{
+public class Google extends BrowserApplication implements IPerformsSearch, ILinkList, WrapsDriver{
 	
 	private final static String url = "http://www.google.com/";
 	private SearchBar searchBar;
@@ -54,11 +53,7 @@ public class Google extends Entity implements IPerformsSearch, ILinkList, WrapsD
 		//TODO workaround
 		((SingleWindow) handle).close();
 		destroy();
-	}
-	
-	public WindowManager getSwitcher(){
-		return nativeSwitcher;
-	}
+	}	
 
 	@Override
 	public WebDriver getWrappedDriver() {

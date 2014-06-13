@@ -14,7 +14,5 @@ public interface IDecomposable {
 	public <T extends IDecomposable> T getPart(Class<T> partClass, Integer frameIndex);
 	//if object is placed in frame defined by string path
 	public <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame);
-	//if object is placed in frame defined by string path. It needs some time to frame switch on 
-	public <T extends IDecomposable> T getPart(Class<T> partClass, String pathToFrame, Long timeOutInSec);
 		
 }

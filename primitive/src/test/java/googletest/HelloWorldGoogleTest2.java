@@ -65,7 +65,7 @@ public class HelloWorldGoogleTest2 {
 		};
 		
 		AnyPage get(Google google, long timeOut){
-			return google.getFromWindow(AnyPage.class, 1);
+			return google.getFromHandle(AnyPage.class, 1);
 		}
 	}
 

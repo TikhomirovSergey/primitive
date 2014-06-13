@@ -17,7 +17,7 @@ import org.primitive.webdriverencapsulations.WindowManager;
 //This class should be used for creation of a single page and application model instances
 public final class ObjectFactory {
 	/**
-	 * An interceptor for {@link Entity} inheritor defined by user. Defined for
+	 * An interceptor for {@link Application} inheritor defined by user. Defined for
 	 * each thread
 	 */
 	private final static ThreadLocal<Class<? extends MethodInterceptor>> definedInterceptorForEntities = 
@@ -60,7 +60,7 @@ public final class ObjectFactory {
 	}
 
 	/**
-	 * Resets iterceptor class for {@link Entity}
+	 * Resets iterceptor class for {@link Application}
 	 */
 	public static void resetEntityInterceptor(Class<? extends ModelObjectInterceptor> interceptorClass){
 		resetInterceptor(definedInterceptorForEntities, interceptorClass);
@@ -110,7 +110,7 @@ public final class ObjectFactory {
 	// Argument "params" should be defined without "SingleWindow" class because
 	// it will be added by this method
 	// Argument "values" should be specified without any "SingleWindow" object
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, String urlToBeLoaded,
 			Class<?>[] params, Object[] values){
 		
@@ -124,7 +124,7 @@ public final class ObjectFactory {
 	}
 
 	// the same without any URL
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, Class<?>[] params,
 			Object[] values) {
 		
@@ -137,7 +137,7 @@ public final class ObjectFactory {
 	}
 
 	// Here default constructor is used
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, String urlToBeLoaded){
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {};
@@ -145,7 +145,7 @@ public final class ObjectFactory {
 				values);
 	}
 
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver){
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {};
@@ -157,7 +157,7 @@ public final class ObjectFactory {
 	// Argument "params" should be defined without "SingleWindow" class because
 	// it will be added by this method
 	// Argument "values" should be specified without any "SingleWindow" object
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities,
 			String urlToBeLoaded, Class<?>[] params, Object[] values){
 		SingleWindow statrtWindow = getFirstBrowserWindow(
@@ -169,7 +169,7 @@ public final class ObjectFactory {
 	}
 
 	// the same without any URL
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities,
 			Class<?>[] params, Object[] values){
 		
@@ -183,7 +183,7 @@ public final class ObjectFactory {
 	}
 
 	// Here default constructor is used
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities,
 			String urlToBeLoaded) {
 		Class<?>[] params = new Class<?>[] {};
@@ -192,7 +192,7 @@ public final class ObjectFactory {
 				urlToBeLoaded, params, values);
 	}
 
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities){
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {};
@@ -205,7 +205,7 @@ public final class ObjectFactory {
 	// Argument "params" should be defined without "SingleWindow" class because
 	// it will be added by this method
 	// Argument "values" should be specified without any "SingleWindow" object
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities,
 			String urlToBeLoaded, URL remoteAddress, Class<?>[] params,
 			Object[] values) {
@@ -219,7 +219,7 @@ public final class ObjectFactory {
 				restructureValueArrayUsingWindow(statrtWindow, values), getEntityInterceptor());
 	}
 
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities,
 			URL remoteAddress, Class<?>[] params, Object[] values){
 		
@@ -233,7 +233,7 @@ public final class ObjectFactory {
 	}
 
 	// Here default constructor is used
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities,
 			String urlToBeLoaded, URL remoteAddress){
 		Class<?>[] params = new Class<?>[] {};
@@ -242,7 +242,7 @@ public final class ObjectFactory {
 				urlToBeLoaded, remoteAddress, params, values);
 	}
 
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities,
 			URL remoteAddress) {
 		Class<?>[] params = new Class<?>[] {};
@@ -261,7 +261,7 @@ public final class ObjectFactory {
 	// it will be added by this method
 	// Argument "values" should be specified without any "SingleWindow" object
 	// Default configuration is used below
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			String url, Class<?>[] params, Object[] values) {
 		
 		SingleWindow statrtWindow = getFirstBrowserWindow(
@@ -273,7 +273,7 @@ public final class ObjectFactory {
 				restructureValueArrayUsingWindow(statrtWindow, values), getEntityInterceptor());
 	}
 
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			Class<?>[] params, Object[] values){
 		
 		SingleWindow statrtWindow = getFirstBrowserWindow(
@@ -286,14 +286,14 @@ public final class ObjectFactory {
 	}
 
 	// default constructor is used here
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			String url)  {
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {};
 		return getEntity(entityClass, url, params, values);
 	}
 
-	public static <T extends Entity> T getEntity(Class<T> entityClass)
+	public static <T extends Application> T getEntity(Class<T> entityClass)
 			{
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {};
@@ -306,7 +306,7 @@ public final class ObjectFactory {
 	// it will be added by this method
 	// Argument "values" should be specified without any "SingleWindow" object
 	// Specified configuration is used below
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			Configuration config, String url, Class<?>[] params, Object[] values)
 			 {
 		
@@ -318,7 +318,7 @@ public final class ObjectFactory {
 				restructureValueArrayUsingWindow(statrtWindow, values), getEntityInterceptor());
 	}
 
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			Configuration config, Class<?>[] params, Object[] values) {
 		
 		SingleWindow statrtWindow = getFirstBrowserWindow(
@@ -330,7 +330,7 @@ public final class ObjectFactory {
 	}
 
 	// default constructor is used here
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			Configuration config, String url){ // with default configuration
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {};
@@ -338,7 +338,7 @@ public final class ObjectFactory {
 	}
 
 	// default constructor is used here
-	public static <T extends Entity> T getEntity(Class<T> entityClass,
+	public static <T extends Application> T getEntity(Class<T> entityClass,
 			Configuration config) { // with
 																			// default
 																			// configuration
@@ -352,7 +352,7 @@ public final class ObjectFactory {
 	// 2. Loads specified URL
 	// 3. Gets new entity instance from first browser window with loaded URL
 	// Specified configuration is used below
-	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver,
+	public static <T extends Application> T getEntity(WebDriverEncapsulation driver,
 			Class<T> entityClass, String url, Class<?>[] params, Object[] values){
 		
 		SingleWindow statrtWindow = getFirstBrowserWindow(driver, entityClass,
@@ -363,7 +363,7 @@ public final class ObjectFactory {
 				restructureValueArrayUsingWindow(statrtWindow, values), getEntityInterceptor());
 	}
 
-	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver,
+	public static <T extends Application> T getEntity(WebDriverEncapsulation driver,
 			Class<T> entityClass, Class<?>[] params, Object[] values){
 		
 		SingleWindow statrtWindow = getFirstBrowserWindow(driver, entityClass);
@@ -373,14 +373,14 @@ public final class ObjectFactory {
 	}
 
 	// default constructor is used here
-	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver,
+	public static <T extends Application> T getEntity(WebDriverEncapsulation driver,
 			Class<T> entityClass, String url){ // with default configuration
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {};
 		return getEntity(driver, entityClass, url, params, values);
 	}
 
-	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver,
+	public static <T extends Application> T getEntity(WebDriverEncapsulation driver,
 			Class<T> entityClass) { // with
 																			// default
 																			// configuration
@@ -394,7 +394,7 @@ public final class ObjectFactory {
 	// 2. Loads specified URL
 	// 3. Gets new entity instance from first browser window with loaded URL
 	// Specified configuration is used below
-	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver,
+	public static <T extends Application> T getEntity(WebDriverEncapsulation driver,
 			Class<T> entityClass, Configuration config, String url,
 			Class<?>[] params, Object[] values){
 		
@@ -406,7 +406,7 @@ public final class ObjectFactory {
 				restructureValueArrayUsingWindow(statrtWindow, values), getEntityInterceptor());
 	}
 
-	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver,
+	public static <T extends Application> T getEntity(WebDriverEncapsulation driver,
 			Class<T> entityClass, Configuration config, Class<?>[] params,
 			Object[] values)  {
 		
@@ -418,14 +418,14 @@ public final class ObjectFactory {
 	}
 
 	// default constructor is used here
-	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver,
+	public static <T extends Application> T getEntity(WebDriverEncapsulation driver,
 			Class<T> entityClass, Configuration config, String url){ // with default configuration
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {};
 		return getEntity(driver, entityClass, config, url, params, values);
 	}
 
-	public static <T extends Entity> T getEntity(WebDriverEncapsulation driver,
+	public static <T extends Application> T getEntity(WebDriverEncapsulation driver,
 			Class<T> entityClass, Configuration config){ // with default configuration
 		Class<?>[] params = new Class<?>[] {};
 		Object[] values = new Object[] {};
@@ -456,9 +456,9 @@ public final class ObjectFactory {
 	// - using any accessible constructor:
 	static <T extends IDecomposable> T get(Class<T> partClass,
 			Class<?>[] paramClasses, Object[] paramValues){
-		T composable = EnhancedProxyFactory.getProxy(partClass,
+		T decomposable = EnhancedProxyFactory.getProxy(partClass,
 				paramClasses, paramValues, getInteractiveInterceptor());
-		return composable;
+		return decomposable;
 	}
 
 	// There are some situations when the Page instance can be created by itself

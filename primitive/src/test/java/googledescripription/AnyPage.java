@@ -1,10 +1,14 @@
 package googledescripription;
 
-import org.primitive.model.FunctionalPart;
+import org.primitive.model.BrowserPage;
 import org.primitive.webdriverencapsulations.SingleWindow;
 
-//любая найденная страница, открытая через google
-public class AnyPage extends FunctionalPart {
+/**
+ * 
+ * Any page opened by Google
+ *
+ */
+public class AnyPage extends BrowserPage {
 
 	public AnyPage(SingleWindow browserWindow){
 		super(browserWindow);
