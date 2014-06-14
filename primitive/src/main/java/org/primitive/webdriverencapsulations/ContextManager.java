@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.openqa.selenium.ContextAware;
 import org.openqa.selenium.NoSuchContextException;
-import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.TimeoutException;
 import org.primitive.configuration.commonhelpers.ContextTimeOuts;
 import org.primitive.logging.Log;
@@ -43,7 +42,7 @@ public final class ContextManager extends Manager {
 	/**
 	 * returns context by it's index
 	 */
-	public String getHandleByInex(int index) throws NoSuchContextException {
+	String getHandleByInex(int index) throws NoSuchContextException {
 		try {
 			Log.debug("Attempt to get context that is specified by index "
 					+ Integer.toString(index) + "...");
@@ -69,7 +68,7 @@ public final class ContextManager extends Manager {
 	 * returns a new context that we have been waiting for time that
 	 * specified in configuration
 	 */
-	public String switchToNew() throws NoSuchContextException {
+	String switchToNew() throws NoSuchContextException {
 		ContextTimeOuts timeOuts = getContextTimeOuts();
 		long timeOut = getTimeOut(
 				timeOuts.getNewContextTimeOutSec(),
@@ -82,7 +81,7 @@ public final class ContextManager extends Manager {
 	 * returns a new context that we have been waiting for specified
 	 * time
 	 */
-	public String switchToNew(long timeOutInSeconds) throws NoSuchContextException {
+	String switchToNew(long timeOutInSeconds) throws NoSuchContextException {
 		try {
 			Log.debug("Waiting a new context for "
 					+ Long.toString(timeOutInSeconds) + " seconds.");
@@ -102,7 +101,7 @@ public final class ContextManager extends Manager {
 	 * returns a new context that we have been waiting for specified
 	 * time. new context is predefined.
 	 */
-	public String switchToNew(long timeOutInSeconds, String context)
+	String switchToNew(long timeOutInSeconds, String context)
 			throws NoSuchContextException {
 		try {
 			Log.debug("Waiting a new context '" + context + "' for "
@@ -123,7 +122,7 @@ public final class ContextManager extends Manager {
 	 * time. new context is predefined. Time out is specified in configuration
 	 */
 	@Override
-	public String switchToNew(String context) {
+	String switchToNew(String context) {
 		ContextTimeOuts timeOuts = getContextTimeOuts();
 		long timeOut = getTimeOut(
 				timeOuts.getNewContextTimeOutSec(),
@@ -132,9 +131,58 @@ public final class ContextManager extends Manager {
 	}
 
 	public synchronized String getActivityByHandle(String handle)
-			throws NoSuchWindowException {
+			throws NoSuchContextException {
 		changeActive(handle);
 		return (((IHasActivity) getWrappedDriver()).currentActivity());
+	}
+
+	/**
+	 * returns context handle by it's index
+	 */
+	@Override
+	public synchronized Handle getByInex(int index) {
+		String handle = this.getHandleByInex(index);
+		SingleContext initedContext = (SingleContext) SingleContext.isInitiated(handle, this);
+		if (initedContext != null) {
+			return (initedContext);
+		}
+		return (new SingleContext(handle, this));
+	}
+
+	/**
+	 * returns handle of a new context that we have been waiting for time that
+	 * specified in configuration
+	 */
+	@Override
+	public synchronized Handle getNewHandle() {
+		return new SingleContext(switchToNew(), this);
+	}
+
+	/**
+	 * returns handle of a new context that we have been waiting for specified
+	 * time
+	 */
+	@Override
+	public synchronized Handle getNewHandle(long timeOutInSeconds) {
+		return new SingleContext(switchToNew(timeOutInSeconds), this);
+	}
+
+	/**
+	 * returns handle of a new context that we have been waiting for specified
+	 * time using context name
+	 */
+	@Override
+	public synchronized Handle getNewHandle(long timeOutInSeconds, String contextName) {
+		return new SingleContext(switchToNew(timeOutInSeconds, contextName), this);
+	}
+
+	/**
+	 * returns handle of a new window that we have been waiting for time that
+	 * specified in configuration using context name
+	 */
+	@Override
+	public synchronized Handle getNewHandle(String contextName) {
+		return new SingleContext(switchToNew(contextName), this);
 	}
 	
 

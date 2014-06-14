@@ -54,59 +54,6 @@ public final class SingleWindow extends Handle implements Navigation, IExtendedW
 		windowListenerProxy.whenNewHandleIsAppeared(this);
 	}
 
-	/** Static constructor ¹1 - initialization of new window that will appear.
-	 */
-	public SingleWindow(WindowManager manager) throws NoSuchWindowException {
-		this(manager.switchToNew(), manager);
-	}
-
-	/** constructor ¹1.1
-	 */
-	public SingleWindow(WindowManager manager, long secondsTimeOut) throws NoSuchWindowException {
-		this(manager.switchToNew(secondsTimeOut), manager);
-	}
-
-	/**constructor ¹2 - initialization of new window that will appear.
-	* We use either title of a window or piece of its title. Fragment is
-	* a regular expression
-	*/
-	public SingleWindow (WindowManager manager, String title) throws NoSuchWindowException {
-		this( manager.switchToNew(title), manager);
-	}
-
-	/**constructor ¹2.1
-	 */
-	public SingleWindow(WindowManager manager, String title, long secondsTimeOut) throws NoSuchWindowException {
-		this(manager.switchToNew(secondsTimeOut, title), manager);
-	}
-
-	/** constructor ¹3 - initialization of new window that will appear.
-	* We use possible URLs of a loaded page. They can be defined as RegExp
-	*/
-	public SingleWindow (WindowManager manager, List<String> urls) throws NoSuchWindowException {
-		this(manager.switchToNew(urls), manager);
-	}
-
-	/** constructor ¹3.1
-	 */
-	public SingleWindow(WindowManager manager, List<String> urls,
-			long secondsTimeOut) throws NoSuchWindowException {
-		this(manager.switchToNew(secondsTimeOut, urls), manager);
-	}
-
-	/** Static constructor ¹4 - initialization of new window object by its index.
-	* It is known that window is present
-	*/
-	public static SingleWindow initWindowByIndex(WindowManager manager,
-			int index) throws NoSuchWindowException {
-		String handle = manager.getHandleByInex(index);
-		SingleWindow InitedWindow = (SingleWindow) isInitiated(handle, manager);
-		if (InitedWindow != null) {
-			return (InitedWindow);
-		}
-		return (new SingleWindow(handle, manager));
-	}
-
 	@Override
 	void requestToMe() {
 		windowListenerProxy.beforeIsSwitchedOn(this);

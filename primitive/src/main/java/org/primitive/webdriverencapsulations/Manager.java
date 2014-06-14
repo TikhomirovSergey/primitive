@@ -94,12 +94,19 @@ public abstract class Manager implements IDestroyable {
 	synchronized void switchTo(String Handle){
 		changeActive(Handle);
 	}
-	public abstract String getHandleByInex(int index);
+	abstract String getHandleByInex(int index);
 	public abstract  Set<String> getHandles();
-	public abstract String switchToNew();
-	public abstract String switchToNew(long timeOutInSeconds);
-	public abstract String switchToNew(long timeOutInSeconds, String stringIdentifier);
-	public abstract String switchToNew(String stringIdentifier);
+	
+	abstract String switchToNew();
+	abstract String switchToNew(long timeOutInSeconds);
+	abstract String switchToNew(long timeOutInSeconds, String stringIdentifier);
+	abstract String switchToNew(String stringIdentifier);
+	
+	public abstract Handle getByInex(int index);
+	public abstract Handle getNewHandle();
+	public abstract Handle getNewHandle(long timeOutInSeconds);
+	public abstract Handle getNewHandle(long timeOutInSeconds, String stringIdentifier);
+	public abstract Handle getNewHandle(String stringIdentifier);
 
 	HandleReceptionist getHandleReceptionist(){
 		return handleReceptionist;

@@ -7,6 +7,7 @@ import java.util.List;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IHasManyHandlesWithURL;
 import org.primitive.webdriverencapsulations.Handle;
+import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowManager;
 
 /**
@@ -15,8 +16,8 @@ import org.primitive.webdriverencapsulations.WindowManager;
 public class BrowserApplication extends Application implements IHasManyHandlesWithURL {
 
 
-	protected BrowserApplication(Handle handle) {
-		super(handle);
+	protected BrowserApplication(SingleWindow window) {
+		super(window);
 	}
 
 	@Override
@@ -63,8 +64,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			List<String> urls) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(urls);
 		Class<?>[] params = new Class[] {Handle.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(urls)};
+		Object[] values = new Object[] {newHandle};
 		return get(partClass, params, values);
 	}
 
@@ -75,14 +77,15 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			final URL url) {
-		Class<?>[] params = new Class[] {Handle.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(
+		Handle newHandle = ((WindowManager) manager).getNewHandle(
 				new ArrayList<String>() {
 					private static final long serialVersionUID = -1L;
 					{
 						add(url.toString());
 					}
-				})};
+				});
+		Class<?>[] params = new Class[] {Handle.class};
+		Object[] values = new Object[] {newHandle};
 		return get(partClass, params, values);
 	}
 
@@ -93,8 +96,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			List<String> urls, long timeOutSec) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(timeOutSec, urls);
 		Class<?>[] params = new Class[] {Handle.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(timeOutSec, urls)};
+		Object[] values = new Object[] {newHandle};
 		return get(partClass, params, values);
 	}
 
@@ -105,14 +109,15 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			final URL url, long timeOutSec) {
-		Class<?>[] params = new Class[] {Handle.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(
+		Handle newHandle = ((WindowManager) manager).getNewHandle(timeOutSec,
 				new ArrayList<String>() {
 					private static final long serialVersionUID = -1L;
 					{
 						add(url.toString());
 					}
-				})};
+				});
+		Class<?>[] params = new Class[] {Handle.class};
+		Object[] values = new Object[] {newHandle};
 		return get(partClass, params, values);
 	}
 
@@ -124,8 +129,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			List<String> urls, Integer frameIndex) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(urls);
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(urls), frameIndex};
+		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass, params, values);
 	}
 
@@ -138,8 +144,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(String pathToFrame,
 			Class<T> partClass, List<String> urls) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(urls);
 		Class<?>[] params = new Class[] {Handle.class, String.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(urls), pathToFrame};
+		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass, params, values);
 	}
 
@@ -152,8 +159,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			List<String> urls, long timeOutSec, Integer frameIndex) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(timeOutSec, urls);
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(timeOutSec, urls), frameIndex};
+		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass, params, values);
 	}
 
@@ -165,8 +173,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(String pathToFrame,
 			Class<T> partClass, List<String> urls, long timeOutSec) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(timeOutSec, urls);
 		Class<?>[] params = new Class[] {Handle.class, String.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(timeOutSec, urls), pathToFrame};
+		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass, params, values);
 	}
 
@@ -179,14 +188,14 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			final URL url, Integer frameIndex) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(new ArrayList<String>() {
+			private static final long serialVersionUID = -1L;
+			{
+				add(url.toString());
+			}
+		});
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(
-				new ArrayList<String>() {
-					private static final long serialVersionUID = -1L;
-					{
-						add(url.toString());
-					}
-				}), frameIndex};
+		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass, params, values);
 	}
 
@@ -198,14 +207,14 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(String pathToFrame,
 			Class<T> partClass, final URL url) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(new ArrayList<String>() {
+			private static final long serialVersionUID = -1L;
+			{
+				add(url.toString());
+			}
+		});
 		Class<?>[] params = new Class[] {Handle.class, String.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(
-				new ArrayList<String>() {
-					private static final long serialVersionUID = -1L;
-					{
-						add(url.toString());
-					}
-				}), pathToFrame};
+		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass, params, values);
 	}
 
@@ -218,14 +227,14 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			final URL url, Integer frameIndex, long timeOutSec) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(timeOutSec, new ArrayList<String>() {
+			private static final long serialVersionUID = -1L;
+			{
+				add(url.toString());
+			}
+		});
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(timeOutSec,
-				new ArrayList<String>() {
-					private static final long serialVersionUID = -1L;
-					{
-						add(url.toString());
-					}
-				}), frameIndex};
+		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass, params, values);
 	}
 
@@ -238,14 +247,14 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(String pathToFrame,
 			Class<T> partClass, final URL url, long timeOutSec) {
+		Handle newHandle = ((WindowManager) manager).getNewHandle(timeOutSec, new ArrayList<String>() {
+			private static final long serialVersionUID = -1L;
+			{
+				add(url.toString());
+			}
+		});
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {((WindowManager) manager).switchToNew(timeOutSec,
-				new ArrayList<String>() {
-					private static final long serialVersionUID = -1L;
-					{
-						add(url.toString());
-					}
-				}), pathToFrame};
+		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass, params, values);
 	}
 	

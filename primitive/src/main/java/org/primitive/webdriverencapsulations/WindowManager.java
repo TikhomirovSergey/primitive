@@ -46,7 +46,7 @@ public final class WindowManager extends Manager {
 	/**
 	 * returns window handle by it's index
 	 */
-	public String getHandleByInex(int windowIndex)
+	String getHandleByInex(int windowIndex)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Attempt to get window that is specified by index "
@@ -68,7 +68,7 @@ public final class WindowManager extends Manager {
 	 * returns handle of a new window that we have been waiting for specified
 	 * time
 	 */
-	public synchronized String switchToNew(long timeOutInSeconds)
+	String switchToNew(long timeOutInSeconds)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
@@ -89,7 +89,7 @@ public final class WindowManager extends Manager {
 	 * returns handle of a new window that we have been waiting for time that
 	 * specified in configuration
 	 */
-	public String switchToNew() throws NoSuchWindowException {
+	String switchToNew() throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = getWindowTimeOuts();
 		long timeOut = getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
@@ -103,7 +103,7 @@ public final class WindowManager extends Manager {
 	 * time. new window should has defined title. We can specify title partially
 	 * as a regular expression
 	 */
-	public synchronized String switchToNew(long timeOutInSeconds, String title)
+	String switchToNew(long timeOutInSeconds, String title)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
@@ -128,7 +128,7 @@ public final class WindowManager extends Manager {
 	 * specify title partially
 	 * as a regular expression
 	 */
-	public String switchToNew(String title) throws NoSuchWindowException {
+	String switchToNew(String title) throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = getWindowTimeOuts();
 		long timeOut = getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
@@ -140,7 +140,7 @@ public final class WindowManager extends Manager {
 	 * returns handle of a new window that we have been waiting for specified
 	 * time. new window should has page that loads by specified URLs. We can specify it as regular expression list
 	 */
-	public synchronized String switchToNew(long timeOutInSeconds, List<String> urls)
+	String switchToNew(long timeOutInSeconds, List<String> urls)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Waiting a new window for "
@@ -165,7 +165,7 @@ public final class WindowManager extends Manager {
 	 * specified in configuration. new window should has page that loads by
 	 * specified URL. We can specify it as regular expression list
 	 */
-	public String switchToNew(List<String> urls) throws NoSuchWindowException {
+	String switchToNew(List<String> urls) throws NoSuchWindowException {
 		WindowsTimeOuts timeOuts = getWindowTimeOuts();
 		long timeOut = getTimeOut(
 				timeOuts.getNewWindowTimeOutSec(),
@@ -236,5 +236,74 @@ public final class WindowManager extends Manager {
 	public synchronized Alert getAlert(long timeOut) throws NoAlertPresentException {
 		return  ComponentFactory.getComponent(AlertHandler.class,
 				getWrappedDriver(), new Class[] {long.class}, new Object[] {timeOut});
+	}
+
+	/**
+	 * returns window handle by it's index
+	 */
+	@Override
+	public synchronized Handle getByInex(int index) {
+		String handle = this.getHandleByInex(index);
+		SingleWindow initedWindow = (SingleWindow) SingleWindow.isInitiated(handle, this);
+		if (initedWindow != null) {
+			return (initedWindow);
+		}
+		return (new SingleWindow(handle, this));
+	}
+
+	/**
+	 * returns handle of a new window that we have been waiting for time that
+	 * specified in configuration
+	 */
+	@Override
+	public synchronized Handle getNewHandle() {
+		return new SingleWindow(switchToNew(), this);
+	}
+
+	/**
+	 * returns handle of a new window that we have been waiting for specified
+	 * time
+	 */
+	@Override
+	public  synchronized Handle getNewHandle(long timeOutInSeconds) {
+		return new SingleWindow(switchToNew(timeOutInSeconds), this);
+	}
+
+	/**
+	 * returns handle of a new window that we have been waiting for specified
+	 * time. new window should has defined title. We can specify title partially
+	 * as a regular expression
+	 */
+	@Override
+	public  synchronized Handle getNewHandle(long timeOutInSeconds, String title) {
+		return new SingleWindow(switchToNew(timeOutInSeconds, title), this);
+	}
+
+	/**
+	 * returns handle of a new window that we have been waiting for time that
+	 * specified in configuration. new window should has defined title. We can
+	 * specify title partially
+	 * as a regular expression
+	 */
+	@Override
+	public synchronized Handle getNewHandle(String title) {
+		return new SingleWindow(switchToNew(title), this);
+	}
+	
+	/**
+	 * returns handle of a new window that we have been waiting for specified
+	 * time. new window should has page that loads by specified URLs. We can specify it as regular expression list
+	 */
+	public synchronized Handle getNewHandle(long timeOutInSeconds, List<String> urls) {
+		return new SingleWindow(switchToNew(timeOutInSeconds, urls), this);
+	}
+
+	/**
+	 * returns handle of a new window that we have been waiting for time that
+	 * specified in configuration. new window should has page that loads by
+	 * specified URL. We can specify it as regular expression list
+	 */
+	public synchronized Handle getNewHandle(List<String> urls) {
+		return new SingleWindow(switchToNew(urls), this);
 	}
 }

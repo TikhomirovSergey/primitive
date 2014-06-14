@@ -5,8 +5,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.openqa.selenium.NoSuchContextException;
 import org.primitive.webdriverencapsulations.eventlisteners.IContextListener;
 import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 public final class SingleContext extends Handle implements IHasActivity{
@@ -38,31 +36,6 @@ public final class SingleContext extends Handle implements IHasActivity{
 		contextListenerProxy.whenNewHandleIsAppeared(this);
 	}
 	
-	/** Static constructor ¹1 - initialization of new context that will appear.
-	 */
-	public SingleContext(ContextManager manager) throws NoSuchContextException {
-		this(manager.switchToNew(), manager);
-	}
-
-	/** constructor ¹1.1
-	 */
-	public SingleContext(ContextManager manager, long secondsTimeOut) throws NoSuchContextException {
-		this(manager.switchToNew(secondsTimeOut), manager);
-	}
-
-	/**constructor ¹2 - initialization of new context that will appear.
-	* We use its name
-	*/
-	public SingleContext(ContextManager manager, String name) throws NoSuchContextException  {
-		this( manager.switchToNew(name), manager);
-	}
-
-	/**constructor ¹2.1
-	 */
-	public SingleContext(ContextManager manager, String name, long secondsTimeOut) throws NoSuchContextException  {
-		this(manager.switchToNew(secondsTimeOut, name), manager);
-	}
-
 	public void addListener(IContextListener listener) {
 		contextEventListeners.add(listener);
 	}
@@ -75,18 +48,6 @@ public final class SingleContext extends Handle implements IHasActivity{
 		contextEventListeners.remove(listener);
 	}
 
-	/** Static constructor ¹3 - initialization of new contextt by its index.
-	*/
-	public static SingleContext initContextByIndex(ContextManager manager,
-			int index) throws NoSuchContextException {
-		String handle = manager.getHandleByInex(index);
-		SingleContext initedContext = (SingleContext) isInitiated(handle, manager);
-		if (initedContext != null) {
-			return (initedContext);
-		}
-		return (new SingleContext(handle, manager));
-	}
-	
 	@Override
 	void requestToMe() {
 		contextListenerProxy.beforeIsSwitchedOn(this);

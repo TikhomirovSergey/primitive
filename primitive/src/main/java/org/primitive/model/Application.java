@@ -43,8 +43,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	 */
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass) {
+		Handle newHandle = manager.getNewHandle();
 		Class<?>[] params = new Class[] {Handle.class};
-		Object[] values = new Object[] {manager.switchToNew()};
+		Object[] values = new Object[] {newHandle};
 		return get(partClass, params, values);
 	}
 	
@@ -55,8 +56,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			long timeOutSec) {
+		Handle newHandle = manager.getNewHandle(timeOutSec);
 		Class<?>[] params = new Class[] {Handle.class};
-		Object[] values = new Object[] {manager.switchToNew(timeOutSec)};
+		Object[] values = new Object[] {newHandle};
 		return get(partClass, params, values);
 	}
 
@@ -67,8 +69,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			String stringIdentifier) {
+		Handle newHandle = manager.getNewHandle(stringIdentifier);
 		Class<?>[] params = new Class[] {Handle.class};
-		Object[] values = new Object[] {manager.switchToNew(stringIdentifier)};
+		Object[] values = new Object[] {newHandle};
 		return get(partClass, params, values);
 	}
 
@@ -79,8 +82,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			String stringIdentifier, long timeOutSec) {
+		Handle newHandle = manager.getNewHandle(timeOutSec, stringIdentifier);
 		Class<?>[] params = new Class[] {Handle.class};
-		Object[] values = new Object[] {manager.switchToNew(timeOutSec, stringIdentifier)};
+		Object[] values = new Object[] {newHandle};
 		return get(partClass, params, values);
 	}
 
@@ -90,8 +94,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromHandle(Class<T> partClass,
 			int index) {
+		Handle newHandle = manager.getByInex(index);
 		Class<?>[] params = new Class[] {Handle.class};
-		Object[] values = new Object[] {manager.getHandleByInex(index)};
+		Object[] values = new Object[] {newHandle};
 		return get(partClass, params, values);
 	}
 
@@ -137,8 +142,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromHandle(Class<T> partClass,
 			Integer frameIndex, int index) {
+		Handle newHandle = manager.getByInex(index);
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {manager.getHandleByInex(index), frameIndex};
+		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass, params, values);
 	}
 
@@ -149,8 +155,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromHandle(Class<T> partClass,
 			String pathToFrame, int index) {
+		Handle newHandle = manager.getByInex(index);
 		Class<?>[] params = new Class[] {Handle.class, String.class};
-		Object[] values = new Object[] {manager.getHandleByInex(index), pathToFrame};
+		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass, params, values);
 	}
 	
@@ -170,8 +177,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			Integer frameIndex) {
+		Handle newHandle = manager.getNewHandle();
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {manager.switchToNew(), frameIndex};
+		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass, params, values);
 	}
 
@@ -182,8 +190,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(String pathToFrame,
 			Class<T> partClass) {
+		Handle newHandle = manager.getNewHandle();
 		Class<?>[] params = new Class[] {Handle.class, String.class};
-		Object[] values = new Object[] {manager.switchToNew(), pathToFrame};
+		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass, params, values);
 	}
 
@@ -194,8 +203,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			long timeOutSec, Integer frameIndex) {
+		Handle newHandle = manager.getNewHandle(timeOutSec);
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {manager.switchToNew(timeOutSec), frameIndex};
+		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass, params, values);
 	}
 
@@ -206,8 +216,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(String pathToFrame,
 			Class<T> partClass, long timeOutSec) {
+		Handle newHandle = manager.getNewHandle(timeOutSec);
 		Class<?>[] params = new Class[] {Handle.class, String.class};
-		Object[] values = new Object[] {manager.switchToNew(timeOutSec), pathToFrame};
+		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass, params, values);
 	}
 
@@ -218,8 +229,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			String stringIdentifier, long timeOutSec, Integer frameIndex) {
+		Handle newHandle = manager.getNewHandle(timeOutSec, stringIdentifier);
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {manager.switchToNew(timeOutSec, stringIdentifier), frameIndex};
+		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass, params, values);
 	}
 
@@ -230,8 +242,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(String pathToFrame,
 			Class<T> partClass, String stringIdentifier, long timeOutSec) {
+		Handle newHandle = manager.getNewHandle(timeOutSec, stringIdentifier);
 		Class<?>[] params = new Class[] {Handle.class, String.class};
-		Object[] values = new Object[] {manager.switchToNew(timeOutSec, stringIdentifier), pathToFrame};
+		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass, params, values);
 	}
 
@@ -242,8 +255,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(Class<T> partClass,
 			String stringIdentifier, Integer frameIndex) {
+		Handle newHandle = manager.getNewHandle(stringIdentifier);
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
-		Object[] values = new Object[] {manager.switchToNew(stringIdentifier), frameIndex};
+		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass, params, values);
 	}
 
@@ -254,8 +268,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromNewHandle(String pathToFrame,
 			Class<T> partClass, String stringIdentifier) {
+		Handle newHandle = manager.getNewHandle(stringIdentifier);
 		Class<?>[] params = new Class[] {Handle.class, String.class};
-		Object[] values = new Object[] {manager.switchToNew(stringIdentifier), pathToFrame};
+		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass, params, values);
 	}
 
