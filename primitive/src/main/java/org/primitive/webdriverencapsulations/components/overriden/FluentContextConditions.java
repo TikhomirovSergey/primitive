@@ -65,6 +65,7 @@ public class FluentContextConditions extends WebdriverComponent {
 	private String getContextByIndex(final WebDriver from, int contextIndex) {
 		Set<String> contexts = ((ContextAware) from).getContextHandles();
 		if ((contexts.size() - 1) >= contextIndex) {
+			((ContextAware) from).context(contexts.toArray()[contextIndex].toString());
 			return new ArrayList<String>(contextIndex).get(contextIndex);
 		} else {
 			return null;

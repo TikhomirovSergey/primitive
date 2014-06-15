@@ -5,16 +5,16 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.primitive.model.BrowserPage;
-import org.primitive.webdriverencapsulations.SingleWindow;
+import org.primitive.model.FunctionalPart;
+import org.primitive.webdriverencapsulations.Handle;
 
-public class LinksAreFound extends BrowserPage implements ILinkList {
+public class LinksAreFound extends FunctionalPart implements ILinkList {
 	
 	@FindBy(xpath = ".//*[@class='r']/a")
 	private List<WebElement> linksAreFound;
 	
-	public LinksAreFound(SingleWindow browserWindow) {
-		super(browserWindow);
+	protected LinksAreFound(Handle handle) {
+		super(handle);
 		load();
 	}
 

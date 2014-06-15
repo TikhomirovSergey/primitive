@@ -13,7 +13,7 @@ import org.primitive.webdriverencapsulations.WindowManager;
 /**
  * Representation of a browser application
  */
-public class BrowserApplication extends Application implements IHasManyHandlesWithURL {
+public abstract class BrowserApplication extends Application implements IHasManyHandlesWithURL {
 
 
 	protected BrowserApplication(SingleWindow window) {

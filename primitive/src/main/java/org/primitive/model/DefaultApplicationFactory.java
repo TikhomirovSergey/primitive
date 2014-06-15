@@ -7,6 +7,7 @@ import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.model.abstraction.ModelObjectInterceptor;
+import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.proxy.EnhancedProxyFactory;
 import org.primitive.webdriverencapsulations.Handle;
 import org.primitive.webdriverencapsulations.Manager;
@@ -32,7 +33,7 @@ class DefaultApplicationFactory {
 	private final static ThreadLocal<Class<? extends MethodInterceptor>> definedInterceptorForEntities = 
 			new ThreadLocal<Class<? extends MethodInterceptor>>();
 
-	private DefaultApplicationFactory() {
+	DefaultApplicationFactory() {
 		super();
 	}
 
@@ -59,7 +60,7 @@ class DefaultApplicationFactory {
 	/**
 	 *  Creation of any decomposable part of application
 	 */
-	static <T extends FunctionalPart> T get(Class<T> partClass,
+	static <T extends IDecomposable> T get(Class<T> partClass,
 			Class<?>[] paramClasses, Object[] paramValues){
 		T decomposable = EnhancedProxyFactory.getProxy(partClass,
 				paramClasses, paramValues, getInteractiveInterceptor());

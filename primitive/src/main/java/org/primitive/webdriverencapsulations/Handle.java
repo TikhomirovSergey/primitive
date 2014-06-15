@@ -18,9 +18,9 @@ public abstract class Handle implements IHasHandle, ISwitchesToItself,
 	final Manager nativeManager;
 	private final HandleReceptionist receptionist;
 
-	Handle(String handle, Manager switcher) {
-		this.nativeManager = switcher;
-		this.driverEncapsulation = switcher.getWebDriverEncapsulation();
+	Handle(String handle, Manager manager) {
+		this.nativeManager = manager;
+		this.driverEncapsulation = manager.getWebDriverEncapsulation();
 		this.handle = handle;
 		this.receptionist = nativeManager.getHandleReceptionist();
 		receptionist.addKnown(this);

@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.primitive.configuration.Configuration;
 import org.primitive.model.BrowserApplication;
-import org.primitive.model.ObjectFactory;
+import org.primitive.model.WebFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
@@ -14,7 +14,7 @@ public class Google extends BrowserApplication implements IPerformsSearch, ILink
 	private SearchBar searchBar;
 	private LinksAreFound linksAreFound;
 	
-	public Google(SingleWindow browserWindow){
+	protected Google(SingleWindow browserWindow){
 		super(browserWindow);
 		searchBar     = getPart(SearchBar.class);    
 		linksAreFound = getPart(LinksAreFound.class); 
@@ -22,17 +22,17 @@ public class Google extends BrowserApplication implements IPerformsSearch, ILink
 	
 	public static Google getNew()
 	{
-		return ObjectFactory.getEntity(Google.class, url);
+		return WebFactory.getApplication(Google.class, url);
 	}
 	
 	public static Google getNew(Configuration config)
 	{
-		return ObjectFactory.getEntity(Google.class, config, url);
+		return WebFactory.getApplication(Google.class, config, url);
 	}
 	
 	public static Google getNew(WebDriverEncapsulation externalEncapsulation)
 	{
-		return ObjectFactory.getEntity(externalEncapsulation, Google.class, url);
+		return WebFactory.getApplication(Google.class, externalEncapsulation, url);
 	}
 
 	public void performSearch(String searchString) {

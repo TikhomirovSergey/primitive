@@ -171,70 +171,43 @@ public abstract class FunctionalPart extends ModelObject implements
 		pageFactoryWorker.initPageFactory(this);
 	}
 
-	private Class<?>[] restructureParamArray(Class<?>[] original) {
-		Class<?>[] constructParams = new Class<?>[original.length + 1];
-		constructParams[0] = FunctionalPart.class;
-		for (int i = 0; i < original.length; i++) {
-			constructParams[i + 1] = original[i];
-		}
-		return constructParams;
-	}
-
-	private Object[] restructureValueArray(Object[] original) {
-		Object[] constructValues = new Object[original.length + 1];
-		constructValues[0] = this;
-		for (int i = 0; i < original.length; i++) {
-			constructValues[i + 1] = original[i];
-		}
-		return constructValues;
-	}
-
-	// gets another page fragment
-	// using any accessible (!!!) Page constructor Page creates another
-	// dependent page objects
-	// Class "Page" should be first in the list of constructor parameters
-	// "params" we specify without "Page" because it will be added by this
-	// method
-	// So, this way we build hierarchy of page objects
-	protected <T extends IDecomposable> T get(Class<T> partClass,
-			Class<?>[] params, Object[] values) {
-		return ObjectFactory.get(partClass, restructureParamArray(params),
-				restructureValueArray(values));
-	}
-
 	// - simple constructor
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass) {
-		Class<?>[] params = new Class[] {};
-		Object[] values = new Object[] {};
-		return get(partClass, params, values);
+		Class<?>[] params = new Class[] {FunctionalPart.class};
+		Object[] values = new Object[] {this};
+		return DefaultApplicationFactory.get(partClass, params,
+				values);
 	}
 
 	// - with specified frame index
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
 			Integer frameIndex)  {
-		Class<?>[] params = new Class[] { Integer.class };
-		Object[] values = new Object[] { frameIndex };
-		return get(partClass, params, values);
+		Class<?>[] params = new Class[] {FunctionalPart.class, Integer.class};
+		Object[] values = new Object[] {this, frameIndex};
+		return DefaultApplicationFactory.get(partClass, params,
+				values);
 	}
 
 	// - with specified path to any frame
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
 			String pathToFrame) {
-		Class<?>[] params = new Class[] { String.class };
-		Object[] values = new Object[] { pathToFrame };
-		return get(partClass, params, values);
+		Class<?>[] params = new Class[] {FunctionalPart.class,  String.class };
+		Object[] values = new Object[] {this, pathToFrame };
+		return DefaultApplicationFactory.get(partClass, params,
+				values);
 	}
 
 	// - with frame that specified as web element
 	@Override
 	public <T extends IDecomposable> T getPart(Class<T> partClass,
 			WebElement frameElement)  {
-		Class<?>[] params = new Class[] { WebElement.class };
-		Object[] values = new Object[] { frameElement };
-		return get(partClass, params, values);
+		Class<?>[] params = new Class[] {FunctionalPart.class, WebElement.class };
+		Object[] values = new Object[] {this, frameElement };
+		return DefaultApplicationFactory.get(partClass, params,
+				values);
 	}
 
 	/**
@@ -334,5 +307,4 @@ public abstract class FunctionalPart extends ModelObject implements
 		highLighter.highlightAsFine(driverEncapsulation.getWrappedDriver(),
 				element, highlight, comment);
 	}
-
 }

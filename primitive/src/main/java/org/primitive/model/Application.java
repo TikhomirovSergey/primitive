@@ -1,13 +1,14 @@
 package org.primitive.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.primitive.model.abstraction.ModelObject;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IHasManyHandles;
 import org.primitive.webdriverencapsulations.Handle;
 import org.primitive.webdriverencapsulations.Manager;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.components.overriden.Cookies;
 import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
 
@@ -33,18 +34,18 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 			Class<?> required, Handle actualHandle) {
 		Class<?>[] result = null;
 		try{
-			required.getConstructor(originalParams);
+			required.getDeclaredConstructor(originalParams);
 			return originalParams;
 		}
 		catch (Exception ignored){}
 		
-		List<Class<?>> params = Arrays.asList(originalParams); 
+		ArrayList<Class<?>> params = new ArrayList<>(Arrays.asList(originalParams)); 
 		int i = params.indexOf(Handle.class);
-		params.remove(i);
+		params.remove(Handle.class);
 		params.add(i, actualHandle.getClass());
 		result = params.toArray(new Class<?>[] {});
 		try{
-			required.getConstructor(result);
+			required.getDeclaredConstructor(result);
 		}
 		catch (Exception e){
 			throw new RuntimeException(e);
@@ -58,7 +59,8 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	 */
 	protected <T extends IDecomposable> T get(Class<T> partClass,
 			Class<?>[] params, Object[] values) {
-		T part = ObjectFactory.get(partClass, params, values);
+		T part = DefaultApplicationFactory.get(partClass, params, values);
+				//get(partClass, params, values);
 		((FunctionalPart) part).application = this;
 		addChild((ModelObject) part);
 		return part;
@@ -326,5 +328,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 		return get(partClass,
 				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
 				values);
+	}
+	
+	WebDriverEncapsulation getWebDriverEncapsulation(){
+		return driverEncapsulation;
 	}
 }

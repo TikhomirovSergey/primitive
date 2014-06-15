@@ -111,6 +111,7 @@ public final class FluentWindowConditions extends WebdriverComponent{
 	private String getWindowHandleByIndex(final WebDriver from, int windowIndex) {
 		Set<String> handles = from.getWindowHandles();
 		if ((handles.size() - 1) >= windowIndex) {
+			from.switchTo().window(handles.toArray()[windowIndex].toString());
 			return new ArrayList<String>(handles).get(windowIndex);
 		} else {
 			return null;
