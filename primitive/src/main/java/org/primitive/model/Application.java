@@ -74,7 +74,8 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 		Handle newHandle = manager.getNewHandle();
 		Class<?>[] params = new Class[] {Handle.class};
 		Object[] values = new Object[] {newHandle};
-		return get(partClass, params, values);
+		return get(partClass, replaceHandleParamIfItNeedsToBe(params, partClass, newHandle), 
+				values);
 	}
 	
 	/**
@@ -87,7 +88,8 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 		Handle newHandle = manager.getNewHandle(timeOutSec);
 		Class<?>[] params = new Class[] {Handle.class};
 		Object[] values = new Object[] {newHandle};
-		return get(partClass, params, values);
+		return get(partClass, replaceHandleParamIfItNeedsToBe(params, partClass, newHandle), 
+				values);
 	}
 
 	/**
@@ -100,7 +102,8 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 		Handle newHandle = manager.getNewHandle(stringIdentifier);
 		Class<?>[] params = new Class[] {Handle.class};
 		Object[] values = new Object[] {newHandle};
-		return get(partClass, params, values);
+		return get(partClass, replaceHandleParamIfItNeedsToBe(params, partClass, newHandle), 
+				values);
 	}
 
 	/**
@@ -113,7 +116,8 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 		Handle newHandle = manager.getNewHandle(timeOutSec, stringIdentifier);
 		Class<?>[] params = new Class[] {Handle.class};
 		Object[] values = new Object[] {newHandle};
-		return get(partClass, params, values);
+		return get(partClass, replaceHandleParamIfItNeedsToBe(params, partClass, newHandle), 
+				values);
 	}
 
 	/**
