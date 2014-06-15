@@ -67,7 +67,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		Handle newHandle = ((WindowManager) manager).getNewHandle(urls);
 		Class<?>[] params = new Class[] {Handle.class};
 		Object[] values = new Object[] {newHandle};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 	/**
@@ -86,7 +88,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 				});
 		Class<?>[] params = new Class[] {Handle.class};
 		Object[] values = new Object[] {newHandle};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 	/**
@@ -99,7 +103,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		Handle newHandle = ((WindowManager) manager).getNewHandle(timeOutSec, urls);
 		Class<?>[] params = new Class[] {Handle.class};
 		Object[] values = new Object[] {newHandle};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 	/**
@@ -118,7 +124,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 				});
 		Class<?>[] params = new Class[] {Handle.class};
 		Object[] values = new Object[] {newHandle};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 	/**
@@ -132,7 +140,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		Handle newHandle = ((WindowManager) manager).getNewHandle(urls);
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
 		Object[] values = new Object[] {newHandle, frameIndex};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 
@@ -147,7 +157,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		Handle newHandle = ((WindowManager) manager).getNewHandle(urls);
 		Class<?>[] params = new Class[] {Handle.class, String.class};
 		Object[] values = new Object[] {newHandle, pathToFrame};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 	/**
@@ -162,7 +174,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		Handle newHandle = ((WindowManager) manager).getNewHandle(timeOutSec, urls);
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
 		Object[] values = new Object[] {newHandle, frameIndex};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 	/**
@@ -176,7 +190,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		Handle newHandle = ((WindowManager) manager).getNewHandle(timeOutSec, urls);
 		Class<?>[] params = new Class[] {Handle.class, String.class};
 		Object[] values = new Object[] {newHandle, pathToFrame};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 
@@ -196,7 +212,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		});
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
 		Object[] values = new Object[] {newHandle, frameIndex};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 	/**
@@ -215,7 +233,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		});
 		Class<?>[] params = new Class[] {Handle.class, String.class};
 		Object[] values = new Object[] {newHandle, pathToFrame};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 	/**
@@ -235,7 +255,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		});
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
 		Object[] values = new Object[] {newHandle, frameIndex};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 
 	/**
@@ -255,7 +277,9 @@ public class BrowserApplication extends Application implements IHasManyHandlesWi
 		});
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
 		Object[] values = new Object[] {newHandle, pathToFrame};
-		return get(partClass, params, values);
+		return get(partClass,
+				replaceHandleParamIfItNeedsToBe(params, partClass, newHandle),
+				values);
 	}
 	
 	public WindowManager getWindowManager(){
