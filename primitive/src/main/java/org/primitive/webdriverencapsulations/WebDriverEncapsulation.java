@@ -2,7 +2,6 @@ package org.primitive.webdriverencapsulations;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -178,7 +177,7 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		try {
 			URL remoteUrl = new URL(remoteAdress);
 			constructorBody(supportedDriver, capabilities, remoteUrl);
-		} catch (MalformedURLException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}

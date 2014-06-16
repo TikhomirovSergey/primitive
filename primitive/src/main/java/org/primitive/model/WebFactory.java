@@ -8,7 +8,7 @@ import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.WindowManager;
 
-public class WebFactory extends DefaultApplicationFactory {
+public final class WebFactory extends DefaultApplicationFactory {
 
 	private WebFactory(){
 		super();
