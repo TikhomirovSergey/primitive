@@ -3,20 +3,23 @@ package org.primitive.webdriverencapsulations;
 
 import java.util.Set;
 
-import org.openqa.selenium.ContextAware;
 import org.openqa.selenium.NoSuchContextException;
 import org.openqa.selenium.TimeoutException;
 import org.primitive.configuration.commonhelpers.ContextTimeOuts;
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
+import org.primitive.webdriverencapsulations.components.bydefault.ContextTool;
 import org.primitive.webdriverencapsulations.components.overriden.FluentContextConditions;
 import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 
 public final class ContextManager extends Manager {
 	private final FluentContextConditions fluent;
+	private final ContextTool contextTool;
 
 	public ContextManager(WebDriverEncapsulation initialDriverEncapsulation) {
 		super(initialDriverEncapsulation);
-		fluent = new FluentContextConditions(getWrappedDriver());
+		fluent       = new FluentContextConditions(getWrappedDriver());
+		contextTool  = ComponentFactory.getComponent(ContextTool.class, getWrappedDriver());
 	}
 
 	private ContextTimeOuts getContextTimeOuts() {
@@ -30,7 +33,7 @@ public final class ContextManager extends Manager {
 				defaultTime);		
 		try{
 			awaiting.awaitCondition( timeOut, fluent.isContextPresent(context));
-			((ContextAware) getWrappedDriver()).context(context);
+			contextTool.context(context);
 		}
 		catch (TimeoutException e){
 			throw new NoSuchContextException("There is no context "
@@ -60,7 +63,7 @@ public final class ContextManager extends Manager {
 
 	@Override
 	public Set<String> getHandles() {
-		return ((ContextAware) getWrappedDriver()).getContextHandles();
+		return contextTool.getContextHandles();
 	}
 
 	@Override

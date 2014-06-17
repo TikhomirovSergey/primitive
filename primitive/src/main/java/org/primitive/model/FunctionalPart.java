@@ -14,7 +14,6 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
-import org.primitive.logging.Photographer;
 import org.primitive.model.abstraction.ModelObject;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IHasWebElementFrames;
@@ -224,12 +223,12 @@ public abstract class FunctionalPart extends ModelObject implements
 		return;
 	}
 
-	// takes screenshots for log messages with SEVERE level
-	@InteractiveMethod
+	/**
+	 *  takes screenshots for log messages with SEVERE level
+	 */
 	@Override
 	public void takeAPictureOfASevere(String comment) {
-		Photographer.takeAPictureOfASevere(
-				driverEncapsulation.getWrappedDriver(), comment);
+		handle.takeAPictureOfASevere(comment);
 	}
 
 	@InteractiveMethod
@@ -245,12 +244,12 @@ public abstract class FunctionalPart extends ModelObject implements
 				element, highlight, comment);
 	}
 
-	// takes screenshots for log messages with WARNING level
-	@InteractiveMethod
+	/**
+	 *  takes screenshots for log messages with WARNING level
+	 */
 	@Override
 	public void takeAPictureOfAWarning(String comment) {
-		Photographer.takeAPictureOfAWarning(
-				driverEncapsulation.getWrappedDriver(), comment);
+		handle.takeAPictureOfAWarning(comment);
 	}
 
 	@InteractiveMethod
@@ -266,12 +265,12 @@ public abstract class FunctionalPart extends ModelObject implements
 				element, highlight, comment);
 	}
 
-	// takes screenshots for log messages with INFO level
-	@InteractiveMethod
+	/**
+	 *  takes screenshots for log messages with INFO level
+	 */
 	@Override
 	public void takeAPictureOfAnInfo(String comment) {
-		Photographer.takeAPictureOfAnInfo(
-				driverEncapsulation.getWrappedDriver(), comment);
+		handle.takeAPictureOfAnInfo(comment);
 	}
 
 	@InteractiveMethod
@@ -287,12 +286,12 @@ public abstract class FunctionalPart extends ModelObject implements
 				element, highlight, comment);
 	}
 
-	// takes screenshots for log messages with FINE level
-	@InteractiveMethod
+	/**
+	 *  takes screenshots for log messages with FINE level
+	 */
 	@Override
 	public void takeAPictureOfAFine(String comment) {
-		Photographer.takeAPictureOfAFine(
-				driverEncapsulation.getWrappedDriver(), comment);
+		handle.takeAPictureOfAFine(comment);
 	}
 
 	@InteractiveMethod
