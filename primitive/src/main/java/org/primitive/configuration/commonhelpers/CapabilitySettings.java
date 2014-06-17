@@ -1,5 +1,6 @@
 package org.primitive.configuration.commonhelpers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public class CapabilitySettings extends AbstractConfigurationAccessHelper
 	// specified settings for capabilities
 	private final String capabilityGroup = "DesiredCapabilities";
 	private final DesiredCapabilities builtCapabilities = new DesiredCapabilities();
+	private final String appCapability = "app";
 
 	public CapabilitySettings(Configuration configuration) {
 		super(configuration);
@@ -86,6 +88,18 @@ public class CapabilitySettings extends AbstractConfigurationAccessHelper
 				builtCapabilities.setCapability(capabilityStr, capabilities.get(capabilityStr));
 			}
 		}
+		transformCapabilities();
+	}
+	
+	//transforms capabilities values if they need to be changed
+	private void transformCapabilities(){
+		//transforms relative path to application into absolute
+		Object pathToApp = getCapability(appCapability);
+		if (pathToApp != null){
+			File app = new File(String.valueOf(pathToApp));
+			builtCapabilities.setCapability(appCapability, app.getAbsolutePath());
+		}		
+		//if other actions need to be implemented code will be below 
 	}
 
 }
