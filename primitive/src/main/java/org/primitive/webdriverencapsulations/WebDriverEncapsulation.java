@@ -16,9 +16,6 @@ import org.primitive.configuration.interfaces.IConfigurable;
 import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Log;
-import org.primitive.webdriverencapsulations.components.bydefault.ByAccessibilityId;
-import org.primitive.webdriverencapsulations.components.bydefault.ByAndroidUIAutomator;
-import org.primitive.webdriverencapsulations.components.bydefault.ByIosUIAutomation;
 import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
 import org.primitive.webdriverencapsulations.components.bydefault.DriverLogs;
 import org.primitive.webdriverencapsulations.components.bydefault.Interaction;
@@ -51,9 +48,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 	private Ime ime;
 	private Interaction interaction;
 	private WebElementHighLighter elementHighLighter;
-	private ByAccessibilityId byAccessibilityId;
-	private ByAndroidUIAutomator byAndroidUIAutomator;
-	private ByIosUIAutomation byIosUIAutomation;
 	private final ConfigurableElements configurableElements = new ConfigurableElements();
 
 	protected static void prelaunch(ESupportedDrivers supporteddriver,
@@ -259,18 +253,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		return closedDriver.getCapabilities();
 	}
 	
-	public ByAccessibilityId getByAccessibilityId(){
-		return byAccessibilityId;
-	}
-	
-	public ByAndroidUIAutomator getByAndroidUIAutomator(){
-		return byAndroidUIAutomator;
-	}
-	
-	public ByIosUIAutomation getByIosUIAutomation(){
-		return byIosUIAutomation;
-	}
-	
 	private void registerAll() {
 		InnerSPIServises servises = InnerSPIServises.getBy(this);
 		List<IExtendedWebDriverEventListener> listeners = servises
@@ -306,9 +288,6 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		logs = ComponentFactory.getComponent(DriverLogs.class, closedDriver);
 		ime = new Ime(closedDriver);
 		interaction = ComponentFactory.getComponent(Interaction.class, closedDriver);
-		byAccessibilityId = ComponentFactory.getComponent(ByAccessibilityId.class, closedDriver);
-		byAndroidUIAutomator = ComponentFactory.getComponent(ByAndroidUIAutomator.class, closedDriver);
-		byIosUIAutomation    = ComponentFactory.getComponent(ByIosUIAutomation.class, closedDriver);
 
 		configurableElements.addConfigurable(timeout);
 		configurableElements.addConfigurable(elementHighLighter);

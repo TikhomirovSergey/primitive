@@ -9,6 +9,7 @@ import org.primitive.model.interfaces.IHasManyHandlesWithURL;
 import org.primitive.webdriverencapsulations.Handle;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WindowManager;
+import org.primitive.webdriverencapsulations.components.overriden.Cookies;
 
 /**
  * Representation of a browser application
@@ -16,8 +17,11 @@ import org.primitive.webdriverencapsulations.WindowManager;
 public abstract class BrowserApplication extends Application implements IHasManyHandlesWithURL {
 
 
+	protected final Cookies cookies;
+
 	protected BrowserApplication(SingleWindow window) {
 		super(window);
+		cookies = driverEncapsulation.getCookies();
 	}
 
 	@Override

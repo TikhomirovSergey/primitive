@@ -9,7 +9,6 @@ import org.primitive.model.interfaces.IHasManyHandles;
 import org.primitive.webdriverencapsulations.Handle;
 import org.primitive.webdriverencapsulations.Manager;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
-import org.primitive.webdriverencapsulations.components.overriden.Cookies;
 import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
 
 /**
@@ -19,13 +18,11 @@ import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
  */
 abstract class Application extends ModelObject implements IHasManyHandles {
 
-	protected final Cookies cookies;
 	protected final Manager manager;
 	protected final TimeOut timeOuts;
 
 	public Application(Handle handle) {
 		super(handle);
-		cookies = driverEncapsulation.getCookies();
 		timeOuts = driverEncapsulation.getTimeOut();
 		manager = handle.getManager();
 	}	
@@ -336,5 +333,9 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	
 	WebDriverEncapsulation getWebDriverEncapsulation(){
 		return driverEncapsulation;
+	}
+	
+	public TimeOut getTimeOuts(){
+		return timeOuts;
 	}
 }

@@ -34,6 +34,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.Rotatable;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.internal.Coordinates;
@@ -697,11 +698,12 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 
 	@Override
 	public String currentActivity() {
-		try{
+		try {
 			return ((AppiumDriver) originalDriver).currentActivity();
-		}
-		catch (Exception e){
-			return null;
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Getting activity is not supported by "
+							+ originalDriver.getClass().getSimpleName());
 		}
 	}
 	
