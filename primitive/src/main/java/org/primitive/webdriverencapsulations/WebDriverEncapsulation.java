@@ -27,6 +27,7 @@ import org.primitive.webdriverencapsulations.components.overriden.Ime;
 import org.primitive.webdriverencapsulations.components.overriden.PageFactoryWorker;
 import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
 import org.primitive.webdriverencapsulations.eventlisteners.DefaultWebdriverListener;
+import org.primitive.webdriverencapsulations.eventlisteners.IContextListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.eventlisteners.IWindowListener;
 import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
@@ -296,6 +297,8 @@ public class WebDriverEncapsulation implements IDestroyable, IConfigurable,
 		InnerSPIServises servises = InnerSPIServises.getBy(this);
 		configurableElements.addConfigurable((IConfigurable) servises
 				.getDafaultService(IWindowListener.class));
+		configurableElements.addConfigurable((IConfigurable) servises
+				.getDafaultService(IContextListener.class));
 		DefaultWebdriverListener webdriverListener = (DefaultWebdriverListener) servises
 				.getDafaultService(IExtendedWebDriverEventListener.class);
 		webdriverListener.setHighLighter(elementHighLighter);

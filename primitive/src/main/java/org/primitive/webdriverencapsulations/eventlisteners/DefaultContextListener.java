@@ -19,7 +19,7 @@ public class DefaultContextListener extends DefaultHandleListener implements ICo
 	@Override
 	public void whenNewHandleIsAppeared(IHasHandle handle) {
 		String activity = String.valueOf(((IHasActivity) handle).currentActivity());
-		String message = "Current context is "
+		String message = "A new context "
 				+ handle.getHandle() + ". Activity is " + activity;
 		if (toDoScreenShotsOfNewWindows) {
 			((ITakesPictureOfItSelf) handle)
@@ -36,7 +36,8 @@ public class DefaultContextListener extends DefaultHandleListener implements ICo
 		{
 			((ITakesPictureOfItSelf) handle).takeAPictureOfAnInfo("The new context");
 		}
-		Log.message("A new context '" + handle.getHandle() + "' is here. Activity is " + activity);
+		Log.message("Current context is "
+				+ handle.getHandle() + ". Activity is " + activity);
 	}
 
 }

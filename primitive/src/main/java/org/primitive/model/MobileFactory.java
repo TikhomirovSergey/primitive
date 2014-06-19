@@ -7,6 +7,7 @@ import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.webdriver.ESupportedDrivers;
 import org.primitive.webdriverencapsulations.ContextManager;
+import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 
 
 public final class MobileFactory extends DefaultApplicationFactory {
@@ -23,11 +24,11 @@ public final class MobileFactory extends DefaultApplicationFactory {
 	public static <T extends MobileAppliction> T getApplication(
 			Class<T> appClass, Configuration configuration) {
 		try {
-			T result = getApplication(appClass,
-					configuration.getCapabilities(), new URL(
-							configuration.getWebDriverSettings()
+			WebDriverEncapsulation wdEncapsulation = new WebDriverEncapsulation(ESupportedDrivers.MOBILE, 
+					configuration.getCapabilities(), new URL(configuration.getWebDriverSettings()
 									.getRemoteAddress()));
-			result.getWebDriverEncapsulation().resetAccordingTo(configuration);
+			wdEncapsulation.resetAccordingTo(configuration);
+			T result = getApplication(ContextManager.class, appClass, wdEncapsulation);
 			return result;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
