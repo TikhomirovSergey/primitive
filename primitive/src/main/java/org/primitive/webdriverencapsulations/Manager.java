@@ -95,7 +95,7 @@ public abstract class Manager implements IDestroyable {
 		changeActive(Handle);
 	}
 	abstract String getHandleByInex(int index);
-	public abstract  Set<String> getHandles();
+	abstract  Set<String> getHandles();
 	
 	abstract String switchToNew();
 	abstract String switchToNew(long timeOutInSeconds);

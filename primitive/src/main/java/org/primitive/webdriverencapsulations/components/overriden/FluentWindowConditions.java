@@ -31,6 +31,7 @@ public final class FluentWindowConditions extends WebdriverComponent{
 		if (newHandles.size() > oldHandles.size()) {
 			newHandles.removeAll(oldHandles);
 			newHandle = (String) newHandles.toArray()[0];
+			from.switchTo().window(newHandle);
 			return newHandle;
 		}
 		return newHandle;

@@ -173,19 +173,19 @@ public final class WindowManager extends Manager {
 		return switchToNew(timeOut, urls);
 	}
 
-	public synchronized String getWindowURLbyHandle(String handle)
+	synchronized String getWindowURLbyHandle(String handle)
 			throws NoSuchWindowException {
 		changeActive(handle);
 		return (getWrappedDriver().getCurrentUrl());
 	}
 
-	public synchronized String getTitleByHandle(String handle)
+	synchronized String getTitleByHandle(String handle)
 			throws NoSuchWindowException {
 		changeActive(handle);
 		return (getWrappedDriver().getTitle());
 	}
 
-	public synchronized void close(String handle)
+	synchronized void close(String handle)
 			throws UnclosedWindowException, NoSuchWindowException,
 			UnhandledAlertException, UnreachableBrowserException {
 		WindowsTimeOuts timeOuts = getWindowTimeOuts();
@@ -220,7 +220,7 @@ public final class WindowManager extends Manager {
 		}
 	}
 
-	public Set<String> getHandles() {
+	Set<String> getHandles() {
 		return (getWrappedDriver().getWindowHandles());
 	}
 

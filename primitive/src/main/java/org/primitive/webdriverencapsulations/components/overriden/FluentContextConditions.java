@@ -32,6 +32,7 @@ public class FluentContextConditions extends WebdriverComponent {
 		if (newContexts.size() > oldContexts.size()) {
 			newContexts.removeAll(oldContexts);
 			newContext = (String) newContexts.toArray()[0];
+			((ContextAware) from).context(newContext);
 			return newContext;
 		}
 		return newContext;

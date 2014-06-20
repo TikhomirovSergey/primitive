@@ -133,7 +133,7 @@ public final class ContextManager extends Manager {
 		return switchToNew(timeOut, context);
 	}
 
-	public synchronized String getActivityByHandle(String handle)
+	synchronized String getActivityByHandle(String handle)
 			throws NoSuchContextException {
 		changeActive(handle);
 		return (((IHasActivity) getWrappedDriver()).currentActivity());
@@ -152,6 +152,19 @@ public final class ContextManager extends Manager {
 		return (new SingleContext(handle, this));
 	}
 
+	/**
+	 * returns context handle by it's name
+	 */
+	public synchronized Handle getByContextName(String contextName) {
+		changeActive(contextName);
+		String context = contextTool.getContext();
+		SingleContext initedContext = (SingleContext) SingleContext.isInitiated(context, this);
+		if (initedContext != null) {
+			return (initedContext);
+		}
+		return (new SingleContext(context, this));
+	}
+	
 	/**
 	 * returns handle of a new context that we have been waiting for time that
 	 * specified in configuration
