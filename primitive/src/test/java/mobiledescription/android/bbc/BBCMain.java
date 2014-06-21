@@ -15,9 +15,7 @@ public class BBCMain extends Context implements IBar{
 	@FindBy(id = "bbc.mobile.news.ww:id/articleWrapper")
 	private List<WebElement> articles;
 	@FindBy(id = "bbc.mobile.news.ww:id/articleWebView")
-	private WebElement currentArticle;		
-	@FindBy(id = "bbc.mobile.news.ww:id/optMenuRefreshAction")
-	private WebElement refresh;	
+	private WebElement currentArticle;			
 	@FindBy(id = "bbc.mobile.news.ww:id/optMenuShareAction")
 	private WebElement share;
 	@FindBy(id = "bbc.mobile.news.ww:id/optMenuWatchListenAction")
@@ -69,7 +67,10 @@ public class BBCMain extends Context implements IBar{
 	@Override
 	@InteractiveMethod
 	public void refresh() {
-		refresh.click();		
+		byAndroidUIAutomator
+				.findElementByAndroidUIAutomator(
+						"new UiSelector().resourceId(\"bbc.mobile.news.ww:id/optMenuRefreshAction\")")
+				.click();		
 	}
 
 	@Override

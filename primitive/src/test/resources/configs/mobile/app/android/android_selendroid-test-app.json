@@ -37,7 +37,7 @@
 	      },
 	      "implicitlyWait":{
 	          "type":"LONG",
-	          "value":"10"     
+	          "value":"20"     
 	      },
 	      "pageLoadTimeout":{
 	          "type":"LONG",

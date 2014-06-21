@@ -81,7 +81,11 @@
       "isContextPresentTimeOut":{
           "type":"LONG",
           "value":"2"            
-      } 
+      },  
+      "secsForAwaitinAlertPresent":{
+          "type":"LONG",
+          "value":"2"     
+      }  
   },
   "Log":
   {

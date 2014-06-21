@@ -8,7 +8,6 @@ import io.appium.java_client.FindsByAccessibilityId;
 import io.appium.java_client.FindsByAndroidUIAutomator;
 import io.appium.java_client.FindsByIosUIAutomation;
 import io.appium.java_client.MobileDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.MultiTouchAction;
 import io.appium.java_client.TouchAction;
 
@@ -237,8 +236,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov For some functions of EventFiringWebEvement
 	 */
 	static class DefaultWebElement implements WebElement,
-			Locatable, WrapsElement, FindsByIosUIAutomation,
-			FindsByAndroidUIAutomator, FindsByAccessibilityId{
+			Locatable, WrapsElement{
 		private final WebElement element;
 		private WebElement wrapped;
 		private ClosedFiringWebDriver extendedDriver;
@@ -366,72 +364,6 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 
 		public WebElement getWrappedElement() {
 			return unpackOriginalElement();
-		}
-
-		@Override
-		public WebElement findElementByAccessibilityId(String arg0) {
-			return new DefaultWebElement(
-					new MobileElement(unpackOriginalElement(),
-							(MobileDriver) extendedDriver
-									.unpackOriginalDriver())
-							.findElementByAccessibilityId(arg0),
-					extendedDriver);
-		}
-
-		@Override
-		public List<WebElement> findElementsByAccessibilityId(String arg0) {
-			List<WebElement> found = new MobileElement(unpackOriginalElement(),
-					(MobileDriver) extendedDriver.unpackOriginalDriver())
-					.findElementsByAccessibilityId(arg0);
-			List<WebElement> result = new ArrayList<WebElement>();
-			for (WebElement e : found) {
-				result.add(new DefaultWebElement(e, extendedDriver));
-			}
-			return result;
-		}
-
-		@Override
-		public WebElement findElementByAndroidUIAutomator(String arg0) {
-			return new DefaultWebElement(
-					new MobileElement(unpackOriginalElement(),
-							(MobileDriver) extendedDriver
-									.unpackOriginalDriver())
-							.findElementByAndroidUIAutomator(arg0),
-					extendedDriver);
-		}
-
-		@Override
-		public List<WebElement> findElementsByAndroidUIAutomator(String arg0) {
-			List<WebElement> found = new MobileElement(unpackOriginalElement(),
-					(MobileDriver) extendedDriver.unpackOriginalDriver())
-					.findElementsByAndroidUIAutomator(arg0);
-			List<WebElement> result = new ArrayList<WebElement>();
-			for (WebElement e : found) {
-				result.add(new DefaultWebElement(e, extendedDriver));
-			}
-			return result;
-		}
-
-		@Override
-		public WebElement findElementByIosUIAutomation(String arg0) {
-			return new DefaultWebElement(
-					new MobileElement(unpackOriginalElement(),
-							(MobileDriver) extendedDriver
-									.unpackOriginalDriver())
-							.findElementByIosUIAutomation(arg0),
-					extendedDriver);
-		}
-
-		@Override
-		public List<WebElement> findElementsByIosUIAutomation(String arg0) {
-			List<WebElement> found = new MobileElement(unpackOriginalElement(),
-					(MobileDriver) extendedDriver.unpackOriginalDriver())
-					.findElementsByIosUIAutomation(arg0);
-			List<WebElement> result = new ArrayList<WebElement>();
-			for (WebElement e : found) {
-				result.add(new DefaultWebElement(e, extendedDriver));
-			}
-			return result;
 		}
 
 	}
@@ -688,13 +620,6 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 				.findElementsByAccessibilityId(using);
 	}
 	
-	private WebDriver unpackOriginalDriver(){
-		WebDriver original = originalDriver;
-		while (original instanceof WrapsDriver) {
-			original = ((WrapsDriver) original).getWrappedDriver();				
-		}
-		return original;
-	}
 
 	@Override
 	public String currentActivity() {

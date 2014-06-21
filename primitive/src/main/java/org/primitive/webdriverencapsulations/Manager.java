@@ -5,9 +5,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.primitive.interfaces.IDestroyable;
 import org.primitive.logging.Photographer;
+import org.primitive.webdriverencapsulations.components.bydefault.AlertHandler;
+import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
 import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
 import org.primitive.webdriverencapsulations.interfaces.IHasHandle;
 
@@ -111,4 +115,11 @@ public abstract class Manager implements IDestroyable {
 	HandleReceptionist getHandleReceptionist(){
 		return handleReceptionist;
 	}
+
+	public synchronized Alert getAlert(long timeOut) throws NoAlertPresentException {
+		return  ComponentFactory.getComponent(AlertHandler.class,
+				getWrappedDriver(), new Class[] {long.class}, new Object[] {timeOut});
+	}
+	
+	public abstract Alert getAlert() throws NoAlertPresentException;
 }

@@ -191,8 +191,8 @@ public final class DefaultWebdriverListener implements
 		}
 		description = addToDescription(element, "id", description);
 		description = addToDescription(element, "name", description);
-		if (!element.getText().equals("")){
-			description += " ('" + element.getText() + "')";
+		if (!"".equals(element.getText())){
+			description += " ('" + String.valueOf(element.getText()) + "')";
 		}
 		if (!description.equals("")) {
 			description = " Element is: " + description;

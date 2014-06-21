@@ -224,6 +224,7 @@ public final class WindowManager extends Manager {
 		return (getWrappedDriver().getWindowHandles());
 	}
 
+	@Override
 	public synchronized Alert getAlert() throws NoAlertPresentException {
 		WindowsTimeOuts timeOuts = getWindowTimeOuts();
 		return ComponentFactory.getComponent(AlertHandler.class,
@@ -233,11 +234,6 @@ public final class WindowManager extends Manager {
 
 	}
 	
-	public synchronized Alert getAlert(long timeOut) throws NoAlertPresentException {
-		return  ComponentFactory.getComponent(AlertHandler.class,
-				getWrappedDriver(), new Class[] {long.class}, new Object[] {timeOut});
-	}
-
 	/**
 	 * returns window handle by it's index
 	 */

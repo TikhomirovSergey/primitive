@@ -2,8 +2,9 @@ package org.primitive.configuration.commonhelpers;
 
 import org.primitive.configuration.AbstractConfigurationAccessHelper;
 import org.primitive.configuration.Configuration;
+import org.primitive.configuration.interfaces.IHasAlertTimeOut;
 
-public class ContextTimeOuts extends AbstractConfigurationAccessHelper{
+public class ContextTimeOuts extends AbstractConfigurationAccessHelper implements IHasAlertTimeOut{
 
 	public ContextTimeOuts(Configuration configuration) {
 		super(configuration);
@@ -31,5 +32,10 @@ public class ContextTimeOuts extends AbstractConfigurationAccessHelper{
 	
 	public Long getIsContextPresentTimeOut() {
 		return (Long) getSetting(isContextPresentTimeOutSetting);
+	}
+	
+	@Override
+	public Long getSecsForAwaitinAlertPresent() {
+		return (Long) getSetting(awaitinForAlertPresentSetting);
 	}
 }

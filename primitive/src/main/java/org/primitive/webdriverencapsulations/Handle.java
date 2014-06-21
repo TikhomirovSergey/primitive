@@ -81,8 +81,8 @@ public abstract class Handle implements IHasHandle, ISwitchesToItself,
 		return (driverEncapsulation);
 	}
 
-	static Handle isInitiated(String handle, Manager manager) {
-		return (SingleWindow) manager.getHandleReceptionist().isInstantiated(handle);
+	static IHasHandle isInitiated(String handle, Manager manager) {
+		return manager.getHandleReceptionist().isInstantiated(handle);
 	}
 	
 	void requestToMe() {

@@ -3,10 +3,13 @@ package org.primitive.webdriverencapsulations;
 
 import java.util.Set;
 
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchContextException;
 import org.openqa.selenium.TimeoutException;
 import org.primitive.configuration.commonhelpers.ContextTimeOuts;
 import org.primitive.logging.Log;
+import org.primitive.webdriverencapsulations.components.bydefault.AlertHandler;
 import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
 import org.primitive.webdriverencapsulations.components.bydefault.ContextTool;
 import org.primitive.webdriverencapsulations.components.overriden.FluentContextConditions;
@@ -27,18 +30,8 @@ public final class ContextManager extends Manager {
 	}
 	
 	@Override
-	void changeActive(String context) throws NoSuchContextException {
-		ContextTimeOuts timeOuts = getContextTimeOuts();
-		long timeOut = getTimeOut(timeOuts.getIsContextPresentTimeOut(),
-				defaultTime);		
-		try{
-			awaiting.awaitCondition( timeOut, fluent.isContextPresent(context));
-			contextTool.context(context);
-		}
-		catch (TimeoutException e){
-			throw new NoSuchContextException("There is no context "
-					+ context + "!");
-		}
+	void changeActive(String context) throws NoSuchContextException {			
+		contextTool.context(context);
 	}
 
 	@Override
@@ -156,13 +149,16 @@ public final class ContextManager extends Manager {
 	 * returns context handle by it's name
 	 */
 	public synchronized Handle getByContextName(String contextName) {
-		changeActive(contextName);
-		String context = contextTool.getContext();
-		SingleContext initedContext = (SingleContext) SingleContext.isInitiated(context, this);
+		ContextTimeOuts timeOuts = getContextTimeOuts();
+		long timeOut = getTimeOut(timeOuts.getIsContextPresentTimeOut(),
+				defaultTime);	
+		awaiting.awaitCondition(timeOut, fluent.isContextPresent(contextName));
+		contextTool.context(contextName);
+		SingleContext initedContext = (SingleContext) SingleContext.isInitiated(contextName, this);
 		if (initedContext != null) {
 			return (initedContext);
 		}
-		return (new SingleContext(context, this));
+		return (new SingleContext(contextName, this));
 	}
 	
 	/**
@@ -199,6 +195,15 @@ public final class ContextManager extends Manager {
 	@Override
 	public synchronized Handle getNewHandle(String contextName) {
 		return new SingleContext(switchToNew(contextName), this);
+	}
+
+	@Override
+	public Alert getAlert() throws NoAlertPresentException {
+		ContextTimeOuts timeOuts = getContextTimeOuts();
+		return ComponentFactory.getComponent(AlertHandler.class,
+				getWrappedDriver(), new Class[] {long.class}, new Object[] {getTimeOut(timeOuts.
+						getSecsForAwaitinAlertPresent(),
+								defaultTime) });
 	}
 	
 
