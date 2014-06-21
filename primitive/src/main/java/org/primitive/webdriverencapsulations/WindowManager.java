@@ -46,7 +46,7 @@ public final class WindowManager extends Manager {
 	/**
 	 * returns window handle by it's index
 	 */
-	String getHandleByInex(int windowIndex)
+	String getHandleByIndex(int windowIndex)
 			throws NoSuchWindowException {
 		try {
 			Log.debug("Attempt to get window that is specified by index "
@@ -242,8 +242,8 @@ public final class WindowManager extends Manager {
 	 * returns window handle by it's index
 	 */
 	@Override
-	public synchronized Handle getByInex(int index) {
-		String handle = this.getHandleByInex(index);
+	public synchronized Handle getByIndex(int index) {
+		String handle = this.getHandleByIndex(index);
 		SingleWindow initedWindow = (SingleWindow) SingleWindow.isInitiated(handle, this);
 		if (initedWindow != null) {
 			return (initedWindow);

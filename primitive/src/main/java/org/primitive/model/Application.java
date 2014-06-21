@@ -123,7 +123,7 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromHandle(Class<T> partClass,
 			int index) {
-		Handle newHandle = manager.getByInex(index);
+		Handle newHandle = manager.getByIndex(index);
 		Class<?>[] params = new Class[] { Handle.class };
 		Object[] values = new Object[] { newHandle };
 		return get(partClass,
@@ -179,7 +179,7 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromHandle(Class<T> partClass,
 			Integer frameIndex, int index) {
-		Handle newHandle = manager.getByInex(index);
+		Handle newHandle = manager.getByIndex(index);
 		Class<?>[] params = new Class[] {Handle.class, Integer.class};
 		Object[] values = new Object[] {newHandle, frameIndex};
 		return get(partClass,
@@ -194,7 +194,7 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 	@Override
 	public <T extends IDecomposable> T getFromHandle(Class<T> partClass,
 			String pathToFrame, int index) {
-		Handle newHandle = manager.getByInex(index);
+		Handle newHandle = manager.getByIndex(index);
 		Class<?>[] params = new Class[] {Handle.class, String.class};
 		Object[] values = new Object[] {newHandle, pathToFrame};
 		return get(partClass,

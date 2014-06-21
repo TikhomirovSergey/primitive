@@ -45,7 +45,7 @@ public final class ContextManager extends Manager {
 	/**
 	 * returns context by it's index
 	 */
-	String getHandleByInex(int index) throws NoSuchContextException {
+	String getHandleByIndex(int index) throws NoSuchContextException {
 		try {
 			Log.debug("Attempt to get context that is specified by index "
 					+ Integer.toString(index) + "...");
@@ -143,8 +143,8 @@ public final class ContextManager extends Manager {
 	 * returns context handle by it's index
 	 */
 	@Override
-	public synchronized Handle getByInex(int index) {
-		String handle = this.getHandleByInex(index);
+	public synchronized Handle getByIndex(int index) {
+		String handle = this.getHandleByIndex(index);
 		SingleContext initedContext = (SingleContext) SingleContext.isInitiated(handle, this);
 		if (initedContext != null) {
 			return (initedContext);

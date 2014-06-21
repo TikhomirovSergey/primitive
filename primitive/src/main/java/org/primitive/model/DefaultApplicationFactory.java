@@ -93,7 +93,7 @@ class DefaultApplicationFactory {
 					.getConstructor(new Class<?>[] { WebDriverEncapsulation.class });
 			Manager m = (Manager) c.newInstance(new Object[] { wdeInstance });
 
-			return m.getByInex(0);
+			return m.getByIndex(0);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
