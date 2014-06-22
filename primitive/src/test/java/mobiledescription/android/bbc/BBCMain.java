@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primitive.model.Context;
+import org.primitive.model.common.mobile.Context;
 import org.primitive.webdriverencapsulations.SingleContext;
 
 

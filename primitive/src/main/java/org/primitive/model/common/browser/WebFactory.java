@@ -1,10 +1,11 @@
-package org.primitive.model;
+package org.primitive.model.common.browser;
 
 import java.net.URL;
 
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.webdriver.ESupportedDrivers;
+import org.primitive.model.common.DefaultApplicationFactory;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 import org.primitive.webdriverencapsulations.WindowManager;
 
@@ -15,7 +16,7 @@ public final class WebFactory extends DefaultApplicationFactory {
 	}
 
 	private static <T extends BrowserApplication> T load(T instance, String urlToBeLoaded){
-		instance.getWebDriverEncapsulation().getTo(urlToBeLoaded);
+		getWebDriverEncapsulation(instance).getTo(urlToBeLoaded);
 		return instance;
 	}
 	

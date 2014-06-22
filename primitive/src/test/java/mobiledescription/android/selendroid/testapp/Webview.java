@@ -3,7 +3,7 @@ package mobiledescription.android.selendroid.testapp;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-import org.primitive.model.Context;
+import org.primitive.model.common.mobile.Context;
 import org.primitive.webdriverencapsulations.SingleContext;
 
 /**

@@ -5,7 +5,7 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
-import org.primitive.model.FunctionalPart;
+import org.primitive.model.common.FunctionalPart;
 import org.primitive.webdriverencapsulations.Handle;
 
 public class LinksAreFound extends FunctionalPart implements ILinkList {

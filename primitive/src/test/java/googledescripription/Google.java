@@ -3,8 +3,8 @@ package googledescripription;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.primitive.configuration.Configuration;
-import org.primitive.model.BrowserApplication;
-import org.primitive.model.WebFactory;
+import org.primitive.model.common.browser.BrowserApplication;
+import org.primitive.model.common.browser.WebFactory;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 

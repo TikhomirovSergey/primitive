@@ -1,4 +1,4 @@
-package org.primitive.model;
+package org.primitive.model.common;
 
 import java.lang.reflect.Method;
 

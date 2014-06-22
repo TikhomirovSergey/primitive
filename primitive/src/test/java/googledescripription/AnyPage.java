@@ -1,6 +1,6 @@
 package googledescripription;
 
-import org.primitive.model.BrowserPage;
+import org.primitive.model.common.browser.BrowserPage;
 import org.primitive.webdriverencapsulations.SingleWindow;
 
 /**

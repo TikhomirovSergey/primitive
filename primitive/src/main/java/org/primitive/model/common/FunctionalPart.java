@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.primitive.model;
+package org.primitive.model.common;
 
 import java.awt.Color;
 import java.lang.annotation.ElementType;

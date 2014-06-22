@@ -1,4 +1,4 @@
-package org.primitive.model;
+package org.primitive.model.common.mobile;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,6 +6,7 @@ import java.net.URL;
 import org.openqa.selenium.Capabilities;
 import org.primitive.configuration.Configuration;
 import org.primitive.configuration.webdriver.ESupportedDrivers;
+import org.primitive.model.common.DefaultApplicationFactory;
 import org.primitive.webdriverencapsulations.ContextManager;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
 

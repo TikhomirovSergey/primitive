@@ -1,5 +1,6 @@
-package org.primitive.model;
+package org.primitive.model.common.mobile;
 
+import org.primitive.model.common.Application;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IHasManyHandlesWithNamedContexts;
 import org.primitive.webdriverencapsulations.ContextManager;

@@ -1,9 +1,10 @@
-package org.primitive.model;
+package org.primitive.model.common.browser;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.primitive.model.common.Application;
 import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IHasManyHandlesWithURL;
 import org.primitive.webdriverencapsulations.Handle;

@@ -1,4 +1,4 @@
-package org.primitive.model;
+package org.primitive.model.common;
 
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -18,7 +18,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 /**
  *Utility class that contains methods which create {@link Application} instances
  */
-class DefaultApplicationFactory {
+public class DefaultApplicationFactory {
 
 	/**
 	 * An interceptor for {@link FunctionalPart} inheritor defined by user.
@@ -32,10 +32,6 @@ class DefaultApplicationFactory {
 	 */
 	private final static ThreadLocal<Class<? extends MethodInterceptor>> definedInterceptorForEntities = 
 			new ThreadLocal<Class<? extends MethodInterceptor>>();
-
-	DefaultApplicationFactory() {
-		super();
-	}
 
 	/**
 	 * Resets iterceptor class for {@link Application}
@@ -60,7 +56,7 @@ class DefaultApplicationFactory {
 	/**
 	 *  Creation of any decomposable part of application
 	 */
-	static <T extends IDecomposable> T get(Class<T> partClass,
+	protected static <T extends IDecomposable> T get(Class<T> partClass,
 			Class<?>[] paramClasses, Object[] paramValues){
 		T decomposable = EnhancedProxyFactory.getProxy(partClass,
 				paramClasses, paramValues, getInteractiveInterceptor());
@@ -86,7 +82,7 @@ class DefaultApplicationFactory {
 		}
 	}
 	
-	static Handle getTheFirstHandle(Class<? extends Manager> handleManagerClass,
+	protected static Handle getTheFirstHandle(Class<? extends Manager> handleManagerClass,
 			WebDriverEncapsulation wdeInstance) {
 		try {
 			Constructor<?> c = handleManagerClass
@@ -99,7 +95,7 @@ class DefaultApplicationFactory {
 		}
 	}
 	
-	static Handle getTheFirstHandle(Class<? extends Manager> handleManagerClass,
+	protected static Handle getTheFirstHandle(Class<? extends Manager> handleManagerClass,
 			Class<?>[] wdEncapsulationParams, Object[] wdEncapsulationParamVals) {
 		try {
 			Constructor<?> wdeC = WebDriverEncapsulation.class
@@ -121,7 +117,7 @@ class DefaultApplicationFactory {
 	 * Common method that creates an instance of any application 
 	 * with default configuration
 	 */
-	static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, 
+	protected static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, 
 			Class<T> appClass){
 		Handle h = getTheFirstHandle(handleManagerClass,
 				new Class<?>[] { Configuration.class },
@@ -134,7 +130,7 @@ class DefaultApplicationFactory {
 	 /** Common method that creates an instance of any application 
 	 * with defined configuration
 	 */
-	static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
+	protected static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
 			Configuration config) {
 		Handle h = getTheFirstHandle(handleManagerClass,
 				new Class<?>[] { Configuration.class }, new Object[] { config });
@@ -146,7 +142,7 @@ class DefaultApplicationFactory {
 	 /** Common method that creates an instance of any application 
 	 * with defined webdriver
 	 */
-	static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
+	protected static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
 			ESupportedDrivers supportedDriver){
 		Handle h = getTheFirstHandle(handleManagerClass,
 				new Class<?>[] { ESupportedDrivers.class },
@@ -159,7 +155,7 @@ class DefaultApplicationFactory {
 	 /** Common method that creates an instance of any application 
 	 * with defined webdriver and its capabilities
 	 */
-	static <T extends Application> T getApplication(
+	protected static <T extends Application> T getApplication(
 			Class<? extends Manager> handleManagerClass, Class<T> appClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities) {
 		Handle h = getTheFirstHandle(handleManagerClass, new Class<?>[] {
@@ -173,7 +169,7 @@ class DefaultApplicationFactory {
 	 /** Common method that creates an instance of any application 
 	 * with defined webdriver, capabilities and URL to remote server
 	 */
-	static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
+	protected static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
 			ESupportedDrivers supportedDriver, Capabilities capabilities,
 			URL remoteAddress) {
 		Handle h = getTheFirstHandle(handleManagerClass, new Class<?>[] {
@@ -187,7 +183,7 @@ class DefaultApplicationFactory {
 	 /** Common method that creates an instance of any application 
 	 * with defined webdriver and URL to remote server
 	 */
-	static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
+	protected static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
 			ESupportedDrivers supportedDriver, 
 			URL remoteAddress) {
 		Handle h = getTheFirstHandle(handleManagerClass, new Class<?>[] {
@@ -201,12 +197,16 @@ class DefaultApplicationFactory {
 	 /** Common method that creates an instance of any application 
 	 * with externally instantiated {@link WebDriverEncapsulation}
 	 */
-	static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
+	protected static <T extends Application> T getApplication(Class<? extends Manager> handleManagerClass, Class<T> appClass,
 			WebDriverEncapsulation wdEncapsulation) {
 		Handle h = getTheFirstHandle(handleManagerClass, wdEncapsulation);
 		return EnhancedProxyFactory.getProxy(appClass,
 				new Class<?>[] { h.getClass() }, new Object[] { h },
 				getAppInterceptor());
+	}
+	
+	protected static WebDriverEncapsulation getWebDriverEncapsulation(Application app){
+		return app.getWebDriverEncapsulation();
 	}
 
 }

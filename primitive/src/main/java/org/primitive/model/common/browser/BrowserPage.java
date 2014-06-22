@@ -1,4 +1,4 @@
-package org.primitive.model;
+package org.primitive.model.common.browser;
 
 import java.net.URL;
 
@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WebDriver.Navigation;
 import org.openqa.selenium.remote.UnreachableBrowserException;
+import org.primitive.model.common.FunctionalPart;
 import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.UnclosedWindowException;
 

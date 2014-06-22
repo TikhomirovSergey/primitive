@@ -1,8 +1,9 @@
-package org.primitive.model;
+package org.primitive.model.common.mobile;
 
 import org.openqa.selenium.Rotatable;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
+import org.primitive.model.common.FunctionalPart;
 import org.primitive.webdriverencapsulations.SingleContext;
 import org.primitive.webdriverencapsulations.components.bydefault.ByAccessibilityId;
 import org.primitive.webdriverencapsulations.components.bydefault.ByAndroidUIAutomator;

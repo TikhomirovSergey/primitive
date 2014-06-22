@@ -1,4 +1,4 @@
-package org.primitive.model;
+package org.primitive.model.common;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import org.primitive.webdriverencapsulations.components.overriden.TimeOut;
  * Using it you can model your testing application as a complex aggregated
  * object it should only generate new objects in general
  */
-abstract class Application extends ModelObject implements IHasManyHandles {
+public abstract class Application extends ModelObject implements IHasManyHandles {
 
 	protected final Manager manager;
 	protected final TimeOut timeOuts;
@@ -27,7 +27,7 @@ abstract class Application extends ModelObject implements IHasManyHandles {
 		manager = handle.getManager();
 	}	
 	
-	static Class<?>[] replaceHandleParamIfItNeedsToBe(Class<?>[] originalParams,
+	protected Class<?>[] replaceHandleParamIfItNeedsToBe(Class<?>[] originalParams,
 			Class<?> required, Handle actualHandle) {
 		Class<?>[] result = null;
 		try{

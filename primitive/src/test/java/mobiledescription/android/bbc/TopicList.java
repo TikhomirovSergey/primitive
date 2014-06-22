@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primitive.model.FunctionalPart;
+import org.primitive.model.common.FunctionalPart;
 
 public class TopicList extends FunctionalPart {
 

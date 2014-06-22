@@ -8,8 +8,8 @@ import mobiledescription.android.selendroid.testapp.RegisterANewUser;
 import mobiledescription.android.selendroid.testapp.Webview;
 
 import org.primitive.configuration.Configuration;
-import org.primitive.model.MobileAppliction;
-import org.primitive.model.MobileFactory;
+import org.primitive.model.common.mobile.MobileAppliction;
+import org.primitive.model.common.mobile.MobileFactory;
 import org.testng.annotations.Test;
 
 public class MobileTestExamples {
