@@ -35,6 +35,7 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.internal.Coordinates;
 import org.openqa.selenium.internal.Locatable;
@@ -47,15 +48,19 @@ import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
+import org.primitive.webdriverencapsulations.interfaces.IGetsAppStrings;
 import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 import org.primitive.webdriverencapsulations.interfaces.IPerformsTouchActions;
+import org.primitive.webdriverencapsulations.interfaces.ISendsKeyEvent;
+import org.primitive.webdriverencapsulations.interfaces.ISendsMetastateKeyEvent;
 
 /**
  * @author s.tihomirov For some functions of EventFiringWebDriver
  */
 public class ClosedFiringWebDriver extends EventFiringWebDriver
 		implements HasCapabilities, MobileDriver, Rotatable, FindsByIosUIAutomation,
-		FindsByAndroidUIAutomator, FindsByAccessibilityId, IHasActivity, IPerformsTouchActions
+		FindsByAndroidUIAutomator, FindsByAccessibilityId, IHasActivity, IPerformsTouchActions, IGetsAppStrings,
+		ISendsKeyEvent, ISendsMetastateKeyEvent
 		{
 
 	static class DefaultTimeouts implements Timeouts {
@@ -631,6 +636,46 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 					"Getting activity is not supported by "
 							+ originalDriver.getClass().getSimpleName());
 		}
+	}
+
+	@Override
+	public String getAppStrings() {
+		try {
+			return ((AppiumDriver) originalDriver).getAppStrings();
+		} catch (ClassCastException|WebDriverException e) {
+			throw new UnsupportedCommandException(
+					"Getting App Strings is not supported");
+		}
+	}
+
+	@Override
+	public String getAppStrings(String language) {
+		try {
+			return ((AppiumDriver) originalDriver).getAppStrings(language);
+		} catch (ClassCastException|WebDriverException e) {
+			throw new UnsupportedCommandException(
+					"Getting App Strings is not supported. Requred language is " + language);
+		}
+	}
+
+	@Override
+	public void sendKeyEvent(int key, Integer metastate) {
+		try {
+			((AppiumDriver) originalDriver).sendKeyEvent(key, metastate);
+		} catch (ClassCastException|WebDriverException e) {
+			throw new UnsupportedCommandException(
+					"Metastate key event sending is not supported.");
+		}		
+	}
+
+	@Override
+	public void sendKeyEvent(int key) {
+		try {
+			((AppiumDriver) originalDriver).sendKeyEvent(key);
+		} catch (ClassCastException|WebDriverException e) {
+			throw new UnsupportedCommandException(
+					"Key event sending is not supported.");
+		}		
 	}
 	
 }

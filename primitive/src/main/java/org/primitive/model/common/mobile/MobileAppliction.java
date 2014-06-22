@@ -12,7 +12,7 @@ import org.primitive.webdriverencapsulations.SingleContext;
  */
 public abstract class MobileAppliction extends Application implements IHasManyHandlesWithNamedContexts {
 
-	public MobileAppliction(SingleContext context) {
+	protected MobileAppliction(SingleContext context) {
 		super(context);
 	}
 	

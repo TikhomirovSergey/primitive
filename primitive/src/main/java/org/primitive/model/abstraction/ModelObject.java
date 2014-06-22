@@ -13,8 +13,10 @@ import org.primitive.model.interfaces.IDecomposable;
 import org.primitive.model.interfaces.IModelObjectExceptionHandler;
 import org.primitive.webdriverencapsulations.Handle;
 import org.primitive.webdriverencapsulations.WebDriverEncapsulation;
+import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
 import org.primitive.webdriverencapsulations.components.bydefault.DriverLogs;
 import org.primitive.webdriverencapsulations.components.bydefault.ScriptExecutor;
+import org.primitive.webdriverencapsulations.components.bydefault.WebdriverInterfaceImplementor;
 import org.primitive.webdriverencapsulations.components.overriden.Awaiting;
 
 public abstract class ModelObject implements IDestroyable, IDecomposable {
@@ -58,6 +60,11 @@ public abstract class ModelObject implements IDestroyable, IDecomposable {
 	final List<ModelObject> children = Collections
 			.synchronizedList(new ArrayList<ModelObject>());
 
+	protected <T extends WebdriverInterfaceImplementor> T getComponent(Class<T> required){
+		return ComponentFactory.getComponent(required, 
+				driverEncapsulation.getWrappedDriver());
+	}
+	
 	protected ModelObject(Handle handle){
 			this.handle = handle;
 			driverEncapsulation = handle.getDriverEncapsulation();

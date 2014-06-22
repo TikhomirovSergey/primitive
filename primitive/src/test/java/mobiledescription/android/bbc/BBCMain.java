@@ -10,9 +10,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.primitive.model.common.mobile.Context;
 import org.primitive.webdriverencapsulations.SingleContext;
+import org.primitive.webdriverencapsulations.interfaces.ISendsKeyEvent;
 
 
-public class BBCMain extends Context implements IBar{
+public class BBCMain extends Context implements IBar, ISendsKeyEvent{
 	
 	@FindBy(id = "bbc.mobile.news.ww:id/articleWrapper")
 	private List<WebElement> articles;
@@ -93,6 +94,12 @@ public class BBCMain extends Context implements IBar{
 		TouchAction touchAction = touchActions.getTouchAction();
 		touchAction.tap(edit);
 		touchActionsPerformer.performTouchAction(touchAction);
+	}
+
+	@Override
+	@InteractiveMethod
+	public void sendKeyEvent(int key) {
+		keyEventSender.sendKeyEvent(key);		
 	}
 
 }

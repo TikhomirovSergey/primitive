@@ -21,7 +21,7 @@ public abstract class Application extends ModelObject implements IHasManyHandles
 	protected final Manager manager;
 	protected final TimeOut timeOuts;
 
-	public Application(Handle handle) {
+	protected Application(Handle handle) {
 		super(handle);
 		timeOuts = driverEncapsulation.getTimeOut();
 		manager = handle.getManager();

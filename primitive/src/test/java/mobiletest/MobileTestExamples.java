@@ -1,5 +1,6 @@
 package mobiletest;
 
+import io.appium.java_client.AndroidKeyCode;
 import junit.framework.Assert;
 import mobiledescription.android.bbc.BBCMain;
 import mobiledescription.android.bbc.TopicList;
@@ -10,6 +11,7 @@ import mobiledescription.android.selendroid.testapp.Webview;
 import org.primitive.configuration.Configuration;
 import org.primitive.model.common.mobile.MobileAppliction;
 import org.primitive.model.common.mobile.MobileFactory;
+import org.primitive.model.common.mobile.android.AndroidApplication;
 import org.testng.annotations.Test;
 
 public class MobileTestExamples {
@@ -18,9 +20,10 @@ public class MobileTestExamples {
   public void androidNativeAppTest() {
 		Configuration config = Configuration
 				.get("src/test/resources/configs/mobile/app/android/android_bbc.json");
-		MobileAppliction bbc = MobileFactory.getApplication(
-				MobileAppliction.class, config);
+		AndroidApplication bbc = MobileFactory.getApplication(
+				AndroidApplication.class, config);
 		try {
+			Assert.assertNotSame("", bbc.getAppStrings());
 			BBCMain bbcMain = bbc.getPart(BBCMain.class);
 			Assert.assertNotSame(0, bbcMain.getArticleCount());
 			Assert.assertNotSame("", bbcMain.getArticleTitle(1));
@@ -41,6 +44,8 @@ public class MobileTestExamples {
 			topicList.setTopicChecked("LATIN AMERICA", false);
 			topicList.setTopicChecked("UK", false);
 			topicList.ok();
+			
+			bbcMain.sendKeyEvent(AndroidKeyCode.ENTER);
 		} finally {
 			bbc.quit();
 		}	  

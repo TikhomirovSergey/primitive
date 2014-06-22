@@ -18,7 +18,7 @@ import org.primitive.webdriverencapsulations.SingleContext;
 import org.primitive.webdriverencapsulations.components.bydefault.ByAccessibilityId;
 import org.primitive.webdriverencapsulations.components.bydefault.ByAndroidUIAutomator;
 import org.primitive.webdriverencapsulations.components.bydefault.ByIosUIAutomation;
-import org.primitive.webdriverencapsulations.components.bydefault.ComponentFactory;
+import org.primitive.webdriverencapsulations.components.bydefault.KeyEventSender;
 import org.primitive.webdriverencapsulations.components.bydefault.TouchActionsPerformer;
 import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 
@@ -72,126 +72,79 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 	protected final ByAndroidUIAutomator byAndroidUIAutomator;
 	protected final ByIosUIAutomation byIosUIAutomation;
 	protected final TouchActionsPerformer touchActionsPerformer;
+	protected final KeyEventSender keyEventSender;
 	protected final TouchActions touchActions = new TouchActions(this); 
 
 	protected Context(SingleContext context) {
 		super(context);
-		byAccessibilityId = ComponentFactory
-				.getComponent(ByAccessibilityId.class,
-						driverEncapsulation.getWrappedDriver());
-		byAndroidUIAutomator = ComponentFactory.getComponent(
-				ByAndroidUIAutomator.class,
-				driverEncapsulation.getWrappedDriver());
-		byIosUIAutomation = ComponentFactory
-				.getComponent(ByIosUIAutomation.class,
-						driverEncapsulation.getWrappedDriver());
-		touchActionsPerformer = ComponentFactory.getComponent(TouchActionsPerformer.class, 
-				driverEncapsulation.getWrappedDriver());
+		byAccessibilityId    = getComponent(ByAccessibilityId.class);
+		byAndroidUIAutomator = getComponent(ByAndroidUIAutomator.class);
+		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
+		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
+		keyEventSender = getComponent(KeyEventSender.class);
 	}
 
 	protected Context(FunctionalPart parent) {
 		super(parent);
-		byAccessibilityId = ComponentFactory
-				.getComponent(ByAccessibilityId.class,
-						driverEncapsulation.getWrappedDriver());
-		byAndroidUIAutomator = ComponentFactory.getComponent(
-				ByAndroidUIAutomator.class,
-				driverEncapsulation.getWrappedDriver());
-		byIosUIAutomation = ComponentFactory
-				.getComponent(ByIosUIAutomation.class,
-						driverEncapsulation.getWrappedDriver());
-		touchActionsPerformer = ComponentFactory.getComponent(TouchActionsPerformer.class, 
-				driverEncapsulation.getWrappedDriver());
+		byAccessibilityId    = getComponent(ByAccessibilityId.class);
+		byAndroidUIAutomator = getComponent(ByAndroidUIAutomator.class);
+		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
+		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
+		keyEventSender = getComponent(KeyEventSender.class);
 	}
 
 	protected Context(SingleContext context, Integer frameIndex) {
 		super(context, frameIndex);
-		byAccessibilityId = ComponentFactory
-				.getComponent(ByAccessibilityId.class,
-						driverEncapsulation.getWrappedDriver());
-		byAndroidUIAutomator = ComponentFactory.getComponent(
-				ByAndroidUIAutomator.class,
-				driverEncapsulation.getWrappedDriver());
-		byIosUIAutomation = ComponentFactory
-				.getComponent(ByIosUIAutomation.class,
-						driverEncapsulation.getWrappedDriver());
-		touchActionsPerformer = ComponentFactory.getComponent(TouchActionsPerformer.class, 
-				driverEncapsulation.getWrappedDriver());
+		byAccessibilityId    = getComponent(ByAccessibilityId.class);
+		byAndroidUIAutomator = getComponent(ByAndroidUIAutomator.class);
+		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
+		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
+		keyEventSender = getComponent(KeyEventSender.class);
 	}
 
 	protected Context(FunctionalPart parent, Integer frameIndex) {
 		super(parent, frameIndex);
-		byAccessibilityId = ComponentFactory
-				.getComponent(ByAccessibilityId.class,
-						driverEncapsulation.getWrappedDriver());
-		byAndroidUIAutomator = ComponentFactory.getComponent(
-				ByAndroidUIAutomator.class,
-				driverEncapsulation.getWrappedDriver());
-		byIosUIAutomation = ComponentFactory
-				.getComponent(ByIosUIAutomation.class,
-						driverEncapsulation.getWrappedDriver());
-		touchActionsPerformer = ComponentFactory.getComponent(TouchActionsPerformer.class, 
-				driverEncapsulation.getWrappedDriver());
+		byAccessibilityId    = getComponent(ByAccessibilityId.class);
+		byAndroidUIAutomator = getComponent(ByAndroidUIAutomator.class);
+		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
+		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
+		keyEventSender = getComponent(KeyEventSender.class);
 	}
 
 	protected Context(SingleContext context, String pathToFrame) {
 		super(context, pathToFrame);
-		byAccessibilityId = ComponentFactory
-				.getComponent(ByAccessibilityId.class,
-						driverEncapsulation.getWrappedDriver());
-		byAndroidUIAutomator = ComponentFactory.getComponent(
-				ByAndroidUIAutomator.class,
-				driverEncapsulation.getWrappedDriver());
-		byIosUIAutomation = ComponentFactory
-				.getComponent(ByIosUIAutomation.class,
-						driverEncapsulation.getWrappedDriver());
-		touchActionsPerformer = ComponentFactory.getComponent(TouchActionsPerformer.class, 
-				driverEncapsulation.getWrappedDriver());
+		byAccessibilityId    = getComponent(ByAccessibilityId.class);
+		byAndroidUIAutomator = getComponent(ByAndroidUIAutomator.class);
+		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
+		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
+		keyEventSender = getComponent(KeyEventSender.class);
 	}
 
 	protected Context(FunctionalPart parent, String pathToFrame) {
 		super(parent, pathToFrame);
-		byAccessibilityId = ComponentFactory
-				.getComponent(ByAccessibilityId.class,
-						driverEncapsulation.getWrappedDriver());
-		byAndroidUIAutomator = ComponentFactory.getComponent(
-				ByAndroidUIAutomator.class,
-				driverEncapsulation.getWrappedDriver());
-		byIosUIAutomation = ComponentFactory
-				.getComponent(ByIosUIAutomation.class,
-						driverEncapsulation.getWrappedDriver());
-		touchActionsPerformer = ComponentFactory.getComponent(TouchActionsPerformer.class, 
-				driverEncapsulation.getWrappedDriver());
+		byAccessibilityId    = getComponent(ByAccessibilityId.class);
+		byAndroidUIAutomator = getComponent(ByAndroidUIAutomator.class);
+		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
+		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
+		keyEventSender = getComponent(KeyEventSender.class);
 	}
 
 	protected Context(SingleContext context, WebElement frameElement) {
 		super(context, frameElement);
-		byAccessibilityId = ComponentFactory
-				.getComponent(ByAccessibilityId.class,
-						driverEncapsulation.getWrappedDriver());
-		byAndroidUIAutomator = ComponentFactory.getComponent(
-				ByAndroidUIAutomator.class,
-				driverEncapsulation.getWrappedDriver());
-		byIosUIAutomation = ComponentFactory
-				.getComponent(ByIosUIAutomation.class,
-						driverEncapsulation.getWrappedDriver());
-		touchActionsPerformer = ComponentFactory.getComponent(TouchActionsPerformer.class, 
-				driverEncapsulation.getWrappedDriver());
+		byAccessibilityId    = getComponent(ByAccessibilityId.class);
+		byAndroidUIAutomator = getComponent(ByAndroidUIAutomator.class);
+		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
+		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
+		keyEventSender = getComponent(KeyEventSender.class);
 	}
 
 	protected Context(FunctionalPart parent, WebElement frameElement) {
 		super(parent, frameElement);
-		byAccessibilityId = ComponentFactory
-				.getComponent(ByAccessibilityId.class,
-						driverEncapsulation.getWrappedDriver());
-		byAndroidUIAutomator = ComponentFactory.getComponent(
-				ByAndroidUIAutomator.class,
-				driverEncapsulation.getWrappedDriver());
-		byIosUIAutomation = ComponentFactory
-				.getComponent(ByIosUIAutomation.class,
-						driverEncapsulation.getWrappedDriver());
-		touchActionsPerformer = ComponentFactory.getComponent(TouchActionsPerformer.class, 
-				driverEncapsulation.getWrappedDriver());
+		byAccessibilityId    = getComponent(ByAccessibilityId.class);
+		byAndroidUIAutomator = getComponent(ByAndroidUIAutomator.class);
+		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
+		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
+		keyEventSender = getComponent(KeyEventSender.class);
 	}
 
 	@Override
