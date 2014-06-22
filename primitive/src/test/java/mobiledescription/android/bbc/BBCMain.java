@@ -1,5 +1,7 @@
 package mobiledescription.android.bbc;
 
+import io.appium.java_client.TouchAction;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -74,18 +76,23 @@ public class BBCMain extends Context implements IBar{
 	}
 
 	@Override
+	@InteractiveMethod
 	public void share() {
 		share.click();		
 	}
 
 	@Override
+	@InteractiveMethod
 	public void play() {
 		play.click();		
 	}
 
 	@Override
+	@InteractiveMethod
 	public void edit() {
-		edit.click();		
+		TouchAction touchAction = touchActions.getTouchAction();
+		touchAction.tap(edit);
+		touchActionsPerformer.performTouchAction(touchAction);
 	}
 
 }

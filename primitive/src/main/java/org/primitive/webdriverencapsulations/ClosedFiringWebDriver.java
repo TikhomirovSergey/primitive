@@ -48,13 +48,14 @@ import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
 import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
+import org.primitive.webdriverencapsulations.interfaces.IPerformsTouchActions;
 
 /**
  * @author s.tihomirov For some functions of EventFiringWebDriver
  */
 public class ClosedFiringWebDriver extends EventFiringWebDriver
 		implements HasCapabilities, MobileDriver, Rotatable, FindsByIosUIAutomation,
-		FindsByAndroidUIAutomator, FindsByAccessibilityId, IHasActivity
+		FindsByAndroidUIAutomator, FindsByAccessibilityId, IHasActivity, IPerformsTouchActions
 		{
 
 	static class DefaultTimeouts implements Timeouts {
