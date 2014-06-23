@@ -248,7 +248,8 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	 * @author s.tihomirov For some functions of EventFiringWebEvement
 	 */
 	static class DefaultWebElement implements WebElement,
-			Locatable, WrapsElement{
+			Locatable, WrapsElement, FindsByAccessibilityId, FindsByAndroidUIAutomator,
+			FindsByIosUIAutomation{
 		private final WebElement element;
 		private WebElement wrapped;
 		private ClosedFiringWebDriver extendedDriver;
@@ -366,6 +367,59 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 			return extendedDriver.unpackOriginalElement(wrapped);
 		}
 
+		@Override
+		public WebElement findElementByIosUIAutomation(String arg0) {
+			MobileElement me = new MobileElement(
+					extendedDriver.unpackOriginalElement(wrapped),
+					extendedDriver);
+			WebElement temp = me.findElementByIosUIAutomation(arg0);
+			return new DefaultWebElement(temp, extendedDriver);
+		}
+
+		@Override
+		public List<WebElement> findElementsByIosUIAutomation(String arg0) {
+			MobileElement me = new MobileElement(
+					extendedDriver.unpackOriginalElement(wrapped),
+					extendedDriver);
+			List<WebElement> temp = me.findElementsByIosUIAutomation(arg0);
+			return extendedDriver.getDefaultElementList(temp);
+		}
+
+		@Override
+		public WebElement findElementByAndroidUIAutomator(String arg0) {
+			MobileElement me = new MobileElement(
+					extendedDriver.unpackOriginalElement(wrapped),
+					extendedDriver);
+			WebElement temp = me.findElementByAndroidUIAutomator(arg0);
+			return new DefaultWebElement(temp, extendedDriver);
+		}
+
+		@Override
+		public List<WebElement> findElementsByAndroidUIAutomator(String arg0) {
+			MobileElement me = new MobileElement(
+					extendedDriver.unpackOriginalElement(wrapped),
+					extendedDriver);
+			List<WebElement> temp = me.findElementsByAndroidUIAutomator(arg0);
+			return extendedDriver.getDefaultElementList(temp);
+		}
+
+		@Override
+		public WebElement findElementByAccessibilityId(String arg0) {
+			MobileElement me = new MobileElement(
+					extendedDriver.unpackOriginalElement(wrapped),
+					extendedDriver);
+			WebElement temp = me.findElementByAccessibilityId(arg0);
+			return new DefaultWebElement(temp, extendedDriver);
+		}
+
+		@Override
+		public List<WebElement> findElementsByAccessibilityId(String arg0) {
+			MobileElement me = new MobileElement(
+					extendedDriver.unpackOriginalElement(wrapped),
+					extendedDriver);
+			List<WebElement> temp = me.findElementsByAccessibilityId(arg0);
+			return extendedDriver.getDefaultElementList(temp);
+		}
 	}
 
 	/**

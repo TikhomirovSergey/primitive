@@ -1,5 +1,7 @@
 package mobiledescription.android.bbc;
 
+import io.appium.java_client.FindsByAndroidUIAutomator;
+
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -24,8 +26,10 @@ public class TopicList extends FunctionalPart {
 	public void setTopicChecked(String topicText, boolean checked){
 		List<WebElement> topics = topicList.findElements(By.className("android.widget.LinearLayout"));
 		for (WebElement topic: topics){
-			if (topic.findElement(By.id("bbc.mobile.news.ww:id/feedTitle")).getText().equals(topicText)){
-				WebElement checkBox = topic.findElement(By.className("android.widget.CheckBox"));
+			if (((FindsByAndroidUIAutomator) topic).findElementByAndroidUIAutomator("new UiSelector().resourceId(\"bbc.mobile.news.ww:id/feedTitle\")").
+					getText().equals(topicText)){
+				WebElement checkBox = ((FindsByAndroidUIAutomator) topic).findElementByAndroidUIAutomator(
+						"new UiSelector().resourceId(\"android.widget.CheckBox\")");
 				if (!checkBox.getAttribute("checked").equals(String.valueOf(checked))){
 					checkBox.click();
 				}
