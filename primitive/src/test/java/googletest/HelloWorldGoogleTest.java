@@ -94,7 +94,7 @@ public class HelloWorldGoogleTest {
 	private void test(Google google, boolean toClickOnALinkWhichWasFound) throws Exception {
 		try {
 			google.performSearch("Hello world Wikipedia");
-			Assert.assertEquals(10, google.getLinkCount());
+			Assert.assertNotSame(0, google.getLinkCount());
 			if (!toClickOnALinkWhichWasFound){
 				google.openLinkByIndex(1);
 			}
@@ -119,7 +119,7 @@ public class HelloWorldGoogleTest {
 	private void test2(Google google) {
 		try {
 			google.performSearch("Hello world Wikipedia");
-			Assert.assertEquals(10, google.getLinkCount());
+			Assert.assertNotSame(0, google.getLinkCount());
 			google.close();
 		} finally {
 			google.quit();
@@ -129,7 +129,7 @@ public class HelloWorldGoogleTest {
 	private void test3(Google google, boolean toClickOnALinkWhichWasFound) throws Exception{
 		try {
 			google.performSearch("Hello world Wikipedia");
-			Assert.assertEquals(10, google.getLinkCount());
+			Assert.assertNotSame(0, google.getLinkCount());
 			if (!toClickOnALinkWhichWasFound){
 				google.openLinkByIndex(1);
 			}

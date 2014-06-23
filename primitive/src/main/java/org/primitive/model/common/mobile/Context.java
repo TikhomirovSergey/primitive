@@ -19,7 +19,12 @@ import org.primitive.webdriverencapsulations.components.bydefault.ByAccessibilit
 import org.primitive.webdriverencapsulations.components.bydefault.ByAndroidUIAutomator;
 import org.primitive.webdriverencapsulations.components.bydefault.ByIosUIAutomation;
 import org.primitive.webdriverencapsulations.components.bydefault.KeyEventSender;
+import org.primitive.webdriverencapsulations.components.bydefault.Pinch;
+import org.primitive.webdriverencapsulations.components.bydefault.ScrollerTo;
+import org.primitive.webdriverencapsulations.components.bydefault.Swipe;
+import org.primitive.webdriverencapsulations.components.bydefault.Tap;
 import org.primitive.webdriverencapsulations.components.bydefault.TouchActionsPerformer;
+import org.primitive.webdriverencapsulations.components.bydefault.Zoomer;
 import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 
 public abstract class Context extends FunctionalPart implements IHasActivity,
@@ -73,7 +78,12 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 	protected final ByIosUIAutomation byIosUIAutomation;
 	protected final TouchActionsPerformer touchActionsPerformer;
 	protected final KeyEventSender keyEventSender;
-	protected final TouchActions touchActions = new TouchActions(this); 
+	protected final TouchActions touchActions = new TouchActions(this);
+	protected final Tap          tap;
+	protected final Swipe        swipe;
+	protected final Pinch        pinch;
+	protected final Zoomer       zoomer;
+	protected final ScrollerTo   scroller;
 
 	protected Context(SingleContext context) {
 		super(context);
@@ -82,6 +92,11 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
 		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
 		keyEventSender = getComponent(KeyEventSender.class);
+		tap            = getComponent(Tap.class);
+		swipe          = getComponent(Swipe.class);
+		pinch          = getComponent(Pinch.class);
+		zoomer         = getComponent(Zoomer.class);
+		scroller       = getComponent(ScrollerTo.class);
 	}
 
 	protected Context(FunctionalPart parent) {
@@ -91,6 +106,11 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
 		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
 		keyEventSender = getComponent(KeyEventSender.class);
+		tap            = getComponent(Tap.class);
+		swipe          = getComponent(Swipe.class);
+		pinch          = getComponent(Pinch.class);
+		zoomer         = getComponent(Zoomer.class);
+		scroller       = getComponent(ScrollerTo.class);
 	}
 
 	protected Context(SingleContext context, Integer frameIndex) {
@@ -100,6 +120,11 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
 		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
 		keyEventSender = getComponent(KeyEventSender.class);
+		tap            = getComponent(Tap.class);
+		swipe          = getComponent(Swipe.class);
+		pinch          = getComponent(Pinch.class);
+		zoomer         = getComponent(Zoomer.class);
+		scroller       = getComponent(ScrollerTo.class);
 	}
 
 	protected Context(FunctionalPart parent, Integer frameIndex) {
@@ -109,6 +134,11 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
 		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
 		keyEventSender = getComponent(KeyEventSender.class);
+		tap            = getComponent(Tap.class);
+		swipe          = getComponent(Swipe.class);
+		pinch          = getComponent(Pinch.class);
+		zoomer         = getComponent(Zoomer.class);
+		scroller       = getComponent(ScrollerTo.class);
 	}
 
 	protected Context(SingleContext context, String pathToFrame) {
@@ -118,6 +148,11 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
 		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
 		keyEventSender = getComponent(KeyEventSender.class);
+		tap            = getComponent(Tap.class);
+		swipe          = getComponent(Swipe.class);
+		pinch          = getComponent(Pinch.class);
+		zoomer         = getComponent(Zoomer.class);
+		scroller       = getComponent(ScrollerTo.class);
 	}
 
 	protected Context(FunctionalPart parent, String pathToFrame) {
@@ -127,6 +162,11 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
 		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
 		keyEventSender = getComponent(KeyEventSender.class);
+		tap            = getComponent(Tap.class);
+		swipe          = getComponent(Swipe.class);
+		pinch          = getComponent(Pinch.class);
+		zoomer         = getComponent(Zoomer.class);
+		scroller       = getComponent(ScrollerTo.class);
 	}
 
 	protected Context(SingleContext context, WebElement frameElement) {
@@ -136,6 +176,11 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
 		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
 		keyEventSender = getComponent(KeyEventSender.class);
+		tap            = getComponent(Tap.class);
+		swipe          = getComponent(Swipe.class);
+		pinch          = getComponent(Pinch.class);
+		zoomer         = getComponent(Zoomer.class);
+		scroller       = getComponent(ScrollerTo.class);
 	}
 
 	protected Context(FunctionalPart parent, WebElement frameElement) {
@@ -145,6 +190,11 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		byIosUIAutomation    = getComponent(ByIosUIAutomation.class);
 		touchActionsPerformer = getComponent(TouchActionsPerformer.class);
 		keyEventSender = getComponent(KeyEventSender.class);
+		tap            = getComponent(Tap.class);
+		swipe          = getComponent(Swipe.class);
+		pinch          = getComponent(Pinch.class);
+		zoomer         = getComponent(Zoomer.class);
+		scroller       = getComponent(ScrollerTo.class);
 	}
 
 	@Override

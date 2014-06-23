@@ -8,12 +8,13 @@ import java.util.NoSuchElementException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.primitive.model.common.mobile.Context;
+import org.primitive.model.common.mobile.android.AndroidContext;
 import org.primitive.webdriverencapsulations.SingleContext;
+import org.primitive.webdriverencapsulations.interfaces.IGetsAppStrings;
 import org.primitive.webdriverencapsulations.interfaces.ISendsKeyEvent;
 
 
-public class BBCMain extends Context implements IBar, ISendsKeyEvent{
+public class BBCMain extends AndroidContext implements IBar, ISendsKeyEvent, IGetsAppStrings{
 	
 	@FindBy(id = "bbc.mobile.news.ww:id/articleWrapper")
 	private List<WebElement> articles;
@@ -85,7 +86,7 @@ public class BBCMain extends Context implements IBar, ISendsKeyEvent{
 	@Override
 	@InteractiveMethod
 	public void play() {
-		play.click();		
+		tap.tap(1, play, 2);		
 	}
 
 	@Override
@@ -100,6 +101,26 @@ public class BBCMain extends Context implements IBar, ISendsKeyEvent{
 	@InteractiveMethod
 	public void sendKeyEvent(int key) {
 		keyEventSender.sendKeyEvent(key);		
+	}
+
+	@Override
+	public String getAppStrings() {
+		return appStringGetter.getAppStrings();
+	}
+
+	@Override
+	public String getAppStrings(String language) {
+		return appStringGetter.getAppStrings(language);
+	}
+	
+	@InteractiveMethod
+	public void pinchArticle(){
+		pinch.pinch(currentArticle);
+	}
+	
+	@InteractiveMethod
+	public void zoomArticle(){
+		zoomer.zoom(currentArticle);
 	}
 
 }

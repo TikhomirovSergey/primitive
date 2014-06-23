@@ -7,7 +7,9 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.FindsByAccessibilityId;
 import io.appium.java_client.FindsByAndroidUIAutomator;
 import io.appium.java_client.FindsByIosUIAutomation;
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileDriver;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.MultiTouchAction;
 import io.appium.java_client.TouchAction;
 
@@ -35,7 +37,6 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.internal.Coordinates;
 import org.openqa.selenium.internal.Locatable;
@@ -51,8 +52,13 @@ import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEv
 import org.primitive.webdriverencapsulations.interfaces.IGetsAppStrings;
 import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 import org.primitive.webdriverencapsulations.interfaces.IPerformsTouchActions;
+import org.primitive.webdriverencapsulations.interfaces.IPinch;
+import org.primitive.webdriverencapsulations.interfaces.IScrollsTo;
 import org.primitive.webdriverencapsulations.interfaces.ISendsKeyEvent;
 import org.primitive.webdriverencapsulations.interfaces.ISendsMetastateKeyEvent;
+import org.primitive.webdriverencapsulations.interfaces.ISwipe;
+import org.primitive.webdriverencapsulations.interfaces.ITap;
+import org.primitive.webdriverencapsulations.interfaces.IZoom;
 
 /**
  * @author s.tihomirov For some functions of EventFiringWebDriver
@@ -60,7 +66,7 @@ import org.primitive.webdriverencapsulations.interfaces.ISendsMetastateKeyEvent;
 public class ClosedFiringWebDriver extends EventFiringWebDriver
 		implements HasCapabilities, MobileDriver, Rotatable, FindsByIosUIAutomation,
 		FindsByAndroidUIAutomator, FindsByAccessibilityId, IHasActivity, IPerformsTouchActions, IGetsAppStrings,
-		ISendsKeyEvent, ISendsMetastateKeyEvent
+		ISendsKeyEvent, ISendsMetastateKeyEvent, ITap, ISwipe, IPinch, IZoom, IScrollsTo
 		{
 
 	static class DefaultTimeouts implements Timeouts {
@@ -270,14 +276,6 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 					});
 		}
 
-		private RemoteWebElement unpackOriginalElement(){
-			WebElement original = wrapped;
-			while (original instanceof WrapsElement) {
-				original = ((WrapsElement) original).getWrappedElement();				
-			}
-			return (RemoteWebElement) original;
-		}
-		
 		@Override
 		public void clear() {
 			element.clear();
@@ -296,11 +294,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 		@Override
 		public List<WebElement> findElements(By by) {
 			List<WebElement> temp = element.findElements(by);
-			List<WebElement> result = new ArrayList<WebElement>(temp.size());
-			for (WebElement element : temp) {
-				result.add(new DefaultWebElement(element, extendedDriver));
-			}
-			return result;
+			return extendedDriver.getDefaultElementList(temp);
 		}
 
 		@Override
@@ -369,7 +363,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 		}
 
 		public WebElement getWrappedElement() {
-			return unpackOriginalElement();
+			return extendedDriver.unpackOriginalElement(wrapped);
 		}
 
 	}
@@ -471,11 +465,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 
 	public List<WebElement> findElements(By by) {
 		List<WebElement> temp = super.findElements(by);
-		List<WebElement> result = new ArrayList<WebElement>(temp.size());
-		for (WebElement element : temp) {
-			result.add(new DefaultWebElement(element, this));
-		}
-		return result;
+		return getDefaultElementList(temp);
 	}
 
 	public WebElement findElement(By by) {
@@ -592,38 +582,39 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 
 	@Override
 	public WebElement findElementByIosUIAutomation(String using) {
-		return ((FindsByIosUIAutomation) originalDriver)
-				.findElementByIosUIAutomation(using);
+		WebElement temp = super.findElement(MobileBy.IosUIAutomation(using));
+		return new DefaultWebElement(temp, this);
 	}
 
 	@Override
 	public List<WebElement> findElementsByIosUIAutomation(String using) {
-		return ((FindsByIosUIAutomation) originalDriver)
-				.findElementsByIosUIAutomation(using);
+		List<WebElement> temp = super.findElements(MobileBy.IosUIAutomation(using));
+		return getDefaultElementList(temp);
 	}
 
 	@Override
 	public WebElement findElementByAndroidUIAutomator(String using) {
-		return ((FindsByAndroidUIAutomator) originalDriver)
-				.findElementByAndroidUIAutomator(using);
+		WebElement temp = super.findElement(MobileBy.AndroidUIAutomator(using));
+		return new DefaultWebElement(temp, this);
 	}
 
 	@Override
 	public List<WebElement> findElementsByAndroidUIAutomator(String using) {
-		return ((FindsByAndroidUIAutomator) originalDriver)
-				.findElementsByAndroidUIAutomator(using);
+		List<WebElement> temp = super.findElements(MobileBy.AndroidUIAutomator(using));
+		return getDefaultElementList(temp);
 	}
 
 	@Override
 	public WebElement findElementByAccessibilityId(String using) {
-		return ((FindsByAccessibilityId) originalDriver)
-				.findElementByAccessibilityId(using);
+		WebElement temp = super.findElement(MobileBy.AccessibilityId(using));
+		return new DefaultWebElement(temp, this);
 	}
 
 	@Override
 	public List<WebElement> findElementsByAccessibilityId(String using) {
-		return ((FindsByAccessibilityId) originalDriver)
-				.findElementsByAccessibilityId(using);
+		List<WebElement> temp = super.findElements(MobileBy
+				.AccessibilityId(using));
+		return getDefaultElementList(temp);
 	}
 	
 
@@ -642,7 +633,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	public String getAppStrings() {
 		try {
 			return ((AppiumDriver) originalDriver).getAppStrings();
-		} catch (ClassCastException|WebDriverException e) {
+		} catch (ClassCastException e) {
 			throw new UnsupportedCommandException(
 					"Getting App Strings is not supported");
 		}
@@ -652,7 +643,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	public String getAppStrings(String language) {
 		try {
 			return ((AppiumDriver) originalDriver).getAppStrings(language);
-		} catch (ClassCastException|WebDriverException e) {
+		} catch (ClassCastException e) {
 			throw new UnsupportedCommandException(
 					"Getting App Strings is not supported. Requred language is " + language);
 		}
@@ -662,7 +653,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	public void sendKeyEvent(int key, Integer metastate) {
 		try {
 			((AppiumDriver) originalDriver).sendKeyEvent(key, metastate);
-		} catch (ClassCastException|WebDriverException e) {
+		} catch (ClassCastException e) {
 			throw new UnsupportedCommandException(
 					"Metastate key event sending is not supported.");
 		}		
@@ -672,10 +663,115 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	public void sendKeyEvent(int key) {
 		try {
 			((AppiumDriver) originalDriver).sendKeyEvent(key);
-		} catch (ClassCastException|WebDriverException e) {
+		} catch (ClassCastException e) {
 			throw new UnsupportedCommandException(
 					"Key event sending is not supported.");
 		}		
 	}
+
+	@Override
+	public void tap(int fingers, WebElement element, int duration) {
+		try {
+			((AppiumDriver) originalDriver).tap(fingers, unpackOriginalElement(element), 
+					duration);
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Tap is not supported.");
+		}		
+	}
+
+	@Override
+	public void tap(int fingers, int x, int y, int duration) {
+		try {
+			((AppiumDriver) originalDriver).tap(fingers, x, y, duration);;
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Tap is not supported.");
+		}
+	}
+
+	private List<WebElement> getDefaultElementList(List<WebElement> originalList){
+		List<WebElement> result = new ArrayList<WebElement>(originalList);
+		for (WebElement element : originalList) {
+		  result.add(new DefaultWebElement(element, this));
+		}
+		return result;		
+	}
 	
+	private RemoteWebElement unpackOriginalElement(WebElement original){
+		while (original instanceof WrapsElement) {
+			original = ((WrapsElement) original).getWrappedElement();				
+		}
+		return (RemoteWebElement) original;
+	}
+
+	@Override
+	public void swipe(int startx, int starty, int endx, int endy, int duration) {
+		try {
+			((AppiumDriver) originalDriver).swipe(startx, starty, endx, endy, duration);
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Swipe is not supported.");
+		}		
+	}
+
+	@Override
+	public void pinch(WebElement el) {
+		try {
+			((AppiumDriver) originalDriver).pinch(unpackOriginalElement(el));
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Pinch is not supported.");
+		}		
+	}
+
+	@Override
+	public void pinch(int x, int y) {
+		try {
+			((AppiumDriver) originalDriver).pinch(x,y);
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Pinch is not supported.");
+		}			
+	}
+
+	@Override
+	public void zoom(WebElement el) {
+		try {
+			((AppiumDriver) originalDriver).zoom(unpackOriginalElement(el));
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Zoom is not supported.");
+		}			
+	}
+
+	@Override
+	public void zoom(int x, int y) {
+		try {
+			((AppiumDriver) originalDriver).zoom(x,y);
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Zoom is not supported.");
+		}	
+	}
+
+	@Override
+	public MobileElement scrollTo(String text) {
+		try {
+			return ((AppiumDriver) originalDriver).scrollTo(text);
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Scroll is not supported.");
+		}
+	}
+
+	@Override
+	public MobileElement scrollToExact(String text) {
+		try {
+			return ((AppiumDriver) originalDriver).scrollToExact(text);
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Scroll to exact is not supported.");
+		}
+	}
 }

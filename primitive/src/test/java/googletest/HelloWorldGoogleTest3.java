@@ -66,7 +66,7 @@ public class HelloWorldGoogleTest3 {
 	private void test(Google google) throws Exception{
 		try {
 			google.performSearch("Hello world Wikipedia");
-			Assert.assertEquals(10, google.getLinkCount());
+			Assert.assertNotSame(0, google.getLinkCount());
 			google.openLinkByIndex(1);
 			AnyPage anyPage = google.getFromHandle(AnyPage.class, 1);
 			Thread.sleep(5000);

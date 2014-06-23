@@ -11,7 +11,6 @@ import mobiledescription.android.selendroid.testapp.Webview;
 import org.primitive.configuration.Configuration;
 import org.primitive.model.common.mobile.MobileAppliction;
 import org.primitive.model.common.mobile.MobileFactory;
-import org.primitive.model.common.mobile.android.AndroidApplication;
 import org.testng.annotations.Test;
 
 public class MobileTestExamples {
@@ -20,18 +19,20 @@ public class MobileTestExamples {
   public void androidNativeAppTest() {
 		Configuration config = Configuration
 				.get("src/test/resources/configs/mobile/app/android/android_bbc.json");
-		AndroidApplication bbc = MobileFactory.getApplication(
-				AndroidApplication.class, config);
+		MobileAppliction bbc = MobileFactory.getApplication(
+				MobileAppliction.class, config);
 		try {
-			Assert.assertNotSame("", bbc.getAppStrings());
 			BBCMain bbcMain = bbc.getPart(BBCMain.class);
+			Assert.assertNotSame("", bbcMain.getAppStrings());
 			Assert.assertNotSame(0, bbcMain.getArticleCount());
 			Assert.assertNotSame("", bbcMain.getArticleTitle(1));
 			Assert.assertNotSame(bbcMain.getArticleTitle(1),
 					bbcMain.getArticleTitle(0));
 			bbcMain.selectArticle(1);
 			Assert.assertEquals(true, bbcMain.isArticleHere());
-
+			bbcMain.pinchArticle();
+			bbcMain.zoomArticle();
+			
 			bbcMain.refresh();
 			bbcMain.edit();
 
@@ -46,6 +47,7 @@ public class MobileTestExamples {
 			topicList.ok();
 			
 			bbcMain.sendKeyEvent(AndroidKeyCode.ENTER);
+			bbcMain.play();
 		} finally {
 			bbc.quit();
 		}	  
