@@ -23,14 +23,18 @@ public class TopicList extends FunctionalPart {
 	}
 	
 	@InteractiveMethod
-	public void setTopicChecked(String topicText, boolean checked){
-		List<WebElement> topics = topicList.findElements(By.className("android.widget.LinearLayout"));
-		for (WebElement topic: topics){
-			if (((FindsByAndroidUIAutomator) topic).findElementByAndroidUIAutomator("new UiSelector().resourceId(\"bbc.mobile.news.ww:id/feedTitle\")").
-					getText().equals(topicText)){
-				WebElement checkBox = ((FindsByAndroidUIAutomator) topic).findElementByAndroidUIAutomator(
-						"new UiSelector().resourceId(\"android.widget.CheckBox\")");
-				if (!checkBox.getAttribute("checked").equals(String.valueOf(checked))){
+	public void setTopicChecked(String topicText, boolean checked) {
+		List<WebElement> topics = topicList.findElements(By
+				.className("android.widget.LinearLayout"));
+		for (WebElement topic : topics) {
+			if (((FindsByAndroidUIAutomator) topic)
+					.findElementByAndroidUIAutomator(
+							"new UiSelector().resourceId(\"bbc.mobile.news.ww:id/feedTitle\")")
+					.getText().equals(topicText)) {
+				WebElement checkBox = ((FindsByAndroidUIAutomator) topic)
+						.findElementByAndroidUIAutomator("new UiSelector().className(\"android.widget.CheckBox\")");
+				if (!checkBox.getAttribute("checked").equals(
+						String.valueOf(checked))) {
 					checkBox.click();
 				}
 				return;

@@ -745,7 +745,7 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	}
 
 	private List<WebElement> getDefaultElementList(List<WebElement> originalList){
-		List<WebElement> result = new ArrayList<WebElement>(originalList);
+		List<WebElement> result = new ArrayList<WebElement>();
 		for (WebElement element : originalList) {
 		  result.add(new DefaultWebElement(element, this));
 		}
