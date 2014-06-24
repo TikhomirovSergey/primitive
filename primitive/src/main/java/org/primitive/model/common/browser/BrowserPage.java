@@ -15,7 +15,7 @@ import org.primitive.webdriverencapsulations.SingleWindow;
 import org.primitive.webdriverencapsulations.UnclosedWindowException;
 
 /**
- * Can be used to describe a single browser page
+ * Can be used to describe a single browser page or its fragment
  */
 public abstract class BrowserPage extends FunctionalPart implements Navigation, Window{
 

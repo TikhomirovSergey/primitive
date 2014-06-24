@@ -18,6 +18,7 @@ import org.primitive.webdriverencapsulations.SingleContext;
 import org.primitive.webdriverencapsulations.components.bydefault.ByAccessibilityId;
 import org.primitive.webdriverencapsulations.components.bydefault.ByAndroidUIAutomator;
 import org.primitive.webdriverencapsulations.components.bydefault.ByIosUIAutomation;
+import org.primitive.webdriverencapsulations.components.bydefault.ComplexFinder;
 import org.primitive.webdriverencapsulations.components.bydefault.KeyEventSender;
 import org.primitive.webdriverencapsulations.components.bydefault.Pinch;
 import org.primitive.webdriverencapsulations.components.bydefault.ScrollerTo;
@@ -27,6 +28,9 @@ import org.primitive.webdriverencapsulations.components.bydefault.TouchActionsPe
 import org.primitive.webdriverencapsulations.components.bydefault.Zoomer;
 import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
 
+/**
+ * Can be used to describe a single mobile app context or its fragment
+ */
 public abstract class Context extends FunctionalPart implements IHasActivity,
 		Rotatable {
 	
@@ -84,6 +88,7 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 	protected final Pinch        pinch;
 	protected final Zoomer       zoomer;
 	protected final ScrollerTo   scroller;
+	protected final ComplexFinder complexFinder;
 
 	protected Context(SingleContext context) {
 		super(context);
@@ -97,6 +102,7 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		pinch          = getComponent(Pinch.class);
 		zoomer         = getComponent(Zoomer.class);
 		scroller       = getComponent(ScrollerTo.class);
+		complexFinder  = getComponent(ComplexFinder.class);
 	}
 
 	protected Context(FunctionalPart parent) {
@@ -111,6 +117,7 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		pinch          = getComponent(Pinch.class);
 		zoomer         = getComponent(Zoomer.class);
 		scroller       = getComponent(ScrollerTo.class);
+		complexFinder  = getComponent(ComplexFinder.class);
 	}
 
 	protected Context(SingleContext context, Integer frameIndex) {
@@ -125,6 +132,7 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		pinch          = getComponent(Pinch.class);
 		zoomer         = getComponent(Zoomer.class);
 		scroller       = getComponent(ScrollerTo.class);
+		complexFinder  = getComponent(ComplexFinder.class);
 	}
 
 	protected Context(FunctionalPart parent, Integer frameIndex) {
@@ -139,6 +147,7 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		pinch          = getComponent(Pinch.class);
 		zoomer         = getComponent(Zoomer.class);
 		scroller       = getComponent(ScrollerTo.class);
+		complexFinder  = getComponent(ComplexFinder.class);
 	}
 
 	protected Context(SingleContext context, String pathToFrame) {
@@ -153,6 +162,7 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		pinch          = getComponent(Pinch.class);
 		zoomer         = getComponent(Zoomer.class);
 		scroller       = getComponent(ScrollerTo.class);
+		complexFinder  = getComponent(ComplexFinder.class);
 	}
 
 	protected Context(FunctionalPart parent, String pathToFrame) {
@@ -167,6 +177,7 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		pinch          = getComponent(Pinch.class);
 		zoomer         = getComponent(Zoomer.class);
 		scroller       = getComponent(ScrollerTo.class);
+		complexFinder  = getComponent(ComplexFinder.class);
 	}
 
 	protected Context(SingleContext context, WebElement frameElement) {
@@ -181,6 +192,7 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		pinch          = getComponent(Pinch.class);
 		zoomer         = getComponent(Zoomer.class);
 		scroller       = getComponent(ScrollerTo.class);
+		complexFinder  = getComponent(ComplexFinder.class);
 	}
 
 	protected Context(FunctionalPart parent, WebElement frameElement) {
@@ -195,6 +207,7 @@ public abstract class Context extends FunctionalPart implements IHasActivity,
 		pinch          = getComponent(Pinch.class);
 		zoomer         = getComponent(Zoomer.class);
 		scroller       = getComponent(ScrollerTo.class);
+		complexFinder  = getComponent(ComplexFinder.class);
 	}
 
 	@Override

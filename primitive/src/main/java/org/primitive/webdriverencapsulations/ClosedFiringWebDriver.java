@@ -49,13 +49,17 @@ import org.openqa.selenium.remote.Response;
 import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.primitive.webdriverencapsulations.eventlisteners.IExtendedWebDriverEventListener;
+import org.primitive.webdriverencapsulations.interfaces.IComplexFind;
 import org.primitive.webdriverencapsulations.interfaces.IGetsAppStrings;
+import org.primitive.webdriverencapsulations.interfaces.IGetsNamedTextField;
 import org.primitive.webdriverencapsulations.interfaces.IHasActivity;
+import org.primitive.webdriverencapsulations.interfaces.IHidesKeyboard;
 import org.primitive.webdriverencapsulations.interfaces.IPerformsTouchActions;
 import org.primitive.webdriverencapsulations.interfaces.IPinch;
 import org.primitive.webdriverencapsulations.interfaces.IScrollsTo;
 import org.primitive.webdriverencapsulations.interfaces.ISendsKeyEvent;
 import org.primitive.webdriverencapsulations.interfaces.ISendsMetastateKeyEvent;
+import org.primitive.webdriverencapsulations.interfaces.IShakes;
 import org.primitive.webdriverencapsulations.interfaces.ISwipe;
 import org.primitive.webdriverencapsulations.interfaces.ITap;
 import org.primitive.webdriverencapsulations.interfaces.IZoom;
@@ -66,7 +70,8 @@ import org.primitive.webdriverencapsulations.interfaces.IZoom;
 public class ClosedFiringWebDriver extends EventFiringWebDriver
 		implements HasCapabilities, MobileDriver, Rotatable, FindsByIosUIAutomation,
 		FindsByAndroidUIAutomator, FindsByAccessibilityId, IHasActivity, IPerformsTouchActions, IGetsAppStrings,
-		ISendsKeyEvent, ISendsMetastateKeyEvent, ITap, ISwipe, IPinch, IZoom, IScrollsTo
+		ISendsKeyEvent, ISendsMetastateKeyEvent, ITap, ISwipe, IPinch, IZoom, IScrollsTo, IGetsNamedTextField,
+		IHidesKeyboard, IShakes, IComplexFind
 		{
 
 	static class DefaultTimeouts implements Timeouts {
@@ -810,9 +815,9 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	}
 
 	@Override
-	public MobileElement scrollTo(String text) {
+	public WebElement scrollTo(String text) {
 		try {
-			return ((AppiumDriver) originalDriver).scrollTo(text);
+			return new DefaultWebElement(((AppiumDriver) originalDriver).scrollTo(text), this);
 		} catch (ClassCastException e) {
 			throw new UnsupportedCommandException(
 					"Scroll is not supported.");
@@ -820,12 +825,62 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 	}
 
 	@Override
-	public MobileElement scrollToExact(String text) {
+	public WebElement scrollToExact(String text) {
 		try {
-			return ((AppiumDriver) originalDriver).scrollToExact(text);
+			return new DefaultWebElement(((AppiumDriver) originalDriver).scrollToExact(text), this);
 		} catch (ClassCastException e) {
 			throw new UnsupportedCommandException(
 					"Scroll to exact is not supported.");
 		}
+	}
+
+	@Override
+	public void hideKeyboard(String keyName) {
+		try {
+			((AppiumDriver) originalDriver).hideKeyboard(keyName);
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Keydoard hiding is not supported.");
+		}		
+	}
+
+	@Override
+	public void hideKeyboard() {
+		try {
+			((AppiumDriver) originalDriver).hideKeyboard();
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Keydoard hiding is not supported.");
+		}			
+	}
+
+	@Override
+	public WebElement getNamedTextField(String name) {
+		try {
+			return new DefaultWebElement(((AppiumDriver) originalDriver).getNamedTextField(name), this);
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Named text field getting is not supported.");
+		}	
+	}
+
+	@Override
+	public void shake() {
+		try {
+			((AppiumDriver) originalDriver).shake();
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Shaking is not supported.");
+		}			
+	}
+
+	@Override
+	public WebElement complexFind(String complex) {
+		try {
+			return new DefaultWebElement(((AppiumDriver) originalDriver).complexFind(complex), this);
+		} catch (ClassCastException e) {
+			throw new UnsupportedCommandException(
+					"Named text field getting is not supported.");
+		}	
 	}
 }

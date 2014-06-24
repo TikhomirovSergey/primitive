@@ -7,6 +7,9 @@ import org.primitive.webdriverencapsulations.SingleContext;
 import org.primitive.webdriverencapsulations.components.bydefault.AppStringGetter;
 import org.primitive.webdriverencapsulations.components.bydefault.MetastateKeyEventSender;
 
+/**
+ * The same as {@link Context} with some capabilities specifically for Android
+ */
 public abstract class AndroidContext extends Context {
 
 	protected final MetastateKeyEventSender metastateKeyEventSender;

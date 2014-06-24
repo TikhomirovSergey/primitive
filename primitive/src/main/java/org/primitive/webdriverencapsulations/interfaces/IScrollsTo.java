@@ -1,8 +1,8 @@
 package org.primitive.webdriverencapsulations.interfaces;
 
-import io.appium.java_client.MobileElement;
+import org.openqa.selenium.WebElement;
 
 public interface IScrollsTo {
-	public MobileElement scrollTo(String text);
-	public MobileElement scrollToExact(String text);
+	public WebElement scrollTo(String text);
+	public WebElement scrollToExact(String text);
 }

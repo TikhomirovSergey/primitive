@@ -27,7 +27,7 @@ import org.primitive.webdriverencapsulations.interfaces.ITakesPictureOfItSelf;
 import org.primitive.webdriverencapsulations.interfaces.IWebElementHighlighter;
 
 /**
- * @author s.tihomirov It describes simple web page or its fragment
+ * @author s.tihomirov It describes simple web page or mobile app context or their fragment
  */
 public abstract class FunctionalPart extends ModelObject implements
 		IHasWebElementFrames, ITakesPictureOfItSelf, ISwitchesToItself {
