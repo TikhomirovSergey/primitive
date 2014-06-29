@@ -37,6 +37,7 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.UnsupportedCommandException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.internal.Coordinates;
 import org.openqa.selenium.internal.Locatable;
@@ -685,6 +686,9 @@ public class ClosedFiringWebDriver extends EventFiringWebDriver
 			throw new UnsupportedCommandException(
 					"Getting activity is not supported by "
 							+ originalDriver.getClass().getSimpleName());
+		}
+		catch (WebDriverException e){
+			return ""; //iOS Appium tools don't support getting of activity. It is frustrating.
 		}
 	}
 
