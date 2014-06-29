@@ -95,6 +95,7 @@ public class MobileTestExamples {
 		}
 	}
   
+    @Test
   	public void iOSUICatalogTest() {
   		Configuration config = Configuration
 				.get("src/test/resources/configs/mobile/app/ios/ios_uiCatalog.json");
