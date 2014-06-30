@@ -7,6 +7,9 @@ import mobiledescription.android.bbc.TopicList;
 import mobiledescription.android.selendroid.testapp.HomeScreenActivity;
 import mobiledescription.android.selendroid.testapp.RegisterANewUser;
 import mobiledescription.android.selendroid.testapp.Webview;
+import mobiledescription.ios.uicatalog.ActionSheets;
+import mobiledescription.ios.uicatalog.AlertView;
+import mobiledescription.ios.uicatalog.UICatalog;
 
 import org.primitive.configuration.Configuration;
 import org.primitive.model.common.mobile.MobileAppliction;
@@ -101,7 +104,23 @@ public class MobileTestExamples {
 				.get("src/test/resources/configs/mobile/app/ios/ios_uiCatalog.json");
 		MobileAppliction uiCatalog = MobileFactory.getApplication(
 				MobileAppliction.class, config);
+		UICatalog uicatalog = uiCatalog.getPart(UICatalog.class);
+		uicatalog.shake();
+		uicatalog.selectItem("Action Sheets, AAPLActionSheetViewController");
 		
+		ActionSheets actionSheets = uiCatalog.getPart(ActionSheets.class);
+		actionSheets.clickOnOk_Cancel();
+		actionSheets.clickOnSplashButton("OK");
+		actionSheets.clickOnOther();
+		actionSheets.clickOnSplashButton("Safe Choice");
+		
+		uicatalog.backToMe();
+		uicatalog.selectItem("Alert Views, AAPLAlertViewController");
+		
+		AlertView alertView = uiCatalog.getPart(AlertView.class);
+		alertView.invokeSimpleAlert();		
+		uiCatalog.getContextManager().getAlert().dismiss();	
+		uicatalog.backToMe();
 		
 		uiCatalog.quit();
   	}
